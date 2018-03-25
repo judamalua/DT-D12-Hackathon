@@ -1,4 +1,3 @@
-
 package services;
 
 import java.util.Collection;
@@ -25,12 +24,7 @@ public class SliderService {
 	// Supporting services --------------------------------------------------
 
 	// Simple CRUD methods --------------------------------------------------
-	/**
-	 * Creates a new slider
-	 * 
-	 * @author Daniel Diment
-	 * @return the new slider
-	 */
+
 	public Slider create() {
 		Slider result;
 
@@ -39,12 +33,6 @@ public class SliderService {
 		return result;
 	}
 
-	/**
-	 * Gets all the sliders of the database
-	 * 
-	 * @author Daniel Diment
-	 * @return The collection containing the all the sliders
-	 */
 	public Collection<Slider> findAll() {
 
 		Collection<Slider> result;
@@ -56,14 +44,7 @@ public class SliderService {
 		return result;
 
 	}
-	/**
-	 * Gets the slider of the database that has that id
-	 * 
-	 * @param sliderId
-	 *            The id you want to search
-	 * @author Daniel Diment
-	 * @return The slider with that id
-	 */
+
 	public Slider findOne(final int sliderId) {
 
 		Slider result;
@@ -74,14 +55,6 @@ public class SliderService {
 
 	}
 
-	/**
-	 * Saves a slider to the database
-	 * 
-	 * @param slider
-	 *            The slider you want to save
-	 * @author Daniel Diment
-	 * @return The saved slider
-	 */
 	public Slider save(final Slider slider) {
 
 		assert slider != null;
@@ -94,13 +67,6 @@ public class SliderService {
 
 	}
 
-	/**
-	 * Deletes a slider to the database
-	 * 
-	 * @author Daniel Diment
-	 * @param answer
-	 *            the slider to delete
-	 */
 	public void delete(final Slider slider) {
 
 		assert slider != null;
@@ -112,3 +78,4 @@ public class SliderService {
 
 	}
 }
+

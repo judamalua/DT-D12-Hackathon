@@ -7,11 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -19,12 +15,11 @@ import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.hibernate.validator.constraints.URL;
 
 import security.UserAccount;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Access(AccessType.PROPERTY)
 public abstract class Actor extends DomainEntity {
 
@@ -33,14 +28,14 @@ public abstract class Actor extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private String	name;
 	private String	surname;
-	private String	postalAddress;
-	private String	phoneNumber;
-	private String	email;
 	private Date	birthDate;
+	private String	avatar;
+	private String	email;
+	private String	phoneNumber;
 
 
-	@SafeHtml
 	@NotBlank
+	@SafeHtml
 	public String getName() {
 		return this.name;
 	}
@@ -49,8 +44,8 @@ public abstract class Actor extends DomainEntity {
 		this.name = name;
 	}
 
-	@SafeHtml
 	@NotBlank
+	@SafeHtml
 	public String getSurname() {
 		return this.surname;
 	}
@@ -59,13 +54,35 @@ public abstract class Actor extends DomainEntity {
 		this.surname = surname;
 	}
 
-	@SafeHtml
-	public String getPostalAddress() {
-		return this.postalAddress;
+	@NotNull
+	@Past
+	public Date getBirthDate() {
+		return this.birthDate;
 	}
 
-	public void setPostalAddress(final String postalAddress) {
-		this.postalAddress = postalAddress;
+	public void setBirthDate(final Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	@URL
+	@SafeHtml
+	public String getAvatar() {
+		return this.avatar;
+	}
+
+	public void setAvatar(final String avatar) {
+		this.avatar = avatar;
+	}
+
+	@NotBlank
+	@Email
+	@SafeHtml
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(final String email) {
+		this.email = email;
 	}
 
 	@SafeHtml
@@ -75,29 +92,6 @@ public abstract class Actor extends DomainEntity {
 
 	public void setPhoneNumber(final String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	@SafeHtml
-	@NotBlank
-	@Email
-	public String getEmail() {
-		return this.email;
-	}
-
-	public void setEmail(final String email) {
-		this.email = email;
-	}
-
-	@NotNull
-	@Past
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	public Date getBirthDate() {
-		return this.birthDate;
-	}
-
-	public void setBirthDate(final Date birthDate) {
-		this.birthDate = birthDate;
 	}
 
 

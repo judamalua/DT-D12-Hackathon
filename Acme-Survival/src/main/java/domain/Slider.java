@@ -25,8 +25,8 @@ public class Slider extends DomainEntity {
 	private String	align;
 
 
-	@SafeHtml
 	@NotBlank
+	@SafeHtml
 	public String getTitle_en() {
 		return this.title_en;
 	}
@@ -34,8 +34,9 @@ public class Slider extends DomainEntity {
 	public void setTitle_en(final String title_en) {
 		this.title_en = title_en;
 	}
-	@SafeHtml
+
 	@NotBlank
+	@SafeHtml
 	public String getTitle_es() {
 		return this.title_es;
 	}
@@ -43,8 +44,9 @@ public class Slider extends DomainEntity {
 	public void setTitle_es(final String title_es) {
 		this.title_es = title_es;
 	}
-	@SafeHtml
+
 	@NotBlank
+	@SafeHtml
 	public String getText_en() {
 		return this.text_en;
 	}
@@ -52,8 +54,9 @@ public class Slider extends DomainEntity {
 	public void setText_en(final String text_en) {
 		this.text_en = text_en;
 	}
-	@SafeHtml
+
 	@NotBlank
+	@SafeHtml
 	public String getText_es() {
 		return this.text_es;
 	}
@@ -61,9 +64,10 @@ public class Slider extends DomainEntity {
 	public void setText_es(final String text_es) {
 		this.text_es = text_es;
 	}
-	@SafeHtml
+
 	@NotBlank
 	@URL
+	@SafeHtml
 	public String getPictureUrl() {
 		return this.pictureUrl;
 	}
@@ -71,9 +75,8 @@ public class Slider extends DomainEntity {
 	public void setPictureUrl(final String pictureUrl) {
 		this.pictureUrl = pictureUrl;
 	}
-	@SafeHtml
-	@NotBlank
-	@Pattern(regexp = "left|center|right")
+
+	@Pattern(regexp = "^left|right|center$")
 	public String getAlign() {
 		return this.align;
 	}
@@ -81,5 +84,7 @@ public class Slider extends DomainEntity {
 	public void setAlign(final String align) {
 		this.align = align;
 	}
+
+	// Relationships ----------------------------------------------------------
 
 }
