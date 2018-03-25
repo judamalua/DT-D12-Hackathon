@@ -15,10 +15,15 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
        
 <tiles-definitions>
-
-	<definition name="welcome/index" extends="master.page">	
-		<put-attribute name="title" value="Welcome!" />
-		<put-attribute name="body" value="/views/welcome/index.jsp" />
+	
+	<definition name="slider/list" extends="master.page">	
+		<put-attribute name="title" value="List of slides" />
+		<put-attribute name="body" value="/views/slider/list.jsp" />
+	</definition>
+	
+	<definition name="slider/edit" extends="master.page">	
+		<put-attribute name="title" value="Create/Edit a slide" />
+		<put-attribute name="body" value="/views/slider/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

@@ -18,6 +18,7 @@ import repositories.UserRepository;
 import security.Authority;
 import security.UserAccount;
 import domain.User;
+import forms.UserAdminForm;
 
 @Service
 @Transactional
@@ -133,34 +134,31 @@ public class UserService {
 
 	// Other business methods ----------------------------------------------------------------
 
-	public User reconstruct(final User user, final BindingResult binding) {
+	public User reconstruct(final UserAdminForm userAdminForm, final BindingResult binding) {
 		User result;
 
-		if (user.getId() == 0) {
+		if (userAdminForm.getId() == 0) {
 
-			UserAccount userAccount;
-			Collection<Authority> authorities;
-			Authority authority;
+			result = this.create();
 
-			userAccount = user.getUserAccount();
-			authorities = new HashSet<Authority>();
-			authority = new Authority();
-
-			result = user;
-
-			authority.setAuthority(Authority.USER);
-			authorities.add(authority);
-			userAccount.setAuthorities(authorities);
+			result.getUserAccount().setUsername(userAdminForm.getUserAccount().getUsername());
+			result.getUserAccount().setPassword(userAdminForm.getUserAccount().getPassword());
+			result.setName(userAdminForm.getName());
+			result.setSurname(userAdminForm.getSurname());
+			result.setPostalAddress(userAdminForm.getPostalAddress());
+			result.setPhoneNumber(userAdminForm.getPhoneNumber());
+			result.setEmail(userAdminForm.getEmail());
+			result.setBirthDate(userAdminForm.getBirthDate());
 
 		} else {
-			result = this.userRepository.findOne(user.getId());
+			result = this.userRepository.findOne(userAdminForm.getId());
 
-			result.setName(user.getName());
-			result.setSurname(user.getSurname());
-			result.setPostalAddress(user.getPostalAddress());
-			result.setPhoneNumber(user.getPhoneNumber());
-			result.setEmail(user.getEmail());
-			result.setBirthDate(user.getBirthDate());
+			result.setName(userAdminForm.getName());
+			result.setSurname(userAdminForm.getSurname());
+			result.setPostalAddress(userAdminForm.getPostalAddress());
+			result.setPhoneNumber(userAdminForm.getPhoneNumber());
+			result.setEmail(userAdminForm.getEmail());
+			result.setBirthDate(userAdminForm.getBirthDate());
 
 		}
 
