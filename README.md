@@ -1,2 +1,2 @@
-# Template-Project-DT-88
-Repository for the project template of group #88 in DT, University of Seville
+# DT-D12-Hackathon
+Git repository for DT 12 deliverable group 88
