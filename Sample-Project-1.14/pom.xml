@@ -19,8 +19,8 @@
 
 	<!-- Artifact identification and properties -->
 
-	<groupId>Sample-Project-1.14</groupId>
-	<artifactId>Sample-Project-1.14</artifactId>
+	<groupId>Acme-Survival</groupId>
+	<artifactId>Acme-Survival</artifactId>
 	<version>0.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	
@@ -30,9 +30,9 @@
 
 	<!-- Indexing information -->
 
-	<name>Sample-Project-1.14</name>
+	<name>Acme-Survival</name>
 	<url>http://www.acme.com</url>
-	<description>This is Sample-Project-1.14 project by group 88.</description>
+	<description>This is Deliverable 12 project by group 88.</description>
 	
 	<!-- Build commands -->
 

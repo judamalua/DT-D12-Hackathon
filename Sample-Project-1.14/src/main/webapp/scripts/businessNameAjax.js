@@ -9,6 +9,6 @@ function getBusinessName() {
 
 		}
 	};
-	xhttp.open("GET", "/Sample-Project-1.14/configuration/getBusinessName.do", true);
+	xhttp.open("GET", "/Acme-Survival/configuration/getBusinessName.do", true);
 	xhttp.send();
 }

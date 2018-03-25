@@ -102,8 +102,8 @@
 
 	<!-- %%%%%% domain.Slider %%%%%% -->
 	<bean id="Slider1" class="domain.Slider">
-		<property name="title_en" value="Welcome to Sample Project 1.14!" />
-		<property name="title_es" value="¡Bienvenid@ a Sample Project 1.14!" />
+		<property name="title_en" value="Welcome to Acme Survival!" />
+		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en"
 			value="Example text 1" />
 		<property name="text_es" value="Texto de ejemplo 1" />
@@ -111,8 +111,8 @@
 		<property name="align" value="left" />
 	</bean>
 	<bean id="Slider2" class="domain.Slider">
-		<property name="title_en" value="Welcome to Sample Project 1.14!" />
-		<property name="title_es" value="¡Bienvenid@ a Sample Project 1.14!" />
+		<property name="title_en" value="Welcome to Acme Survival!" />
+		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en"
 			value="Example text 2" />
 		<property name="text_es"
@@ -121,8 +121,8 @@
 		<property name="align" value="right" />
 	</bean>
 	<bean id="Slider3" class="domain.Slider">
-		<property name="title_en" value="Welcome to Sample Project 1.14!" />
-		<property name="title_es" value="¡Bienvenid@ a Sample Project 1.14!" />
+		<property name="title_en" value="Welcome to Acme Survival!" />
+		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en"
 			value="Example text 3" />
 		<property name="text_es"
@@ -138,8 +138,8 @@
 			value="This page uses cookies for its internal operations, by continuing, we will assume that you accept these cookies." />
 		<property name="cookies_es"
 			value="Esta pagina usa cookies para realizar su correcto funcionamiento, si continúa navegando, asumiremos que acepta estas cookies." />
-		<property name="businessNameFirst" value="Sample" />
-		<property name="businessNameLast" value="Project-1.14" />
+		<property name="businessNameFirst" value="Acme" />
+		<property name="businessNameLast" value="Survival" />
 		<property name="pageSize" value="5" />
 	</bean>
 </beans>
