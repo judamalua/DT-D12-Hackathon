@@ -24,22 +24,22 @@ public class Recolection extends Mission {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Character getcharacter() {
+	public Character getCharacter() {
 		return this.character;
 	}
 
-	public void setcharacter(final Character character) {
+	public void setCharacter(final Character character) {
 		this.character = character;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Location getlocation() {
+	public Location getLocation() {
 		return this.location;
 	}
 
-	public void setlocation(final Location location) {
+	public void setLocation(final Location location) {
 		this.location = location;
 
 	}

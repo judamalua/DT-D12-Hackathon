@@ -23,11 +23,11 @@ public class Item extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Tool gettool() {
+	public Tool getTool() {
 		return this.tool;
 	}
 
-	public void settool(final Tool tool) {
+	public void setTool(final Tool tool) {
 		this.tool = tool;
 
 	}

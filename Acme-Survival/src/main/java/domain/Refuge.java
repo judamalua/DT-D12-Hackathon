@@ -107,32 +107,32 @@ public class Refuge extends DomainEntity {
 	@Valid
 	@NotNull
 	@OneToOne(optional = false)
-	public Player getplayer() {
+	public Player getPlayer() {
 		return this.player;
 	}
 
-	public void setplayer(final Player player) {
+	public void setPlayer(final Player player) {
 		this.player = player;
 
 	}
 	@Valid
 	@OneToMany
-	public Collection<Item> getitems() {
+	public Collection<Item> getItems() {
 		return this.items;
 	}
 
-	public void setitems(final Collection<Item> items) {
+	public void setItems(final Collection<Item> items) {
 		this.items = items;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Location getlocation() {
+	public Location getLocation() {
 		return this.location;
 	}
 
-	public void setlocation(final Location location) {
+	public void setLocation(final Location location) {
 		this.location = location;
 
 	}

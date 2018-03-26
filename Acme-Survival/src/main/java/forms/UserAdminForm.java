@@ -16,6 +16,7 @@ import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import security.UserAccount;
@@ -27,7 +28,7 @@ public class UserAdminForm extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private String	name;
 	private String	surname;
-	private String	postalAddress;
+	private String	avatar;
 	private String	phoneNumber;
 	private String	email;
 	private Date	birthDate;
@@ -54,13 +55,14 @@ public class UserAdminForm extends DomainEntity {
 		this.surname = surname;
 	}
 
+	@URL
 	@SafeHtml
-	public String getPostalAddress() {
-		return this.postalAddress;
+	public String getAvatar() {
+		return this.avatar;
 	}
 
-	public void setPostalAddress(final String postalAddress) {
-		this.postalAddress = postalAddress;
+	public void setAvatar(final String avatar) {
+		this.avatar = avatar;
 	}
 
 	@SafeHtml

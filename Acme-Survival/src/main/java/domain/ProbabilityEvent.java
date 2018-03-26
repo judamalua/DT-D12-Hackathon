@@ -34,11 +34,11 @@ public class ProbabilityEvent extends DomainEntity {
 
 	@Valid
 	@OneToMany
-	public Collection<Event> getevents() {
+	public Collection<Event> getEvents() {
 		return this.events;
 	}
 
-	public void setevents(final Collection<Event> events) {
+	public void setEvents(final Collection<Event> events) {
 		this.events = events;
 
 	}

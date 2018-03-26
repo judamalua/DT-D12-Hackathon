@@ -65,22 +65,22 @@ public class Message extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Actor getactor() {
+	public Actor getActor() {
 		return this.actor;
 	}
 
-	public void setactor(final Actor actor) {
+	public void setActor(final Actor actor) {
 		this.actor = actor;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Thread getthread() {
+	public Thread getThread() {
 		return this.thread;
 	}
 
-	public void setthread(final Thread thread) {
+	public void setThread(final Thread thread) {
 		this.thread = thread;
 
 	}

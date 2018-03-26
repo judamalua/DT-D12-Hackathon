@@ -52,22 +52,22 @@ public class Thread extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Actor getactor() {
+	public Actor getActor() {
 		return this.actor;
 	}
 
-	public void setactor(final Actor actor) {
+	public void setActor(final Actor actor) {
 		this.actor = actor;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Forum getforum() {
+	public Forum getForum() {
 		return this.forum;
 	}
 
-	public void setforum(final Forum forum) {
+	public void setForum(final Forum forum) {
 		this.forum = forum;
 
 	}

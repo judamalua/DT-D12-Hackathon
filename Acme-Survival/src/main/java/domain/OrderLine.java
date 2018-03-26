@@ -38,22 +38,22 @@ public class OrderLine extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Product getproduct() {
+	public Product getProduct() {
 		return this.product;
 	}
 
-	public void setproduct(final Product product) {
+	public void setProduct(final Product product) {
 		this.product = product;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Order getorder() {
+	public Order getOrder() {
 		return this.order;
 	}
 
-	public void setorder(final Order order) {
+	public void setOrder(final Order order) {
 		this.order = order;
 
 	}

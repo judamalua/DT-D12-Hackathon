@@ -48,22 +48,22 @@ public class Move extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Location getlocation() {
+	public Location getLocation() {
 		return this.location;
 	}
 
-	public void setlocation(final Location location) {
+	public void setLocation(final Location location) {
 		this.location = location;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getrefuge() {
+	public Refuge getRefuge() {
 		return this.refuge;
 	}
 
-	public void setrefuge(final Refuge refuge) {
+	public void setRefuge(final Refuge refuge) {
 		this.refuge = refuge;
 
 	}

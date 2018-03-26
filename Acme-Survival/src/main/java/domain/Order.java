@@ -39,22 +39,22 @@ public class Order extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Player getplayer() {
+	public Player getPlayer() {
 		return this.player;
 	}
 
-	public void setplayer(final Player player) {
+	public void setPlayer(final Player player) {
 		this.player = player;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public CreditCard getcreditCard() {
+	public CreditCard getCreditCard() {
 		return this.creditCard;
 	}
 
-	public void setcreditCard(final CreditCard creditCard) {
+	public void setCreditCard(final CreditCard creditCard) {
 		this.creditCard = creditCard;
 
 	}

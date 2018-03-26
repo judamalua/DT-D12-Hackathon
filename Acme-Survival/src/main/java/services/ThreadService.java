@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,12 @@ public class ThreadService {
 		this.threadRepository.delete(thread);
 
 	}
-}
 
+	public Collection<Thread> findThreadsByForum(final int forumId) {
+		Collection<Thread> result;
+
+		result = this.threadRepository.findThreadsByForum(forumId);
+
+		return result;
+	}
+}

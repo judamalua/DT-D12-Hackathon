@@ -1,0 +1,66 @@
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+
+<acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
+	page="${page}" />
+
+<display:table name="messages" id="row" requestURI="${requestURI}"
+	class="displaytag">
+
+	<spring:message code="message.image" var="image" />
+	<display:column property="image" title="${image}" />
+
+	<display:column>
+		<a href="message/list.do?messageId=${row.id}"><jstl:out
+				value="${row.name}" /></a>
+	</display:column>
+
+	<spring:message code="message.thread" var="thread" />
+	<display:column title="${thread}">
+		<a href="thread/list.do?forumId=${row.thread.id}"><jstl:out
+				value="${row.thread.name}" /></a>
+	</display:column>
+
+	<display:column>
+		<jstl:if test="${ownActor}">
+			<acme:button url="message/actor/edit.do?messageId=${row.id}"
+				code="message.edit" />
+		</jstl:if>
+	</display:column>
+
+</display:table>
+
+<security:authorize access="isAuthenticated()">
+
+	<form:form action="message/actor/edit.do" modelAttribute="message">
+
+		<form:hidden path="id" />
+		<form:hidden path="version" />
+		<form:hidden path="thread" value="${row.id}" />
+
+		<p>
+			<em><spring:message code="form.required.params" /></em>
+		</p>
+
+		<acme:textbox code="message.text" path="text" required="true" />
+
+		<acme:textarea code="message.image" path="image" />
+
+		<acme:submit name="save" code="message.save" />
+
+	</form:form>
+
+</security:authorize>
+<security:authorize access="isAnonymous()">
+	<spring:message code="message.login" />
+</security:authorize>
