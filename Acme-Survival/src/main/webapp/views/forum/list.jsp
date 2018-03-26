@@ -57,4 +57,3 @@
 <security:authorize access="isAuthenticated()">
 	<acme:button url="forum/actor/create.do" code="forum.create" />
 </security:authorize>
-<acme:button url="forum/actor/edit.do" code="forum.edit" />
