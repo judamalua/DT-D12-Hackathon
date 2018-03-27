@@ -9,7 +9,7 @@ import domain.Warehouse;
 
 @Component
 @Transactional
-public class WerehouseToStringConverter implements Converter<Warehouse, String> {
+public class WarehouseToStringConverter implements Converter<Warehouse, String> {
 
 	@Override
 	public String convert(final Warehouse werehouse) {

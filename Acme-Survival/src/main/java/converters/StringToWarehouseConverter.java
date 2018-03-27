@@ -11,7 +11,7 @@ import domain.Warehouse;
 
 @Component
 @Transactional
-public class StringToWerehouseConverter implements Converter<String, Warehouse> {
+public class StringToWarehouseConverter implements Converter<String, Warehouse> {
 
 	@Autowired
 	WarehouseRepository	werehouseRepository;
