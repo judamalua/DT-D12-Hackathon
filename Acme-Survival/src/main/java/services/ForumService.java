@@ -7,6 +7,8 @@ import java.util.HashSet;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -81,11 +83,15 @@ public class ForumService {
 		Collection<Forum> allSubForums;
 		Actor actor;
 
+		actor = this.actorService.findActorByPrincipal();
+
+		if (forum.getStaff() || forum.getStaff())
+			Assert.isTrue(!(actor instanceof Player));
+
 		if (forum.getId() != 0) {
 			allSubForums = this.findAllSubForums(forum.getId());
 			Assert.isTrue(allSubForums.contains(forum.getForum()));
 		}
-		actor = this.actorService.findActorByPrincipal();
 		Assert.isTrue(actor.equals(forum.getOwner()));
 
 		threads = new HashSet<>();
@@ -105,8 +111,14 @@ public class ForumService {
 	}
 	public void delete(final Forum forum) {
 
-		assert forum != null;
-		assert forum.getId() != 0;
+		Assert.notNull(forum);
+		Assert.notNull(forum.getId() != 0);
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		if (forum.getStaff() || forum.getStaff())
+			Assert.isTrue(!(actor instanceof Player));
 
 		Assert.isTrue(this.forumRepository.exists(forum.getId()));
 
@@ -136,6 +148,8 @@ public class ForumService {
 			subsubForums = this.findSubForums(subForum.getId());
 
 			if (subsubForums.size() == 0) {
+				if (subForum.getStaff() || subForum.getStaff())
+					Assert.isTrue(!(actor instanceof Player));
 				this.forumRepository.delete(subForum);
 				threads = this.threadService.findThreadsByForum(subForum.getId());
 				for (final Thread thread : threads)
@@ -146,6 +160,15 @@ public class ForumService {
 		}
 		//Finally delete the forum
 		this.forumRepository.delete(forum);
+	}
+
+	public Page<Forum> findForums(final Boolean staff, final Pageable pageable) {
+		Page<Forum> result;
+		Assert.notNull(pageable);
+
+		result = this.forumRepository.findForums(staff, pageable);
+
+		return result;
 	}
 
 	public Forum reconstruct(final Forum forum, final BindingResult binding) {
@@ -190,6 +213,15 @@ public class ForumService {
 		Assert.isTrue(forumId != 0);
 
 		result = this.forumRepository.findSubForums(forumId);
+
+		return result;
+	}
+
+	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Pageable pageable) {
+		Page<Forum> result;
+		Assert.isTrue(forumId != 0);
+
+		result = this.forumRepository.findSubForums(forumId, staff, pageable);
 
 		return result;
 	}

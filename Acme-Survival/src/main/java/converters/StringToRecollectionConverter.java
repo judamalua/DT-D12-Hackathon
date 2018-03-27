@@ -6,25 +6,25 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import repositories.AdministratorRepository;
-import domain.Administrator;
+import repositories.RecolectionRepository;
+import domain.Recolection;
 
 @Component
 @Transactional
-public class StringToAdministratorConverter implements Converter<String, Administrator> {
+public class StringToRecollectionConverter implements Converter<String, Recolection> {
 
 	@Autowired
-	AdministratorRepository	administratorRepository;
+	RecolectionRepository	recolectionRepository;
 
 
 	@Override
-	public Administrator convert(final String text) {
-		Administrator result;
+	public Recolection convert(final String text) {
+		Recolection result;
 		int id;
 
 		try {
 			id = Integer.valueOf(text);
-			result = this.administratorRepository.findOne(id);
+			result = this.recolectionRepository.findOne(id);
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);
 		}

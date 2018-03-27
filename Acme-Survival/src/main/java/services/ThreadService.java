@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -112,6 +114,16 @@ public class ThreadService {
 		Collection<Thread> result;
 
 		result = this.threadRepository.findThreadsByForum(forumId);
+
+		return result;
+	}
+
+	public Page<Thread> findThreadsByForum(final int forumId, final Pageable pageable) {
+		Page<Thread> result;
+		Assert.isTrue(forumId != 0);
+		Assert.notNull(pageable);
+
+		result = this.threadRepository.findThreadsByForum(forumId, pageable);
 
 		return result;
 	}

@@ -9,7 +9,7 @@ import domain.Recolection;
 
 @Component
 @Transactional
-public class RecolectionToStringConverter implements Converter<Recolection, String> {
+public class RecollectionToStringConverter implements Converter<Recolection, String> {
 
 	@Override
 	public String convert(final Recolection recolection) {
