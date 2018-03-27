@@ -21,6 +21,11 @@
 		<put-attribute name="body" value="/views/product/list.jsp" />
 	</definition>
 	
+	<definition name="product/list-draft" extends="master.page">	
+		<put-attribute name="title" value="Lista de productos en modo borrador" />
+		<put-attribute name="body" value="/views/product/list-draft.jsp" />
+	</definition>
+	
 	<definition name="product/edit" extends="master.page">	
 		<put-attribute name="title" value="Crear/editar un producto" />
 		<put-attribute name="body" value="/views/product/edit.jsp" />
