@@ -10,7 +10,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<jstl:set var="rendezvousNameView" value="${rendezvousName}" />
+<%-- <jstl:set var="rendezvousNameView" value="${rendezvousName}" />
 <!-- rendezvousName is passed by controller, obtained by a query by means of the id of the Rendezvous-->
 
 <h3>
@@ -47,6 +47,6 @@
 			<spring:message code="question.create" />
 		</button>
 	</a>
-</jstl:if>
+</jstl:if> --%>
 
 
