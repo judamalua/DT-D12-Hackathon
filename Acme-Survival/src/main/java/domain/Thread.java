@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class Thread extends DomainEntity {
@@ -35,6 +37,7 @@ public class Thread extends DomainEntity {
 	}
 
 	@SafeHtml
+	@EachNotBlank
 	public Collection<String> getTag() {
 		return this.tag;
 	}
