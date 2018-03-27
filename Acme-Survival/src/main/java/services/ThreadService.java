@@ -8,10 +8,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ThreadRepository;
 import domain.Actor;
+import domain.Message;
 import domain.Thread;
 
 @Service
@@ -30,6 +32,9 @@ public class ThreadService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private MessageService		messageService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -70,11 +75,16 @@ public class ThreadService {
 		Assert.notNull(thread);
 
 		Thread result;
-		Actor actor;
+		final Collection<Message> messages;
 
-		actor = this.actorService.findActorByPrincipal();
-
+		this.actorService.checkUserLogin();
+		messages = this.messageService.findMessagesByThread(thread.getId());
 		result = this.threadRepository.save(thread);
+
+		for (final Message message : messages) {
+			message.setThread(result);
+			this.messageService.save(message);
+		}
 
 		return result;
 
@@ -84,8 +94,15 @@ public class ThreadService {
 
 		Assert.notNull(thread);
 		Assert.isTrue(thread.getId() != 0);
-
+		this.actorService.checkUserLogin();
 		Assert.isTrue(this.threadRepository.exists(thread.getId()));
+
+		final Collection<Message> messages;
+
+		messages = this.messageService.findMessagesByThread(thread.getId());
+
+		for (final Message message : messages)
+			this.messageService.delete(message);
 
 		this.threadRepository.delete(thread);
 
@@ -95,6 +112,32 @@ public class ThreadService {
 		Collection<Thread> result;
 
 		result = this.threadRepository.findThreadsByForum(forumId);
+
+		return result;
+	}
+
+	public Thread reconstruct(final Thread thread, final BindingResult binding) {
+		Thread result;
+		Actor actor;
+
+		if (thread.getId() == 0) {
+
+			actor = this.actorService.findActorByPrincipal();
+			result = this.create();
+
+			result.setName(thread.getName());
+			result.setTag(thread.getTag());
+			result.setActor(actor);
+			result.setForum(thread.getForum());
+
+		} else {
+			result = this.threadRepository.findOne(thread.getId());
+
+			result.setName(thread.getName());
+			result.setTag(thread.getTag());
+
+		}
+		this.validator.validate(result, binding);
 
 		return result;
 	}
