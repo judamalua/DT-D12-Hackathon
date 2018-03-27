@@ -5,14 +5,14 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Werehouse;
+import domain.Warehouse;
 
 @Component
 @Transactional
-public class WerehouseToStringConverter implements Converter<Werehouse, String> {
+public class WerehouseToStringConverter implements Converter<Warehouse, String> {
 
 	@Override
-	public String convert(final Werehouse werehouse) {
+	public String convert(final Warehouse werehouse) {
 		String result;
 
 		if (werehouse == null)
