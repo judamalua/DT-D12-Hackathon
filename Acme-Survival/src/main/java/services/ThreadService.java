@@ -8,8 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.Validator;
 
 import repositories.ThreadRepository;
+import domain.Actor;
 import domain.Thread;
 
 @Service
@@ -21,8 +23,14 @@ public class ThreadService {
 	@Autowired
 	private ThreadRepository	threadRepository;
 
-
 	// Supporting services --------------------------------------------------
+
+	@Autowired
+	private Validator			validator;
+
+	@Autowired
+	private ActorService		actorService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -49,6 +57,7 @@ public class ThreadService {
 	public Thread findOne(final int threadId) {
 
 		Thread result;
+		Assert.isTrue(threadId != 0);
 
 		result = this.threadRepository.findOne(threadId);
 
@@ -58,9 +67,12 @@ public class ThreadService {
 
 	public Thread save(final Thread thread) {
 
-		assert thread != null;
+		Assert.notNull(thread);
 
 		Thread result;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
 
 		result = this.threadRepository.save(thread);
 
@@ -70,8 +82,8 @@ public class ThreadService {
 
 	public void delete(final Thread thread) {
 
-		assert thread != null;
-		assert thread.getId() != 0;
+		Assert.notNull(thread);
+		Assert.isTrue(thread.getId() != 0);
 
 		Assert.isTrue(this.threadRepository.exists(thread.getId()));
 

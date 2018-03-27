@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,14 @@ public class MessageService {
 		this.messageRepository.delete(message);
 
 	}
-}
 
+	public Collection<Message> findMessagesByThread(final int threadId) {
+		Collection<Message> result;
+
+		Assert.isTrue(threadId != 0);
+
+		result = this.messageRepository.findMessagesByThread(threadId);
+
+		return result;
+	}
+}

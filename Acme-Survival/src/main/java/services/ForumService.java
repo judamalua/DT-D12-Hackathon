@@ -31,6 +31,7 @@ public class ForumService {
 
 	@Autowired
 	private ActorService	actorService;
+
 	@Autowired
 	private ThreadService	threadService;
 
@@ -63,6 +64,7 @@ public class ForumService {
 	public Forum findOne(final int forumId) {
 
 		Forum result;
+		Assert.isTrue(forumId != 0);
 
 		result = this.forumRepository.findOne(forumId);
 
@@ -76,7 +78,16 @@ public class ForumService {
 
 		Forum result;
 		Collection<Thread> threads;
-		//TODO: Check hierarchy
+		Collection<Forum> allSubForums;
+		Actor actor;
+
+		if (forum.getId() != 0) {
+			allSubForums = this.findAllSubForums(forum.getId());
+			Assert.isTrue(allSubForums.contains(forum.getForum()));
+		}
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor.equals(forum.getOwner()));
+
 		threads = new HashSet<>();
 
 		result = this.forumRepository.save(forum);
@@ -99,8 +110,42 @@ public class ForumService {
 
 		Assert.isTrue(this.forumRepository.exists(forum.getId()));
 
-		this.forumRepository.delete(forum);
+		this.deleteRecursive(forum);
+	}
 
+	/**
+	 * Delete the forum passed as parameter and his subDorums recursively
+	 * 
+	 * @param forum
+	 * @author MJ
+	 */
+	public void deleteRecursive(final Forum forum) {
+		Assert.notNull(forum);
+		Assert.isTrue(forum.getId() != 0);
+		Collection<Forum> subForums, subsubForums;
+		Collection<Thread> threads;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor.equals(forum.getOwner()));
+
+		subForums = this.findSubForums(forum.getId());
+
+		//Iterate in every subForum to delete it
+		for (final Forum subForum : subForums) {
+			subsubForums = this.findSubForums(subForum.getId());
+
+			if (subsubForums.size() == 0) {
+				this.forumRepository.delete(subForum);
+				threads = this.threadService.findThreadsByForum(subForum.getId());
+				for (final Thread thread : threads)
+					this.threadService.delete(thread);
+			} else
+				//In other case then call again the method
+				this.deleteRecursive(subForum);
+		}
+		//Finally delete the forum
+		this.forumRepository.delete(forum);
 	}
 
 	public Forum reconstruct(final Forum forum, final BindingResult binding) {
@@ -115,6 +160,7 @@ public class ForumService {
 			result.setName(forum.getName());
 			result.setDescription(forum.getDescription());
 			result.setImage(forum.getImage());
+			result.setOwner(actor);
 			if (actor instanceof Player) {
 				result.setStaff(false);
 				result.setSupport(false);
@@ -135,6 +181,30 @@ public class ForumService {
 
 		}
 		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Collection<Forum> findSubForums(final int forumId) {
+		Collection<Forum> result;
+		Assert.isTrue(forumId != 0);
+
+		result = this.forumRepository.findSubForums(forumId);
+
+		return result;
+	}
+
+	public Collection<Forum> findAllSubForums(final int forumId) {
+		Collection<Forum> result, subForums, subsubForums;
+
+		subForums = this.findSubForums(forumId);
+		result = subForums;
+
+		for (final Forum subForum : subForums) {
+			subsubForums = this.findSubForums(subForum.getId());
+			if (subsubForums.size() > 0)
+				result.addAll(this.findAllSubForums(subForum.getId()));
+		}
 
 		return result;
 	}

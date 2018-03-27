@@ -75,6 +75,7 @@ public class Forum extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Forum	forum;
+	private Actor	owner;
 
 
 	@Valid
@@ -88,4 +89,16 @@ public class Forum extends DomainEntity {
 		this.forum = forum;
 
 	}
+
+	@Valid
+	@NotNull
+	@ManyToOne
+	public Actor getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(final Actor owner) {
+		this.owner = owner;
+	}
+
 }
