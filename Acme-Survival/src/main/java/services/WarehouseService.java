@@ -8,34 +8,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import repositories.WerehouseRepository;
-import domain.Werehouse;
+import repositories.WarehouseRepository;
+import domain.Warehouse;
 
 @Service
 @Transactional
-public class WerehouseService {
+public class WarehouseService {
 
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private WerehouseRepository	werehouseRepository;
+	private WarehouseRepository	werehouseRepository;
 
 
 	// Supporting services --------------------------------------------------
 
 	// Simple CRUD methods --------------------------------------------------
 
-	public Werehouse create() {
-		Werehouse result;
+	public Warehouse create() {
+		Warehouse result;
 
-		result = new Werehouse();
+		result = new Warehouse();
 
 		return result;
 	}
 
-	public Collection<Werehouse> findAll() {
+	public Collection<Warehouse> findAll() {
 
-		Collection<Werehouse> result;
+		Collection<Warehouse> result;
 
 		Assert.notNull(this.werehouseRepository);
 		result = this.werehouseRepository.findAll();
@@ -45,9 +45,9 @@ public class WerehouseService {
 
 	}
 
-	public Werehouse findOne(final int werehouseId) {
+	public Warehouse findOne(final int werehouseId) {
 
-		Werehouse result;
+		Warehouse result;
 
 		result = this.werehouseRepository.findOne(werehouseId);
 
@@ -55,11 +55,11 @@ public class WerehouseService {
 
 	}
 
-	public Werehouse save(final Werehouse werehouse) {
+	public Warehouse save(final Warehouse werehouse) {
 
 		assert werehouse != null;
 
-		Werehouse result;
+		Warehouse result;
 
 		result = this.werehouseRepository.save(werehouse);
 
@@ -67,7 +67,7 @@ public class WerehouseService {
 
 	}
 
-	public void delete(final Werehouse werehouse) {
+	public void delete(final Warehouse werehouse) {
 
 		assert werehouse != null;
 		assert werehouse.getId() != 0;

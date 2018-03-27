@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Werehouse extends RoomDesign {
+public class Warehouse extends RoomDesign {
 
 	// Constructors -----------------------------------------------------------
 
