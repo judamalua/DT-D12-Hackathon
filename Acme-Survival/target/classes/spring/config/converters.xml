@@ -84,9 +84,6 @@
 		<bean class="converters.MoveToStringConverter" />
 		<bean class="converters.StringToMoveConverter" />
 
-		<bean class="converters.OrderLineToStringConverter" />
-		<bean class="converters.StringToOrderLineConverter" />
-
 		<bean class="converters.OrderToStringConverter" />
 		<bean class="converters.StringToOrderConverter" />
 
