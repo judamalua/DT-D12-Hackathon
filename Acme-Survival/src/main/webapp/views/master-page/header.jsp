@@ -62,7 +62,7 @@
 
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv" href="forum/list.do"><spring:message
-						code="forum.list" /></a></li>
+						code="master.page.forum.list" /></a></li>
 
 			<security:authorize access="hasRole('ADMIN')">
 				<!-- Dropdown Structure -->

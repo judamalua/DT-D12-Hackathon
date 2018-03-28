@@ -12,6 +12,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,15 +69,15 @@ public class ForumController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "false") final Boolean staff, @RequestParam(required = false) final Integer forumId, @RequestParam(defaultValue = "0") final int page,
-		@RequestParam(defaultValue = "0") final int pageThread) {
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "false") final Boolean staff, @RequestParam(required = false) final Integer forumId, @RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(
+		required = false, defaultValue = "0") final int pageThread) {
 		ModelAndView result;
 		Page<Forum> forums;
 		Forum forum;
 		Pageable pageable, threadPageable;
 		Actor actor;
 		Configuration configuration;
-		final Page<Thread> threads;
+		Page<Thread> threads = null;
 		final Collection<Boolean> ownForums, ownThreads;
 
 		try {
@@ -96,27 +97,31 @@ public class ForumController extends AbstractController {
 
 			if (forumId == null)
 				forums = this.forumService.findForums(staff, pageable);
-			else
+			else {
 				forums = this.forumService.findSubForums(forumId, staff, pageable);
+				threads = this.threadsService.findThreadsByForum(forumId, threadPageable);
+				forum = this.forumService.findOne(forumId);
 
-			threads = this.threadsService.findThreadsByForum(forumId, threadPageable);
-			forum = this.forumService.findOne(forumId);
+				result.addObject("fatherForum", forum);
+			}
 
 			if (this.actorService.getLogged()) {
 				actor = this.actorService.findActorByPrincipal();
 				for (int i = 0; i < forums.getContent().size(); i++)
 					ownForums.add(actor.equals(forums.getContent().get(i).getOwner()));
-
-				for (int i = 0; i < threads.getContent().size(); i++)
-					ownThreads.add(actor.equals(threads.getContent().get(i).getActor()));
+				if (forumId != null)
+					for (int i = 0; i < threads.getContent().size(); i++)
+						ownThreads.add(actor.equals(threads.getContent().get(i).getActor()));
 
 				result.addObject("ownForums", ownForums);
 				result.addObject("ownThreads", ownThreads);
 			}
 
-			result.addObject("fatherForum", forum);
+			if (forumId != null)
+				result.addObject("threads", threads.getContent());
+			else
+				result.addObject("threads", new HashSet<>());
 			result.addObject("forums", forums.getContent());
-			result.addObject("threads", threads.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", forums.getTotalPages());
 			result.addObject("pageThread", pageThread);
