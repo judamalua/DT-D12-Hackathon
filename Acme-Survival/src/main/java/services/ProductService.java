@@ -174,7 +174,7 @@ public class ProductService {
 	 * 
 	 * @author Juanmi
 	 */
-	Page<Product> getFinalModeProducts(final Pageable page) {
+	public Page<Product> getFinalModeProducts(final Pageable page) {
 		Page<Product> result;
 
 		Assert.notNull(page);
@@ -193,7 +193,7 @@ public class ProductService {
 	 * 
 	 * @author Juanmi
 	 */
-	Page<Product> getDraftModeProducts(final Pageable page) {
+	public Page<Product> getDraftModeProducts(final Pageable page) {
 		Page<Product> result;
 		Actor actor;
 
@@ -217,7 +217,7 @@ public class ProductService {
 	 * 
 	 * @author Juanmi
 	 */
-	Page<Product> getCataloguedProducts(final Pageable page) {
+	public Page<Product> getCataloguedProducts(final Pageable page) {
 		Page<Product> result;
 
 		Assert.notNull(page);

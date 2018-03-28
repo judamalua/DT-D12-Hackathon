@@ -4,6 +4,9 @@ package controllers.manager;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,7 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.ProductService;
 import domain.Actor;
+import domain.Configuration;
 import domain.Manager;
 import domain.Product;
 
@@ -35,40 +39,39 @@ public class ProductManagerController {
 
 	// Listing ----------------------------------------------------
 
-	//		@RequestMapping(value = "/list")
-	//		public ModelAndView list(@RequestParam final int rendezvousId) {
-	//			ModelAndView result;
-	//			Collection<Question> questions;
-	//			Rendezvous rendezvous;
-	//			User user;
-	//			String rendezvousName;
-	//			boolean rendezvousIsInFinalMode, rendezvousIsDeleted;
-	//
-	//			try {
-	//
-	//				result = new ModelAndView("question/list");
-	//				user = (User) this.actorService.findActorByPrincipal();
-	//				rendezvous = this.rendezvousService.findOne(rendezvousId);
-	//				Assert.notNull(rendezvous);
-	//				// Checking if the user trying to access is the creator of this Rendezvous
-	//				Assert.isTrue(user.getCreatedRendezvouses().contains(rendezvous));
-	//				rendezvousName = rendezvous.getName();
-	//				questions = rendezvous.getQuestions();
-	//				rendezvousIsInFinalMode = rendezvous.getFinalMode();
-	//				rendezvousIsDeleted = rendezvous.getDeleted();
-	//
-	//				result.addObject("rendezvousName", rendezvousName);
-	//				result.addObject("rendezvousId", rendezvousId);
-	//				result.addObject("questions", questions);
-	//				result.addObject("rendezvousIsInFinalMode", rendezvousIsInFinalMode);
-	//				result.addObject("rendezvousIsDeleted", rendezvousIsDeleted);
-	//
-	//			} catch (final Throwable oops) {
-	//				result = new ModelAndView("redirect:/misc/403");
-	//			}
-	//
-	//			return result;
-	//		}
+	@RequestMapping(value = "/list")
+	public ModelAndView listDraftMode(@RequestParam(defaultValue = "0") final int page) {
+		ModelAndView result;
+		Page<Product> draftModeProducts;
+		Actor actor;
+		Pageable pageable;
+		Configuration configuration;
+		boolean principalIsManager;
+
+		try {
+
+			configuration = this.configurationService.findConfiguration();
+
+			pageable = new PageRequest(page, configuration.getPageSize());
+			result = new ModelAndView("product/list");
+			actor = this.actorService.findActorByPrincipal();
+			// Checking that the user trying to list draft mode products is a manager.
+			Assert.isTrue(actor instanceof Manager);
+
+			draftModeProducts = this.productService.getDraftModeProducts(pageable);
+
+			principalIsManager = actor instanceof Manager;
+
+			result.addObject("principalIsManager", principalIsManager);
+			result.addObject("managerDraftModeView", true);
+			result.addObject("products", draftModeProducts.getContent());
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
 
 	// Editing ---------------------------------------------------------
 
@@ -120,6 +123,31 @@ public class ProductManagerController {
 		return result;
 	}
 
+	// Discontinuing ---------------------------------------------------------
+
+	@RequestMapping(value = "/discontinue", method = RequestMethod.GET)
+	public ModelAndView discontinue(@RequestParam final int productId) {
+		ModelAndView result;
+		Product product;
+		Actor actor;
+
+		try {
+			actor = this.actorService.findActorByPrincipal();
+			// Checking that the user trying to discontinue a product is a manager.
+			Assert.isTrue(actor instanceof Manager);
+
+			product = this.productService.findOne(productId);
+
+			this.productService.discontinueProduct(product);
+			result = new ModelAndView("redirect:/product/list.do");
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
 	// Saving -------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -142,27 +170,20 @@ public class ProductManagerController {
 
 	// Deleting ------------------------------------------------------------------------
 
-	//		@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	//		public ModelAndView delete(@RequestParam final int rendezvousId, Question question, final BindingResult binding) {
-	//			ModelAndView result;
-	//
-	//			try {
-	//				question = this.questionService.reconstruct(question, binding);
-	//			} catch (final Throwable oops) {
-	//				result = new ModelAndView("redirect:/misc/403");
-	//				return result;
-	//			}
-	//			try {
-	//				this.questionService.delete(question);
-	//				result = new ModelAndView("redirect:list.do?rendezvousId=" + rendezvousId);
-	//
-	//			} catch (final Throwable oops) {
-	//				result = this.createEditModelAndView(question, "question.commit.error");
-	//				result.addObject("rendezvousId", rendezvousId);
-	//			}
-	//
-	//			return result;
-	//		}
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(@Valid final Product product, final BindingResult binding) {
+		ModelAndView result;
+
+		try {
+			this.productService.delete(product);
+			result = new ModelAndView("redirect:list.do");
+
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(product, "product.commit.error");
+		}
+
+		return result;
+	}
 
 	// Ancillary methods --------------------------------------------------
 
