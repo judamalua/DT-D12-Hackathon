@@ -36,6 +36,7 @@ public class Order extends DomainEntity {
 	// Relationships ----------------------------------------------------------
 	private Player		player;
 	private CreditCard	creditCard;
+	private Product		product;
 
 
 	@Valid
@@ -58,6 +59,18 @@ public class Order extends DomainEntity {
 
 	public void setCreditCard(final CreditCard creditCard) {
 		this.creditCard = creditCard;
+
+	}
+
+	@Valid
+	@NotNull
+	@ManyToOne(optional = false)
+	public Product getProduct() {
+		return this.product;
+	}
+
+	public void setProduct(final Product product) {
+		this.product = product;
 
 	}
 }
