@@ -21,7 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="thread/actor/edit.do" modelAttribute="thread">
+<form:form action="message/actor/edit.do" modelAttribute="messageForm">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -36,9 +36,15 @@
 
 	<acme:submit name="save" code="message.save" />
 
-	<acme:delete clickCode="message.delete.message" name="delete"
-		code="message.delete" />
-
-	<acme:cancel url="thread/list.do" code="thread.cancel" />
+	<jstl:if test="${messageForm.id!=0}">
+		<acme:delete clickCode="message.delete.message" name="delete"
+			code="message.delete" />
+	</jstl:if>
+	<jstl:if test="${thread!=null and thread.forum.forum!=null }">
+		<acme:cancel url="form/list.do?forumId=${thread.forum.forum}" code="thread.cancel" />
+	</jstl:if>
+	<jstl:if test="${thread==null or thread.forum.forum==null }">
+		<acme:cancel url="form/list.do" code="thread.cancel" />
+	</jstl:if>
 
 </form:form>

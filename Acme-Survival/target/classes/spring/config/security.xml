@@ -44,23 +44,22 @@
 		<security:intercept-url pattern="/security/loginFailure.do" access="permitAll" requires-channel="https" /> 
 
 		<security:intercept-url pattern="/welcome/index.do" access="permitAll" requires-channel="https" /> 
-
-		
-		<security:intercept-url pattern="/user/list.do" access="permitAll" requires-channel="https" /> 
-		<security:intercept-url pattern="/user/display.do" access="permitAll" requires-channel="https" /> 
 		
 		<security:intercept-url pattern="/actor/display.do" access="isAuthenticated()" requires-channel="https"  />
-		<security:intercept-url pattern="actor/user/register.do" access="permitAll" requires-channel="https" /> 
 		
-		<security:intercept-url pattern="/actor/user/edit.do" access="hasRole('USER')" requires-channel="https" /> 
 		<security:intercept-url pattern="/actor/admin/edit.do" access="hasRole('ADMIN')" requires-channel="https" /> 
 		<security:intercept-url pattern="/actor/register.do" access="isAnonymous()" requires-channel="https" /> 
 		<security:intercept-url pattern="/actor/admin/register.do" access="hasRole('ADMIN')" requires-channel="https" /> 
-		<security:intercept-url pattern="actor/user/edit.do" access="hasRole('USER')" requires-channel="https" />
 		<security:intercept-url pattern="actor/admin/register.do" access="hasRole('ADMIN')" requires-channel="https"  />
 		<security:intercept-url pattern="actor/admin/edit.do" access="hasRole('ADMIN')" requires-channel="https"  />
 		
+		<security:intercept-url pattern="forum/list.do" access="permitAll" requires-channel="https"  />
+		<security:intercept-url pattern="message/list.do" access="permitAll" requires-channel="https"  />
+		<security:intercept-url pattern="forum/actor/**" access="isAuthenticated()" requires-channel="https"  />
+		<security:intercept-url pattern="thread/actor/**" access="isAuthenticated()" requires-channel="https"  />
+		<security:intercept-url pattern="message/actor/**" access="isAuthenticated()" requires-channel="https"  />
 		
+		<security:intercept-url pattern="product/manager/**" access="hasRole('MANAGER')" requires-channel="https"  />
 		
 		<security:intercept-url pattern="/dashboard/admin/**" access="hasRole('ADMIN')" />
 		

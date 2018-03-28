@@ -11,20 +11,13 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import security.Authority;
 import services.ActorService;
-import services.UserService;
 import domain.Actor;
-import domain.User;
 import forms.UserAdminForm;
 
 @Controller
@@ -34,9 +27,10 @@ public class ActorController extends AbstractController {
 	// Services -------------------------------------------------------
 	@Autowired
 	ActorService	actorService;
-	@Autowired
-	UserService		userService;
 
+
+	//	@Autowired
+	//	UserService		userService;
 
 	// Constructors -----------------------------------------------------------
 
@@ -101,38 +95,38 @@ public class ActorController extends AbstractController {
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
-	public ModelAndView registerUser(@ModelAttribute("actor") final UserAdminForm actor, final BindingResult binding) {
-		ModelAndView result;
-		Authority auth;
-		User user = null;
-
-		try {
-			user = this.userService.reconstruct(actor, binding);
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
-		}
-		if (binding.hasErrors())
-			result = this.createEditModelAndViewRegister(actor, "user.params.error");
-		else
-			try {
-				auth = new Authority();
-				auth.setAuthority(Authority.USER);
-				Assert.isTrue(user.getUserAccount().getAuthorities().contains(auth));
-				Assert.isTrue(actor.getConfirmPassword().equals(user.getUserAccount().getPassword()), "Passwords do not match");
-				this.actorService.registerActor(user);
-				result = new ModelAndView("redirect:/welcome/index.do");
-			} catch (final DataIntegrityViolationException oops) {
-				result = this.createEditModelAndViewRegister(actor, "user.username.error");
-			} catch (final Throwable oops) {
-				if (oops.getMessage().contains("Passwords do not match"))
-					result = this.createEditModelAndViewRegister(actor, "user.password.error");
-				else
-					result = this.createEditModelAndViewRegister(actor, "user.commit.error");
-			}
-
-		return result;
-	}
+	//	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
+	//	public ModelAndView registerUser(@ModelAttribute("actor") final UserAdminForm actor, final BindingResult binding) {
+	//		ModelAndView result;
+	//		Authority auth;
+	//		User user = null;
+	//
+	//		try {
+	//			user = this.userService.reconstruct(actor, binding);
+	//		} catch (final Throwable oops) {
+	//			result = new ModelAndView("redirect:/misc/403");
+	//		}
+	//		if (binding.hasErrors())
+	//			result = this.createEditModelAndViewRegister(actor, "user.params.error");
+	//		else
+	//			try {
+	//				auth = new Authority();
+	//				auth.setAuthority(Authority.USER);
+	//				Assert.isTrue(user.getUserAccount().getAuthorities().contains(auth));
+	//				Assert.isTrue(actor.getConfirmPassword().equals(user.getUserAccount().getPassword()), "Passwords do not match");
+	//				this.actorService.registerActor(user);
+	//				result = new ModelAndView("redirect:/welcome/index.do");
+	//			} catch (final DataIntegrityViolationException oops) {
+	//				result = this.createEditModelAndViewRegister(actor, "user.username.error");
+	//			} catch (final Throwable oops) {
+	//				if (oops.getMessage().contains("Passwords do not match"))
+	//					result = this.createEditModelAndViewRegister(actor, "user.password.error");
+	//				else
+	//					result = this.createEditModelAndViewRegister(actor, "user.commit.error");
+	//			}
+	//
+	//		return result;
+	//	}
 
 	//Ancillary methods ----------------------------------------------------------------
 

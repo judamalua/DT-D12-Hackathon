@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -99,6 +101,16 @@ public class MessageService {
 		Assert.isTrue(threadId != 0);
 
 		result = this.messageRepository.findMessagesByThread(threadId);
+
+		return result;
+	}
+
+	public Page<Message> findMessagesByThread(final int threadId, final Pageable pageable) {
+		Page<Message> result;
+
+		Assert.isTrue(threadId != 0);
+
+		result = this.messageRepository.findMessagesByThread(threadId, pageable);
 
 		return result;
 	}
