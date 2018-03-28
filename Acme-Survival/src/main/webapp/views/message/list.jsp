@@ -21,18 +21,20 @@
 	<display:column property="image" title="${image}" />
 
 	<display:column>
-		<a href="message/list.do?messageId=${row.id}"><jstl:out
-				value="${row.name}" /></a>
+		<img src="${row.image}" />
+		<jstl:out value="${row.text}" />
+		<br />
+		<jstl:out value="${row.moment}" />
 	</display:column>
 
 	<spring:message code="message.thread" var="thread" />
 	<display:column title="${thread}">
-		<a href="thread/list.do?forumId=${row.thread.id}"><jstl:out
+		<a href="thread/list.do?forumId=${row.thread.forum.id}"><jstl:out
 				value="${row.thread.name}" /></a>
 	</display:column>
 
 	<display:column>
-		<jstl:if test="${ownActor}">
+		<jstl:if test="${ownMessage!=null and ownMessage[row_rowNum-1]}">
 			<acme:button url="message/actor/edit.do?messageId=${row.id}"
 				code="message.edit" />
 		</jstl:if>
@@ -42,7 +44,7 @@
 
 <security:authorize access="isAuthenticated()">
 
-	<form:form action="message/actor/edit.do" modelAttribute="message">
+	<form:form action="message/actor/edit.do" modelAttribute="messageForm">
 
 		<form:hidden path="id" />
 		<form:hidden path="version" />

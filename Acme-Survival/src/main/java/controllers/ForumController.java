@@ -34,7 +34,7 @@ import domain.Player;
 import domain.Thread;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/forum")
 public class ForumController extends AbstractController {
 
 	@Autowired
@@ -110,8 +110,8 @@ public class ForumController extends AbstractController {
 				for (int i = 0; i < threads.getContent().size(); i++)
 					ownThreads.add(actor.equals(threads.getContent().get(i).getActor()));
 
-				result.addObject("ownForums", threads.getTotalPages());
-				result.addObject("ownThreads", threads.getTotalPages());
+				result.addObject("ownForums", ownForums);
+				result.addObject("ownThreads", ownThreads);
 			}
 
 			result.addObject("fatherForum", forum);
