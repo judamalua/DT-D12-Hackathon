@@ -10,7 +10,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -193,8 +192,13 @@ public class ActorService {
 	public boolean getLogged() {
 		boolean result;
 
-		result = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
-
+		//		result = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+		try {
+			this.checkUserLogin();
+			result = true;
+		} catch (final Throwable oops) {
+			result = false;
+		}
 		return result;
 	}
 
