@@ -142,6 +142,8 @@ public class ProductService {
 
 	}
 
+	// Other business methods ----------------------------------------------------------------------------------
+
 	/**
 	 * This method marks a product as discontinued
 	 * 
@@ -153,7 +155,7 @@ public class ProductService {
 
 		actor = this.actorService.findActorByPrincipal();
 
-		// Checking that the user trying to delete a product is a manager.
+		// Checking that the user trying to discontinue a product is a manager.
 		Assert.isTrue(actor instanceof Manager);
 
 		// Checking that the product that is going to be marked as discontinued is a final mode product.
@@ -164,22 +166,42 @@ public class ProductService {
 		this.save(product);
 	}
 
-	// Other business methods ----------------------------------------------------------------------------------
+	/**
+	 * This method marks a product as discontinued
+	 * 
+	 * @param product
+	 * @author Juanmi
+	 */
+	public void setFinalModeProduct(final Product product) {
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		// Checking that the user trying to mark a product as final mode is a manager.
+		Assert.isTrue(actor instanceof Manager);
+
+		// Checking that the product that is going to be marked as final mode is not a final mode product.
+		Assert.isTrue(!product.getFinalMode());
+
+		product.setFinalMode(true);
+
+		this.save(product);
+	}
 
 	/**
 	 * This method returns every final mode product in the system with a pageable object
 	 * 
-	 * @param page
+	 * @param pageable
 	 * @return a page of Products
 	 * 
 	 * @author Juanmi
 	 */
-	public Page<Product> getFinalModeProducts(final Pageable page) {
+	public Page<Product> getFinalModeProducts(final Pageable pageable) {
 		Page<Product> result;
 
-		Assert.notNull(page);
+		Assert.notNull(pageable);
 
-		result = this.productRepository.getFinalModeProducts(page);
+		result = this.productRepository.getFinalModeProducts(pageable);
 
 		return result;
 
@@ -188,12 +210,12 @@ public class ProductService {
 	/**
 	 * This method returns every draft mode product in the system with a pageable object
 	 * 
-	 * @param page
+	 * @param pageable
 	 * @return a page of Products
 	 * 
 	 * @author Juanmi
 	 */
-	public Page<Product> getDraftModeProducts(final Pageable page) {
+	public Page<Product> getDraftModeProducts(final Pageable pageable) {
 		Page<Product> result;
 		Actor actor;
 
@@ -201,9 +223,9 @@ public class ProductService {
 
 		// Checking that the user trying to list draft mode products is a manager.
 		Assert.isTrue(actor instanceof Manager);
-		Assert.notNull(page);
+		Assert.notNull(pageable);
 
-		result = this.productRepository.getDraftModeProducts(page);
+		result = this.productRepository.getDraftModeProducts(pageable);
 
 		return result;
 
@@ -212,17 +234,17 @@ public class ProductService {
 	/**
 	 * This method returns every catalogued product in the system with a pageable object
 	 * 
-	 * @param page
+	 * @param pageable
 	 * @return a page of Products
 	 * 
 	 * @author Juanmi
 	 */
-	public Page<Product> getCataloguedProducts(final Pageable page) {
+	public Page<Product> getCataloguedProducts(final Pageable pageable) {
 		Page<Product> result;
 
-		Assert.notNull(page);
+		Assert.notNull(pageable);
 
-		result = this.productRepository.getCataloguedProducts(page);
+		result = this.productRepository.getCataloguedProducts(pageable);
 
 		return result;
 

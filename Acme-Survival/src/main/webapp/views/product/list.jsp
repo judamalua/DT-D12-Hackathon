@@ -16,7 +16,7 @@
 <spring:message code = "master.page.current.lang" var = "currentLang" />
 <spring:message code="master.page.price.format" var="formatPrice" />
 
-<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}page="/>
+<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}?page="/>
 
 <display:table name="products" id="product"
 	requestURI="${requestURI}?page=${page}"
@@ -54,14 +54,24 @@
 		</jstl:if>
 	</display:column>
 	
-	<jstl:if test="${principalIsManager && product.finalMode}">
+	<jstl:if test="${principalIsManager && !managerDraftModeView && product.finalMode}">
 		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
 		<display:column>
-			<a href="product/manager/discontinue.do?productId=${product.id}">
-				<button class="btn">
-					<spring:message code="product.discontinue" />
-				</button>
-			</a>
+			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.discontinue"/>
+		</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${principalIsManager && managerDraftModeView && !product.finalMode}">
+		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can edit the products -->
+		<display:column>
+			<acme:button url="product/manager/edit.do?productId=${product.id}" code="product.edit"/>
+		</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${principalIsManager && managerDraftModeView && !product.finalMode}">
+		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can set the products to final mode -->
+		<display:column>
+			<acme:button url="product/manager/final-mode.do?productId=${product.id}" code="product.mark.final.mode"/>
 		</display:column>
 	</jstl:if>
 

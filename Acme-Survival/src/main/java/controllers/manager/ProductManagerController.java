@@ -129,17 +129,32 @@ public class ProductManagerController {
 	public ModelAndView discontinue(@RequestParam final int productId) {
 		ModelAndView result;
 		Product product;
-		Actor actor;
 
 		try {
-			actor = this.actorService.findActorByPrincipal();
-			// Checking that the user trying to discontinue a product is a manager.
-			Assert.isTrue(actor instanceof Manager);
-
 			product = this.productService.findOne(productId);
 
 			this.productService.discontinueProduct(product);
 			result = new ModelAndView("redirect:/product/list.do");
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
+	// Setting final mode ---------------------------------------------------------
+
+	@RequestMapping(value = "/final-mode", method = RequestMethod.GET)
+	public ModelAndView setFinalMode(@RequestParam final int productId) {
+		ModelAndView result;
+		Product product;
+
+		try {
+			product = this.productService.findOne(productId);
+
+			this.productService.setFinalModeProduct(product);
+			result = new ModelAndView("redirect:list.do");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
