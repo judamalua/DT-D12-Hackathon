@@ -13,9 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationService;
 import services.ProductService;
-import domain.Actor;
 import domain.Configuration;
-import domain.Manager;
 import domain.Product;
 
 @Controller
@@ -38,10 +36,8 @@ public class ProductController {
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
 		Page<Product> products;
-		Actor actor;
 		Pageable pageable;
 		Configuration configuration;
-		boolean principalIsManager;
 
 		try {
 
@@ -49,13 +45,10 @@ public class ProductController {
 
 			pageable = new PageRequest(page, configuration.getPageSize());
 			result = new ModelAndView("product/list");
-			actor = this.actorService.findActorByPrincipal();
 
 			products = this.productService.getFinalModeProducts(pageable);
 
-			principalIsManager = actor instanceof Manager;
-
-			result.addObject("principalIsManager", principalIsManager);
+			result.addObject("principalIsManager", false);
 			result.addObject("managerDraftModeView", false);
 			result.addObject("products", products.getContent());
 			result.addObject("requestURI", "product/list.do");
