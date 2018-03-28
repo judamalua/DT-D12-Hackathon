@@ -109,8 +109,6 @@ public class ProductService {
 			// Checking that a product cannot be created as a discontinued product.
 			Assert.isTrue(!product.getDiscontinued());
 
-		// TODO: Check in controllers that the product that is being modified is not in final mode.
-
 		result = this.productRepository.save(product);
 
 		return result;
