@@ -19,26 +19,32 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="thread/actor/edit.do"
-	modelAttribute="thread">
+<form:form action="thread/actor/edit.do" modelAttribute="thread">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	
-	<p><em><spring:message code = "form.required.params"/></em></p>
-	
-	<acme:textbox code="thread.name" path="name" required="true"/>
-	
-	<acme:textarea code="thread.tag" path="tag" />
-	
-	<acme:select items="${threads}" itemLabel="name" code="thread.fatherThread" path="thread"/>
-	
-	<acme:submit name="save" code="thread.save"/>
-	
-	<acme:delete clickCode="thread.delete.message" name="delete" code="thread.delete"/>
-	
-	<acme:cancel url="thread/list.do" code="thread.cancel"/>
+	<jstl:if test="${thread.forum!=null}">
+		<form:hidden path="forum" />
+	</jstl:if>
+	<p>
+		<em><spring:message code="form.required.params" /></em>
+	</p>
+
+	<acme:textbox code="thread.name" path="name" required="true" />
+
+	<acme:textarea code="thread.tags" path="tags" />
+
+	<jstl:if test="${thread.forum==null}">
+		<acme:select items="${forums}" itemLabel="name" code="thread.forum"
+			path="forum" />
+	</jstl:if>
+	<acme:submit name="save" code="thread.save" />
+
+	<acme:delete clickCode="thread.delete.message" name="delete"
+		code="thread.delete" />
+
+	<acme:cancel url="thread/list.do" code="thread.cancel" />
 
 </form:form>

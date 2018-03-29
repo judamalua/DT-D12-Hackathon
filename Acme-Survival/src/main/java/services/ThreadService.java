@@ -138,7 +138,7 @@ public class ThreadService {
 			result = this.create();
 
 			result.setName(thread.getName());
-			result.setTag(thread.getTag());
+			result.setTags(thread.getTags());
 			result.setActor(actor);
 			result.setForum(thread.getForum());
 
@@ -146,7 +146,7 @@ public class ThreadService {
 			result = this.threadRepository.findOne(thread.getId());
 
 			result.setName(thread.getName());
-			result.setTag(thread.getTag());
+			result.setTags(thread.getTags());
 
 		}
 		this.validator.validate(result, binding);

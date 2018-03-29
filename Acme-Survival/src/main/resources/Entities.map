@@ -1,12 +1,24 @@
 #./src/main/resources/Entities.map
-#Wed Mar 28 12:48:40 CEST 2018
-Admin2=16
-Slider1=17
-Admin1=15
-UserAccount4=14
-UserAccount3=13
-UserAccount2=12
-UserAccount1=11
-Configuration1=20
-Slider3=19
-Slider2=18
+#Thu Mar 29 13:28:59 CEST 2018
+Forum4=32
+Forum3=31
+Slider3=43
+Forum2=30
+Slider2=42
+UserAccount4=26
+Forum1=29
+Slider1=41
+UserAccount3=25
+Message4=40
+UserAccount2=24
+Message3=39
+UserAccount1=23
+Message2=38
+Message1=37
+Admin2=28
+Admin1=27
+Configuration1=44
+Thread4=36
+Thread3=35
+Thread2=34
+Thread1=33

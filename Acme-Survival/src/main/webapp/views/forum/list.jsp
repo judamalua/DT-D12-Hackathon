@@ -14,7 +14,8 @@
 
 <jstl:if test="${fatherForum!=null}">
 	<h3>
-		<jstl:out value="${fatherForum.name}" />
+		<a href="forum/list.do?forumId=${fatherForum.id}"><jstl:out
+				value="${fatherForum.name}" /></a>
 	</h3>
 </jstl:if>
 
@@ -24,10 +25,11 @@
 <display:table name="forums" id="forum" requestURI="${requestURI}"
 	class="displaytag">
 
-	<spring:message code="forum.image" var="image" />
-	<display:column property="image" title="${image}" />
+	<%-- 	<spring:message code="forum.image" var="image" /> --%>
+	<%-- 	<display:column property="image" title="${image}" /> --%>
 
-	<display:column>
+	<display:column title="">
+		<img class="forumImg" src="${forum.image}" />
 		<security:authorize access="isAnonymous()">
 			<a href="forum/list.do?forumId=${forum.id}"><jstl:out
 					value="${forum.name}" /></a>
@@ -40,17 +42,11 @@
 		<jstl:out value="${forum.description}" />
 	</display:column>
 
-	<spring:message code="forum.fatherForum" var="fatherForum" />
-	<display:column title="${fatherForum}">
-		<jstl:if test="${forum.forum!=null}">
-			<a href="forum/list.do?forumId=${forum.forum.id}"><jstl:out
-					value="${forum.forum.name}" /></a>
-		</jstl:if>
-	</display:column>
-
 	<display:column>
-		<acme:button url="thread/actor/create.do?forumId=${forum.id}"
-			code="thread.create" />
+		<security:authorize access="isAuthenticated()">
+			<acme:button url="thread/actor/create.do?forumId=${forum.id}"
+				code="thread.create" />
+		</security:authorize>
 	</display:column>
 
 	<display:column>
@@ -68,16 +64,13 @@
 <display:table name="threads" id="thread" requestURI="${requestURI}"
 	class="displaytag">
 
-	<spring:message code="forum.image" var="image" />
-	<display:column property="image" title="${image}" />
-
 	<display:column>
 		<a href="message/list.do?threadId=${thread.id}"><jstl:out
 				value="${thread.name}" /></a>
-
-		<jstl:forEach items="${thread.tag}" var="tag" varStatus="loop">
+		<br />
+		<jstl:forEach items="${thread.tags}" var="tag" varStatus="loop">
 			<jstl:out value="${tag}" />
-			<jstl:if test="${loop.index != (fn:length(thread.tag))-1}">
+			<jstl:if test="${loop.index != looop.last}">
 				,
 			</jstl:if>
 		</jstl:forEach>
@@ -97,6 +90,8 @@
 </security:authorize>
 
 <security:authorize access="isAuthenticated()">
-	<acme:button url="thread/actor/create.do?forumId=${fatherForum.id}"
-		code="thread.create" />
+	<jstl:if test="${fatherForum!=null}">
+		<acme:button url="thread/actor/create.do?forumId=${fatherForum.id}"
+			code="thread.create" />
+	</jstl:if>
 </security:authorize>

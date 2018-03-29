@@ -10,6 +10,14 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<jstl:if test="${thread.forum.forum==null}">
+<h3>
+	<a href="forum/list.do"><spring:message code="message.thread"/></a>
+</h3>
+</jstl:if>
+<jstl:if test="${thread.forum.forum!=null}">
+	<a href="forum/list.do?forumId=${thread.forum.forum.id}"><jstl:out value="${thread.forum.name}"/></a>
+</jstl:if>
 
 <acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
 	page="${page}" />

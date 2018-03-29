@@ -1,10 +1,11 @@
 
 package domain;
 
-import java.util.HashSet;
+import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
@@ -22,8 +23,8 @@ public class Thread extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String			name;
-	private HashSet<String>	tag;
+	private String				name;
+	private Collection<String>	tags;
 
 
 	@NotBlank
@@ -36,14 +37,15 @@ public class Thread extends DomainEntity {
 		this.name = name;
 	}
 
-	@SafeHtml
+	@ElementCollection
+	@NotNull
 	@EachNotBlank
-	public HashSet<String> getTag() {
-		return this.tag;
+	public Collection<String> getTags() {
+		return this.tags;
 	}
 
-	public void setTag(final HashSet<String> tag) {
-		this.tag = tag;
+	public void setTags(final Collection<String> tags) {
+		this.tags = tags;
 	}
 
 

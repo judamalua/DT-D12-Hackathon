@@ -79,8 +79,7 @@ public class Forum extends DomainEntity {
 
 
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
+	@ManyToOne
 	public Forum getForum() {
 		return this.forum;
 	}

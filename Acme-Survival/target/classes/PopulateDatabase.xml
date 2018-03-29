@@ -78,6 +78,120 @@
 		<property name="birthDate" value="1987/04/11" />
 		<property name="userAccount" ref="UserAccount2" />
 	</bean>
+	<!-- %%%%%% domain.Forum %%%%%% -->
+	<bean id="Forum1" class="domain.Forum">
+		<property name="name" value="Forum 1" />
+		<property name="description" value="Forum 1" />
+		<property name="image" value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	
+	<bean id="Forum2" class="domain.Forum">
+		<property name="name" value="Forum 2" />
+		<property name="description" value="Forum 2" />
+		<property name="image" value="http://4.bp.blogspot.com/-YoA65hHHuqA/VV_aIDXFdgI/AAAAAAAAAUg/1CzS4dKqn54/s1600/foro.jpg" />
+		<property name="staff" value="true" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	
+	<bean id="Forum3" class="domain.Forum">
+		<property name="name" value="Forum 3" />
+		<property name="description" value="Forum 3" />
+		<property name="image" value="https://pbs.twimg.com/profile_images/796057953359032320/eMJZCPTE.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="true" />
+		<property name="owner" ref="Admin2" />
+	</bean>
+	
+	<bean id="Forum4" class="domain.Forum">
+		<property name="name" value="Forum 4" />
+		<property name="description" value="Forum 4" />
+		<property name="image" value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin2" />
+	</bean>
+	
+	<!-- %%%%%% domain.Forum %%%%%% -->
+	<bean id="Thread1" class="domain.Thread">
+		<property name="name" value="Thread 1" />
+		<property name="tags" >
+			<list>
+				<value>Tag1</value>
+				<value>Tag2</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin1" />
+		<property name="forum" ref="Forum1" />
+	</bean>
+	
+	<bean id="Thread2" class="domain.Thread">
+		<property name="name" value="Thread 2" />
+		<property name="tags" >
+			<list>
+				<value>Tag1</value>
+				<value>Tag2</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum1" />
+	</bean>
+	
+	<bean id="Thread3" class="domain.Thread">
+		<property name="name" value="Thread 3" />
+		<property name="tags" >
+			<list>
+				<value>Tag1</value>
+				<value>Tag2</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin1" />
+		<property name="forum" ref="Forum1" />
+	</bean>
+	
+	<bean id="Thread4" class="domain.Thread">
+		<property name="name" value="Thread 4" />
+		<property name="tags" >
+			<list>
+				<value>Tag1</value>
+				<value>Tag2</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
+	
+		<!-- %%%%%% domain.Forum %%%%%% -->
+	<bean id="Message1" class="domain.Message">
+		<property name="text" value="Message 1" />
+		<property name="moment" value="2018/01/13 00:00" />
+		<property name="actor" ref="Admin1" />
+		<property name="thread" ref="Thread1" />
+	</bean>
+	
+	<bean id="Message2" class="domain.Message">
+		<property name="text" value="Message 1" />
+		<property name="moment" value="2018/02/20 00:00" />
+		<property name="actor" ref="Admin2" />
+		<property name="thread" ref="Thread1" />
+	</bean>
+	
+	<bean id="Message3" class="domain.Message">
+		<property name="text" value="Message 1" />
+		<property name="moment" value="2018/01/03 00:00" />
+		<property name="actor" ref="Admin1" />
+		<property name="thread" ref="Thread2" />
+	</bean>
+	
+	<bean id="Message4" class="domain.Message">
+		<property name="text" value="Message 3" />
+		<property name="moment" value="2018/03/28 00:00" />
+		<property name="actor" ref="Admin1" />
+		<property name="thread" ref="Thread1" />
+	</bean>
 
 	<!-- %%%%%% domain.Slider %%%%%% -->
 	<bean id="Slider1" class="domain.Slider">

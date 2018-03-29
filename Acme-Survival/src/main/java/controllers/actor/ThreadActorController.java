@@ -10,6 +10,8 @@
 
 package controllers.actor;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.ForumService;
 import services.ThreadService;
 import controllers.AbstractController;
+import domain.Forum;
 import domain.Thread;
 
 @Controller
@@ -33,6 +37,9 @@ public class ThreadActorController extends AbstractController {
 
 	@Autowired
 	private ThreadService	threadService;
+
+	@Autowired
+	private ForumService	forumService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -56,18 +63,23 @@ public class ThreadActorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam(required = false) final Integer forumId) {
 		ModelAndView result;
 		final Thread thread;
+		Forum forum;
 
 		this.actorService.checkUserLogin();
+
 		thread = this.threadService.create();
+		if (forumId != null) {
+			forum = this.forumService.findOne(forumId);
+			thread.setForum(forum);
+		}
 
 		result = this.createEditModelAndView(thread);
 
 		return result;
 	}
-
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
@@ -121,20 +133,27 @@ public class ThreadActorController extends AbstractController {
 
 	// Ancillary methods --------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Thread message) {
+	protected ModelAndView createEditModelAndView(final Thread thread) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(message, null);
+		result = this.createEditModelAndView(thread, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Thread message, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Thread thread, final String messageCode) {
 		ModelAndView result;
+		Collection<Forum> forums;
 
 		result = new ModelAndView("thread/edit");
+
+		if (thread.getForum() != null) {
+			forums = this.forumService.findForums(false);
+			result.addObject("forums", forums);
+		}
+
 		result.addObject("message", messageCode);
-		result.addObject("thread", message);
+		result.addObject("thread", thread);
 
 		return result;
 

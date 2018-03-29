@@ -240,4 +240,12 @@ public class ForumService {
 
 		return result;
 	}
+
+	public Collection<Forum> findForums(final Boolean staff) {
+		Collection<Forum> result;
+
+		result = this.forumRepository.findForums(staff);
+
+		return result;
+	}
 }

@@ -117,15 +117,19 @@ public class ForumController extends AbstractController {
 				result.addObject("ownThreads", ownThreads);
 			}
 
-			if (forumId != null)
+			if (forumId != null) {
 				result.addObject("threads", threads.getContent());
-			else
+				result.addObject("pageThread", pageThread);
+				result.addObject("pageNumThread", threads.getTotalPages());
+			} else {
 				result.addObject("threads", new HashSet<>());
+				result.addObject("pageThread", 0);
+				result.addObject("pageNumThread", 0);
+			}
 			result.addObject("forums", forums.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", forums.getTotalPages());
-			result.addObject("pageThread", pageThread);
-			result.addObject("pageNumThread", threads.getTotalPages());
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
