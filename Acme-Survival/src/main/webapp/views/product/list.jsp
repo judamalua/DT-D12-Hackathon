@@ -9,44 +9,76 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<%-- <jstl:set var="rendezvousNameView" value="${rendezvousName}" />
-<!-- rendezvousName is passed by controller, obtained by a query by means of the id of the Rendezvous-->
+<!-- This view lists final mode products and discontinued products -->
 
-<h3>
-	<spring:message code="question.rendezvous" />
-	${rendezvousNameView}
-</h3>
+<spring:message code = "master.page.current.lang" var = "currentLang" />
+<spring:message code="master.page.price.format" var="formatPrice" />
 
-<display:table name="questions" id="question"
-	requestURI="question/user/list.do?rendezvousId=${rendezvousId}"
-	pagesize="${pagesize}" class="displayTag">
-	<!-- Rendezvous Id sent by controller -->
+<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}?page="/>
 
-	<spring:message code="question.text" var="text" />
-	<display:column property="text" title="${text}" sortable="false" />
+<display:table name="products" id="product"
+	requestURI="${requestURI}?page=${page}"
+	class="displayTag">
 
-	<jstl:if test="${!rendezvousIsInFinalMode && !rendezvousIsDeleted}">
-		<!-- Checking if the Rendezvous is in final mode, if true, questions cannot be added or modified -->
+	<spring:message code="product.name" var="name" />
+	<jstl:if test="${currentLang == \"en\"}">
+	<display:column title="${name}" sortable="true">
+		<a href = "product/detailed.do?productId=${product.id}"><jstl:out value = "${product.name_en}"/></a>
+	</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${currentLang == \"es\"}">
+	<display:column title="${name}" sortable="true">
+		<a href = "product/detailed.do?productId=${product.id}"><jstl:out value = "${product.name_es}"/></a>
+	</display:column>
+	</jstl:if>
+	
+	<spring:message code="product.description" var="description" />
+	<jstl:if test="${currentLang == \"en\"}">
+	<display:column property="description_en" title="${description}" sortable="false" />
+	</jstl:if>
+	
+	<jstl:if test="${currentLang == \"es\"}">
+	<display:column property="description_es" title="${description}" sortable="false" />
+	</jstl:if>
+	
+	<spring:message code="product.price" var="price" />
+	<display:column property="price" title="${price}" format="${formatPrice}" sortable="true" />
+	
+	<display:column>
+		<jstl:if test="${product.discontinued}">
+			<i class="material-icons">remove_shopping_cart</i>
+			<spring:message code="product.discontinued" />
+		</jstl:if>
+	</display:column>
+	
+	<jstl:if test="${principalIsManager && !managerDraftModeView && product.finalMode}">
+		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
 		<display:column>
-			<a href="question/user/edit.do?questionId=${question.id}">
-				<button class="btn">
-					<spring:message code="question.edit" />
-				</button>
-			</a>
+			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.discontinue"/>
+		</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${principalIsManager && managerDraftModeView && !product.finalMode}">
+		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can edit the products -->
+		<display:column>
+			<acme:button url="product/manager/edit.do?productId=${product.id}" code="product.edit"/>
+		</display:column>
+	</jstl:if>
+	
+	<jstl:if test="${principalIsManager && managerDraftModeView && !product.finalMode}">
+		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can set the products to final mode -->
+		<display:column>
+			<acme:button url="product/manager/final-mode.do?productId=${product.id}" code="product.mark.final.mode"/>
 		</display:column>
 	</jstl:if>
 
 </display:table>
 
-<jstl:if test="${!rendezvousIsInFinalMode && !rendezvousIsDeleted}">
-	<!-- Checking if the Rendezvous is in final mode, if true, questions cannot be added or modified -->
+<jstl:if test="${principalIsManager && managerDraftModeView}">
+	<!-- Checking if the principal is a manager and he is in the draft mode list view, if so, he or she can create new draft mode products -->
 	<br />
-	<a href="question/user/create.do?rendezvousId=${rendezvousId}"> <!-- Rendezvous Id sent by controller -->
-		<button class="btn">
-			<spring:message code="question.create" />
-		</button>
-	</a>
-</jstl:if> --%>
-
-
+	<acme:button url="product/manager/create.do" code="product.create"/>
+</jstl:if>

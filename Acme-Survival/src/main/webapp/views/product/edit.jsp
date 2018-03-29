@@ -29,5 +29,5 @@
 	<jstl:if test="${product.id!=0}">
 		<acme:delete clickCode="product.confirm.delete" name="delete" code="product.delete"/>
 	</jstl:if>
-	<acme:cancel url="product/manager/list-draft.do" code="product.cancel"/>
+	<acme:cancel url="product/manager/list.do" code="product.cancel"/>
 </form:form>
