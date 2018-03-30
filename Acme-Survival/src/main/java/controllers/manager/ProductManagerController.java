@@ -46,7 +46,6 @@ public class ProductManagerController {
 		Actor actor;
 		Pageable pageable;
 		Configuration configuration;
-		boolean principalIsManager;
 
 		try {
 
@@ -60,11 +59,10 @@ public class ProductManagerController {
 
 			draftModeProducts = this.productService.getDraftModeProducts(pageable);
 
-			principalIsManager = actor instanceof Manager;
-
-			result.addObject("principalIsManager", principalIsManager);
 			result.addObject("managerDraftModeView", true);
 			result.addObject("products", draftModeProducts.getContent());
+			result.addObject("page", page);
+			result.addObject("pageNum", draftModeProducts.getTotalPages());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -174,7 +172,7 @@ public class ProductManagerController {
 		else
 			try {
 				this.productService.save(product);
-				result = new ModelAndView("redirect:list-draft.do");
+				result = new ModelAndView("redirect:list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(product, "product.commit.error");

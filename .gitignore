@@ -1,3 +1,2 @@
-Acme-Survival/target/m2e-wtp/web-resources/META-INF/maven/Acme-Survival/Acme-Survival/pom.properties
-
-Acme-Survival/src/main/resources/Entities.map
+*/target/**
+Entities.map

@@ -48,10 +48,11 @@ public class ProductController {
 
 			products = this.productService.getFinalModeProducts(pageable);
 
-			result.addObject("principalIsManager", false);
 			result.addObject("managerDraftModeView", false);
 			result.addObject("products", products.getContent());
 			result.addObject("requestURI", "product/list.do");
+			result.addObject("page", page);
+			result.addObject("pageNum", products.getTotalPages());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -62,4 +63,23 @@ public class ProductController {
 
 	// Detailed ---------------------------------------------------------
 
+	@RequestMapping(value = "/detailed")
+	public ModelAndView detailed(@RequestParam final int productId) {
+		ModelAndView result;
+		Product product;
+
+		try {
+
+			result = new ModelAndView("product/detailed");
+
+			product = this.productService.findOne(productId);
+
+			result.addObject("product", product);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
 }

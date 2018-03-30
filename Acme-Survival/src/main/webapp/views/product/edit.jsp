@@ -21,8 +21,8 @@
 	
 	<acme:textarea code="product.description_en" path="description_en" required = "true"/>
 	<acme:textarea code="product.description_es" path="description_es" required = "true"/>
-	
-	<acme:textbox code="product.price" path="price" required="true" placeholder="1.50"/> <p>ADD PRICE FORMAT</p>
+
+	<acme:textbox code="product.price" path="price" required="true" placeholder="1.50"/>
 	
 	<acme:submit name="save" code="product.save"/>
 		

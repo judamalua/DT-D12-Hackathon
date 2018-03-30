@@ -143,7 +143,7 @@ public class ProductService {
 	// Other business methods ----------------------------------------------------------------------------------
 
 	/**
-	 * This method marks a product as discontinued
+	 * This method marks a product as discontinued, or as not discontinued if it was already discontinued
 	 * 
 	 * @param product
 	 * @author Juanmi
@@ -159,13 +159,13 @@ public class ProductService {
 		// Checking that the product that is going to be marked as discontinued is a final mode product.
 		Assert.isTrue(product.getFinalMode());
 
-		product.setDiscontinued(true);
+		product.setDiscontinued(!product.getDiscontinued());
 
 		this.save(product);
 	}
 
 	/**
-	 * This method marks a product as discontinued
+	 * This method marks a product as final mode
 	 * 
 	 * @param product
 	 * @author Juanmi
