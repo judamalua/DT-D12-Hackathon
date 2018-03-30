@@ -19,7 +19,7 @@
 <acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}?page="/>
 
 <display:table name="products" id="product"
-	requestURI="${requestURI}?page=${page}"
+	requestURI="${requestURI}"
 	class="displayTag">
 
 	<spring:message code="product.name" var="name" />
@@ -54,31 +54,48 @@
 		</jstl:if>
 	</display:column>
 	
-	<jstl:if test="${principalIsManager && !managerDraftModeView && product.finalMode}">
+	<security:authorize access="hasRole('MANAGER')">
+	<jstl:if test="${!managerDraftModeView && product.finalMode && !product.discontinued}">
 		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
 		<display:column>
-			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.discontinue"/>
+			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.discontinue"/>	
 		</display:column>
 	</jstl:if>
+	</security:authorize>
 	
-	<jstl:if test="${principalIsManager && managerDraftModeView && !product.finalMode}">
+	<security:authorize access="hasRole('MANAGER')">
+	<jstl:if test="${!managerDraftModeView && product.finalMode && product.discontinued}">
+		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
+		<display:column>
+			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.continue"/>	
+		</display:column>
+	</jstl:if>
+	</security:authorize>
+	
+	<security:authorize access="hasRole('MANAGER')">
+	<jstl:if test="${managerDraftModeView && !product.finalMode}">
 		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can edit the products -->
 		<display:column>
 			<acme:button url="product/manager/edit.do?productId=${product.id}" code="product.edit"/>
 		</display:column>
 	</jstl:if>
+	</security:authorize>
 	
-	<jstl:if test="${principalIsManager && managerDraftModeView && !product.finalMode}">
+	<security:authorize access="hasRole('MANAGER')">
+	<jstl:if test="${managerDraftModeView && !product.finalMode}">
 		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can set the products to final mode -->
 		<display:column>
 			<acme:button url="product/manager/final-mode.do?productId=${product.id}" code="product.mark.final.mode"/>
 		</display:column>
 	</jstl:if>
+	</security:authorize>
 
 </display:table>
 
-<jstl:if test="${principalIsManager && managerDraftModeView}">
+<security:authorize access="hasRole('MANAGER')">
+<jstl:if test="${managerDraftModeView}">
 	<!-- Checking if the principal is a manager and he is in the draft mode list view, if so, he or she can create new draft mode products -->
 	<br />
 	<acme:button url="product/manager/create.do" code="product.create"/>
 </jstl:if>
+</security:authorize>

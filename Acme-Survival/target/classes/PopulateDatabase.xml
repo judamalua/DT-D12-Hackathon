@@ -59,6 +59,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="UserAccount5" class="security.UserAccount">
+		<property name="username" value="manager1" />
+		<property name="password" value="c240642ddef994358c96da82c0361a58" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MANAGER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 	<!-- Other domain beans come here -->
 
@@ -78,6 +90,16 @@
 		<property name="birthDate" value="1987/04/11" />
 		<property name="userAccount" ref="UserAccount2" />
 	</bean>
+	
+	<!-- %%%% Managers %%%% -->
+	<bean id="Manager1" class="domain.Manager">
+		<property name="name" value="Manager 1" />
+		<property name="surname" value="Manager 1" />
+		<property name="email" value="manager1@mail.com" />
+		<property name="birthDate" value="1995/10/07" />
+		<property name="userAccount" ref="UserAccount5" />
+	</bean>
+	
 	<!-- %%%%%% domain.Forum %%%%%% -->
 	<bean id="Forum1" class="domain.Forum">
 		<property name="name" value="Forum 1" />

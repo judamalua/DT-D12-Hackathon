@@ -50,6 +50,20 @@
 					data-activates="dropdownAdminFunctions"><spring:message
 							code="master.page.admin" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
+			
+			<security:authorize access="hasRole('MANAGER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownManagerFunctions" class="dropdown-content">
+					<li><a href="product/manager/list.do"><spring:message
+								code="master.page.manager.products" /></a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownManagerFunctions"><spring:message
+							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
+			</security:authorize>
+			
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message
 							code="master.page.login" /></a></li>
@@ -57,12 +71,16 @@
 							code="master.page.registerUser" /></a></li>
 				<li><a class="fNiv" href="forum/list.do"><spring:message
 							code="master.page.forum.list" /></a></li>
+				<li><a class="fNiv" href="product/list.do"><spring:message
+							code="master.page.product.list" /></a></li>
 		</ul>
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv" href="forum/list.do"><spring:message
 						code="master.page.forum.list" /></a></li>
+			<li><a class="fNiv" href="product/list.do"><spring:message
+						code="master.page.product.list" /></a></li>
 
 			<security:authorize access="hasRole('ADMIN')">
 				<!-- Dropdown Structure -->
@@ -80,6 +98,26 @@
 				<!-- Dropdown Trigger -->
 				<li><a class="dropdown-button" href="#!"
 					data-activates="dropdownAdminProfile"><security:authentication
+							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+			</security:authorize>
+			
+			<security:authorize access="hasRole('MANAGER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownManagerProfile" class="dropdown-content">
+					<li><a href="actor/manager/edit.do"><spring:message
+								code="master.page.actorEdit" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/display.do"><spring:message
+								code="master.page.actorProfile" /></a></li>
+					<li class="divider"></li>
+					<li><a href="j_spring_security_logout"><spring:message
+								code="master.page.logout" /> </a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownManagerProfile"><security:authentication
 							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
 			</security:authorize>
