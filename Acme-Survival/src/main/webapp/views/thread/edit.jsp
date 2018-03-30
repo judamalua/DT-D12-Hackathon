@@ -45,6 +45,12 @@
 	<acme:delete clickCode="thread.delete.message" name="delete"
 		code="thread.delete" />
 
-	<acme:cancel url="thread/list.do" code="thread.cancel" />
+	<jstl:if test="${thread.forum==null}">
+		<acme:cancel url="forum/list.do" code="thread.cancel" />
+	</jstl:if>
+	<jstl:if test="${thread.forum!=null}">
+		<acme:cancel url="forum/list.do?forumId=${thread.forum.id}"
+			code="thread.cancel" />
+	</jstl:if>
 
 </form:form>

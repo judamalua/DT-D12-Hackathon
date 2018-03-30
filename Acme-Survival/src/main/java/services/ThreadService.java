@@ -80,16 +80,17 @@ public class ThreadService {
 		final Collection<Message> messages;
 
 		this.actorService.checkUserLogin();
-		messages = this.messageService.findMessagesByThread(thread.getId());
 		result = this.threadRepository.save(thread);
 
-		for (final Message message : messages) {
-			message.setThread(result);
-			this.messageService.save(message);
+		if (thread.getId() != 0) {
+			messages = this.messageService.findMessagesByThread(thread.getId());
+			for (final Message message : messages) {
+				message.setThread(result);
+				this.messageService.save(message);
+			}
 		}
 
 		return result;
-
 	}
 
 	public void delete(final Thread thread) {

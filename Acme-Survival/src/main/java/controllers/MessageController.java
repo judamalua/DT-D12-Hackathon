@@ -93,9 +93,10 @@ public class MessageController extends AbstractController {
 					ownMessages.add(actor.equals(messages.getContent().get(i).getActor()));
 
 				result.addObject("ownMessages", ownMessages);
+				result.addObject("messageForm", this.messageService.create());
 			}
 
-			result.addObject("thread", thread);
+			result.addObject("fatherThread", thread);
 			result.addObject("messages", messages.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", messages.getTotalPages());

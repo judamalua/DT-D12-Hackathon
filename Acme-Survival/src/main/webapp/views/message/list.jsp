@@ -10,13 +10,13 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
-<jstl:if test="${thread.forum.forum==null}">
+<jstl:if test="${fatherThread.forum==null}">
 <h3>
 	<a href="forum/list.do"><spring:message code="message.thread"/></a>
 </h3>
 </jstl:if>
-<jstl:if test="${thread.forum.forum!=null}">
-	<a href="forum/list.do?forumId=${thread.forum.forum.id}"><jstl:out value="${thread.forum.name}"/></a>
+<jstl:if test="${fatherThread.forum!=null}">
+	<a href="forum/list.do?forumId=${fatherThread.forum.id}"><jstl:out value="${fatherThread.forum.name}"/></a>
 </jstl:if>
 
 <acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
@@ -56,7 +56,7 @@
 
 		<form:hidden path="id" />
 		<form:hidden path="version" />
-		<form:hidden path="thread" value="${row.id}" />
+		<form:hidden path="thread" value="${fatherThread.id}" />
 
 		<p>
 			<em><spring:message code="form.required.params" /></em>

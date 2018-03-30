@@ -77,6 +77,8 @@ public class ForumService {
 	public Forum save(final Forum forum) {
 
 		Assert.notNull(forum);
+		if (forum.getForum() != null)
+			Assert.isTrue(forum != forum.getForum());
 
 		Forum result;
 		Collection<Thread> threads;
@@ -85,12 +87,16 @@ public class ForumService {
 
 		actor = this.actorService.findActorByPrincipal();
 
-		if (forum.getStaff() || forum.getStaff())
+		if (forum.getStaff()) {
 			Assert.isTrue(!(actor instanceof Player));
+			if (forum.getForum() != null)
+				Assert.isTrue(forum.getForum().getStaff());
+		}
 
 		if (forum.getId() != 0) {
 			allSubForums = this.findAllSubForums(forum.getId());
-			Assert.isTrue(allSubForums.contains(forum.getForum()));
+			if (forum.getForum() != null)
+				Assert.isTrue(!allSubForums.contains(forum.getForum()));
 		}
 		Assert.isTrue(actor.equals(forum.getOwner()));
 
@@ -176,22 +182,13 @@ public class ForumService {
 		Actor actor;
 
 		if (forum.getId() == 0) {
-
 			actor = this.actorService.findActorByPrincipal();
-			result = this.create();
-
-			result.setName(forum.getName());
-			result.setDescription(forum.getDescription());
-			result.setImage(forum.getImage());
+			result = forum;
 			result.setOwner(actor);
 			if (actor instanceof Player) {
 				result.setStaff(false);
 				result.setSupport(false);
-			} else {
-				result.setStaff(forum.getStaff());
-				result.setSupport(forum.getSupport());
 			}
-			result.setForum(forum.getForum());
 
 		} else {
 			result = this.forumRepository.findOne(forum.getId());

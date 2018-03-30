@@ -21,7 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="forum/actor/edit.do" modelAttribute="forum">
+<form:form action="forum/actor/edit.do" modelAttribute="forumForm">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -45,7 +45,7 @@
 	</security:authorize>
 
 	<acme:select items="${forums}" itemLabel="name"
-		code="forum.fatherForum" path="forum" />
+		code="forum.fatherForum"  path="forum" />
 
 	<acme:submit name="save" code="forum.save" />
 

@@ -13,10 +13,17 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <jstl:if test="${fatherForum!=null}">
-	<h3>
-		<a href="forum/list.do?forumId=${fatherForum.id}"><jstl:out
-				value="${fatherForum.name}" /></a>
-	</h3>
+	<jstl:if test="${fatherForum.forum!=null}">
+		<h3>
+			<a href="forum/list.do?forumId=${fatherForum.forum.id}"><jstl:out
+					value="${fatherForum.name}" /></a>
+		</h3>
+	</jstl:if>
+	<jstl:if test="${fatherForum.forum==null}">
+		<h3>
+			<a href="forum/list.do"><jstl:out value="${fatherForum.name}" /></a>
+		</h3>
+	</jstl:if>
 </jstl:if>
 
 <acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
@@ -30,14 +37,8 @@
 
 	<display:column title="">
 		<img class="forumImg" src="${forum.image}" />
-		<security:authorize access="isAnonymous()">
 			<a href="forum/list.do?forumId=${forum.id}"><jstl:out
 					value="${forum.name}" /></a>
-		</security:authorize>
-		<security:authorize access="isAuthenticated()">
-			<a href="forum/actor/list.do?forumId=${forum.id}"><jstl:out
-					value="${forum.name}" /></a>
-		</security:authorize>
 		<br />
 		<jstl:out value="${forum.description}" />
 	</display:column>
@@ -70,7 +71,7 @@
 		<br />
 		<jstl:forEach items="${thread.tags}" var="tag" varStatus="loop">
 			<jstl:out value="${tag}" />
-			<jstl:if test="${loop.index != looop.last}">
+			<jstl:if test="${loop.index != looop.last-1}">
 				,
 			</jstl:if>
 		</jstl:forEach>
@@ -78,7 +79,7 @@
 
 	<display:column>
 		<jstl:if test="${ownThreads != null and ownThreads[thread_rowNum-1]}">
-			<acme:button url="thread/actor/edit.do?threadId=${row.id}"
+			<acme:button url="thread/actor/edit.do?threadId=${thread.id}"
 				code="thread.edit" />
 		</jstl:if>
 	</display:column>

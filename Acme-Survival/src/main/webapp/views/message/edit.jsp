@@ -25,6 +25,7 @@
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
+	<form:hidden path="thread" />
 
 	<p>
 		<em><spring:message code="form.required.params" /></em>

@@ -122,11 +122,9 @@ public class MessageService {
 		if (message.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
-			result = this.create();
+			result = message;
 
-			result.setText(message.getText());
 			result.setMoment(new Date(System.currentTimeMillis() - 1));
-			result.setImage(message.getImage());
 			result.setActor(actor);
 
 		} else {

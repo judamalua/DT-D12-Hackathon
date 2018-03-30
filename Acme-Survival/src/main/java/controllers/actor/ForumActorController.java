@@ -10,6 +10,8 @@
 
 package controllers.actor;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,7 +24,9 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ForumService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Forum;
+import domain.Player;
 
 @Controller
 @RequestMapping("/forum/actor")
@@ -70,15 +74,16 @@ public class ForumActorController extends AbstractController {
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView updateUser(@ModelAttribute("forum") Forum forum, final BindingResult binding) {
+	public ModelAndView updateUser(@ModelAttribute("forumForm") Forum forum, final BindingResult binding) {
 		ModelAndView result;
-		Forum savedForum;
+		Forum savedForum, sendedForum = null;
 		try {
+			sendedForum = forum;
 			forum = this.forumService.reconstruct(forum, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(forum, "forum.params.error");
+			result = this.createEditModelAndView(sendedForum, "forum.params.error");
 		else
 			try {
 				savedForum = this.forumService.save(forum);
@@ -129,10 +134,28 @@ public class ForumActorController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Forum forum, final String messageCode) {
 		ModelAndView result;
+		Collection<Forum> forums, subForums;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		if (forum.getId() == 0) {
+			forums = this.forumService.findForums(false);
+			if (!(actor instanceof Player))
+				forums.addAll(this.forumService.findForums(true));
+		} else {
+			if (forum.getStaff() && !(actor instanceof Player))
+				forums = this.forumService.findForums(true);
+			else
+				forums = this.forumService.findForums(false);
+			subForums = this.forumService.findAllSubForums(forum.getId());
+			forums.removeAll(subForums);
+		}
+		forums.remove(forum);
 
 		result = new ModelAndView("forum/edit");
 		result.addObject("message", messageCode);
-		result.addObject("forum", forum);
+		result.addObject("forumForm", forum);
+		result.addObject("forums", forums);
 
 		return result;
 

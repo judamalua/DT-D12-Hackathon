@@ -74,14 +74,16 @@ public class MessageActorController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView updateUser(@ModelAttribute("messageForm") Message messageForm, final BindingResult binding) {
 		ModelAndView result;
-		Message savedMessage;
+		Message savedMessage, sendedMessage = null;
 		try {
+			sendedMessage = messageForm;
 			messageForm = this.messageService.reconstruct(messageForm, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
-		if (binding.hasErrors())
-			result = this.createEditModelAndView(messageForm, "message.params.error");
-		else
+		if (binding.hasErrors()) {
+			result = this.createEditModelAndView(sendedMessage, "message.params.error");
+			result.addObject("thread", messageForm.getThread());
+		} else
 			try {
 				savedMessage = this.messageService.save(messageForm);
 				result = new ModelAndView("redirect:/message/list.do?threadId=" + savedMessage.getThread().getId());

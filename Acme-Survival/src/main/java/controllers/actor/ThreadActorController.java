@@ -50,7 +50,7 @@ public class ThreadActorController extends AbstractController {
 
 	//Edit an forum
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int threadId) {
+	public ModelAndView edit(@RequestParam final Integer threadId) {
 		ModelAndView result;
 		Thread thread;
 
@@ -85,13 +85,14 @@ public class ThreadActorController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView updateUser(@ModelAttribute("thread") Thread thread, final BindingResult binding) {
 		ModelAndView result;
-		Thread savedThread;
+		Thread savedThread, sendedThread = null;
 		try {
+			sendedThread = thread;
 			thread = this.threadService.reconstruct(thread, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(thread, "thread.params.error");
+			result = this.createEditModelAndView(sendedThread, "thread.params.error");
 		else
 			try {
 				savedThread = this.threadService.save(thread);
