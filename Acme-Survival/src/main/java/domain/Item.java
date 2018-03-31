@@ -18,6 +18,7 @@ public class Item extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Tool	tool;
+	private Refuge	refuge;
 
 
 	@Valid
@@ -31,4 +32,15 @@ public class Item extends DomainEntity {
 		this.tool = tool;
 
 	}
+
+	@Valid
+	@ManyToOne(optional = true)
+	public Refuge getRefuge() {
+		return this.refuge;
+	}
+
+	public void setRefuge(final Refuge refuge) {
+		this.refuge = refuge;
+	}
+
 }

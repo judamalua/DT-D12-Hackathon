@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,14 @@ public class PlayerService {
 		this.playerRepository.delete(player);
 
 	}
-}
 
+	public Collection<Player> findPlayersKnowsRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Player> result;
+
+		result = this.playerRepository.findPlayersKnowsRefuge(refugeId);
+
+		return result;
+	}
+}

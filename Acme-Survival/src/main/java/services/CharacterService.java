@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,14 @@ public class CharacterService {
 		this.characterRepository.delete(character);
 
 	}
-}
 
+	public Collection<Character> findCharactersByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersByRefuge(refugeId);
+
+		return result;
+	}
+}

@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,24 @@ public class AttackService {
 		this.attackRepository.delete(attack);
 
 	}
-}
 
+	public Collection<Attack> findAttacksByAttacker(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Attack> result;
+
+		result = this.attackRepository.findAttacksByAttacker(refugeId);
+
+		return result;
+	}
+
+	public Collection<Attack> findAttacksByDefendant(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Attack> result;
+
+		result = this.attackRepository.findAttacksByDefendant(refugeId);
+
+		return result;
+	}
+}

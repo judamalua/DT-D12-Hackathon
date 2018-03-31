@@ -136,12 +136,9 @@ public class ThreadService {
 		if (thread.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
-			result = this.create();
+			result = thread;
 
-			result.setName(thread.getName());
-			result.setTags(thread.getTags());
 			result.setActor(actor);
-			result.setForum(thread.getForum());
 
 		} else {
 			result = this.threadRepository.findOne(thread.getId());

@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,14 @@ public class RoomService {
 		this.roomRepository.delete(room);
 
 	}
-}
 
+	public Collection<Room> findRoomsByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Room> result;
+
+		result = this.roomRepository.findRoomsByRefuge(refugeId);
+
+		return result;
+	}
+}
