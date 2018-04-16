@@ -14,4 +14,5 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	@Query("select i from Item i where i.refuge.id=?1")
 	Collection<Item> findItemsByRefuge(int refugeId);
+
 }

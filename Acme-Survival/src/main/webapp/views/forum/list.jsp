@@ -88,9 +88,7 @@
 
 <security:authorize access="isAuthenticated()">
 	<acme:button url="forum/actor/create.do" code="forum.create" />
-</security:authorize>
 
-<security:authorize access="isAuthenticated()">
 	<jstl:if test="${fatherForum!=null}">
 		<acme:button url="thread/actor/create.do?forumId=${fatherForum.id}"
 			code="thread.create" />

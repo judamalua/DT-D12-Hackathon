@@ -88,4 +88,14 @@ public class CharacterService {
 
 		return result;
 	}
+
+	public Collection<Character> findCharactersByRoom(final int roomId) {
+		Assert.isTrue(roomId != 0);
+
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersByRoom(roomId);
+
+		return result;
+	}
 }

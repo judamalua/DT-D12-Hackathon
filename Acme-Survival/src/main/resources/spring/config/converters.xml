@@ -135,6 +135,9 @@
 		<bean class="converters.WarehouseToStringConverter" />
 		<bean class="converters.StringToWarehouseConverter" />
 
+		<bean class="converters.InventoryToStringConverter" />
+		<bean class="converters.StringToInventoryConverter" />
+
 	</util:list>
 
 </beans>

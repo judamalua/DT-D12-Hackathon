@@ -19,10 +19,13 @@ public class RoomService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private RoomRepository	roomRepository;
-
+	private RoomRepository		roomRepository;
 
 	// Supporting services --------------------------------------------------
+
+	@Autowired
+	private CharacterService	characterService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -58,20 +61,27 @@ public class RoomService {
 
 	public Room save(final Room room) {
 
-		assert room != null;
+		Assert.notNull(room);
 
 		Room result;
+		Collection<domain.Character> characters;
+
+		characters = this.characterService.findCharactersByRoom(room.getId());
 
 		result = this.roomRepository.save(room);
+
+		for (final domain.Character character : characters) {
+			character.setRoom(result);
+			this.characterService.save(character);
+		}
 
 		return result;
 
 	}
-
 	public void delete(final Room room) {
 
-		assert room != null;
-		assert room.getId() != 0;
+		Assert.notNull(room);
+		Assert.isTrue(room.getId() != 0);
 
 		Assert.isTrue(this.roomRepository.exists(room.getId()));
 
