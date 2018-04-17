@@ -74,7 +74,7 @@ public class ForumActorController extends AbstractController {
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView updateUser(@ModelAttribute("forumForm") Forum forum, final BindingResult binding) {
+	public ModelAndView edit(@ModelAttribute("forumForm") Forum forum, final BindingResult binding) {
 		ModelAndView result;
 		Forum savedForum, sendedForum = null;
 		try {

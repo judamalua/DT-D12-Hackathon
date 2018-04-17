@@ -9,6 +9,8 @@ import java.util.Random;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,7 @@ import domain.Attack;
 import domain.Barrack;
 import domain.Inventory;
 import domain.Item;
+import domain.Location;
 import domain.Move;
 import domain.Player;
 import domain.Refuge;
@@ -68,6 +71,9 @@ public class RefugeService {
 	private WarehouseService	warehouseService;
 
 	@Autowired
+	private LocationService		locationService;
+
+	@Autowired
 	private Validator			validator;
 
 
@@ -87,6 +93,18 @@ public class RefugeService {
 
 		Assert.notNull(this.refugeRepository);
 		result = this.refugeRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+	public Page<Refuge> findAll(final Pageable pageable) {
+
+		Page<Refuge> result;
+
+		Assert.notNull(this.refugeRepository);
+		result = this.refugeRepository.findAll(pageable);
 		Assert.notNull(result);
 
 		return result;
@@ -249,15 +267,21 @@ public class RefugeService {
 	public Refuge reconstruct(final Refuge refuge, final BindingResult binding) {
 		Refuge result;
 		Actor actor;
+		Location location;
+		Collection<Item> items;
 
 		if (refuge.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
+			location = (Location) this.locationService.findAll().toArray()[0];//Cambiar a una aleatoria
+			items = new HashSet<Item>();
 			result = refuge;
 
 			result.setCode(this.generateCode());
 			result.setPlayer((Player) actor);
 			result.setMomentOfCreation(new Date(System.currentTimeMillis() - 1));
+			result.setLocation(location);
+			result.setItems(items);
 
 		} else {
 			result = this.findOne(refuge.getId());
@@ -308,4 +332,13 @@ public class RefugeService {
 
 		return result;
 	}
+
+	public Refuge findRefugeByPlayer(final int playerId) {
+		Refuge result;
+
+		result = this.refugeRepository.findRefugeByPlayer(playerId);
+
+		return result;
+	}
+
 }

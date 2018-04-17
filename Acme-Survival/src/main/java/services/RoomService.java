@@ -6,10 +6,16 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.RoomRepository;
+import domain.Player;
+import domain.Refuge;
 import domain.Room;
 
 @Service
@@ -25,6 +31,15 @@ public class RoomService {
 
 	@Autowired
 	private CharacterService	characterService;
+
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private RefugeService		refugeService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -95,6 +110,38 @@ public class RoomService {
 		Collection<Room> result;
 
 		result = this.roomRepository.findRoomsByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Page<Room> findRoomsByRefuge(final int refugeId, final Pageable pageable) {
+		Assert.isTrue(refugeId != 0);
+
+		Page<Room> result;
+
+		result = this.roomRepository.findRoomsByRefuge(refugeId, pageable);
+
+		return result;
+	}
+
+	public Room reconstruct(final Room room, final BindingResult binding) {
+		Room result = null;
+		Player actor;
+		Refuge refuge;
+
+		if (room.getId() == 0) {
+
+			actor = (Player) this.actorService.findActorByPrincipal();
+			result = room;
+			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+
+			result.setResistance(result.getRoomDesign().getMaxResistance());
+			result.setRefuge(refuge);
+		}
+
+		Assert.notNull(result);
+
+		this.validator.validate(result, binding);
 
 		return result;
 	}
