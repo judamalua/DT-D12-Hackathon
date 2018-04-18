@@ -173,7 +173,7 @@ public class PlayerService {
 	 * @return Page<Player>
 	 * @author Luis
 	 */
-	public Page<Player> getUsers(final Pageable pageable) {
+	public Page<Player> getPlayers(final Pageable pageable) {
 		Page<Player> result;
 
 		result = this.playerRepository.findAll(pageable);

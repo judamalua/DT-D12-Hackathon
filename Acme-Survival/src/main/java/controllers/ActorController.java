@@ -24,8 +24,8 @@ import security.Authority;
 import services.ActorService;
 import services.PlayerService;
 import domain.Actor;
-import domain.User;
-import forms.UserAdminForm;
+import domain.Player;
+import forms.ActorForm;
 
 @Controller
 @RequestMapping("/actor")
@@ -35,7 +35,7 @@ public class ActorController extends AbstractController {
 	@Autowired
 	ActorService	actorService;
 	@Autowired
-	PlayerService		userService;
+	PlayerService	playerService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -48,11 +48,11 @@ public class ActorController extends AbstractController {
 
 	/**
 	 * That method returns the profile of the actor logged
-	 * That method returns a model and view with personal info of an Actor(Not an user)
+	 * That method returns a model and view with personal info of an Actor
 	 * 
 	 * @param page
 	 * @return ModelandView
-	 * @author MJ
+	 * @author Luis
 	 */
 	@RequestMapping("/display")
 	public ModelAndView display() {
@@ -71,7 +71,7 @@ public class ActorController extends AbstractController {
 		return result;
 	}
 
-	// Registering user ------------------------------------------------------------
+	// Registering player ------------------------------------------------------------
 	/**
 	 * That method registers an user in the system and saves it.
 	 * 
@@ -79,56 +79,56 @@ public class ActorController extends AbstractController {
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/registerAsPlayer", method = RequestMethod.GET)
 	public ModelAndView registerExplorer() {
 		ModelAndView result;
-		UserAdminForm user;
+		ActorForm player;
 
-		user = new UserAdminForm();
+		player = new ActorForm();
 
-		result = this.createEditModelAndViewRegister(user);
+		result = this.createEditModelAndViewRegister(player);
 
-		result.addObject("actionURL", "actor/register.do");
+		result.addObject("actionURL", "actor/registerAsUser.do");
 
 		return result;
 	}
 
-	//Saving user ---------------------------------------------------------------------
+	//Saving player ---------------------------------------------------------------------
 	/**
-	 * That method saves an user in the system
+	 * That method saves a player in the system
 	 * 
 	 * @param save
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
-	public ModelAndView registerUser(@ModelAttribute("actor") final UserAdminForm actor, final BindingResult binding) {
+	@RequestMapping(value = "/registerAsUser", method = RequestMethod.POST, params = "save")
+	public ModelAndView registerUser(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
-		User user = null;
+		Player player = null;
 
 		try {
-			user = this.userService.reconstruct(actor, binding);
+			player = this.playerService.reconstruct(actor, binding);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndViewRegister(actor, "user.params.error");
+			result = this.createEditModelAndViewRegister(actor, "player.params.error");
 		else
 			try {
 				auth = new Authority();
-				auth.setAuthority(Authority.USER);
-				Assert.isTrue(user.getUserAccount().getAuthorities().contains(auth));
-				Assert.isTrue(actor.getConfirmPassword().equals(user.getUserAccount().getPassword()), "Passwords do not match");
-				this.actorService.registerActor(user);
+				auth.setAuthority(Authority.PLAYER);
+				Assert.isTrue(player.getUserAccount().getAuthorities().contains(auth));
+				Assert.isTrue(actor.getConfirmPassword().equals(player.getUserAccount().getPassword()), "Passwords do not match");
+				this.actorService.registerActor(player);
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} catch (final DataIntegrityViolationException oops) {
-				result = this.createEditModelAndViewRegister(actor, "user.username.error");
+				result = this.createEditModelAndViewRegister(actor, "player.username.error");
 			} catch (final Throwable oops) {
 				if (oops.getMessage().contains("Passwords do not match"))
-					result = this.createEditModelAndViewRegister(actor, "user.password.error");
+					result = this.createEditModelAndViewRegister(actor, "player.password.error");
 				else
-					result = this.createEditModelAndViewRegister(actor, "user.commit.error");
+					result = this.createEditModelAndViewRegister(actor, "player.commit.error");
 			}
 
 		return result;
@@ -154,20 +154,20 @@ public class ActorController extends AbstractController {
 
 		return result;
 	}
-	protected ModelAndView createEditModelAndViewRegister(final UserAdminForm user) {
+	protected ModelAndView createEditModelAndViewRegister(final ActorForm actor) {
 		ModelAndView result;
 
-		result = this.createEditModelAndViewRegister(user, null);
+		result = this.createEditModelAndViewRegister(actor, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndViewRegister(final UserAdminForm user, final String messageCode) {
+	protected ModelAndView createEditModelAndViewRegister(final ActorForm actor, final String messageCode) {
 		ModelAndView result;
 
 		result = new ModelAndView("user/register");
 		result.addObject("message", messageCode);
-		result.addObject("actor", user);
+		result.addObject("actor", actor);
 
 		return result;
 

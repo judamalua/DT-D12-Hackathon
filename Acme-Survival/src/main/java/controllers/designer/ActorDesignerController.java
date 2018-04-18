@@ -8,7 +8,7 @@
  * http://www.tdg-seville.info/License.html
  */
 
-package controllers.user;
+package controllers.designer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,75 +20,75 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
-import services.PlayerService;
+import services.DesignerService;
 import controllers.AbstractController;
-import domain.User;
-import forms.UserAdminForm;
+import domain.Designer;
+import forms.ActorForm;
 
 @Controller
-@RequestMapping("/actor/user")
-public class ActorUserController extends AbstractController {
+@RequestMapping("/actor/designer")
+public class ActorDesignerController extends AbstractController {
 
 	@Autowired
 	private ActorService	actorService;
 	@Autowired
-	private PlayerService		userService;
+	private DesignerService	designerService;
 
 
 	// Constructors -----------------------------------------------------------
 
-	public ActorUserController() {
+	public ActorDesignerController() {
 		super();
 	}
 
-	//Edit an User
+	//Edit an Designer
 	/**
-	 * That method edits the profile of a user
+	 * That method edits the profile of a designer
 	 * 
 	 * @param
 	 * @return ModelandView
 	 * @author Luis
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView editUser() {
+	public ModelAndView editDesigner() {
 		ModelAndView result;
-		User user;
-		UserAdminForm actorForm;
+		Designer designer;
+		ActorForm actorForm;
 
-		user = (User) this.actorService.findActorByPrincipal();
-		Assert.notNull(user);
-		actorForm = this.actorService.deconstruct(user);
+		designer = (Designer) this.actorService.findActorByPrincipal();
+		Assert.notNull(designer);
+		actorForm = this.actorService.deconstruct(designer);
 
 		result = this.createEditModelAndView(actorForm);
 
 		return result;
 	}
 
-	//Updating profile of a user ---------------------------------------------------------------------
+	//Updating profile of a designer ---------------------------------------------------------------------
 	/**
-	 * That method update the profile of a user.
+	 * That method update the profile of a designer.
 	 * 
 	 * @param save
 	 * @return ModelandView
 	 * @author Luis
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView updateUser(@ModelAttribute("actor") final UserAdminForm actor, final BindingResult binding) {
+	public ModelAndView updateDesigner(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
-		User user = null;
+		Designer designer = null;
 
 		try {
-			user = this.userService.reconstruct(actor, binding);
-		} catch (final Throwable oops) {//Not delete
+			designer = this.designerService.reconstruct(actor, binding);
+		} catch (final Throwable oops) {
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(actor, "user.params.error");
+			result = this.createEditModelAndView(actor, "designer.params.error");
 		else
 			try {
-				this.userService.save(user);
-				result = new ModelAndView("redirect:/user/display.do?anonymous=false");
+				this.designerService.save(designer);
+				result = new ModelAndView("redirect:/actor/display.do?anonymous=false");
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(actor, "user.commit.error");
+				result = this.createEditModelAndView(actor, "designer.commit.error");
 			}
 
 		return result;
@@ -96,20 +96,20 @@ public class ActorUserController extends AbstractController {
 
 	// Ancillary methods --------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final UserAdminForm user) {
+	protected ModelAndView createEditModelAndView(final ActorForm designer) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(user, null);
+		result = this.createEditModelAndView(designer, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final UserAdminForm user, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final ActorForm designer, final String messageCode) {
 		ModelAndView result;
 
 		result = new ModelAndView("actor/edit");
 		result.addObject("message", messageCode);
-		result.addObject("actor", user);
+		result.addObject("actor", designer);
 
 		return result;
 

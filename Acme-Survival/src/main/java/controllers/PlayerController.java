@@ -15,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,14 +23,14 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.PlayerService;
 import domain.Configuration;
-import domain.User;
+import domain.Player;
 
 @Controller
-@RequestMapping("/user")
-public class UserController extends AbstractController {
+@RequestMapping("/player")
+public class PlayerController extends AbstractController {
 
 	@Autowired
-	private PlayerService				userService;
+	private PlayerService			playerService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -42,40 +41,40 @@ public class UserController extends AbstractController {
 
 	// Constructors -----------------------------------------------------------
 
-	public UserController() {
+	public PlayerController() {
 		super();
 	}
 
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the system users list
+	 * That method returns a model and view with the system players list
 	 * 
 	 * @param page
 	 * @param anonymous
 	 * 
 	 * @return ModelandView
-	 * @author MJ
+	 * @author Luis
 	 */
 	@RequestMapping("/list")
 	public ModelAndView list(@RequestParam final boolean anonymous, @RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
-		Page<User> users;
+		Page<Player> players;
 		Pageable pageable;
 		Configuration configuration;
 
 		try {
 			if (!anonymous)
-				this.actorService.checkUserLogin();
+				this.actorService.checkActorLogin();
 
-			result = new ModelAndView("user/list");
+			result = new ModelAndView("player/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
-			users = this.userService.getUsers(pageable);
+			players = this.playerService.getPlayers(pageable);
 
-			result.addObject("users", users.getContent());
+			result.addObject("players", players.getContent());
 			result.addObject("page", page);
-			result.addObject("pageNum", users.getTotalPages());
+			result.addObject("pageNum", players.getTotalPages());
 			result.addObject("anonymous", anonymous);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -83,42 +82,4 @@ public class UserController extends AbstractController {
 		return result;
 	}
 
-	// Displaying  ---------------------------------------------------------------		
-
-	/**
-	 * That method returns a model and view with the display of an actor
-	 * 
-	 * @param actorId
-	 * @param anonymous
-	 * @param rsvPage
-	 * @param createdRendezvousPage
-	 * 
-	 * @return ModelandView
-	 * @author MJ
-	 */
-	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam(required = false) final Integer actorId, @RequestParam(defaultValue = "true") final boolean anonymous) {
-		ModelAndView result;
-		User user;
-
-		try {
-			if (!anonymous)
-				this.actorService.checkUserLogin();
-			result = new ModelAndView("actor/display");
-			if (actorId != null)
-				user = this.userService.findOne(actorId);
-			else
-				user = (User) this.actorService.findActorByPrincipal();
-
-			Assert.notNull(user);
-
-			result.addObject("actor", user);
-			result.addObject("anonymous", anonymous);
-
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
-		}
-
-		return result;
-	}
 }
