@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
-import services.UserService;
+import services.PlayerService;
 import controllers.AbstractController;
 import domain.User;
 import forms.UserAdminForm;
@@ -32,7 +32,7 @@ public class ActorUserController extends AbstractController {
 	@Autowired
 	private ActorService	actorService;
 	@Autowired
-	private UserService		userService;
+	private PlayerService		userService;
 
 
 	// Constructors -----------------------------------------------------------

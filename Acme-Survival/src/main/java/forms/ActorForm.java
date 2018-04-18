@@ -12,17 +12,19 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import security.UserAccount;
 import domain.DomainEntity;
 
 @Access(AccessType.PROPERTY)
-public class UserAdminForm extends DomainEntity {
+public class ActorForm extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
 	private String	name;
@@ -32,6 +34,7 @@ public class UserAdminForm extends DomainEntity {
 	private String	email;
 	private Date	birthDate;
 	private String	confirmPassword;
+	private String	avatar;
 
 
 	@SafeHtml
@@ -42,6 +45,16 @@ public class UserAdminForm extends DomainEntity {
 
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	@SafeHtml
+	@URL
+	public String getAvatar() {
+		return this.avatar;
+	}
+
+	public void setAvatar(final String avatar) {
+		this.avatar = avatar;
 	}
 
 	@SafeHtml
@@ -64,6 +77,7 @@ public class UserAdminForm extends DomainEntity {
 	}
 
 	@SafeHtml
+	@Pattern(regexp = "^(\\+?\\d+)?$")
 	public String getPhoneNumber() {
 		return this.phoneNumber;
 	}

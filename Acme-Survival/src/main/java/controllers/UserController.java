@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.UserService;
+import services.PlayerService;
 import domain.Configuration;
 import domain.User;
 
@@ -31,7 +31,7 @@ import domain.User;
 public class UserController extends AbstractController {
 
 	@Autowired
-	private UserService				userService;
+	private PlayerService				userService;
 
 	@Autowired
 	private ActorService			actorService;

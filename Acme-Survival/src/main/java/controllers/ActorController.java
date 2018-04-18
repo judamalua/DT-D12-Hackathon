@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
-import services.UserService;
+import services.PlayerService;
 import domain.Actor;
 import domain.User;
 import forms.UserAdminForm;
@@ -35,7 +35,7 @@ public class ActorController extends AbstractController {
 	@Autowired
 	ActorService	actorService;
 	@Autowired
-	UserService		userService;
+	PlayerService		userService;
 
 
 	// Constructors -----------------------------------------------------------

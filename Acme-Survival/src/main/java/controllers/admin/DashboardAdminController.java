@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.UserService;
+import services.PlayerService;
 import controllers.AbstractController;
 
 @Controller
@@ -16,7 +16,7 @@ public class DashboardAdminController extends AbstractController {
 	// Services -------------------------------------------------------
 
 	@Autowired
-	UserService	userService;
+	PlayerService	userService;
 
 
 	// Listing ---------------------------------------------------------------		
