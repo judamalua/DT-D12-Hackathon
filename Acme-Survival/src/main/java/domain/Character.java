@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -53,6 +54,7 @@ public class Character extends DomainEntity {
 		this.surname = surname;
 	}
 
+	@Min(value = 0)
 	public int getCurrentHealth() {
 		return this.currentHealth;
 	}
@@ -61,6 +63,7 @@ public class Character extends DomainEntity {
 		this.currentHealth = currentHealth;
 	}
 
+	@Min(value = 0)
 	public int getCurrentWater() {
 		return this.currentWater;
 	}
@@ -69,6 +72,7 @@ public class Character extends DomainEntity {
 		this.currentWater = currentWater;
 	}
 
+	@Min(value = 0)
 	public int getCurrentFood() {
 		return this.currentFood;
 	}
@@ -77,6 +81,7 @@ public class Character extends DomainEntity {
 		this.currentFood = currentFood;
 	}
 
+	@Min(value = 100)
 	public int getStrenght() {
 		return this.strenght;
 	}
@@ -85,6 +90,7 @@ public class Character extends DomainEntity {
 		this.strenght = strenght;
 	}
 
+	@Min(value = 10)
 	public int getLuck() {
 		return this.luck;
 	}
@@ -93,6 +99,7 @@ public class Character extends DomainEntity {
 		this.luck = luck;
 	}
 
+	@Min(value = 10)
 	public int getCapacity() {
 		return this.capacity;
 	}
@@ -101,6 +108,7 @@ public class Character extends DomainEntity {
 		this.capacity = capacity;
 	}
 
+	@Min(value = 1)
 	public int getLevel() {
 		return this.level;
 	}
@@ -109,6 +117,7 @@ public class Character extends DomainEntity {
 		this.level = level;
 	}
 
+	@Min(value = 0)
 	public int getExperience() {
 		return this.experience;
 	}

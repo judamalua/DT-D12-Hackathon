@@ -18,8 +18,8 @@ import security.Authority;
 import security.LoginService;
 import security.UserAccount;
 import domain.Actor;
-import domain.Administrator;
-import forms.UserAdminForm;
+import domain.Admin;
+import forms.ActorForm;
 
 @Service
 @Transactional
@@ -35,12 +35,11 @@ public class ActorService {
 
 	// Simple CRUD methods --------------------------------------------------
 
-	// Simple CRUD methods --------------------------------------------------
 	/**
 	 * Get all the actors in the system
 	 * 
 	 * @return all the actors registered in the system
-	 * @author MJ
+	 * @author Luis
 	 */
 	public Collection<Actor> findAll() {
 
@@ -60,7 +59,7 @@ public class ActorService {
 	 * @param actorId
 	 * @return an actor with id equals to actorId
 	 * 
-	 * @author MJ
+	 * @author Luis
 	 */
 	public Actor findOne(final int actorId) {
 
@@ -73,19 +72,19 @@ public class ActorService {
 	}
 
 	/**
-	 * That method create a instance of a user
+	 * That method create a instance of an admin
 	 * 
-	 * @return User
+	 * @return Admin
 	 * @author Luis
 	 */
-	public Administrator createAdmin() {
-		Administrator result;
+	public Admin createAdmin() {
+		Admin result;
 
 		UserAccount userAccount;
 		Collection<Authority> authorities;
 		Authority authority;
 
-		result = new Administrator();
+		result = new Admin();
 
 		userAccount = new UserAccount();
 		authorities = new HashSet<Authority>();
@@ -140,7 +139,7 @@ public class ActorService {
 	 * Get the actor logged in the system
 	 * 
 	 * @return the actor logged in the system
-	 * @author MJ
+	 * @author Luis
 	 */
 	public Actor findActorByPrincipal() {
 		UserAccount userAccount;
@@ -173,9 +172,9 @@ public class ActorService {
 	/**
 	 * Checks there is an actor logged in the system
 	 * 
-	 * @author MJ
+	 * @author Luis
 	 */
-	public void checkUserLogin() {
+	public void checkActorLogin() {
 		Actor actor;
 
 		actor = this.findActorByPrincipal();
@@ -187,14 +186,14 @@ public class ActorService {
 	 * This method checks if there is someone logged in the system
 	 * 
 	 * @return true if there is someone logged, false otherwise
-	 * @author Juanmi
+	 * @author Luis
 	 */
 	public boolean getLogged() {
 		boolean result;
 
 		//		result = SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
 		try {
-			this.checkUserLogin();
+			this.checkActorLogin();
 			result = true;
 		} catch (final Throwable oops) {
 			result = false;
@@ -251,29 +250,30 @@ public class ActorService {
 	}
 
 	/**
-	 * This method deconstructs an User/Administrator object, that is, transforms
-	 * an User/Administrator object into a UserAdminForm object to be edited
+	 * This method deconstructs every types of actors object, that is, transforms
+	 * an Admin/Manager/Designer/Moderator/Player object into a ActorForm object to be edited
 	 * 
-	 * @param user
-	 *            to be deconstructed into an UserAdminForm
-	 * @return UserAdminForm with the data of the user given by parameters
+	 * @param actor
+	 *            to be deconstructed into an ActorForm
+	 * @return ActorForm with the data of the user given by parameters
 	 * 
-	 * @author Juanmi
+	 * @author Luis
 	 */
-	public UserAdminForm deconstruct(final Actor actor) {
-		UserAdminForm result;
+	public ActorForm deconstruct(final Actor actor) {
+		ActorForm result;
 
-		result = new UserAdminForm();
+		result = new ActorForm();
 
 		result.setId(actor.getId());
 		result.setVersion(actor.getVersion());
 		result.setName(actor.getName());
 		result.setSurname(actor.getSurname());
-		result.setAvatar(actor.getAvatar());
 		result.setPhoneNumber(actor.getPhoneNumber());
 		result.setEmail(actor.getEmail());
 		result.setBirthDate(actor.getBirthDate());
+		result.setAvatar(actor.getAvatar());
 
 		return result;
 	}
+
 }
