@@ -50,7 +50,23 @@
 					data-activates="dropdownAdminFunctions"><spring:message
 							code="master.page.admin" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
-			
+
+			<security:authorize access="hasRole('PLAYER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownPlayerFunctions" class="dropdown-content">
+					<li><a href="refuge/player/list.do"><spring:message
+								code="master.page.knowRefuge" /></a></li>
+					<li class="divider"></li>
+					<li><a href="refuge/player/display.do"><spring:message
+								code="master.page.myRefuge" /></a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownPlayerFunctions"><spring:message
+							code="master.page.player" /><i class="material-icons right">arrow_drop_down</i></a></li>
+			</security:authorize>
+
 			<security:authorize access="hasRole('MANAGER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownManagerFunctions" class="dropdown-content">
@@ -63,7 +79,7 @@
 					data-activates="dropdownManagerFunctions"><spring:message
 							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
-			
+
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message
 							code="master.page.login" /></a></li>
@@ -73,6 +89,8 @@
 							code="master.page.forum.list" /></a></li>
 				<li><a class="fNiv" href="product/list.do"><spring:message
 							code="master.page.product.list" /></a></li>
+				<li><a href="refuge/list.do"><spring:message
+							code="master.page.refugeList" /></a></li>
 		</ul>
 		</security:authorize>
 
@@ -81,6 +99,8 @@
 						code="master.page.forum.list" /></a></li>
 			<li><a class="fNiv" href="product/list.do"><spring:message
 						code="master.page.product.list" /></a></li>
+			<li><a href="refuge/list.do"><spring:message
+						code="master.page.refugeList" /></a></li>
 
 			<security:authorize access="hasRole('ADMIN')">
 				<!-- Dropdown Structure -->
@@ -101,7 +121,7 @@
 							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
 			</security:authorize>
-			
+
 			<security:authorize access="hasRole('MANAGER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownManagerProfile" class="dropdown-content">
@@ -118,6 +138,69 @@
 				<!-- Dropdown Trigger -->
 				<li><a class="dropdown-button" href="#!"
 					data-activates="dropdownManagerProfile"><security:authentication
+							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+			</security:authorize>
+
+
+			<security:authorize access="hasRole('PLAYER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownPlayerProfile" class="dropdown-content">
+					<li><a href="actor/player/edit.do"><spring:message
+								code="master.page.actorEdit" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/display.do"><spring:message
+								code="master.page.actorProfile" /></a></li>
+					<li class="divider"></li>
+					<li><a href="j_spring_security_logout"><spring:message
+								code="master.page.logout" /> </a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownPlayerProfile"><security:authentication
+							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+			</security:authorize>
+
+
+			<security:authorize access="hasRole('MODERATOR')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownModeratorProfile" class="dropdown-content">
+					<li><a href="actor/moderator/edit.do"><spring:message
+								code="master.page.actorEdit" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/display.do"><spring:message
+								code="master.page.actorProfile" /></a></li>
+					<li class="divider"></li>
+					<li><a href="j_spring_security_logout"><spring:message
+								code="master.page.logout" /> </a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownModeratorProfile"><security:authentication
+							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+			</security:authorize>
+
+
+			<security:authorize access="hasRole('DESIGNER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownDesignerProfile" class="dropdown-content">
+					<li><a href="actor/designer/edit.do"><spring:message
+								code="master.page.actorEdit" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/display.do"><spring:message
+								code="master.page.actorProfile" /></a></li>
+					<li class="divider"></li>
+					<li><a href="j_spring_security_logout"><spring:message
+								code="master.page.logout" /> </a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownDesignerProfile"><security:authentication
 							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
 			</security:authorize>

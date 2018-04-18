@@ -21,61 +21,64 @@
 </h2>
 <br />
 
-<strong> <spring:message code="refuge.player" />:<a
+<strong> <spring:message code="refuge.player" />: <a
 	href="actor/display.do?actorId=${refuge.player.id}"><jstl:out
-			value="${refuge.player}" /></a>
+			value="${refuge.player.name}" /></a>
 </strong>
 <br />
 
-<strong> <spring:message code="refuge.momentOfCreation" />:<fmt:formatDate
+<strong> <spring:message code="refuge.momentOfCreation" />: <fmt:formatDate
 		value="${refuge.momentOfCreation}" pattern="${format}" />
 </strong>
 <br />
 
 <!-- Only a player who knows the refugee can display this information -->
 <security:authorize access="hasRole('PLAYER')">
-	<strong> <spring:message code="refuge.location" />
-	</strong>
-	<iframe class="map"
-		src="https://www.google.com/maps/embed/v1/search?q=${refuge.location.point_a}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
-	<br />
+	<jstl:if test="${knowRefuge or owner}">
+		<strong> <spring:message code="refuge.location" />
+		</strong>
+		<iframe class="map"
+			src="https://www.google.com/maps/embed/v1/search?q=${refuge.location.point_a}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
+		<br />
 
-	<strong> <spring:message code="refuge.room" />
-	</strong>
-	<br />
-	<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
-		requestURI="refuge/display.do?refugeId=${refuge.id}" />
-	<display:table name="${rooms}" id="room"
-		requestURI="refuge/display.do?refugeId=${refuge.id}">
+		<strong> <spring:message code="refuge.room" />
+		</strong>
+		<br />
+		<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
+			requestURI="refuge/player/display.do?refugeId=${refuge.id}&page=" />
+		<display:table name="${rooms}" id="room"
+			requestURI="refuge/display.do?refugeId=${refuge.id}">
 
-		<spring:message code="refuge.room.name" var="nameRoomTitle" />
-		<display:column title="${nameRoomTitle}">
-			<jstl:if test="${lang==es}">
-				<jstl:out value="${room.roomDesign.name_es}" />
-				<br />
-				<jstl:out value="${room.roomDesign.description_es}" />
-			</jstl:if>
-			<jstl:if test="${lang==en}">
-				<jstl:out value="${room.roomDesign.name_en}" />
-				<br />
-				<jstl:out value="${room.roomDesign.description_en}" />
-			</jstl:if>
-		</display:column>
+			<spring:message code="refuge.room.name" var="nameRoomTitle" />
+			<display:column title="${nameRoomTitle}">
+				<jstl:if test="${lang==\"es\"}">
+					<jstl:out value="${room.roomDesign.name_es}" />
+					<br />
+					<jstl:out value="${room.roomDesign.description_es}" />
+				</jstl:if>
+				<jstl:if test="${lang==\"en\"}">
+					<jstl:out value="${room.roomDesign.name_en}" />
+					<br />
+					<jstl:out value="${room.roomDesign.description_en}" />
+				</jstl:if>
+			</display:column>
 
-		<spring:message code="refuge.room.resistance"
-			var="resistanceRoomTitle" />
-		<display:column>
-			<div class="ratio element">
-				<div class="progress progress-striped active" aria-valuemin="0">
-					<div class="bar"
-						style="width: ${(room.resistance/room.roomDesign.maxResistance)*100}%;">
-						<jstl:out
-							value="${(room.resistance/room.roomDesign.maxResistance)*100}%" />
+			<spring:message code="refuge.room.resistance"
+				var="resistanceRoomTitle" />
+			<display:column title="${resistanceRoomTitle}">
+				<div class="ratio element">
+					<div class="progress progress-striped active" aria-valuemin="0">
+						<div class="bar"
+							style="width: ${(room.resistance/room.roomDesign.maxResistance)*100}%;">
+							<jstl:out
+								value="${(room.resistance/room.roomDesign.maxResistance)*100}%" />
+						</div>
 					</div>
 				</div>
-			</div>
-		</display:column>
-	</display:table>
-
-	<acme:button url="room/player/create.do" code="refuge.room.create" />
+			</display:column>
+		</display:table>
+		<jstl:if test="${owner}">
+			<acme:button url="room/player/create.do" code="refuge.room.create" />
+		</jstl:if>
+	</jstl:if>
 </security:authorize>

@@ -81,13 +81,15 @@ public class RoomService {
 		Room result;
 		Collection<domain.Character> characters;
 
-		characters = this.characterService.findCharactersByRoom(room.getId());
-
 		result = this.roomRepository.save(room);
 
-		for (final domain.Character character : characters) {
-			character.setRoom(result);
-			this.characterService.save(character);
+		if (room.getId() != 0) {
+			characters = this.characterService.findCharactersByRoom(room.getId());
+
+			for (final domain.Character character : characters) {
+				character.setRoom(result);
+				this.characterService.save(character);
+			}
 		}
 
 		return result;

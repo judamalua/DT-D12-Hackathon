@@ -27,7 +27,6 @@ import domain.Move;
 import domain.Player;
 import domain.Refuge;
 import domain.Room;
-import domain.Warehouse;
 
 @Service
 @Transactional
@@ -312,23 +311,16 @@ public class RefugeService {
 	private Collection<Room> createInitialRooms() {
 		final Collection<Room> result;
 		Room barrackRoom;
-		Room warehouseRoom;
 		final Barrack barrack;
-		final Warehouse warehouse;
 
 		result = new HashSet<>();
-		barrack = this.barrackService.create();
-		warehouse = this.warehouseService.create();
+		barrack = (Barrack) this.barrackService.findAll().toArray()[0];
 
 		barrackRoom = this.roomService.create();
-		warehouseRoom = this.roomService.create();
 		barrackRoom.setResistance(5);//Poner en config
 		barrackRoom.setRoomDesign(barrack);
-		warehouseRoom.setResistance(5);
-		warehouseRoom.setRoomDesign(warehouse);
 
 		result.add(barrackRoom);
-		result.add(warehouseRoom);
 
 		return result;
 	}

@@ -77,6 +77,7 @@ public class RefugePlayerController extends AbstractController {
 		ModelAndView result;
 		Page<Refuge> refuges;
 		Pageable pageable;
+		Refuge refuge;
 		Configuration configuration;
 		Player actor;
 
@@ -88,9 +89,13 @@ public class RefugePlayerController extends AbstractController {
 
 			refuges = this.playerService.findKnowRefugesByPlayer(actor.getId(), pageable);
 
+			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+
 			result.addObject("refuges", refuges.getContent());
 			result.addObject("page", page);
+			result.addObject("hasRefuge", refuge != null);
 			result.addObject("pageNum", refuges.getTotalPages());
+			result.addObject("requestURI", "refuge/player/list.do?");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -113,11 +118,12 @@ public class RefugePlayerController extends AbstractController {
 		final Refuge refuge, ownRefuge;
 		Player player;
 		Configuration configuration;
+		Actor actor;
 		Pageable pageable;
 		Page<Room> rooms;
+		boolean owner = false, knowRefuge = false;
 
 		try {
-
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
 
@@ -125,23 +131,34 @@ public class RefugePlayerController extends AbstractController {
 			player = (Player) this.actorService.findActorByPrincipal();
 			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
 
-			if (refugeId == null)
+			actor = this.actorService.findActorByPrincipal();
+
+			if (refugeId == null) {
 				refuge = ownRefuge;
-			else
+				Assert.notNull(refuge, "Not have refuge");
+			} else
 				refuge = this.refugeService.findOne(refugeId);
 
-			rooms = this.roomService.findRoomsByRefuge(refugeId, pageable);
+			if (actor instanceof Player) {
+				knowRefuge = ((Player) actor).getRefuges().contains(refuge);
+				owner = ownRefuge != null && ownRefuge.equals(refuge);
+			}
+			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
 
-			Assert.notNull(refuge);
-			Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
+			//Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
 
 			result.addObject("refuge", refuge);
 			result.addObject("rooms", rooms.getContent());
 			result.addObject("pageRoom", pageRoom);
 			result.addObject("pageNumRoom", rooms.getTotalPages());
+			result.addObject("knowRefuge", knowRefuge);
+			result.addObject("owner", owner);
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
+			if (oops.getMessage().contains("Not have refuge"))
+				result = new ModelAndView("redirect:/refuge/player/create.do");
+			else
+				result = new ModelAndView("redirect:/misc/403");
 		}
 		return result;
 	}
@@ -201,7 +218,7 @@ public class RefugePlayerController extends AbstractController {
 			try {
 
 				this.refugeService.save(refuge);
-				result = new ModelAndView("redirect:/refuge/display.do");
+				result = new ModelAndView("redirect:/refuge/player/display.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(refuge, "refuge.commit.error");

@@ -75,6 +75,15 @@
 		<security:intercept-url pattern="/inventory/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
+		<security:intercept-url pattern="/refuge/list.do"
+			access="permitAll" requires-channel="https" />
+
+		<security:intercept-url pattern="/refuge/display.do"
+			access="permitAll" requires-channel="https" />
+
+		<security:intercept-url pattern="/refuge/player/**"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 

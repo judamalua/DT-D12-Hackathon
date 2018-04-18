@@ -20,9 +20,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.ConfigurationService;
 import services.RefugeService;
+import domain.Actor;
 import domain.Configuration;
+import domain.Player;
 import domain.Refuge;
 
 @Controller
@@ -31,6 +34,9 @@ public class RefugeController extends AbstractController {
 
 	@Autowired
 	private RefugeService			refugeService;
+
+	@Autowired
+	private ActorService			actorService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -59,6 +65,8 @@ public class RefugeController extends AbstractController {
 		Page<Refuge> refuges;
 		Pageable pageable;
 		Configuration configuration;
+		Actor actor;
+		Refuge refuge = null;
 
 		try {
 			result = new ModelAndView("refuge/list");
@@ -67,9 +75,17 @@ public class RefugeController extends AbstractController {
 
 			refuges = this.refugeService.findAll(pageable);
 
+			if (this.actorService.getLogged()) {
+				actor = this.actorService.findActorByPrincipal();
+				if (actor instanceof Player)
+					refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+			}
+
 			result.addObject("refuges", refuges.getContent());
 			result.addObject("page", page);
+			result.addObject("hasRefuge", refuge != null);
 			result.addObject("pageNum", refuges.getTotalPages());
+			result.addObject("requestURI", "refuge/list.do?");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -90,12 +106,18 @@ public class RefugeController extends AbstractController {
 	public ModelAndView display(@RequestParam final int refugeId) {
 		ModelAndView result;
 		final Refuge refuge;
+		Actor actor;
 
 		try {
 			result = new ModelAndView("refuge/display");
 
 			refuge = this.refugeService.findOne(refugeId);
 			Assert.notNull(refuge);
+
+			if (this.actorService.getLogged()) {
+				actor = this.actorService.findActorByPrincipal();
+				Assert.isTrue(!(actor instanceof Player));
+			}
 
 			result.addObject("refuge", refuge);
 

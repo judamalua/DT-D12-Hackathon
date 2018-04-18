@@ -12,29 +12,39 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
+<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
 	page="${page}" />
 
 <display:table name="refuges" id="refuge" requestURI="${requestURI}"
 	class="displaytag">
-	
-	<spring:message code="refuge.name" var="nameTitle"/>
-	<spring:message code="refuge.momentOfCreation" var="momentTitle"/>
-	<spring:message code="master.page.moment.format	" var="momentFormat"/>
+
+	<spring:message code="refuge.name" var="nameTitle" />
+	<spring:message code="refuge.momentOfCreation" var="momentTitle" />
+	<spring:message code="master.page.moment.format" var="momentFormat" />
 
 	<display:column title="${nameTitle}">
-		<a href="refuge/display.do?refuge=${refuge.id}"><jstl:out
-				value="${refuge.name}" /></a>
-		<br />
-	</display:column>
 	
-	<display:column property="momentOfCreation" title="${momentTitle}" format="${momentFormat}"/>
+		<security:authorize access="hasRole('PLAYER')">
+			<a href="refuge/player/display.do?refugeId=${refuge.id}"><jstl:out
+					value="${refuge.name}" /></a>
+			<br />
+		</security:authorize>
+		<security:authorize access="!hasRole('PLAYER')">
+			<a href="refuge/display.do?refugeId=${refuge.id}"><jstl:out
+					value="${refuge.name}" /></a>
+			<br />
+		</security:authorize>
+
+	</display:column>
+
+	<display:column property="momentOfCreation" title="${momentTitle}"
+		format="${momentFormat}" />
 
 </display:table>
 
 <security:authorize access="hasRole('PLAYER')">
 	<jstl:if test="${!hasRefuge}">
-		<acme:button url="refuge/actor/create.do" code="refuge.create" />
+		<acme:button url="refuge/player/create.do" code="refuge.create" />
 	</jstl:if>
 </security:authorize>
 
