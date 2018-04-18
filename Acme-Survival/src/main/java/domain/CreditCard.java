@@ -105,11 +105,11 @@ public class CreditCard extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Player getplayer() {
+	public Player getPlayer() {
 		return this.player;
 	}
 
-	public void setplayer(final Player player) {
+	public void setPlayer(final Player player) {
 		this.player = player;
 
 	}

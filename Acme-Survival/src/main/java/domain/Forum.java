@@ -75,17 +75,29 @@ public class Forum extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Forum	forum;
+	private Actor	owner;
 
 
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
-	public Forum getforum() {
+	@ManyToOne
+	public Forum getForum() {
 		return this.forum;
 	}
 
-	public void setforum(final Forum forum) {
+	public void setForum(final Forum forum) {
 		this.forum = forum;
 
 	}
+
+	@Valid
+	@NotNull
+	@ManyToOne
+	public Actor getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(final Actor owner) {
+		this.owner = owner;
+	}
+
 }

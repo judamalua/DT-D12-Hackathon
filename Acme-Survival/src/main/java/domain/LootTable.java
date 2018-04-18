@@ -50,31 +50,31 @@ public class LootTable extends DomainEntity {
 
 	@Valid
 	@OneToMany
-	public Collection<ProbabilityEvent> getprobabilityEvents() {
+	public Collection<ProbabilityEvent> getProbabilityEvents() {
 		return this.probabilityEvents;
 	}
 
-	public void setprobabilityEvents(final Collection<ProbabilityEvent> probabilityEvents) {
+	public void setProbabilityEvents(final Collection<ProbabilityEvent> probabilityEvents) {
 		this.probabilityEvents = probabilityEvents;
 
 	}
 	@Valid
 	@OneToMany
-	public Collection<ProbabilityItem> getprobabilityItems() {
+	public Collection<ProbabilityItem> getProbabilityItems() {
 		return this.probabilityItems;
 	}
 
-	public void setprobabilityItems(final Collection<ProbabilityItem> probabilityItems) {
+	public void setProbabilityItems(final Collection<ProbabilityItem> probabilityItems) {
 		this.probabilityItems = probabilityItems;
 
 	}
 	@Valid
 	@OneToMany
-	public Collection<Location> getlocations() {
+	public Collection<Location> getLocations() {
 		return this.locations;
 	}
 
-	public void setlocations(final Collection<Location> locations) {
+	public void setLocations(final Collection<Location> locations) {
 		this.locations = locations;
 
 	}

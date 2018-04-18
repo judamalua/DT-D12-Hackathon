@@ -34,11 +34,11 @@ public class ProbabilityItem extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public ItemDesign getitemDesign() {
+	public ItemDesign getItemDesign() {
 		return this.itemDesign;
 	}
 
-	public void setitemDesign(final ItemDesign itemDesign) {
+	public void setItemDesign(final ItemDesign itemDesign) {
 		this.itemDesign = itemDesign;
 
 	}

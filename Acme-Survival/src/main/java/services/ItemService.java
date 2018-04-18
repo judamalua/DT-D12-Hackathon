@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,14 @@ public class ItemService {
 		this.itemRepository.delete(item);
 
 	}
-}
 
+	public Collection<Item> findItemsByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Item> result;
+
+		result = this.itemRepository.findItemsByRefuge(refugeId);
+
+		return result;
+	}
+}

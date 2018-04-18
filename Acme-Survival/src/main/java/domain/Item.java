@@ -18,17 +18,29 @@ public class Item extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Tool	tool;
+	private Refuge	refuge;
 
 
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Tool gettool() {
+	public Tool getTool() {
 		return this.tool;
 	}
 
-	public void settool(final Tool tool) {
+	public void setTool(final Tool tool) {
 		this.tool = tool;
 
 	}
+
+	@Valid
+	@ManyToOne(optional = true)
+	public Refuge getRefuge() {
+		return this.refuge;
+	}
+
+	public void setRefuge(final Refuge refuge) {
+		this.refuge = refuge;
+	}
+
 }

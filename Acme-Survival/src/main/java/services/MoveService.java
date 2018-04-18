@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,14 @@ public class MoveService {
 		this.moveRepository.delete(move);
 
 	}
-}
 
+	public Collection<Move> findMovesByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Move> result;
+
+		result = this.moveRepository.findMovesByRefuge(refugeId);
+
+		return result;
+	}
+}

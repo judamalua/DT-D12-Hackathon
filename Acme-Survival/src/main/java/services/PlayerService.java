@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -5,11 +6,14 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.PlayerRepository;
 import domain.Player;
+import domain.Refuge;
 
 @Service
 @Transactional
@@ -77,5 +81,22 @@ public class PlayerService {
 		this.playerRepository.delete(player);
 
 	}
-}
 
+	public Collection<Player> findPlayersKnowsRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Player> result;
+
+		result = this.playerRepository.findPlayersKnowsRefuge(refugeId);
+
+		return result;
+	}
+
+	public Page<Refuge> findKnowRefugesByPlayer(final int playerId, final Pageable pageable) {
+		Page<Refuge> result;
+
+		result = this.playerRepository.findKnowRefugesByPlayer(playerId, pageable);
+
+		return result;
+	}
+}

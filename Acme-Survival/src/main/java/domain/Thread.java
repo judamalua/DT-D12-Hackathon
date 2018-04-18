@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
@@ -12,6 +13,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+
+import cz.jirutka.validator.collection.constraints.EachNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -21,7 +24,7 @@ public class Thread extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
 	private String				name;
-	private Collection<String>	tag;
+	private Collection<String>	tags;
 
 
 	@NotBlank
@@ -34,13 +37,15 @@ public class Thread extends DomainEntity {
 		this.name = name;
 	}
 
-	@SafeHtml
-	public Collection<String> getTag() {
-		return this.tag;
+	@ElementCollection
+	@NotNull
+	@EachNotBlank
+	public Collection<String> getTags() {
+		return this.tags;
 	}
 
-	public void setTag(final Collection<String> tag) {
-		this.tag = tag;
+	public void setTags(final Collection<String> tags) {
+		this.tags = tags;
 	}
 
 
@@ -52,22 +57,22 @@ public class Thread extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Actor getactor() {
+	public Actor getActor() {
 		return this.actor;
 	}
 
-	public void setactor(final Actor actor) {
+	public void setActor(final Actor actor) {
 		this.actor = actor;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Forum getforum() {
+	public Forum getForum() {
 		return this.forum;
 	}
 
-	public void setforum(final Forum forum) {
+	public void setForum(final Forum forum) {
 		this.forum = forum;
 
 	}

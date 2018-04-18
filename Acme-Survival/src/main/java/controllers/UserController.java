@@ -14,24 +14,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.UserService;
+import services.PlayerService;
 import domain.Configuration;
-import domain.User;
 
 @Controller
 @RequestMapping("/user")
 public class UserController extends AbstractController {
 
 	@Autowired
-	private UserService				userService;
+	private PlayerService			playerService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -60,7 +59,7 @@ public class UserController extends AbstractController {
 	@RequestMapping("/list")
 	public ModelAndView list(@RequestParam final boolean anonymous, @RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
-		Page<User> users;
+		final Page<User> users;
 		Pageable pageable;
 		Configuration configuration;
 
@@ -71,11 +70,11 @@ public class UserController extends AbstractController {
 			result = new ModelAndView("user/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
-			users = this.userService.getUsers(pageable);
+			//users = this.playerService.findAll();
 
-			result.addObject("users", users.getContent());
+			//result.addObject("users", users.getContent());
 			result.addObject("page", page);
-			result.addObject("pageNum", users.getTotalPages());
+			//result.addObject("pageNum", users.getTotalPages());
 			result.addObject("anonymous", anonymous);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -99,20 +98,20 @@ public class UserController extends AbstractController {
 	@RequestMapping("/display")
 	public ModelAndView display(@RequestParam(required = false) final Integer actorId, @RequestParam(defaultValue = "true") final boolean anonymous) {
 		ModelAndView result;
-		User user;
+		final User user;
 
 		try {
 			if (!anonymous)
 				this.actorService.checkUserLogin();
 			result = new ModelAndView("actor/display");
-			if (actorId != null)
-				user = this.userService.findOne(actorId);
-			else
-				user = (User) this.actorService.findActorByPrincipal();
+			//			if (actorId != null)
+			//				user = this.playerService.findOne(actorId);
+			//			else
+			//				user = (User) this.actorService.findActorByPrincipal();
 
-			Assert.notNull(user);
-
-			result.addObject("actor", user);
+			//			Assert.notNull(user);
+			//
+			//			result.addObject("actor", user);
 			result.addObject("anonymous", anonymous);
 
 		} catch (final Throwable oops) {

@@ -23,11 +23,11 @@ public class Player extends Actor {
 
 	@Valid
 	@ManyToMany
-	public Collection<Refuge> getrefuges() {
+	public Collection<Refuge> getRefuges() {
 		return this.refuges;
 	}
 
-	public void setrefuges(final Collection<Refuge> refuges) {
+	public void setRefuges(final Collection<Refuge> refuges) {
 		this.refuges = refuges;
 
 	}
