@@ -115,11 +115,11 @@ public class Event extends DomainEntity {
 
 	@Valid
 	@ManyToOne(optional = true)
-	public ItemDesign getitemDesign() {
+	public ItemDesign getItemDesign() {
 		return this.itemDesign;
 	}
 
-	public void setitemDesign(final ItemDesign itemDesign) {
+	public void setItemDesign(final ItemDesign itemDesign) {
 		this.itemDesign = itemDesign;
 
 	}

@@ -1,14 +1,21 @@
+
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
+import domain.Actor;
 import domain.Message;
 
 @Service
@@ -20,8 +27,14 @@ public class MessageService {
 	@Autowired
 	private MessageRepository	messageRepository;
 
-
 	// Supporting services --------------------------------------------------
+
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private Validator			validator;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -48,6 +61,7 @@ public class MessageService {
 	public Message findOne(final int messageId) {
 
 		Message result;
+		Assert.isTrue(messageId != 0);
 
 		result = this.messageRepository.findOne(messageId);
 
@@ -57,10 +71,12 @@ public class MessageService {
 
 	public Message save(final Message message) {
 
-		assert message != null;
+		Assert.notNull(message);
 
-		Message result;
+		final Message result;
+		this.actorService.checkUserLogin();
 
+		message.setMoment(new Date(System.currentTimeMillis() - 1));
 		result = this.messageRepository.save(message);
 
 		return result;
@@ -69,13 +85,57 @@ public class MessageService {
 
 	public void delete(final Message message) {
 
-		assert message != null;
-		assert message.getId() != 0;
+		Assert.notNull(message);
+		Assert.isTrue(message.getId() != 0);
+		this.actorService.checkUserLogin();
 
 		Assert.isTrue(this.messageRepository.exists(message.getId()));
 
 		this.messageRepository.delete(message);
 
 	}
-}
 
+	public Collection<Message> findMessagesByThread(final int threadId) {
+		Collection<Message> result;
+
+		Assert.isTrue(threadId != 0);
+
+		result = this.messageRepository.findMessagesByThread(threadId);
+
+		return result;
+	}
+
+	public Page<Message> findMessagesByThread(final int threadId, final Pageable pageable) {
+		Page<Message> result;
+
+		Assert.isTrue(threadId != 0);
+
+		result = this.messageRepository.findMessagesByThread(threadId, pageable);
+
+		return result;
+	}
+
+	public Message reconstruct(final Message message, final BindingResult binding) {
+		Message result;
+		Actor actor;
+
+		if (message.getId() == 0) {
+
+			actor = this.actorService.findActorByPrincipal();
+			result = message;
+
+			result.setMoment(new Date(System.currentTimeMillis() - 1));
+			result.setActor(actor);
+
+		} else {
+			result = this.messageRepository.findOne(message.getId());
+
+			result.setText(message.getText());
+			result.setImage(message.getImage());
+
+		}
+		this.validator.validate(result, binding);
+
+		return result;
+	}
+}

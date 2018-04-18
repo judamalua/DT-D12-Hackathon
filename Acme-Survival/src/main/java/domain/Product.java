@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
@@ -20,8 +21,9 @@ public class Product extends DomainEntity {
 	private String	name_es;
 	private String	description_en;
 	private String	description_es;
-	private double	price;
+	private Double	price;
 	private boolean	finalMode;
+	private boolean	discontinued;
 
 
 	@NotBlank
@@ -64,12 +66,13 @@ public class Product extends DomainEntity {
 		this.description_es = description_es;
 	}
 
+	@NotNull
 	@Range(min = 0)
-	public double getPrice() {
+	public Double getPrice() {
 		return this.price;
 	}
 
-	public void setPrice(final double price) {
+	public void setPrice(final Double price) {
 		this.price = price;
 	}
 
@@ -79,6 +82,14 @@ public class Product extends DomainEntity {
 
 	public void setFinalMode(final boolean finalMode) {
 		this.finalMode = finalMode;
+	}
+
+	public boolean getDiscontinued() {
+		return this.discontinued;
+	}
+
+	public void setDiscontinued(final boolean discontinued) {
+		this.discontinued = discontinued;
 	}
 
 	// Relationships ----------------------------------------------------------

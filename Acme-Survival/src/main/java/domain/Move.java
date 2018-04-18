@@ -7,9 +7,13 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -22,7 +26,10 @@ public class Move extends DomainEntity {
 	private Date	endDate;
 
 
+	@NotNull
 	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
 	public Date getStartDate() {
 		return this.startDate;
 	}
@@ -31,6 +38,9 @@ public class Move extends DomainEntity {
 		this.startDate = startDate;
 	}
 
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
 	public Date getEndDate() {
 		return this.endDate;
 	}
@@ -48,22 +58,22 @@ public class Move extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Location getlocation() {
+	public Location getLocation() {
 		return this.location;
 	}
 
-	public void setlocation(final Location location) {
+	public void setLocation(final Location location) {
 		this.location = location;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getrefuge() {
+	public Refuge getRefuge() {
 		return this.refuge;
 	}
 
-	public void setrefuge(final Refuge refuge) {
+	public void setRefuge(final Refuge refuge) {
 		this.refuge = refuge;
 
 	}

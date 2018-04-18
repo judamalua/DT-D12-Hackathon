@@ -101,7 +101,7 @@ public class AdministratorService {
 			result.getUserAccount().setPassword(userAdminForm.getUserAccount().getPassword());
 			result.setName(userAdminForm.getName());
 			result.setSurname(userAdminForm.getSurname());
-			result.setPostalAddress(userAdminForm.getPostalAddress());
+			result.setAvatar(userAdminForm.getAvatar());
 			result.setPhoneNumber(userAdminForm.getPhoneNumber());
 			result.setEmail(userAdminForm.getEmail());
 			result.setBirthDate(userAdminForm.getBirthDate());
@@ -111,7 +111,7 @@ public class AdministratorService {
 
 			result.setName(userAdminForm.getName());
 			result.setSurname(userAdminForm.getSurname());
-			result.setPostalAddress(userAdminForm.getPostalAddress());
+			result.setAvatar(userAdminForm.getAvatar());
 			result.setPhoneNumber(userAdminForm.getPhoneNumber());
 			result.setEmail(userAdminForm.getEmail());
 			result.setBirthDate(userAdminForm.getBirthDate());

@@ -6,6 +6,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(name = "`character`")
 public class Character extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
@@ -134,32 +136,32 @@ public class Character extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getrefuge() {
+	public Refuge getRefuge() {
 		return this.refuge;
 	}
 
-	public void setrefuge(final Refuge refuge) {
+	public void setRefuge(final Refuge refuge) {
 		this.refuge = refuge;
 
 	}
 	@Valid
 	@OneToOne(optional = true)
-	public Item getitem() {
+	public Item getItem() {
 		return this.item;
 	}
 
-	public void setitem(final Item item) {
+	public void setItem(final Item item) {
 		this.item = item;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Room getroom() {
+	public Room getRoom() {
 		return this.room;
 	}
 
-	public void setroom(final Room room) {
+	public void setRoom(final Room room) {
 		this.room = room;
 
 	}

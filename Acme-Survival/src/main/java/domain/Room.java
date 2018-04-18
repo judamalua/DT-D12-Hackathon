@@ -3,6 +3,7 @@ package domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
@@ -34,23 +35,23 @@ public class Room extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional = false)
-	public Refuge getrefuge() {
+	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	public Refuge getRefuge() {
 		return this.refuge;
 	}
 
-	public void setrefuge(final Refuge refuge) {
+	public void setRefuge(final Refuge refuge) {
 		this.refuge = refuge;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public RoomDesign getroomDesign() {
+	public RoomDesign getRoomDesign() {
 		return this.roomDesign;
 	}
 
-	public void setroomDesign(final RoomDesign roomDesign) {
+	public void setRoomDesign(final RoomDesign roomDesign) {
 		this.roomDesign = roomDesign;
 
 	}

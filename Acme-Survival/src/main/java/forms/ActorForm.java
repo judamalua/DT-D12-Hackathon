@@ -29,7 +29,7 @@ public class ActorForm extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private String	name;
 	private String	surname;
-	private String	postalAddress;
+	private String	avatar;
 	private String	phoneNumber;
 	private String	email;
 	private Date	birthDate;
@@ -67,13 +67,14 @@ public class ActorForm extends DomainEntity {
 		this.surname = surname;
 	}
 
+	@URL
 	@SafeHtml
-	public String getPostalAddress() {
-		return this.postalAddress;
+	public String getAvatar() {
+		return this.avatar;
 	}
 
-	public void setPostalAddress(final String postalAddress) {
-		this.postalAddress = postalAddress;
+	public void setAvatar(final String avatar) {
+		this.avatar = avatar;
 	}
 
 	@SafeHtml
