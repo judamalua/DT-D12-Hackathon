@@ -21,6 +21,17 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#roomDesign').change(function(){
+		
+		$.get('room/player/resources.do?roomDesignId='+$('select option:selected').val(), function(result){
+			$('#resources').html(result);
+		});
+	});
+});
+</script>
+
 <form:form action="room/player/edit.do" modelAttribute="room">
 
 	<form:hidden path="id" />
@@ -30,13 +41,17 @@
 		<em><spring:message code="form.required.params" /></em>
 	</p>
 	
-	<acme:select items="${roomDesigns}" itemLabel="design"
+	<ul id="resources">
+		
+	</ul>
+	<spring:message var="lang" code="master.page.current.lang" />
+	<acme:select id="roomDesign" items="${roomDesigns}" itemLabel="name_${lang}"
 		code="room.roomDesign" path="roomDesign" />
 
 	<acme:submit name="save" code="room.save" />
 
 	<jstl:if test="${room.id!=0}">
-		<acme:delete clickCode="forum.delete.message" name="delete"
+		<acme:delete clickCode="room.delete.message" name="delete"
 			code="room.delete" />
 	</jstl:if>
 	<acme:cancel url="forum/list.do" code="room.cancel" />

@@ -163,8 +163,8 @@
 		</property>
 		<property name="userAccount" ref="UserAccount7" />
 	</bean>
-	
-		<!-- %%%% Barracks %%%% -->
+
+	<!-- %%%% Barracks %%%% -->
 	<bean id="Barrack1" class="domain.Barrack">
 		<property name="name_es" value="Barraca" />
 		<property name="name_en" value="Barrack" />
@@ -218,7 +218,7 @@
 		<property name="support" value="false" />
 		<property name="owner" ref="Admin2" />
 	</bean>
-	
+
 	<!-- %%%%%% domain.Forum %%%%%% -->
 	<bean id="Refuge1" class="domain.Refuge">
 		<property name="code" value="WDJjfy6D02" />
@@ -231,8 +231,18 @@
 			</list>
 		</property>
 	</bean>
-	
-		<!-- %%%%%% domain.Forum %%%%%% -->
+
+	<!-- %%%%%% domain.Forum %%%%%% -->
+	<bean id="Inventory1" class="domain.Inventory">
+		<property name="water" value="3" />
+		<property name="food" value="3" />
+		<property name="wood" value="3" />
+		<property name="metal" value="3" />
+		<property name="capacity" value="20" />
+		<property name="refuge" ref="Refuge1" />
+	</bean>
+
+	<!-- %%%%%% domain.Forum %%%%%% -->
 	<bean id="Location1" class="domain.Location">
 		<property name="name_es" value="Sevilla" />
 		<property name="name_en" value="Seville" />
@@ -242,7 +252,7 @@
 		<property name="point_d" value="-5.98,37.38" />
 		<property name="finalMode" value="true" />
 	</bean>
-	
+
 	<!-- %%%%%% domain.Forum %%%%%% -->
 	<bean id="Thread1" class="domain.Thread">
 		<property name="name" value="Thread 1" />

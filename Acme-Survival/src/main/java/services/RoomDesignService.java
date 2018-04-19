@@ -70,5 +70,13 @@ public class RoomDesignService {
 		this.roomDesignRepository.delete(roomDesign);
 
 	}
-}
 
+	public Collection<RoomDesign> findFinalRoomDesign() {
+		Collection<RoomDesign> result;
+
+		result = this.roomDesignRepository.findFinalRoomDesign();
+
+		return result;
+
+	}
+}
