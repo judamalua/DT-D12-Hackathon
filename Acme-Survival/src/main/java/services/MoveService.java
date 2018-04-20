@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.MoveRepository;
+import domain.DesignerConfiguration;
+import domain.Location;
 import domain.Move;
 
 @Service
@@ -19,10 +22,16 @@ public class MoveService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private MoveRepository	moveRepository;
-
+	private MoveRepository					moveRepository;
 
 	// Supporting services --------------------------------------------------
+
+	@Autowired
+	private DesignerConfigurationService	designerConfigurationService;
+
+	@Autowired
+	private ActorService					actorService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -58,9 +67,15 @@ public class MoveService {
 
 	public Move save(final Move move) {
 
-		assert move != null;
+		Assert.notNull(move);
 
 		Move result;
+		long time;
+		this.actorService.checkActorLogin();
+
+		move.setStartDate(new Date(System.currentTimeMillis() - 1));
+		time = this.timeBetweenLocations(move.getRefuge().getLocation(), move.getLocation());
+		move.setEndDate(new Date(System.currentTimeMillis() + time));
 
 		result = this.moveRepository.save(move);
 
@@ -70,8 +85,9 @@ public class MoveService {
 
 	public void delete(final Move move) {
 
-		assert move != null;
-		assert move.getId() != 0;
+		Assert.notNull(move);
+		Assert.isTrue(move.getId() != 0);
+		this.actorService.checkActorLogin();
 
 		Assert.isTrue(this.moveRepository.exists(move.getId()));
 
@@ -85,6 +101,18 @@ public class MoveService {
 		Collection<Move> result;
 
 		result = this.moveRepository.findMovesByRefuge(refugeId);
+
+		return result;
+	}
+
+	private long timeBetweenLocations(final Location origin, final Location end) {
+		final long result = 0;
+		DesignerConfiguration designerConfiguration;
+
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+
+		designerConfiguration.getKmPerSecond();
+		//TODO: calculate km between locations
 
 		return result;
 	}

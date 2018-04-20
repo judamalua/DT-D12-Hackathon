@@ -40,7 +40,7 @@ public class ProductService {
 	 * @author Juanmi
 	 */
 	public Product create() {
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		Product result;
 

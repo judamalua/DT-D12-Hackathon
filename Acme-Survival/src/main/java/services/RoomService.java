@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RoomRepository;
+import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
 import domain.Room;
@@ -37,6 +38,9 @@ public class RoomService {
 
 	@Autowired
 	private RefugeService		refugeService;
+
+	@Autowired
+	private InventoryService	inventoryService;
 
 	@Autowired
 	private Validator			validator;
@@ -80,6 +84,20 @@ public class RoomService {
 
 		Room result;
 		Collection<domain.Character> characters;
+		Refuge refuge;
+		Player actor;
+		Inventory inventory;
+
+		actor = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+
+		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+
+		Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
+		inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
+		inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
+
+		this.inventoryService.save(inventory);
 
 		result = this.roomRepository.save(room);
 
@@ -101,9 +119,7 @@ public class RoomService {
 		Assert.isTrue(room.getId() != 0);
 
 		Assert.isTrue(this.roomRepository.exists(room.getId()));
-
 		this.roomRepository.delete(room);
-
 	}
 
 	public Collection<Room> findRoomsByRefuge(final int refugeId) {

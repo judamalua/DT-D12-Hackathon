@@ -50,7 +50,7 @@ public class ForumActorController extends AbstractController {
 		ModelAndView result;
 		Forum forum;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		forum = this.forumService.findOne(forumId);
 		result = this.createEditModelAndView(forum);
@@ -63,7 +63,7 @@ public class ForumActorController extends AbstractController {
 		ModelAndView result;
 		final Forum forum;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 		forum = this.forumService.create();
 
 		result = this.createEditModelAndView(forum);

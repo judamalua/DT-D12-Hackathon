@@ -10,14 +10,14 @@
 
 <tiles-definitions>
 
-	<definition name="forum/list" extends="master.page">
-		<put-attribute name="title" value="Foros" />
-		<put-attribute name="body" value="/views/forum/list.jsp" />
+	<definition name="room/list" extends="master.page">
+		<put-attribute name="title" value="Habitaciones" />
+		<put-attribute name="body" value="/views/room/list.jsp" />
 	</definition>
 
-	<definition name="forum/edit" extends="master.page">
-		<put-attribute name="title" value="Crear un foro" />
-		<put-attribute name="body" value="/views/forum/edit.jsp" />
+	<definition name="room/edit" extends="master.page">
+		<put-attribute name="title" value="Crear una habitación" />
+		<put-attribute name="body" value="/views/room/edit.jsp" />
 	</definition>
 	
 </tiles-definitions>

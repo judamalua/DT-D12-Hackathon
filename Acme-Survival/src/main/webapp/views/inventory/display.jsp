@@ -70,17 +70,23 @@
 		</div>
 	</li>
 
+
 	<li class="dashboard-expander">
+
 		<div class="collapsible-header">
 			<spring:message code="inventory.capacity" />
 		</div>
-
-		<div class="ratio element">
-			<div class="progress progress-striped active" aria-valuemin="0">
-				<div class="bar" style="width: ${ratioCapacity*100}%;">
-					<jstl:out value="${ratioCapacity*100}%" />
+		<div class="collapsible-body">
+			<span>
+				<div class="ratio element">
+					<div class="progress progress-striped active" aria-valuemin="0">
+						<div class="bar" style="width: ${ratioCapacity*100}%;">
+							<jstl:out value="${ratioCapacity*100}%" />
+						</div>
+					</div>
 				</div>
-			</div>
+			</span>
 		</div>
 	</li>
+
 </ul>

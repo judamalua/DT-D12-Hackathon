@@ -262,7 +262,7 @@ public class ActorAdminController extends AbstractController {
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping(value = "/registerManager", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/registerModerator", method = RequestMethod.POST, params = "save")
 	public ModelAndView registerModerator(@ModelAttribute("moderator") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
@@ -324,7 +324,7 @@ public class ActorAdminController extends AbstractController {
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping(value = "/registerManager", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/registerDesigner", method = RequestMethod.POST, params = "save")
 	public ModelAndView registerDesginer(@ModelAttribute("designer") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;

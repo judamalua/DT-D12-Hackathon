@@ -94,7 +94,7 @@ public class CharacterService {
 			Assert.isTrue(character.getCurrentHealth() == character.getStrenght());
 			Assert.isTrue(character.getCurrentWater() == 100);
 			Assert.isTrue(character.getExperience() == 0);
-			Assert.isTrue(character.getitem() == null);
+			Assert.isTrue(character.getItem() == null);
 			Assert.isTrue(character.getLevel() == 1);
 			Assert.isTrue(character.getLuck() == 10);
 			Assert.isTrue(character.getCapacity() == 10);
@@ -103,7 +103,7 @@ public class CharacterService {
 			Assert.isTrue(character.getCurrentHealth() <= character.getStrenght());
 			Assert.isTrue(character.getCurrentWater() <= 100);
 			Assert.isTrue(character.getExperience() >= 0);
-			Assert.isTrue(character.getitem() == null);
+			Assert.isTrue(character.getItem() == null);
 			Assert.isTrue(character.getLevel() >= 1);
 			Assert.isTrue(character.getLuck() >= 10);
 			Assert.isTrue(character.getCapacity() >= 10);
@@ -146,7 +146,7 @@ public class CharacterService {
 			result.setExperience(0);
 			result.setCapacity(10);
 			result.setLuck(10);
-			result.setitem(null);
+			result.setItem(null);
 			result.setLevel(1);
 
 		} else {
@@ -156,12 +156,12 @@ public class CharacterService {
 			result.setCurrentHealth(character.getCurrentHealth());
 			result.setCurrentWater(character.getCurrentWater());
 			result.setExperience(character.getExperience());
-			result.setitem(character.getitem());
+			result.setItem(character.getItem());
 			result.setLevel(character.getLevel());
 			result.setLuck(character.getLuck());
 			result.setName(character.getName());
-			result.setrefuge(character.getrefuge());
-			result.setroom(character.getroom());
+			result.setRefuge(character.getRefuge());
+			result.setRoom(character.getRoom());
 			result.setStrenght(character.getStrenght());
 			result.setSurname(result.getSurname());
 		}
@@ -169,4 +169,20 @@ public class CharacterService {
 		return result;
 	}
 
+	public Collection<Character> findCharactersByRefuge(final int refugeId) {
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Collection<Character> findCharactersByRoom(final int roomId) {
+
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersByRoom(roomId);
+
+		return result;
+	}
 }

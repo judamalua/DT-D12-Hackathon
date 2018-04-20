@@ -74,7 +74,7 @@ public class MessageService {
 		Assert.notNull(message);
 
 		final Message result;
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		message.setMoment(new Date(System.currentTimeMillis() - 1));
 		result = this.messageRepository.save(message);
@@ -87,7 +87,7 @@ public class MessageService {
 
 		Assert.notNull(message);
 		Assert.isTrue(message.getId() != 0);
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		Assert.isTrue(this.messageRepository.exists(message.getId()));
 
