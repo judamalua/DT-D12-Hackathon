@@ -29,7 +29,7 @@
 		<value>/views/law/tiles.xml</value>
 		<value>/views/cookie/tiles.xml</value>
 		<value>/views/slider/tiles.xml</value>
-		
+		<value>/views/player/tiles.xml</value>
 		<value>/views/product/tiles.xml</value>
 		<value>/views/forum/tiles.xml</value>
 		<value>/views/thread/tiles.xml</value>

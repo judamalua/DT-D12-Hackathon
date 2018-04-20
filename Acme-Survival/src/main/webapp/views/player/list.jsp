@@ -27,38 +27,22 @@
  --%>
 <!-- Pagination -->
 
-<acme:pagination requestURI = "user/list.do?anonymous=${anonymous}&page=" pageNum = "${pageNum}" page = "${page}"/>
+<acme:pagination requestURI = "player/list.do?anonymous=${anonymous}&page=" pageNum = "${pageNum}" page = "${page}"/>
 
-<display:table name="users" id="row" requestURI="user/list.do"
+<display:table name="players" id="row" requestURI="player/list.do"
 	class="displaytag">
 
-	<spring:message code="user.name" var="name" />
+	<spring:message code="player.avatar" var="avatar" />
+	<display:column property="avatar" title="${avatar}" sortable="false" />
+	
+	<spring:message code="player.name" var="name" />
 	<display:column property="name" title="${name}" sortable="true" />
 
-	<spring:message code="user.surname" var="surname" />
+	<spring:message code="player.surname" var="surname" />
 	<display:column property="surname" title="${surname}" sortable="true" />
 
-	<spring:message code="user.postalAddress" var="postalAddress" />
-	<display:column property="postalAddress" title="${postalAddress}"
-		sortable="true" />
-
-	<spring:message code="user.phoneNumber" var="phoneNumber" />
-	<display:column property="phoneNumber" title="${phoneNumber}"
-		sortable="false" />
-
-	<spring:message code="user.email" var="email" />
+	<spring:message code="player.email" var="email" />
 	<display:column property="email" title="${email}" sortable="false" />
 
-	<spring:message code="user.birthDate" var="birthDate" />
-	<display:column property="birthDate" title="${birthDate}"
-		sortable="true" format="${formatBirthDate}" />
-
-	<display:column>
-		<a href="user/display.do?actorId=${row.id}&anonymous=${anonymous}">
-			<button class="btn">
-				<spring:message code="user.display" />
-			</button>
-		</a>
-	</display:column>
 
 </display:table>

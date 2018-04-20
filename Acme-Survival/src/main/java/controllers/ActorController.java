@@ -91,7 +91,7 @@ public class ActorController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(player);
 
-		result.addObject("actionURL", "actor/registerAsUser.do");
+		result.addObject("actionURL", "actor/registerAsPlayer.do");
 
 		return result;
 	}
@@ -104,7 +104,7 @@ public class ActorController extends AbstractController {
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping(value = "/registerAsUser", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/registerAsPlayer", method = RequestMethod.POST, params = "save")
 	public ModelAndView registerUser(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
@@ -168,7 +168,7 @@ public class ActorController extends AbstractController {
 	protected ModelAndView createEditModelAndViewRegister(final ActorForm actor, final String messageCode) {
 		ModelAndView result;
 
-		result = new ModelAndView("user/register");
+		result = new ModelAndView("actor/registerAsPlayer");
 		result.addObject("message", messageCode);
 		result.addObject("actor", actor);
 

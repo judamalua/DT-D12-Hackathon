@@ -29,7 +29,8 @@
 		<value>/views/law/messages</value>
 		<value>/views/cookie/messages</value>
 		<value>/views/slider/messages</value>
-		
+		<value>/views/player/messages</value>
+		<value>/views/character/messages</value>
 		<value>/views/product/messages</value>
 		<value>/views/forum/messages</value>
 		<value>/views/thread/messages</value>

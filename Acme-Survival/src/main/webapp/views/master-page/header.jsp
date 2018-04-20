@@ -42,6 +42,18 @@
 						<li><a href="actor/admin/edit.do"><spring:message
 									code="master.page.actorEdit" /></a></li>
 						<li class="divider"></li>
+						<li><a href="actor/admin/RegisterManager.do"><spring:message
+									code="master.page.registerManager" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/admin/RegisterModerator.do"><spring:message
+									code="master.page.registerModerator" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/admin/RegisterDesigner.do"><spring:message
+									code="master.page.registerDesigner" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/admin/register.do"><spring:message
+									code="master.page.registerAdmin" /></a></li>
+						<li class="divider"></li>
 						<li><a href="actor/display.do"><spring:message
 									code="master.page.actorProfile" /></a></li>
 						<li class="divider"></li>
@@ -199,8 +211,8 @@
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message
 							code="master.page.login" /></a></li>
-				<li><a class="fNiv" href="actor/register.do"> <spring:message
-							code="master.page.registerUser" /></a></li>
+				<li><a class="fNiv" href="actor/registerAsPlayer.do"> <spring:message
+							code="master.page.registerAsPlayer" /></a></li>
 				<li><a class="fNiv" href="forum/list.do"><spring:message
 							code="master.page.forum.list" /></a></li>
 				<li><a class="fNiv" href="product/list.do"><spring:message
