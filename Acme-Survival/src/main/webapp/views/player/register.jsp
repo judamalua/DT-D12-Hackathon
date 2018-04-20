@@ -20,17 +20,17 @@
 	
 	
 	
-	<acme:textbox code="user.name" path="name" required="true"/>
+	<acme:textbox code="player.name" path="name" required="true"/>
 	
-	<acme:textbox code="user.surname" path="surname" required="true"/>
+	<acme:textbox code="player.surname" path="surname" required="true"/>
 	
-	<acme:textbox code="user.birthDate" path="birthDate" placeholder="dd/MM/yyyy" required="true"/>
+	<acme:textbox code="player.birthDate" path="birthDate" placeholder="dd/MM/yyyy" required="true"/>
 	
-	<acme:textbox code="user.avatar" path="avatar"/>
+	<acme:textbox code="player.avatar" path="avatar"/>
 		
-	<acme:textbox code="user.email" path="email" required="true"/>
+	<acme:textbox code="player.email" path="email" required="true"/>
 	
-	<acme:textbox code="user.phoneNumber" path="phoneNumber"/>
+	<acme:textbox code="player.phoneNumber" path="phoneNumber"/>
 	
 
 
@@ -38,11 +38,11 @@
 	
 	
 	
-	<acme:textbox code="user.username" path="userAccount.username" required="true"/>
+	<acme:textbox code="player.username" path="userAccount.username" required="true"/>
 
-	<acme:password code="user.password" path="userAccount.password" required="true"/>
+	<acme:password code="player.password" path="userAccount.password" required="true"/>
 	
-	<acme:confirmPassword name="confirmPassword" code="user.confirm.password" required = "true"/>
+	<acme:confirmPassword name="confirmPassword" code="player.confirm.password" required = "true"/>
 	
 	<p>
 		<input type="checkbox" name="check" id="check">
@@ -51,8 +51,8 @@
 	
 
 	<div>
-	<acme:submit name="save" code="user.save"/>
-	<acme:cancel url="/" code="user.cancel" />
+	<acme:submit name="save" code="player.save"/>
+	<acme:cancel url="/" code="player.cancel" />
 	</div>
 	
 
