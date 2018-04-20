@@ -14,24 +14,29 @@
 <div class="row">
 <p><em><spring:message code = "form.required.params"/></em></p>
 
-<form:form id = "form" action="actor/register.do" modelAttribute ="actor" class="col s12">
-
-	
+<form:form id = "form" action="actor/registerAsPlayer.do" modelAttribute ="actor" class="col s12">
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
+	
 	
 	
 	<acme:textbox code="user.name" path="name" required="true"/>
 	
 	<acme:textbox code="user.surname" path="surname" required="true"/>
 	
-	<acme:textbox code="user.phoneNumber" path="phoneNumber"/>
+	<acme:textbox code="user.birthDate" path="birthDate" placeholder="dd/MM/yyyy" required="true"/>
 	
-	<acme:textbox code="user.postalAddress" path="postalAddress"/>
-
+	<acme:textbox code="user.avatar" path="avatar"/>
+		
 	<acme:textbox code="user.email" path="email" required="true"/>
 	
-	<acme:textbox code="user.birthDate" path="birthDate" placeholder="dd/MM/yyyy" required="true"/>
+	<acme:textbox code="user.phoneNumber" path="phoneNumber"/>
+	
+
+
+	
+	
+	
 	
 	<acme:textbox code="user.username" path="userAccount.username" required="true"/>
 

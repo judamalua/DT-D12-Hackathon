@@ -21,10 +21,15 @@
 		<put-attribute name="body" value="/views/actor/edit.jsp" />
 	</definition>
 	
-	
 	<definition name="actor/display" extends="master.page">	
-		<put-attribute name="title" value="Mostrar usuario" />
+		<put-attribute name="title" value="Mostrar Perfil" />
 		<put-attribute name="body" value="/views/actor/display.jsp" />
+	</definition>
+	
+	
+	<definition name="admin/register" extends="master.page">	
+		<put-attribute name="title" value="Registrar admin" />
+		<put-attribute name="body" value="/views/actor/register.jsp" />
 	</definition>
 	
 </tiles-definitions>
