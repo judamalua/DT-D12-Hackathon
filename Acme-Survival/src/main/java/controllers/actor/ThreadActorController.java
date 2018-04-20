@@ -54,7 +54,7 @@ public class ThreadActorController extends AbstractController {
 		ModelAndView result;
 		Thread thread;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		thread = this.threadService.findOne(threadId);
 		result = this.createEditModelAndView(thread);
@@ -68,7 +68,7 @@ public class ThreadActorController extends AbstractController {
 		final Thread thread;
 		Forum forum;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		thread = this.threadService.create();
 		if (forumId != null) {

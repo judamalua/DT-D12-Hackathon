@@ -79,7 +79,7 @@ public class ThreadService {
 		Thread result;
 		final Collection<Message> messages;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 		result = this.threadRepository.save(thread);
 
 		if (thread.getId() != 0) {
@@ -97,7 +97,7 @@ public class ThreadService {
 
 		Assert.notNull(thread);
 		Assert.isTrue(thread.getId() != 0);
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 		Assert.isTrue(this.threadRepository.exists(thread.getId()));
 
 		final Collection<Message> messages;

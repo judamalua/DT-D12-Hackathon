@@ -72,6 +72,28 @@ public class RoomPlayerController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam final Integer roomId) {
+		ModelAndView result;
+		final Room room;
+		Actor actor;
+
+		try {
+			actor = this.actorService.findActorByPrincipal();
+			Assert.isTrue(actor instanceof Player);
+
+			room = this.roomService.findOne(roomId);
+
+			this.roomService.delete(room);
+
+			result = new ModelAndView("redirect:/refuge/player/display.do");
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:misc/403");
+		}
+		return result;
+	}
+
 	@RequestMapping(value = "/resources", method = RequestMethod.GET)
 	public @ResponseBody
 	String getResources(@RequestParam final String roomDesignId) {
@@ -107,26 +129,6 @@ public class RoomPlayerController extends AbstractController {
 				else
 					result = this.createEditModelAndView(room, "room.commit.error");
 			}
-
-		return result;
-	}
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Room room, final BindingResult binding) {
-		ModelAndView result;
-
-		try {
-			room = this.roomService.reconstruct(room, binding);
-		} catch (final Throwable oops) {
-		}
-		try {
-			this.roomService.delete(room);
-
-			result = new ModelAndView("redirect:/refuge/display.do");
-
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(room, "room.commit.error");
-		}
 
 		return result;
 	}

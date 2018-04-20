@@ -26,7 +26,120 @@
 		<a class="brand-logo" href="#">&#160;&#160;Acme&#160;<img
 			width="24" src="images/people.png" />&#160;Template
 		</a>
+		
+		<ul id="nav-mobile" class="right hide-on-med-and-down">
+			<security:authorize access="isAuthenticated()">
+				<li><a class="fNiv" href="forum/list.do"><spring:message
+							code="master.page.forum.list" /></a></li>
+				<li><a class="fNiv" href="product/list.do"><spring:message
+							code="master.page.product.list" /></a></li>
+				<li><a href="refuge/list.do"><spring:message
+							code="master.page.refugeList" /></a></li>
 
+				<security:authorize access="hasRole('ADMIN')">
+					<!-- Dropdown Structure -->
+					<ul id="dropdownAdminProfile" class="dropdown-content">
+						<li><a href="actor/admin/edit.do"><spring:message
+									code="master.page.actorEdit" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/display.do"><spring:message
+									code="master.page.actorProfile" /></a></li>
+						<li class="divider"></li>
+						<li><a href="j_spring_security_logout"><spring:message
+									code="master.page.logout" /> </a></li>
+					</ul>
+
+					<!-- Dropdown Trigger -->
+					<li><a class="dropdown-button" href="#!"
+						data-activates="dropdownAdminProfile"><security:authentication
+								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+				</security:authorize>
+
+				<security:authorize access="hasRole('MANAGER')">
+					<!-- Dropdown Structure -->
+					<ul id="dropdownManagerProfile" class="dropdown-content">
+						<li><a href="actor/manager/edit.do"><spring:message
+									code="master.page.actorEdit" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/display.do"><spring:message
+									code="master.page.actorProfile" /></a></li>
+						<li class="divider"></li>
+						<li><a href="j_spring_security_logout"><spring:message
+									code="master.page.logout" /> </a></li>
+					</ul>
+
+					<!-- Dropdown Trigger -->
+					<li><a class="dropdown-button" href="#!"
+						data-activates="dropdownManagerProfile"><security:authentication
+								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+				</security:authorize>
+
+
+				<security:authorize access="hasRole('PLAYER')">
+					<!-- Dropdown Structure -->
+					<ul id="dropdownPlayerProfile" class="dropdown-content">
+						<li><a href="actor/player/edit.do"><spring:message
+									code="master.page.actorEdit" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/display.do"><spring:message
+									code="master.page.actorProfile" /></a></li>
+						<li class="divider"></li>
+						<li><a href="j_spring_security_logout"><spring:message
+									code="master.page.logout" /> </a></li>
+					</ul>
+
+					<!-- Dropdown Trigger -->
+					<li><a class="dropdown-button" href="#!"
+						data-activates="dropdownPlayerProfile"><security:authentication
+								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+				</security:authorize>
+
+
+				<security:authorize access="hasRole('MODERATOR')">
+					<!-- Dropdown Structure -->
+					<ul id="dropdownModeratorProfile" class="dropdown-content">
+						<li><a href="actor/moderator/edit.do"><spring:message
+									code="master.page.actorEdit" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/display.do"><spring:message
+									code="master.page.actorProfile" /></a></li>
+						<li class="divider"></li>
+						<li><a href="j_spring_security_logout"><spring:message
+									code="master.page.logout" /> </a></li>
+					</ul>
+
+					<!-- Dropdown Trigger -->
+					<li><a class="dropdown-button" href="#!"
+						data-activates="dropdownModeratorProfile"><security:authentication
+								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+				</security:authorize>
+
+
+				<security:authorize access="hasRole('DESIGNER')">
+					<!-- Dropdown Structure -->
+					<ul id="dropdownDesignerProfile" class="dropdown-content">
+						<li><a href="actor/designer/edit.do"><spring:message
+									code="master.page.actorEdit" /></a></li>
+						<li class="divider"></li>
+						<li><a href="actor/display.do"><spring:message
+									code="master.page.actorProfile" /></a></li>
+						<li class="divider"></li>
+						<li><a href="j_spring_security_logout"><spring:message
+									code="master.page.logout" /> </a></li>
+					</ul>
+
+					<!-- Dropdown Trigger -->
+					<li><a class="dropdown-button" href="#!"
+						data-activates="dropdownDesignerProfile"><security:authentication
+								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
+
+				</security:authorize>
+			</security:authorize>
+		</ul>
 
 		<ul id="nav-mobile" class="right hide-on-med-and-down">
 			<!-- id="jMenu" -->
@@ -59,6 +172,9 @@
 					<li class="divider"></li>
 					<li><a href="refuge/player/display.do"><spring:message
 								code="master.page.myRefuge" /></a></li>
+					<li class="divider"></li>
+					<li><a href="inventory/player/display.do"><spring:message
+								code="master.page.myInventory" /></a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->
@@ -91,121 +207,10 @@
 							code="master.page.product.list" /></a></li>
 				<li><a href="refuge/list.do"><spring:message
 							code="master.page.refugeList" /></a></li>
+			</security:authorize>
 		</ul>
-		</security:authorize>
 
-		<security:authorize access="isAuthenticated()">
-			<li><a class="fNiv" href="forum/list.do"><spring:message
-						code="master.page.forum.list" /></a></li>
-			<li><a class="fNiv" href="product/list.do"><spring:message
-						code="master.page.product.list" /></a></li>
-			<li><a href="refuge/list.do"><spring:message
-						code="master.page.refugeList" /></a></li>
-
-			<security:authorize access="hasRole('ADMIN')">
-				<!-- Dropdown Structure -->
-				<ul id="dropdownAdminProfile" class="dropdown-content">
-					<li><a href="actor/admin/edit.do"><spring:message
-								code="master.page.actorEdit" /></a></li>
-					<li class="divider"></li>
-					<li><a href="actor/display.do"><spring:message
-								code="master.page.actorProfile" /></a></li>
-					<li class="divider"></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
-				</ul>
-
-				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
-					data-activates="dropdownAdminProfile"><security:authentication
-							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
-
-			</security:authorize>
-
-			<security:authorize access="hasRole('MANAGER')">
-				<!-- Dropdown Structure -->
-				<ul id="dropdownManagerProfile" class="dropdown-content">
-					<li><a href="actor/manager/edit.do"><spring:message
-								code="master.page.actorEdit" /></a></li>
-					<li class="divider"></li>
-					<li><a href="actor/display.do"><spring:message
-								code="master.page.actorProfile" /></a></li>
-					<li class="divider"></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
-				</ul>
-
-				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
-					data-activates="dropdownManagerProfile"><security:authentication
-							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
-
-			</security:authorize>
-
-
-			<security:authorize access="hasRole('PLAYER')">
-				<!-- Dropdown Structure -->
-				<ul id="dropdownPlayerProfile" class="dropdown-content">
-					<li><a href="actor/player/edit.do"><spring:message
-								code="master.page.actorEdit" /></a></li>
-					<li class="divider"></li>
-					<li><a href="actor/display.do"><spring:message
-								code="master.page.actorProfile" /></a></li>
-					<li class="divider"></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
-				</ul>
-
-				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
-					data-activates="dropdownPlayerProfile"><security:authentication
-							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
-
-			</security:authorize>
-
-
-			<security:authorize access="hasRole('MODERATOR')">
-				<!-- Dropdown Structure -->
-				<ul id="dropdownModeratorProfile" class="dropdown-content">
-					<li><a href="actor/moderator/edit.do"><spring:message
-								code="master.page.actorEdit" /></a></li>
-					<li class="divider"></li>
-					<li><a href="actor/display.do"><spring:message
-								code="master.page.actorProfile" /></a></li>
-					<li class="divider"></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
-				</ul>
-
-				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
-					data-activates="dropdownModeratorProfile"><security:authentication
-							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
-
-			</security:authorize>
-
-
-			<security:authorize access="hasRole('DESIGNER')">
-				<!-- Dropdown Structure -->
-				<ul id="dropdownDesignerProfile" class="dropdown-content">
-					<li><a href="actor/designer/edit.do"><spring:message
-								code="master.page.actorEdit" /></a></li>
-					<li class="divider"></li>
-					<li><a href="actor/display.do"><spring:message
-								code="master.page.actorProfile" /></a></li>
-					<li class="divider"></li>
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
-				</ul>
-
-				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
-					data-activates="dropdownDesignerProfile"><security:authentication
-							property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
-
-			</security:authorize>
-
-		</security:authorize>
+		
 	</div>
 </nav>
 

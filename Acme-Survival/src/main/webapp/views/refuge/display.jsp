@@ -32,6 +32,10 @@
 </strong>
 <br />
 
+<jstl:if test="${owner}">
+	<acme:button url="refuge/player/edit.do?refugeId=${refuge.id}"
+		code="refuge.edit" />
+</jstl:if>
 <!-- Only a player who knows the refugee can display this information -->
 <security:authorize access="hasRole('PLAYER')">
 	<jstl:if test="${knowRefuge or owner}">
@@ -75,6 +79,17 @@
 						</div>
 					</div>
 				</div>
+			</display:column>
+
+			<display:column>
+				<jstl:if test="${owner}">
+					<a href="room/player/delete.do?roomId=${room.id}">
+						<button class="btn"
+							onclick="return confirm('<spring:message code="refuge.room.delete.confirm"/>')">
+							<spring:message code="refuge.room.delete" />
+						</button>
+					</a>
+				</jstl:if>
 			</display:column>
 		</display:table>
 		<jstl:if test="${owner}">

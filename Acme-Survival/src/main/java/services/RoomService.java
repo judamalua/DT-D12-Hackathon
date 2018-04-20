@@ -119,9 +119,7 @@ public class RoomService {
 		Assert.isTrue(room.getId() != 0);
 
 		Assert.isTrue(this.roomRepository.exists(room.getId()));
-
 		this.roomRepository.delete(room);
-
 	}
 
 	public Collection<Room> findRoomsByRefuge(final int refugeId) {

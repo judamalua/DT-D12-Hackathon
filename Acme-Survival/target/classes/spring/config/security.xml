@@ -72,7 +72,7 @@
 		<security:intercept-url pattern="/message/actor/**"
 			access="isAuthenticated()" requires-channel="https" />
 
-		<security:intercept-url pattern="/inventory/player/list.do"
+		<security:intercept-url pattern="/inventory/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/refuge/list.do"

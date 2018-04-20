@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,12 @@ public class DesignerConfigurationService {
 		this.designerConfigurationRepository.delete(designerConfiguration);
 
 	}
-}
 
+	public DesignerConfiguration findDesignerConfiguration() {
+		DesignerConfiguration result;
+
+		result = this.designerConfigurationRepository.findDesignerConfiguration();
+
+		return result;
+	}
+}

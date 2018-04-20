@@ -29,7 +29,6 @@ public class ActorForm extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private String	name;
 	private String	surname;
-	private String	avatar;
 	private String	phoneNumber;
 	private String	email;
 	private Date	birthDate;
@@ -65,16 +64,6 @@ public class ActorForm extends DomainEntity {
 
 	public void setSurname(final String surname) {
 		this.surname = surname;
-	}
-
-	@URL
-	@SafeHtml
-	public String getAvatar() {
-		return this.avatar;
-	}
-
-	public void setAvatar(final String avatar) {
-		this.avatar = avatar;
 	}
 
 	@SafeHtml

@@ -47,7 +47,7 @@ public class MessageActorController extends AbstractController {
 		ModelAndView result;
 		Message message;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 
 		message = this.messageService.findOne(messageId);
 		result = this.createEditModelAndView(message);
@@ -61,7 +61,7 @@ public class MessageActorController extends AbstractController {
 		ModelAndView result;
 		final Message message;
 
-		this.actorService.checkUserLogin();
+		this.actorService.checkActorLogin();
 		message = this.messageService.create();
 
 		result = this.createEditModelAndView(message);

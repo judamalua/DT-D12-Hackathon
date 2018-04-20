@@ -64,7 +64,7 @@ public class PlayerService {
 
 		result.setUserAccount(userAccount);
 
-		result.setrefuges(knownRefuges);
+		result.setRefuges(knownRefuges);
 
 		return result;
 	}
@@ -145,7 +145,7 @@ public class PlayerService {
 			result.setEmail(userAdminForm.getEmail());
 			result.setBirthDate(userAdminForm.getBirthDate());
 
-			result.setrefuges(knownRefuges);
+			result.setRefuges(knownRefuges);
 
 		} else {
 			actor = this.actorService.findActorByPrincipal();
@@ -180,6 +180,22 @@ public class PlayerService {
 
 		return result;
 
+	}
+
+	public Page<Refuge> findKnowRefugesByPlayer(final int playerId, final Pageable pageable) {
+		Page<Refuge> result;
+
+		result = this.playerRepository.findKnowRefugesByPlayer(playerId, pageable);
+
+		return result;
+	}
+
+	public Collection<Player> findPlayersKnowsRefuge(final int refugeId) {
+		Collection<Player> result;
+
+		result = this.playerRepository.findPlayersKnowsRefuge(refugeId);
+
+		return result;
 	}
 
 }
