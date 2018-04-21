@@ -21,6 +21,7 @@ public class Product extends DomainEntity {
 	private String	name_es;
 	private String	description_en;
 	private String	description_es;
+	private String	pictureUrl;
 	private Double	price;
 	private boolean	finalMode;
 	private boolean	discontinued;
@@ -64,6 +65,16 @@ public class Product extends DomainEntity {
 
 	public void setDescription_es(final String description_es) {
 		this.description_es = description_es;
+	}
+
+	@NotBlank
+	@SafeHtml
+	public String getPictureUrl() {
+		return this.pictureUrl;
+	}
+
+	public void setPictureUrl(final String pictureUrl) {
+		this.pictureUrl = pictureUrl;
 	}
 
 	@NotNull

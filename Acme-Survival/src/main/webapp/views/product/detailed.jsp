@@ -35,13 +35,9 @@
 
 
 <!-- Display -->
-<%-- <jstl:if test="${rendezvous.pictureUrl != \"\"}">
-	<div class="parallax-container">
-		<div class="parallax">
-			<img src="${rendezvous.pictureUrl}">
-		</div>
-	</div>
-</jstl:if> --%>
+
+<img class = "materialboxed" width = "300" src  = "${product.pictureUrl}"/>
+
 <h2>
 <jstl:if test="${currentLang == \"en\"}">
 	<jstl:out value="${product.name_en}" />
@@ -51,7 +47,12 @@
 	<jstl:out value="${product.name_es}" />
 </jstl:if>
 </h2>
-<br>
+
+<jstl:if test="${product.discontinued}">
+	<h5><i class="material-icons">remove_shopping_cart</i>
+			<spring:message code="product.discontinued" /></h5>
+</jstl:if>
+
 <h4>
 	<spring:message code="product.description" />
 </h4>
@@ -64,3 +65,13 @@
 	<jstl:out value="${product.description_es}" />
 </jstl:if>
 </p>
+
+<h5>
+	<spring:message code="product.price" />: <jstl:if test="${currentLang == \"en\"}">&euro; </jstl:if><jstl:out value="${product.price}" /><jstl:if test="${currentLang == \"es\"}"> &euro;</jstl:if>
+</h5>
+
+<security:authorize access="hasRole('PLAYER')">
+<jstl:if test="${!product.discontinued}">
+	<acme:button url="/Acme-Survival/DANI-HAZ-EL-PUTO-BOTON" code="product.buy"/>
+</jstl:if>
+</security:authorize>

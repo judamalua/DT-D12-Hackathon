@@ -62,6 +62,7 @@ public class ProductManagerController {
 			result.addObject("managerDraftModeView", true);
 			result.addObject("products", draftModeProducts.getContent());
 			result.addObject("page", page);
+			result.addObject("requestURI", "product/manager/list.do");
 			result.addObject("pageNum", draftModeProducts.getTotalPages());
 
 		} catch (final Throwable oops) {
