@@ -337,7 +337,7 @@
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en" value="Example text 1" />
 		<property name="text_es" value="Texto de ejemplo 1" />
-		<property name="pictureUrl" value="https://tinyurl.com/adventure-meetup" />
+		<property name="pictureUrl" value="https://i.imgur.com/tC3fSO1.png" />
 		<property name="align" value="left" />
 	</bean>
 	<bean id="Slider2" class="domain.Slider">
@@ -345,7 +345,7 @@
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en" value="Example text 2" />
 		<property name="text_es" value="Texto de ejemplo 2" />
-		<property name="pictureUrl" value="https://i.imgur.com/SoiZR6j.jpg" />
+		<property name="pictureUrl" value="https://c402277.ssl.cf1.rackcdn.com/photos/1579/images/hero_full/HI_115201.jpg?1345598092" />
 		<property name="align" value="right" />
 	</bean>
 	<bean id="Slider3" class="domain.Slider">
@@ -353,7 +353,7 @@
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en" value="Example text 3" />
 		<property name="text_es" value="Texto de ejemplo 3" />
-		<property name="pictureUrl" value="https://imgur.com/Wu0HYcs.jpg" />
+		<property name="pictureUrl" value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
 		<property name="align" value="center" />
 	</bean>
 	
