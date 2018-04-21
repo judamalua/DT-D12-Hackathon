@@ -32,6 +32,7 @@ public class Refuge extends DomainEntity {
 	private String	code;
 	private String	name;
 	private Date	momentOfCreation;
+	private String	gpsCoordinates;
 
 
 	@Pattern(regexp = "^\\w{10}$")
@@ -65,6 +66,17 @@ public class Refuge extends DomainEntity {
 
 	public void setMomentOfCreation(final Date momentOfCreation) {
 		this.momentOfCreation = momentOfCreation;
+	}
+
+	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
+	@SafeHtml
+	@NotBlank
+	public String getGpsCoordinates() {
+		return this.gpsCoordinates;
+	}
+
+	public void setGpsCoordinates(final String gpsCoordinates) {
+		this.gpsCoordinates = gpsCoordinates;
 	}
 
 

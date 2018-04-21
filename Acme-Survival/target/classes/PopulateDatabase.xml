@@ -226,6 +226,7 @@
 		<property name="momentOfCreation" value="2018/04/12 00:00" />
 		<property name="player" ref="Player1" />
 		<property name="location" ref="Location1" />
+		<property name="gpsCoordinates" value="-5.98,37.38" />
 		<property name="items">
 			<list>
 			</list>

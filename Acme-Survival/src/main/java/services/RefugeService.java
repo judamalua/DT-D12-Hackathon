@@ -67,9 +67,6 @@ public class RefugeService {
 	private BarrackService		barrackService;
 
 	@Autowired
-	private WarehouseService	warehouseService;
-
-	@Autowired
 	private LocationService		locationService;
 
 	@Autowired
@@ -184,6 +181,10 @@ public class RefugeService {
 				room.setRefuge(result);
 				this.roomService.save(room);
 			}
+
+			inventory.setRefuge(result);
+			this.inventoryService.save(inventory);
+
 		} else {
 			//inventory initialization
 
@@ -193,20 +194,20 @@ public class RefugeService {
 			inventory.setCapacity(10.);
 			inventory.setFood(3.);
 			inventory.setWater(3.);
-			inventory.setWood(3.);
+			inventory.setWood(4.);
 			inventory.setMetal(3.);
 
 			//Room initialization
 			rooms = this.createInitialRooms();
+
+			inventory.setRefuge(result);
+			this.inventoryService.save(inventory);
 
 			for (final Room room : rooms) {
 				room.setRefuge(result);
 				this.roomService.save(room);
 			}
 		}
-
-		inventory.setRefuge(result);
-		this.inventoryService.save(inventory);
 
 		return result;
 
@@ -268,12 +269,14 @@ public class RefugeService {
 		Actor actor;
 		Location location;
 		Collection<Item> items;
+		String gpsCoordinates;
 
 		if (refuge.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
-			location = (Location) this.locationService.findAll().toArray()[0];//Cambiar a una aleatoria
+			location = this.getRandomLocation();
 			items = new HashSet<Item>();
+			gpsCoordinates = this.generateRandomCoordinates(location);
 			result = refuge;
 
 			result.setCode(this.generateCode());
@@ -281,6 +284,7 @@ public class RefugeService {
 			result.setMomentOfCreation(new Date(System.currentTimeMillis() - 1));
 			result.setLocation(location);
 			result.setItems(items);
+			result.setGpsCoordinates(gpsCoordinates);
 
 		} else {
 			result = this.findOne(refuge.getId());
@@ -317,7 +321,7 @@ public class RefugeService {
 		barrack = (Barrack) this.barrackService.findAll().toArray()[0];
 
 		barrackRoom = this.roomService.create();
-		barrackRoom.setResistance(5);//Poner en config
+		barrackRoom.setResistance(10);//Poner en config
 		barrackRoom.setRoomDesign(barrack);
 
 		result.add(barrackRoom);
@@ -329,6 +333,58 @@ public class RefugeService {
 		Refuge result;
 
 		result = this.refugeRepository.findRefugeByPlayer(playerId);
+
+		return result;
+	}
+
+	public String generateRandomCoordinates(final Location location) {
+		final Double r1 = Math.random();
+		final Double r2 = Math.random();
+		Double x;
+		Double y;
+		final Double coordinateAx;
+		final Double coordinateAy;
+		final Double coordinateBx;
+		final Double coordinateBy;
+		final Double coordinateCx;
+		final Double coordinateCy;
+		final Double coordinateDx;
+		final Double coordinateDy;
+		String result;
+
+		coordinateAx = Double.parseDouble(location.getPoint_a().split(",")[0]);
+		coordinateAy = Double.parseDouble(location.getPoint_a().split(",")[1]);
+		coordinateBx = Double.parseDouble(location.getPoint_b().split(",")[0]);
+		coordinateBy = Double.parseDouble(location.getPoint_b().split(",")[1]);
+		coordinateCx = Double.parseDouble(location.getPoint_c().split(",")[0]);
+		coordinateCy = Double.parseDouble(location.getPoint_c().split(",")[1]);
+		coordinateDx = Double.parseDouble(location.getPoint_d().split(",")[0]);
+		coordinateDy = Double.parseDouble(location.getPoint_d().split(",")[1]);
+
+		if (Math.random() < 0.5) {
+			x = (1 - Math.sqrt(r1)) * coordinateAx + (Math.sqrt(r1) * (1 - r2)) * coordinateBx + (Math.sqrt(r1) * r2) * coordinateCx;
+			y = (1 - Math.sqrt(r1)) * coordinateAy + (Math.sqrt(r1) * (1 - r2)) * coordinateBy + (Math.sqrt(r1) * r2) * coordinateCy;
+		} else {
+			x = (1 - Math.sqrt(r1)) * coordinateAx + (Math.sqrt(r1) * (1 - r2)) * coordinateBx + (Math.sqrt(r1) * r2) * coordinateDx;
+			y = (1 - Math.sqrt(r1)) * coordinateAy + (Math.sqrt(r1) * (1 - r2)) * coordinateBy + (Math.sqrt(r1) * r2) * coordinateDy;
+		}
+
+		result = "" + x + "," + y;
+		return result;
+	}
+
+	private Location getRandomLocation() {
+		Location result;
+		Integer size;
+		Integer randomNum;
+		Random random;
+
+		random = new Random();
+		size = this.locationService.findAll().size();
+
+		randomNum = random.nextInt(size);
+
+		result = (Location) this.locationService.findAll().toArray()[randomNum];
 
 		return result;
 	}

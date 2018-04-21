@@ -121,10 +121,12 @@ public class ForumController extends AbstractController {
 				result.addObject("threads", threads.getContent());
 				result.addObject("pageThread", pageThread);
 				result.addObject("pageNumThread", threads.getTotalPages());
+				result.addObject("requestURI", "forum/list.do?forumId=" + forumId + "&");
 			} else {
 				result.addObject("threads", new HashSet<>());
 				result.addObject("pageThread", 0);
 				result.addObject("pageNumThread", 0);
+				result.addObject("requestURI", "forum/list.do?");
 			}
 			result.addObject("forums", forums.getContent());
 			result.addObject("page", page);
