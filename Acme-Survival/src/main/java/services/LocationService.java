@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -77,5 +78,7 @@ public class LocationService {
 		this.locationRepository.delete(location);
 
 	}
-}
 
+	//Business methods --------------------
+
+}

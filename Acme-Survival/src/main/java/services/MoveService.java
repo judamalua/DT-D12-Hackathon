@@ -125,7 +125,7 @@ public class MoveService {
 		return result;
 	}
 
-	private long timeBetweenLocations(final Location origin, final Location end) {
+	public long timeBetweenLocations(final Location origin, final Location end) {
 		long result;
 		DesignerConfiguration designerConfiguration;
 		final int earthRadius = 6371;
