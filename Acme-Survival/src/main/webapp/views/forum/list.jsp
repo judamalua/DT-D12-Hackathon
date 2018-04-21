@@ -26,7 +26,7 @@
 	</jstl:if>
 </jstl:if>
 
-<acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
+<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
 	page="${page}" />
 
 <display:table name="forums" id="forum" requestURI="${requestURI}"
@@ -59,7 +59,7 @@
 
 </display:table>
 
-<acme:pagination requestURI="${requestURI}" pageNum="${pageNumThread}"
+<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNumThread}"
 	page="${pageThread}" />
 
 <display:table name="threads" id="thread" requestURI="${requestURI}"

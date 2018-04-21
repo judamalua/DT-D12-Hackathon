@@ -1,12 +1,23 @@
 
 package repositories;
 
+import java.util.Collection;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import domain.Event;
 import domain.ItemDesign;
+import domain.ProbabilityItem;
 
 @Repository
 public interface ItemDesignRepository extends JpaRepository<ItemDesign, Integer> {
+
+	@Query("select e from Event e where (e.itemDesign!=null or e.itemDesign!='') and e.itemDesign.id=?1")
+	Collection<Event> findEventsByItemDesign(int itemDesignId);
+
+	@Query("select pi from ProbabilityItem pi where pi.itemDesign.id=?1")
+	Collection<ProbabilityItem> findProbabilityItemsByItemDesign(int itemDesignId);
 
 }

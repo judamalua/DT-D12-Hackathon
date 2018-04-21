@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ItemDesignRepository;
+import domain.Event;
 import domain.ItemDesign;
+import domain.ProbabilityItem;
 
 @Service
 @Transactional
@@ -50,7 +52,7 @@ public class ItemDesignService {
 
 	public ItemDesign save(final ItemDesign itemDesign) {
 
-		assert itemDesign != null;
+		Assert.notNull(itemDesign);
 
 		ItemDesign result;
 
@@ -70,5 +72,20 @@ public class ItemDesignService {
 		this.itemDesignRepository.delete(itemDesign);
 
 	}
-}
 
+	public Collection<Event> findEventsByItemDesign(final int itemDesignId) {
+		Collection<Event> result;
+
+		result = this.itemDesignRepository.findEventsByItemDesign(itemDesignId);
+
+		return result;
+	}
+
+	public Collection<ProbabilityItem> findProbabilityItemsByItemDesign(final int itemDesignId) {
+		Collection<ProbabilityItem> result;
+
+		result = this.itemDesignRepository.findProbabilityItemsByItemDesign(itemDesignId);
+
+		return result;
+	}
+}

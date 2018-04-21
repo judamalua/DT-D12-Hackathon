@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -44,6 +45,7 @@ public class Location extends DomainEntity {
 		this.name_es = name_es;
 	}
 
+	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
 	@NotBlank
 	@SafeHtml
 	public String getPoint_a() {
@@ -54,6 +56,7 @@ public class Location extends DomainEntity {
 		this.point_a = point_a;
 	}
 
+	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
 	@NotBlank
 	@SafeHtml
 	public String getPoint_b() {
@@ -64,6 +67,7 @@ public class Location extends DomainEntity {
 		this.point_b = point_b;
 	}
 
+	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
 	@NotBlank
 	@SafeHtml
 	public String getPoint_c() {
@@ -74,6 +78,7 @@ public class Location extends DomainEntity {
 		this.point_c = point_c;
 	}
 
+	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
 	@NotBlank
 	@SafeHtml
 	public String getPoint_d() {

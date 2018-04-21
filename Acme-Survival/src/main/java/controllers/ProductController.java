@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,7 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.ProductService;
 import domain.Configuration;
+import domain.Manager;
 import domain.Product;
 
 @Controller
@@ -73,6 +75,10 @@ public class ProductController {
 			result = new ModelAndView("product/detailed");
 
 			product = this.productService.findOne(productId);
+
+			// Checking that if the product is not in final mode, only managers can access to the detailed view
+			if (!product.getFinalMode())
+				Assert.isTrue(this.actorService.findActorByPrincipal() instanceof Manager);
 
 			result.addObject("product", product);
 

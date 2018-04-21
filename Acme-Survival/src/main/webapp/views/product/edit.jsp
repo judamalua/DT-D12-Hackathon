@@ -16,6 +16,8 @@
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	
+	<acme:textbox code="product.pictureUrl" path="pictureUrl" required = "true"/>
+	
 	<acme:textarea code="product.name_en" path="name_en" required = "true"/>
 	<acme:textarea code="product.name_es" path="name_es" required = "true"/>
 	

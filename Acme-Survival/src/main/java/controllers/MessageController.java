@@ -100,6 +100,8 @@ public class MessageController extends AbstractController {
 			result.addObject("messages", messages.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", messages.getTotalPages());
+			result.addObject("requestURI", "message/list.do?threadId=" + threadId + "&");
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}

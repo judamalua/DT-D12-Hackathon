@@ -42,7 +42,7 @@
 		<strong> <spring:message code="refuge.location" />
 		</strong>
 		<iframe class="map"
-			src="https://www.google.com/maps/embed/v1/search?q=${refuge.location.point_a}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
+			src="https://www.google.com/maps/embed/v1/search?q=${refuge.gpsCoordinates}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
 		<br />
 
 		<strong> <spring:message code="refuge.room" />
