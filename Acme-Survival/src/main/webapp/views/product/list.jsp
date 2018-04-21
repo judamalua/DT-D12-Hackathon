@@ -22,6 +22,10 @@
 	requestURI="${requestURI}"
 	class="displayTag">
 
+	<display:column title="${titlePicture}">
+		<img class="serviceImg" src="${product.pictureUrl}" />
+	</display:column>
+
 	<spring:message code="product.name" var="name" />
 	<jstl:if test="${currentLang == \"en\"}">
 	<display:column title="${name}" sortable="true">
