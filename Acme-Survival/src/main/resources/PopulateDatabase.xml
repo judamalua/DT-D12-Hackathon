@@ -356,6 +356,38 @@
 		<property name="pictureUrl" value="https://imgur.com/Wu0HYcs.jpg" />
 		<property name="align" value="center" />
 	</bean>
+	
+	<!-- %%%%%% domain.Product %%%%%% -->
+	<bean id="Product1" class="domain.Product">
+		<property name="name_en" value="White t-shirt" />
+		<property name="name_es" value="Camiseta blanca" />
+		<property name="description_en" value="White t-shirt that can buy cheaper in any other store" />
+		<property name="description_es" value="Camiseta blanca que puedes encontrar más barata en cualquier otra tienda" />
+		<property name="pictureUrl" value="https://www.ecamisetas.com/articulos/gr/camisetas-unisex-6424B.jpg" />
+		<property name="price" value="450.00" />
+		<property name="finalMode" value="true" />
+		<property name="discontinued" value="true" />
+	</bean>
+	<bean id="Product2" class="domain.Product">
+		<property name="name_en" value="Piano" />
+		<property name="name_es" value="Piano" />
+		<property name="description_en" value="Sing us a song you're the piano man" />
+		<property name="description_es" value="Cántanos una canción esta noche" />
+		<property name="pictureUrl" value="https://d1aeri3ty3izns.cloudfront.net/media/10/103678/1200/preview.jpg" />
+		<property name="price" value="5940.00" />
+		<property name="finalMode" value="true" />
+		<property name="discontinued" value="false" />
+	</bean>
+	<bean id="Product3" class="domain.Product">
+		<property name="name_en" value="Product in proccess" />
+		<property name="name_es" value="Producto en proceso" />
+		<property name="description_en" value="We are working on it" />
+		<property name="description_es" value="Estamos trabajando en ello" />
+		<property name="pictureUrl" value="http://www.mimontevideo.com/wp-content/uploads/2016/07/Cara-Feliz.fw_.png" />
+		<property name="price" value="99399.00" />
+		<property name="finalMode" value="false" />
+		<property name="discontinued" value="false" />
+	</bean>
 
 	<!-- %%%% Configuration %%%% -->
 
