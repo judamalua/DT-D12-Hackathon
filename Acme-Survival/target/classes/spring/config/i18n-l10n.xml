@@ -39,6 +39,7 @@
 		<value>/views/room/messages</value>
 		<value>/views/inventory/messages</value>
 		<value>/views/event/messages</value>
+		<value>/views/itemDesign/messages</value>
 	</util:list>
 
 </beans>
