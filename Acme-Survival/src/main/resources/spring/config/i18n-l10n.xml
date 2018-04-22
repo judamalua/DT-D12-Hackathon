@@ -38,6 +38,7 @@
 		<value>/views/refuge/messages</value>
 		<value>/views/room/messages</value>
 		<value>/views/inventory/messages</value>
+		<value>/views/event/messages</value>
 	</util:list>
 
 </beans>
