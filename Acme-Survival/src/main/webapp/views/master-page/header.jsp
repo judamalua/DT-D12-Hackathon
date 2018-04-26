@@ -42,13 +42,13 @@
 						<li><a href="actor/admin/edit.do"><spring:message
 									code="master.page.actorEdit" /></a></li>
 						<li class="divider"></li>
-						<li><a href="actor/admin/RegisterManager.do"><spring:message
+						<li><a href="actor/admin/registerManager.do"><spring:message
 									code="master.page.registerManager" /></a></li>
 						<li class="divider"></li>
-						<li><a href="actor/admin/RegisterModerator.do"><spring:message
+						<li><a href="actor/admin/registerModerator.do"><spring:message
 									code="master.page.registerModerator" /></a></li>
 						<li class="divider"></li>
-						<li><a href="actor/admin/RegisterDesigner.do"><spring:message
+						<li><a href="actor/admin/registerDesigner.do"><spring:message
 									code="master.page.registerDesigner" /></a></li>
 						<li class="divider"></li>
 						<li><a href="actor/admin/register.do"><spring:message

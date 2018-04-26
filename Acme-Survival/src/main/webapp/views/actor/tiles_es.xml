@@ -28,7 +28,7 @@
 	
 	
 	<definition name="admin/register" extends="master.page">	
-		<put-attribute name="title" value="Registrar admin" />
+		<put-attribute name="title" value="Datos de Registro" />
 		<put-attribute name="body" value="/views/actor/register.jsp" />
 	</definition>
 	

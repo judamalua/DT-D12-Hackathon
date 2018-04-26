@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -173,6 +175,14 @@ public class CharacterService {
 		Collection<Character> result;
 
 		result = this.characterRepository.findCharactersByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Page<Character> findCharactersByRefugePageable(final int refugeId, final Pageable pageable) {
+		Page<Character> result;
+
+		result = this.characterRepository.findCharactersByRefugePageable(refugeId, pageable);
 
 		return result;
 	}

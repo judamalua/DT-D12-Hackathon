@@ -254,9 +254,9 @@ public class ActorAdminController extends AbstractController {
 		return result;
 	}
 
-	//Saving manager ---------------------------------------------------------------------
+	//Saving Moderator ---------------------------------------------------------------------
 	/**
-	 * That method saves an manager in the system
+	 * That method saves a moderator in the system
 	 * 
 	 * @param save
 	 * @return ModelandView
@@ -277,7 +277,7 @@ public class ActorAdminController extends AbstractController {
 		else
 			try {
 				auth = new Authority();
-				auth.setAuthority(Authority.MANAGER);
+				auth.setAuthority(Authority.MODERATOR);
 				Assert.isTrue(moderator.getUserAccount().getAuthorities().contains(auth));
 				Assert.isTrue(actor.getConfirmPassword().equals(moderator.getUserAccount().getPassword()), "Passwords do not match");
 				this.actorService.registerActor(moderator);
@@ -316,9 +316,9 @@ public class ActorAdminController extends AbstractController {
 		return result;
 	}
 
-	//Saving manager ---------------------------------------------------------------------
+	//Saving designer ---------------------------------------------------------------------
 	/**
-	 * That method saves an manager in the system
+	 * That method saves a designer in the system
 	 * 
 	 * @param save
 	 * @return ModelandView
@@ -339,7 +339,7 @@ public class ActorAdminController extends AbstractController {
 		else
 			try {
 				auth = new Authority();
-				auth.setAuthority(Authority.MANAGER);
+				auth.setAuthority(Authority.DESIGNER);
 				Assert.isTrue(designer.getUserAccount().getAuthorities().contains(auth));
 				Assert.isTrue(actor.getConfirmPassword().equals(designer.getUserAccount().getPassword()), "Passwords do not match");
 				this.actorService.registerActor(designer);
