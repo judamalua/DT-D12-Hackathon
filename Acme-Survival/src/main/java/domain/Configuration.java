@@ -1,12 +1,16 @@
 
 package domain;
 
+import java.util.Collection;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 
@@ -17,11 +21,12 @@ public class Configuration extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	cookies_eng;
-	private String	cookies_es;
-	private String	businessNameFirst;
-	private String	businessNameLast;
-	private Integer	pageSize;
+	private String				cookies_eng;
+	private String				cookies_es;
+	private String				businessNameFirst;
+	private String				businessNameLast;
+	private Integer				pageSize;
+	private Collection<String>	languages;
 
 
 	@SafeHtml
@@ -72,6 +77,16 @@ public class Configuration extends DomainEntity {
 
 	public void setPageSize(final Integer pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	@ElementCollection
+	@NotEmpty
+	public Collection<String> getLanguages() {
+		return this.languages;
+	}
+
+	public void setLanguages(final Collection<String> languages) {
+		this.languages = languages;
 	}
 
 	// Relationships ----------------------------------------------------------

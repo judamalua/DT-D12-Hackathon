@@ -1,8 +1,11 @@
 
 package domain;
 
+import java.util.Map;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -17,14 +20,15 @@ public class Product extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name_en;
-	private String	name_es;
-	private String	description_en;
-	private String	description_es;
-	private String	pictureUrl;
-	private Double	price;
-	private boolean	finalMode;
-	private boolean	discontinued;
+	private String				name_en;
+	private String				name_es;
+	private Map<String, String>	name;
+	private String				description_en;
+	private String				description_es;
+	private String				pictureUrl;
+	private Double				price;
+	private boolean				finalMode;
+	private boolean				discontinued;
 
 
 	@NotBlank
@@ -101,6 +105,15 @@ public class Product extends DomainEntity {
 
 	public void setDiscontinued(final boolean discontinued) {
 		this.discontinued = discontinued;
+	}
+
+	@ElementCollection
+	public Map<String, String> getName() {
+		return this.name;
+	}
+
+	public void setName(final Map<String, String> name) {
+		this.name = name;
 	}
 
 	// Relationships ----------------------------------------------------------
