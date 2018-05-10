@@ -12,6 +12,8 @@ import org.springframework.util.Assert;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.Player;
+import domain.Refuge;
 
 @Service
 @Transactional
@@ -27,6 +29,12 @@ public class AttackService {
 	@Autowired
 	private MoveService			moveService;
 
+	@Autowired
+	private RefugeService		refugeService;
+
+	@Autowired
+	private ActorService		actorService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -37,6 +45,42 @@ public class AttackService {
 
 		return result;
 	}
+
+	public Attack create(final int refugeId) {
+		Attack result;
+		Refuge defendant, attacker;
+		Date startMoment, endMoment;
+		Long time;
+		Player player;
+
+		defendant = this.refugeService.findOne(refugeId);
+
+		Assert.isTrue(this.playerKnowsRefugee(defendant));
+
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		attacker = this.refugeService.findRefugeByPlayer(player.getId());
+
+		startMoment = new Date(System.currentTimeMillis() - 10);
+		time = this.moveService.timeBetweenLocations(attacker.getLocation(), defendant.getLocation());
+		endMoment = new Date(System.currentTimeMillis() + time);
+
+		result = new Attack();
+
+		result.setAttacker(attacker);
+		result.setDefendant(defendant);
+		result.setStartDate(startMoment);
+		result.setEndMoment(endMoment);
+
+		return result;
+
+	}
+	//Controlador: entra la id del refugio al que atacar; se comprueba que la persona tenga en su lista de refugios conocidos tal refugio, crear la mision de ataque, se pone el timer y empieza
+	//Cuando termine el ataque, mostrar pantalla de resultados para el que ataca y el que ha sido atacado, poniendo lo que ha ganado y perdido cada uno
+	//Un jugador que ya está en una mision de ataque no puede crear otra mision de ataque.
+
+	//Recoleccion: controlador que reciba una location y redirigir a una vista que seleccione el personaje con un select (este no debe estar en una mision de recoleccion ya).
+	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado más de lo que puede llevar en la capacidad, tiene que decidir qué materias tirar y cuales quedarse.
 
 	public Collection<Attack> findAll() {
 
@@ -93,6 +137,18 @@ public class AttackService {
 
 	}
 
+	public boolean playerKnowsRefugee(final Refuge refuge) {
+		Boolean result;
+		Player player;
+
+		result = false;
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		if (player.getRefuges().contains(refuge))
+			result = true;
+
+		return result;
+	}
 	//Business methods --------------------
 	/**
 	 * This methot returns the number of resources stolen in the Attack. If the attacker loses, it returns 0 or a negative number.
