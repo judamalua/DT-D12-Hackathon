@@ -130,6 +130,8 @@
 
 		<security:intercept-url pattern="/product/**"
 			access="permitAll" requires-channel="https" />
+			<security:intercept-url pattern="/attack/player/create"
+			access="hasRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/**"

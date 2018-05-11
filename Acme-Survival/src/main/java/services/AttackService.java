@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
@@ -34,6 +36,9 @@ public class AttackService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -107,19 +112,23 @@ public class AttackService {
 	public Attack save(final Attack attack) {
 
 		Assert.notNull(attack);
+		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()));
 
 		Attack result;
-		Date startMoment, endMoment;
-		Long time;
 
-		startMoment = new Date(System.currentTimeMillis() - 10);
-		time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
-		endMoment = new Date(System.currentTimeMillis() + time);
-
-		if (attack.getId() == 0) {
-			attack.setStartDate(startMoment);
-			attack.setEndMoment(endMoment);
-		}
+		/*
+		 * Date startMoment, endMoment;
+		 * Long time;
+		 * 
+		 * startMoment = new Date(System.currentTimeMillis() - 10);
+		 * time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
+		 * endMoment = new Date(System.currentTimeMillis() + time);
+		 * 
+		 * if (attack.getId() == 0) {
+		 * attack.setStartDate(startMoment);
+		 * attack.setEndMoment(endMoment);
+		 * }
+		 */
 
 		result = this.attackRepository.save(attack);
 
@@ -137,6 +146,14 @@ public class AttackService {
 
 	}
 
+	/**
+	 * This method checks that the player who is connected (the principal)
+	 * knows the refuge passed as a param
+	 * 
+	 * @param refuge
+	 * @return true if the player knows the refuge
+	 * @author antrodart
+	 */
 	public boolean playerKnowsRefugee(final Refuge refuge) {
 		Boolean result;
 		Player player;
@@ -154,7 +171,7 @@ public class AttackService {
 	 * This methot returns the number of resources stolen in the Attack. If the attacker loses, it returns 0 or a negative number.
 	 * 
 	 * @param attack
-	 * @return resources stolen of the Attack. If is a lost, then it returns 0.
+	 * @return resources stolen of the Attack. If is a lost, then it returns 0 or a negative number.
 	 */
 	public Integer getResourcesOfAttack(final Attack attack) {
 		Integer strengthSumAttacker, strengthSumDefendant;
@@ -192,6 +209,33 @@ public class AttackService {
 		Integer result;
 
 		result = this.attackRepository.getStrengthSumByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Attack reconstruct(final Attack attack, final BindingResult binding) {
+		Attack result = null;
+		Date startMoment, endMoment;
+		Long time;
+		Player player;
+		Refuge attacker;
+
+		if (attack.getId() == 0) {
+			result = attack;
+
+			player = (Player) this.actorService.findActorByPrincipal();
+
+			attacker = this.refugeService.findRefugeByPlayer(player.getId());
+
+			startMoment = new Date(System.currentTimeMillis() - 10);
+			time = this.moveService.timeBetweenLocations(attacker.getLocation(), result.getDefendant().getLocation());
+			endMoment = new Date(System.currentTimeMillis() + time);
+
+			attack.setAttacker(attacker);
+			attack.setStartDate(startMoment);
+			attack.setEndMoment(endMoment);
+		}
+		this.validator.validate(result, binding);
 
 		return result;
 	}

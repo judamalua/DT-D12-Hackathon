@@ -219,7 +219,7 @@
 		<property name="owner" ref="Admin2" />
 	</bean>
 
-	<!-- %%%%%% domain.Forum %%%%%% -->
+	<!-- %%%%%% domain.Refuge %%%%%% -->
 	<bean id="Refuge1" class="domain.Refuge">
 		<property name="code" value="WDJjfy6D02" />
 		<property name="name" value="Reguge 1" />
@@ -233,7 +233,7 @@
 		</property>
 	</bean>
 
-	<!-- %%%%%% domain.Forum %%%%%% -->
+	<!-- %%%%%% domain.Inventory %%%%%% -->
 	<bean id="Inventory1" class="domain.Inventory">
 		<property name="water" value="3" />
 		<property name="food" value="3" />
@@ -243,7 +243,7 @@
 		<property name="refuge" ref="Refuge1" />
 	</bean>
 
-	<!-- %%%%%% domain.Forum %%%%%% -->
+	<!-- %%%%%% domain.Location %%%%%% -->
 	<bean id="Location1" class="domain.Location">
 		<property name="name_es" value="Sevilla" />
 		<property name="name_en" value="Seville" />
@@ -254,7 +254,7 @@
 		<property name="finalMode" value="true" />
 	</bean>
 
-	<!-- %%%%%% domain.Forum %%%%%% -->
+	<!-- %%%%%% domain.Thread %%%%%% -->
 	<bean id="Thread1" class="domain.Thread">
 		<property name="name" value="Thread 1" />
 		<property name="tags">
@@ -303,7 +303,7 @@
 		<property name="forum" ref="Forum2" />
 	</bean>
 
-	<!-- %%%%%% domain.Forum %%%%%% -->
+	<!-- %%%%%% domain.Message %%%%%% -->
 	<bean id="Message1" class="domain.Message">
 		<property name="text" value="Message 1" />
 		<property name="moment" value="2018/01/13 00:00" />
