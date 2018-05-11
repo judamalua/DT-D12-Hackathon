@@ -39,13 +39,7 @@
 <img class = "materialboxed" width = "300" src  = "${product.pictureUrl}"/>
 
 <h2>
-<jstl:if test="${currentLang == \"en\"}">
-	<jstl:out value="${product.name_en}" />
-</jstl:if>
-
-<jstl:if test="${currentLang == \"es\"}">
-	<jstl:out value="${product.name_es}" />
-</jstl:if>
+	<jstl:out value="${product.name[currentLang]}" />
 </h2>
 
 <jstl:if test="${product.discontinued}">
@@ -57,13 +51,7 @@
 	<spring:message code="product.description" />
 </h4>
 <p>
-	<jstl:if test="${currentLang == \"en\"}">
-	<jstl:out value="${product.description_en}" />
-</jstl:if>
-
-<jstl:if test="${currentLang == \"es\"}">
-	<jstl:out value="${product.description_es}" />
-</jstl:if>
+	<jstl:out value="${product.description[currentLang]}" />
 </p>
 
 <h5>
