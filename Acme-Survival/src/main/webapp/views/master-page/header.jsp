@@ -140,8 +140,12 @@
 						<li><a href="actor/display.do"><spring:message
 									code="master.page.actorProfile" /></a></li>
 						<li class="divider"></li>
+						<li><a href="event/designer/list.do"><spring:message
+									code="master.page.events" /> </a></li>
+						<li class="divider"></li>
 						<li><a href="j_spring_security_logout"><spring:message
 									code="master.page.logout" /> </a></li>
+						
 					</ul>
 
 					<!-- Dropdown Trigger -->

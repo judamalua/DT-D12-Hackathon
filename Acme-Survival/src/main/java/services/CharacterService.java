@@ -93,7 +93,7 @@ public class CharacterService {
 		if (character.getId() == 0) {
 			//Initial properties of a character
 			Assert.isTrue(character.getCurrentFood() == 100);
-			Assert.isTrue(character.getCurrentHealth() == character.getStrenght());
+			Assert.isTrue(character.getCurrentHealth() == character.getStrength());
 			Assert.isTrue(character.getCurrentWater() == 100);
 			Assert.isTrue(character.getExperience() == 0);
 			Assert.isTrue(character.getItem() == null);
@@ -102,7 +102,7 @@ public class CharacterService {
 			Assert.isTrue(character.getCapacity() == 10);
 		} else {
 			Assert.isTrue(character.getCurrentFood() <= 100);
-			Assert.isTrue(character.getCurrentHealth() <= character.getStrenght());
+			Assert.isTrue(character.getCurrentHealth() <= character.getStrength());
 			Assert.isTrue(character.getCurrentWater() <= 100);
 			Assert.isTrue(character.getExperience() >= 0);
 			Assert.isTrue(character.getItem() == null);
@@ -164,7 +164,7 @@ public class CharacterService {
 			result.setName(character.getName());
 			result.setRefuge(character.getRefuge());
 			result.setRoom(character.getRoom());
-			result.setStrenght(character.getStrenght());
+			result.setStrength(character.getStrength());
 			result.setSurname(result.getSurname());
 		}
 		this.validator.validate(result, binding);

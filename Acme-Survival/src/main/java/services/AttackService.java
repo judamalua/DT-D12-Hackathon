@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -21,8 +22,11 @@ public class AttackService {
 	@Autowired
 	private AttackRepository	attackRepository;
 
-
 	// Supporting services --------------------------------------------------
+
+	@Autowired
+	private MoveService			moveService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -58,16 +62,26 @@ public class AttackService {
 
 	public Attack save(final Attack attack) {
 
-		assert attack != null;
+		Assert.notNull(attack);
 
 		Attack result;
+		Date startMoment, endMoment;
+		Long time;
+
+		startMoment = new Date(System.currentTimeMillis() - 10);
+		time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
+		endMoment = new Date(System.currentTimeMillis() + time);
+
+		if (attack.getId() == 0) {
+			attack.setStartDate(startMoment);
+			attack.setEndMoment(endMoment);
+		}
 
 		result = this.attackRepository.save(attack);
 
 		return result;
 
 	}
-
 	public void delete(final Attack attack) {
 
 		assert attack != null;
@@ -79,6 +93,25 @@ public class AttackService {
 
 	}
 
+	//Business methods --------------------
+	/**
+	 * This methot returns the number of resources stolen in the Attack. If the attacker loses, it returns 0 or a negative number.
+	 * 
+	 * @param attack
+	 * @return resources stolen of the Attack. If is a lost, then it returns 0.
+	 */
+	public Integer getResourcesOfAttack(final Attack attack) {
+		Integer strengthSumAttacker, strengthSumDefendant;
+		Integer result;
+
+		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
+		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
+
+		result = strengthSumAttacker - strengthSumDefendant;
+
+		return result;
+
+	}
 	public Collection<Attack> findAttacksByAttacker(final int refugeId) {
 		Assert.isTrue(refugeId != 0);
 
@@ -95,6 +128,14 @@ public class AttackService {
 		Collection<Attack> result;
 
 		result = this.attackRepository.findAttacksByDefendant(refugeId);
+
+		return result;
+	}
+
+	public Integer getStrengthSumByRefuge(final int refugeId) {
+		Integer result;
+
+		result = this.attackRepository.getStrengthSumByRefuge(refugeId);
 
 		return result;
 	}

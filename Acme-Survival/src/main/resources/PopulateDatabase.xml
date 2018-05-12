@@ -346,7 +346,8 @@
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en" value="Example text 2" />
 		<property name="text_es" value="Texto de ejemplo 2" />
-		<property name="pictureUrl" value="https://c402277.ssl.cf1.rackcdn.com/photos/1579/images/hero_full/HI_115201.jpg?1345598092" />
+		<property name="pictureUrl"
+			value="https://c402277.ssl.cf1.rackcdn.com/photos/1579/images/hero_full/HI_115201.jpg?1345598092" />
 		<property name="align" value="right" />
 	</bean>
 	<bean id="Slider3" class="domain.Slider">
@@ -354,37 +355,95 @@
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
 		<property name="text_en" value="Example text 3" />
 		<property name="text_es" value="Texto de ejemplo 3" />
-		<property name="pictureUrl" value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
+		<property name="pictureUrl"
+			value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
 		<property name="align" value="center" />
 	</bean>
-	
+
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">
-		<property name="name_en" value="White t-shirt" />
-		<property name="name_es" value="Camiseta blanca" />
-		<property name="description_en" value="White t-shirt that can buy cheaper in any other store" />
-		<property name="description_es" value="Camiseta blanca que puedes encontrar más barata en cualquier otra tienda" />
-		<property name="pictureUrl" value="https://www.ecamisetas.com/articulos/gr/camisetas-unisex-6424B.jpg" />
+		<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>White t-shirt</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Camiseta blanca</value></entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>White t-shirt that can buy cheaper in any other store</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Camiseta blanca que puedes encontrar más barata en cualquier otra tienda</value></entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="https://www.ecamisetas.com/articulos/gr/camisetas-unisex-6424B.jpg" />
 		<property name="price" value="450.00" />
 		<property name="finalMode" value="true" />
 		<property name="discontinued" value="true" />
 	</bean>
 	<bean id="Product2" class="domain.Product">
-		<property name="name_en" value="Piano" />
-		<property name="name_es" value="Piano" />
-		<property name="description_en" value="Sing us a song you're the piano man" />
-		<property name="description_es" value="Cántanos una canción esta noche" />
-		<property name="pictureUrl" value="https://d1aeri3ty3izns.cloudfront.net/media/10/103678/1200/preview.jpg" />
+		<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Piano in English</value></entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Piano en español</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Sing us a song you're the piano man</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Cántanos una canción esta noche</value></entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="https://d1aeri3ty3izns.cloudfront.net/media/10/103678/1200/preview.jpg" />
 		<property name="price" value="5940.00" />
 		<property name="finalMode" value="true" />
 		<property name="discontinued" value="false" />
 	</bean>
 	<bean id="Product3" class="domain.Product">
-		<property name="name_en" value="Product in proccess" />
-		<property name="name_es" value="Producto en proceso" />
-		<property name="description_en" value="We are working on it" />
-		<property name="description_es" value="Estamos trabajando en ello" />
-		<property name="pictureUrl" value="http://www.mimontevideo.com/wp-content/uploads/2016/07/Cara-Feliz.fw_.png" />
+		<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Product in proccess</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Producto en proceso</value></entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>We are working on it</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Estamos trabajando en ello</value></entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="http://www.mimontevideo.com/wp-content/uploads/2016/07/Cara-Feliz.fw_.png" />
 		<property name="price" value="99399.00" />
 		<property name="finalMode" value="false" />
 		<property name="discontinued" value="false" />
@@ -400,5 +459,11 @@
 		<property name="businessNameFirst" value="Acme" />
 		<property name="businessNameLast" value="Survival" />
 		<property name="pageSize" value="5" />
+		<property name="languages" >
+			<list>
+				<value>es</value>
+				<value>en</value>
+			</list>
+		</property>
 	</bean>
 </beans>

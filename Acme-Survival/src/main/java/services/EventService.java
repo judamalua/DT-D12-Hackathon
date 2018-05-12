@@ -1,12 +1,15 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.EventRepository;
 import domain.Event;
@@ -19,6 +22,8 @@ public class EventService {
 
 	@Autowired
 	private EventRepository	eventRepository;
+	@Autowired
+	private Validator				validator;
 
 
 	// Supporting services --------------------------------------------------
@@ -76,6 +81,39 @@ public class EventService {
 
 		this.eventRepository.delete(event);
 
+	}
+	
+
+	/**
+	 * Reconstruct the Event passed as parameter
+	 * 
+	 * @param event
+	 * @param binding
+	 * 
+	 * @return The reconstructed Event
+	 * @author Alejandro
+	 */
+	public Event reconstruct(final Event event, final BindingResult binding) {
+		Event result;
+
+		if (event.getId() == 0) {
+			result = event;
+		} else {
+			result = this.eventRepository.findOne(event.getId());
+			result.setDescription_es(event.getDescription_es());
+			result.setDescription_en(event.getDescription_en());
+			result.setName_es(event.getName_es());
+			result.setName_en(event.getName_en());
+			result.setFinalMode(event.getFinalMode());
+			result.setFood(event.getFood());
+			result.setHealth(event.getHealth());
+			result.setWater(event.getWater());
+			result.setFindCharacter(event.getFindCharacter());
+			result.setItemDesign(event.getItemDesign());
+		}
+
+		this.validator.validate(result, binding);
+		return result;
 	}
 }
 

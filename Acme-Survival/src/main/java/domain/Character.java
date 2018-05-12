@@ -27,7 +27,7 @@ public class Character extends DomainEntity {
 	private int		currentHealth;
 	private int		currentWater;
 	private int		currentFood;
-	private int		strenght;
+	private int		strength;
 	private int		luck;
 	private int		capacity;
 	private int		level;
@@ -82,12 +82,12 @@ public class Character extends DomainEntity {
 	}
 
 	@Min(value = 100)
-	public int getStrenght() {
-		return this.strenght;
+	public int getStrength() {
+		return this.strength;
 	}
 
-	public void setStrenght(final int strenght) {
-		this.strenght = strenght;
+	public void setStrength(final int strength) {
+		this.strength = strength;
 	}
 
 	@Min(value = 10)
