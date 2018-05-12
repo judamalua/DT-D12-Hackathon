@@ -31,6 +31,7 @@ public class Product extends DomainEntity {
 	private boolean				discontinued;
 
 
+	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
 	@ElementCollection
@@ -43,6 +44,7 @@ public class Product extends DomainEntity {
 	}
 
 	@MapSafeHtml
+	@NotNull
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getDescription() {

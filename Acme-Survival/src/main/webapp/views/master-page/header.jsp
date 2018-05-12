@@ -42,18 +42,6 @@
 						<li><a href="actor/admin/edit.do"><spring:message
 									code="master.page.actorEdit" /></a></li>
 						<li class="divider"></li>
-						<li><a href="actor/admin/RegisterManager.do"><spring:message
-									code="master.page.registerManager" /></a></li>
-						<li class="divider"></li>
-						<li><a href="actor/admin/RegisterModerator.do"><spring:message
-									code="master.page.registerModerator" /></a></li>
-						<li class="divider"></li>
-						<li><a href="actor/admin/RegisterDesigner.do"><spring:message
-									code="master.page.registerDesigner" /></a></li>
-						<li class="divider"></li>
-						<li><a href="actor/admin/register.do"><spring:message
-									code="master.page.registerAdmin" /></a></li>
-						<li class="divider"></li>
 						<li><a href="actor/display.do"><spring:message
 									code="master.page.actorProfile" /></a></li>
 						<li class="divider"></li>
@@ -165,7 +153,16 @@
 				<!-- Dropdown Structure -->
 				<ul id="dropdownAdminFunctions" class="dropdown-content">
 					<li><a href="actor/admin/register.do"><spring:message
-								code="master.page.createAdmin" /></a></li>
+									code="master.page.registerAdmin" /></a></li>			
+					<li class="divider"></li>
+					<li><a href="actor/admin/RegisterManager.do"><spring:message
+									code="master.page.registerManager" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/admin/RegisterModerator.do"><spring:message
+									code="master.page.registerModerator" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/admin/RegisterDesigner.do"><spring:message
+									code="master.page.registerDesigner" /></a></li>
 					<li class="divider"></li>
 					<li><a href="dashboard/admin/list.do"><spring:message
 								code="master.page.dashboardList" /></a></li>
@@ -197,6 +194,21 @@
 				<li><a class="dropdown-button" href="#!"
 					data-activates="dropdownPlayerFunctions"><spring:message
 							code="master.page.player" /><i class="material-icons right">arrow_drop_down</i></a></li>
+			</security:authorize>
+			
+			<security:authorize access="hasRole('DESIGNER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownDesignerFunctions" class="dropdown-content">
+					<li><a href="roomDesign/designer/list.do"><spring:message
+								code="master.page.room.design.list" /></a></li>
+					<li class="divider"></li>
+					<li><a href="#!">NOT YET IMPLEMENTED</a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownDesignerFunctions"><spring:message
+							code="master.page.designer" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
 
 			<security:authorize access="hasRole('MANAGER')">

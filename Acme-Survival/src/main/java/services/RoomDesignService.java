@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -71,6 +73,8 @@ public class RoomDesignService {
 
 	}
 
+	// Other business methods ------------------------------------------------------------------------------------
+
 	public Collection<RoomDesign> findFinalRoomDesign() {
 		Collection<RoomDesign> result;
 
@@ -78,5 +82,22 @@ public class RoomDesignService {
 
 		return result;
 
+	}
+
+	/**
+	 * This method returns a page of draft mode room designs
+	 * 
+	 * @param pageable
+	 * @return a page of room design
+	 * 
+	 * @author Juanmi
+	 */
+	public Page<RoomDesign> findDraftRoomDesigns(final Pageable pageable) {
+		Page<RoomDesign> result;
+		Assert.notNull(pageable);
+
+		result = this.roomDesignRepository.findDraftRoomDesigns(pageable);
+
+		return result;
 	}
 }
