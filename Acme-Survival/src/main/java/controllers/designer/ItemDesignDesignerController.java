@@ -224,11 +224,16 @@ public class ItemDesignDesignerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final ItemDesign itemDesign, final String message) {
 		ModelAndView result;
+		Configuration configuration;
+
+		configuration = this.configurationService.findConfiguration();
 
 		result = new ModelAndView("itemDesign/edit");
 		result.addObject("itemDesign", itemDesign);
 		result.addObject("tool", itemDesign instanceof Tool);
 		result.addObject("message", message);
+		result.addObject("languages", configuration.getLanguages());
+
 		if (itemDesign instanceof Tool)
 			result.addObject("requestURI", "tool/designer/edit.do");
 		else

@@ -55,7 +55,7 @@ public class ToolDesignerController extends AbstractController {
 
 				this.toolService.save(itemDesign);
 
-				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "&");
+				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "finalMode=" + itemDesign.getFinalMode() + "&");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");
