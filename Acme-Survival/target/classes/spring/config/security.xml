@@ -83,9 +83,11 @@
 		<security:intercept-url pattern="/event/designer/create.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 			
-			<security:intercept-url pattern="/roomDesign/designer/list.do"
+		<security:intercept-url pattern="/roomDesign/designer/list.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-		
+			
+		<security:intercept-url pattern="/roomDesign/detailed.do"
+			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/forum/list.do"
 			access="permitAll" requires-channel="https" />
