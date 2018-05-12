@@ -106,12 +106,16 @@ public class CharacterPlayerController extends AbstractController {
 		ModelAndView result;
 		Actor player;
 		Character character;
+		Refuge refuge;
 
 		try {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
 			Assert.isTrue((player instanceof Player));
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
+			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+
 			result.addObject("character", character);
 
 		} catch (final Throwable oops) {
