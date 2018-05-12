@@ -102,4 +102,20 @@ public class ItemDesignService {
 
 		return result;
 	}
+
+	public Page<ItemDesign> findNotFinal(final Pageable pageable) {
+		Page<ItemDesign> result;
+
+		result = this.itemDesignRepository.findNotFinal(pageable);
+
+		return result;
+	}
+
+	public Page<ItemDesign> findFinal(final Pageable pageable) {
+		Page<ItemDesign> result;
+
+		result = this.itemDesignRepository.findFinal(pageable);
+
+		return result;
+	}
 }

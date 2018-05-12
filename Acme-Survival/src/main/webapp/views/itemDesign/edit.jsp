@@ -21,7 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="tool/designer/edit.do" modelAttribute="tool">
+<form:form action="tool/designer/edit.do?tool=${tool}" modelAttribute="itemDesign">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -61,6 +61,7 @@
 		<acme:delete clickCode="tool.delete.message" name="delete"
 			code="tool.delete" />
 	</jstl:if>
+	
 	<acme:cancel url="itemDesign/designer/list.do" code="tool.cancel" />
 
 </form:form>

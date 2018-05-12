@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import annotations.MapNotBlank;
+import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -31,6 +32,7 @@ public class Product extends DomainEntity {
 
 
 	@MapNotBlank
+	@MapSafeHtml
 	@ElementCollection
 	public Map<String, String> getName() {
 		return this.name;
@@ -40,6 +42,7 @@ public class Product extends DomainEntity {
 		this.name = name;
 	}
 
+	@MapSafeHtml
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getDescription() {

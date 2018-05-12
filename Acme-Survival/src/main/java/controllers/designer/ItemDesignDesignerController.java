@@ -25,15 +25,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.DesignerService;
 import services.ItemDesignService;
-import services.RoomService;
+import services.ResourceService;
+import services.ToolService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Configuration;
+import domain.Designer;
 import domain.ItemDesign;
 import domain.Player;
-import domain.Room;
+import domain.Resource;
+import domain.Tool;
 
 @Controller
 @RequestMapping("/itemDesign/designer")
@@ -43,13 +45,13 @@ public class ItemDesignDesignerController extends AbstractController {
 	private ItemDesignService		itemDesignService;
 
 	@Autowired
-	private DesignerService			designerService;
-
-	@Autowired
-	private RoomService				roomService;
-
-	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private ToolService				toolService;
+
+	@Autowired
+	private ResourceService			resourceService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -72,103 +74,54 @@ public class ItemDesignDesignerController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam final Boolean tool, @RequestParam final Boolean finalMode) {
 		ModelAndView result;
-		Page<ItemDesign> itemDesigns;
+		Page<Tool> tools = null;
+		Page<Resource> resources = null;
 		Pageable pageable;
-		final ItemDesign refuge;
 		Configuration configuration;
-		Player actor;
 
 		try {
 			result = new ModelAndView("refuge/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
-			actor = (Player) this.actorService.findActorByPrincipal();
 
-			itemDesigns = this.itemDesignService.findAll(pageable);
+			if (tool && finalMode)
+				tools = this.toolService.findFinal(pageable);
+			else if (tool && !finalMode)
+				tools = this.toolService.findNotFinal(pageable);
+			else if (!tool && finalMode)
+				resources = this.resourceService.findFinal(pageable);
+			else
+				resources = this.resourceService.findNotFinal(pageable);
 
-			result.addObject("itemDesigns", itemDesigns.getContent());
+			if (tool) {
+				result.addObject("itemDesigns", tools.getContent());
+				result.addObject("pageNum", tools.getTotalPages());
+			} else {
+				result.addObject("itemDesigns", resources.getContent());
+				result.addObject("pageNum", resources.getTotalPages());
+			}
 			result.addObject("page", page);
-			result.addObject("pageNum", itemDesigns.getTotalPages());
-			result.addObject("requestURI", "itemDesign/designer/list.do?");
+
+			result.addObject("requestURI", "itemDesign/designer/list.do?finalMode=" + finalMode + "&");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
 		return result;
 	}
-	/**
-	 * That method returns a model and view with the refuge display
-	 * 
-	 * @param pageRoom
-	 * @param refugeId
-	 *            (Optional)
-	 * 
-	 * @return ModelandView
-	 * @author MJ
-	 */
-	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam(required = false) final Integer refugeId, @RequestParam(required = false, defaultValue = "0") final int pageRoom) {
-		ModelAndView result;
-		final ItemDesign refuge, ownRefuge;
-		Configuration configuration;
-		Actor actor;
-		Pageable pageable;
-		Page<Room> rooms;
-		boolean owner = false, knowRefuge = false;
-
-		try {
-			configuration = this.configurationService.findConfiguration();
-			pageable = new PageRequest(pageRoom, configuration.getPageSize());
-
-			result = new ModelAndView("refuge/display");
-
-			actor = this.actorService.findActorByPrincipal();
-
-			Assert.isTrue((actor instanceof Player));
-
-			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
-
-			if (refugeId == null) {
-				refuge = ownRefuge;
-				Assert.notNull(refuge, "Not have refuge");
-			} else
-				refuge = this.refugeService.findOne(refugeId);
-
-			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
-			owner = ownRefuge != null && ownRefuge.equals(refuge);
-			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
-
-			//Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
-
-			result.addObject("refuge", refuge);
-			result.addObject("rooms", rooms.getContent());
-			result.addObject("pageRoom", pageRoom);
-			result.addObject("pageNumRoom", rooms.getTotalPages());
-			result.addObject("knowRefuge", knowRefuge);
-			result.addObject("owner", owner);
-
-		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge"))
-				result = new ModelAndView("redirect:/refuge/player/create.do");
-			else
-				result = new ModelAndView("redirect:/misc/403");
-		}
-		return result;
-	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit() {
+	public ModelAndView edit(@RequestParam final Integer itemDesignId, @RequestParam final Boolean tool) {
 		ModelAndView result;
-		ItemDesign ownRefuge;
-		Player actor;
+		final ItemDesign itemDesign;
 
 		try {
-			actor = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
-			Assert.notNull(ownRefuge, "Not have refuge");
-			result = this.createEditModelAndView(ownRefuge);
+			Assert.isTrue(this.actorService.findActorByPrincipal() instanceof Designer);
+
+			itemDesign = this.itemDesignService.findOne(itemDesignId);
+
+			result = this.createEditModelAndView(itemDesign);
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge"))
@@ -180,18 +133,23 @@ public class ItemDesignDesignerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final Boolean tool) {
 		ModelAndView result;
-		final ItemDesign refuge;
+		final Tool toolItem;
+		Resource resource;
 		Actor actor;
 
 		try {
 			actor = this.actorService.findActorByPrincipal();
 			Assert.isTrue(actor instanceof Player);
 
-			refuge = this.refugeService.create();
-
-			result = this.createEditModelAndView(refuge);
+			if (tool) {
+				toolItem = this.toolService.create();
+				result = this.createEditModelAndView(toolItem);
+			} else {
+				resource = this.resourceService.create();
+				result = this.createEditModelAndView(resource);
+			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:misc/403");
@@ -202,55 +160,57 @@ public class ItemDesignDesignerController extends AbstractController {
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(@ModelAttribute("refuge") ItemDesign refuge, final BindingResult binding) {
+	public ModelAndView edit(@ModelAttribute("itemDesign") ItemDesign itemDesign, final BindingResult binding, @RequestParam final Boolean tool) {
 		ModelAndView result;
-		ItemDesign sendedRefuge = null;
-		Player player;
-		ItemDesign ownRefuge;
+		final ItemDesign sendedRefuge = null;
 		try {
-			sendedRefuge = refuge;
-			refuge = this.refugeService.reconstruct(refuge, binding);
+			if (tool)
+				itemDesign = this.toolService.reconstruct((Tool) itemDesign, binding);
+			else
+				itemDesign = this.resourceService.reconstruct((Resource) itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(sendedRefuge, "refuge.params.error");
 		else
 			try {
-				player = (Player) this.actorService.findActorByPrincipal();
-				ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
-				if (refuge.getId() != 0)
-					Assert.isTrue(ownRefuge.equals(refuge));
+				Assert.isTrue(!itemDesign.getFinalMode());
+
+				if (tool)
+					this.toolService.save((Tool) itemDesign);
 				else
-					Assert.isTrue(ownRefuge == null, "Not have refuge");
-				this.refugeService.save(refuge);
-				result = new ModelAndView("redirect:/refuge/player/display.do");
+					this.resourceService.save((Resource) itemDesign);
+
+				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + tool + "&");
 
 			} catch (final Throwable oops) {
-				if (oops.getMessage().contains("Not have refuge"))
-					result = new ModelAndView("redirect:/refuge/player/create.do");
-				else
-					result = this.createEditModelAndView(refuge, "refuge.commit.error");
+				result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");
 			}
 
 		return result;
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final ItemDesign refuge, final BindingResult binding) {
+	public ModelAndView delete(ItemDesign itemDesign, final BindingResult binding, @RequestParam final Boolean tool) {
 		ModelAndView result;
-		Player player;
-		ItemDesign ownRefuge;
 
 		try {
-			player = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
-			Assert.notNull(ownRefuge);
-			Assert.isTrue(ownRefuge.equals(refuge));
-			this.refugeService.delete(ownRefuge);
+			if (tool)
+				itemDesign = this.toolService.findOne(itemDesign.getId());
+			else
+				itemDesign = this.resourceService.findOne(itemDesign.getId());
 
-			result = new ModelAndView("redirect:/refuge/list.do");
+			Assert.isTrue(!itemDesign.getFinalMode());
+
+			if (tool)
+				this.toolService.delete((Tool) itemDesign);
+			else
+				this.resourceService.delete((Resource) itemDesign);
+
+			result = new ModelAndView("redirect:/itemDesign/designer/list.do");
+
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(refuge, "refuge.commit.error");
+			result = this.createEditModelAndView(itemDesign, "refuge.commit.error");
 		}
 
 		return result;
@@ -258,19 +218,20 @@ public class ItemDesignDesignerController extends AbstractController {
 
 	// Ancillary methods --------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final ItemDesign refuge) {
+	protected ModelAndView createEditModelAndView(final ItemDesign itemDesign) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(refuge, null);
+		result = this.createEditModelAndView(itemDesign, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final ItemDesign refuge, final String message) {
+	protected ModelAndView createEditModelAndView(final ItemDesign itemDesign, final String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("refuge/edit");
-		result.addObject("refuge", refuge);
+		result = new ModelAndView("itemDesign/edit");
+		result.addObject("itemDesign", itemDesign);
+		result.addObject("tool", itemDesign instanceof Tool);
 		result.addObject("message", message);
 
 		return result;

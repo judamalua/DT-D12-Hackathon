@@ -211,6 +211,25 @@
 					data-activates="dropdownManagerFunctions"><spring:message
 							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
+			
+			<security:authorize access="hasRole('DESIGNER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownManagerFunctions" class="dropdown-content">
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
+								code="master.page.designer.tools.final" /></a></li>
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
+								code="master.page.designer.tools.notFinal" /></a></li>
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
+								code="master.page.designer.resources.final" /></a></li>
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
+								code="master.page.designer.resources.notFinal" /></a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownManagerFunctions"><spring:message
+							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
+			</security:authorize>
 
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message

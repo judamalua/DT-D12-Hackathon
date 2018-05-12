@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +26,7 @@ public abstract class ItemDesign extends DomainEntity {
 	private boolean				finalMode;
 
 
+	@ElementCollection
 	@NotNull
 	public Map<String, String> getName() {
 		return this.name;
@@ -34,6 +36,7 @@ public abstract class ItemDesign extends DomainEntity {
 		this.name = name;
 	}
 
+	@ElementCollection
 	@NotNull
 	public Map<String, String> getDescription() {
 		return this.description;
