@@ -132,6 +132,18 @@
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
 	</bean>
+	
+	<!-- %%%% Designer %%%% -->
+	<bean id="Designer1" class="domain.Designer">
+		<property name="name" value="Designer 1" />
+		<property name="surname" value="Designer 1" />
+		<property name="email" value="Designer1@mail.com" />
+		<property name="birthDate" value="1995/10/07" />
+		<property name="userAccount" ref="UserAccount3" />
+		<property name="avatar"
+			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
+		<property name="phoneNumber" value="657894123" />
+	</bean>
 
 	<!-- %%%% Payers %%%% -->
 	<bean id="Player1" class="domain.Player">
@@ -166,16 +178,64 @@
 
 	<!-- %%%% Barracks %%%% -->
 	<bean id="Barrack1" class="domain.Barrack">
-		<property name="name_es" value="Barraca" />
-		<property name="name_en" value="Barrack" />
-		<property name="description_es" value="Cuidado no te piquen las chinches." />
-		<property name="description_en" value="Cuidado no te piquen las chinches." />
+		<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Barrack</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Barraca</value></entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>English stuff</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Cuidado no te piquen las chinches.</value></entry>
+			</map>
+		</property>
 		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="0" />
 		<property name="maxCapacityCharacters" value="1" />
 		<property name="finalMode" value="true" />
 		<property name="characterCapacity" value="0" />
+	</bean>
+	<bean id="Barrack2" class="domain.Barrack">
+		<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Testing barrack</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Barracones de test</value></entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Enlglish test barracks</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Prueba barracones</value></entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="1" />
+		<property name="costMetal" value="0" />
+		<property name="maxCapacityCharacters" value="1" />
+		<property name="finalMode" value="false" />
+		<property name="characterCapacity" value="2" />
 	</bean>
 
 	<!-- %%%%%% domain.Forum %%%%%% -->

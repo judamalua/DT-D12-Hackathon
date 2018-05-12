@@ -30,6 +30,7 @@ public class Product extends DomainEntity {
 	private boolean				discontinued;
 
 
+	@NotNull
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getName() {
@@ -40,6 +41,7 @@ public class Product extends DomainEntity {
 		this.name = name;
 	}
 
+	@NotNull
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getDescription() {
