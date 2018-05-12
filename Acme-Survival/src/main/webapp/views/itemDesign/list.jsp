@@ -12,7 +12,8 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-
+<spring:message code="master.page.current.lang" var="currentLang" />
+		
 <acme:pagination requestURI="itemDesign/designer/list?page="
 	pageNum="${pageNum}" page="${page}" />
 
@@ -25,12 +26,12 @@
 
 	<spring:message code="itemDesign.name" var="nameTitle" />
 	<display:column title="${nameTitle}">
-		<jstl:out value="${itemDesign.name[lang]}" />
+		<jstl:out value="${itemDesign.name[currentLang]}" />
 	</display:column>
 
 	<spring:message code="itemDesign.description" var="descriptionTitle" />
 	<display:column title="${descriptionTitle}">
-		<jstl:out value="${itemDesign.description[lang]}" />
+		<jstl:out value="${itemDesign.description[currentLang]}" />
 	</display:column>
 
 	<jstl:if test="${!tool}">

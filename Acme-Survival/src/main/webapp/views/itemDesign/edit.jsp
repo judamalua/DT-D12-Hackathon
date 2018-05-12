@@ -62,6 +62,6 @@
 			code="tool.delete" />
 	</jstl:if>
 	
-	<acme:cancel url="itemDesign/designer/list.do" code="itemDesign.cancel" />
+	<acme:cancel url="itemDesign/designer/list.do?tool=${tool}&finalMode=false" code="itemDesign.cancel" />
 
 </form:form>

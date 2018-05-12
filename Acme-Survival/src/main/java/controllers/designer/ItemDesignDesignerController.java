@@ -101,9 +101,11 @@ public class ItemDesignDesignerController extends AbstractController {
 				result.addObject("itemDesigns", resources.getContent());
 				result.addObject("pageNum", resources.getTotalPages());
 			}
-			result.addObject("page", page);
 
-			result.addObject("requestURI", "itemDesign/designer/list.do?finalMode=" + finalMode + "&");
+			result.addObject("page", page);
+			result.addObject("tool", tool);
+
+			result.addObject("requestURI", "itemDesign/designer/list.do?finalMode=" + finalMode + "&tool=" + tool + "&");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -224,11 +226,16 @@ public class ItemDesignDesignerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final ItemDesign itemDesign, final String message) {
 		ModelAndView result;
+		Configuration configuration;
+
+		configuration = this.configurationService.findConfiguration();
 
 		result = new ModelAndView("itemDesign/edit");
 		result.addObject("itemDesign", itemDesign);
 		result.addObject("tool", itemDesign instanceof Tool);
 		result.addObject("message", message);
+		result.addObject("languages", configuration.getLanguages());
+
 		if (itemDesign instanceof Tool)
 			result.addObject("requestURI", "tool/designer/edit.do");
 		else
