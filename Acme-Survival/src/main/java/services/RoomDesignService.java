@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.RoomDesignRepository;
+import domain.Actor;
+import domain.Designer;
 import domain.RoomDesign;
 
 @Service
@@ -23,8 +25,10 @@ public class RoomDesignService {
 	@Autowired
 	private RoomDesignRepository	roomDesignRepository;
 
-
 	// Supporting services --------------------------------------------------
+	@Autowired
+	private ActorService			actorService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -50,11 +54,24 @@ public class RoomDesignService {
 
 	}
 
+	/**
+	 * Saves the room design given by parameters
+	 * 
+	 * @param room
+	 *            design
+	 *            to be saved
+	 * @return the room design saved
+	 */
 	public RoomDesign save(final RoomDesign roomDesign) {
 
 		assert roomDesign != null;
-
+		Actor actor;
 		RoomDesign result;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		// To edit or create a room design the principal must be a designer
+		Assert.isTrue(actor instanceof Designer);
 
 		result = this.roomDesignRepository.save(roomDesign);
 
