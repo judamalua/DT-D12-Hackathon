@@ -6,7 +6,7 @@ function initialize() {
 
 function getMainDomain() {
 	var development = true;
-	var domainName = "Acme-Newspaper";
+	var domainName = "Acme-Survival";
 	if (development == true) {
 		return "/" + domainName + "/";
 	} else {

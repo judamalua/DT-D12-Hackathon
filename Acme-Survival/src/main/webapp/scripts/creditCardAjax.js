@@ -32,7 +32,6 @@ function useNewCreditCard() {
 	location.reload();
 };
 function checkCreditCard() {
-	debugger;
 	var cardCookie = getCookie("cardCookie");
 	var language = getCookie("language");
 	if (cardCookie != null || cardCookie != "") {
@@ -59,7 +58,6 @@ function checkCreditCard() {
 	}
 };
 function saveCreditCardCookie() {
-	debugger;
 	var cardCookie = document.getElementsByClassName("creditCardCookieToken")[0].value;
 	document.cookie = "cardCookie=" + cardCookie + ";path=/";
 };
