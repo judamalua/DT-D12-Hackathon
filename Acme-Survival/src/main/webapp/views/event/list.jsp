@@ -25,15 +25,9 @@
 
 	<spring:message code="event.name" var="name" />
 	<spring:message code="event.description" var="description" />
-	<jstl:if test="${currentLang == \"en\"}">
-	<display:column property="name_en" title="${description}" sortable="false" />
-	<display:column property="description_en" title="${description}" sortable="false" />
-	</jstl:if>
 	
-	<jstl:if test="${currentLang == \"es\"}">
-	<display:column property="name_es" title="${description}" sortable="false" />
-	<display:column property="description_es" title="${description}" sortable="false" />
-	</jstl:if>
+	<display:column property="name" title="${name[currentLang]}" sortable="false" />
+	<display:column property="description" title="${description[currentLang]}" sortable="false" />
 	
 
 </display:table>
