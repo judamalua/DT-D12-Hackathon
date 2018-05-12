@@ -85,10 +85,48 @@
 	<b><spring:message code="roomDesign.maxCapacityCharacters" />:</b> <jstl:out value="${roomDesign.maxCapacityCharacters}" />
 </p>
 
-<!-- FINISH SHOWING EACH ROOM TYPE ATTRIBUTES -->
+<!-- Showing each room attributes -->
 
 <jstl:if test = "${roomDesign[\"class\"].simpleName eq \"Barrack\"}">
 	<p>
 		<b><spring:message code="roomDesign.type.barrack.characterCapacity" />:</b> <jstl:out value="${roomDesign.characterCapacity}" />
+	</p>
+</jstl:if>
+
+<jstl:if test = "${roomDesign[\"class\"].simpleName eq \"RestorationRoom\"}">
+	<p>
+		<b><spring:message code="roomDesign.type.restorationRoom.health" />:</b> <jstl:out value="${roomDesign.health}" />
+	</p>
+	
+	<p>
+		<b><spring:message code="roomDesign.type.restorationRoom.food" />:</b> <jstl:out value="${roomDesign.food}" />
+	</p>
+	
+	<p>
+		<b><spring:message code="roomDesign.type.restorationRoom.water" />:</b> <jstl:out value="${roomDesign.water}" />
+	</p>
+</jstl:if>
+
+<jstl:if test = "${roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
+	<p>
+		<b><spring:message code="roomDesign.type.resourceRoom.water" />:</b> <jstl:out value="${roomDesign.water}" />
+	</p>
+	
+	<p>
+		<b><spring:message code="roomDesign.type.resourceRoom.food" />:</b> <jstl:out value="${roomDesign.food}" />
+	</p>
+	
+	<p>
+		<b><spring:message code="roomDesign.type.resourceRoom.metal" />:</b> <jstl:out value="${roomDesign.metal}" />
+	</p>
+	
+	<p>
+		<b><spring:message code="roomDesign.type.resourceRoom.wood" />:</b> <jstl:out value="${roomDesign.wood}" />
+	</p>
+</jstl:if>
+
+<jstl:if test = "${roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
+	<p>
+		<b><spring:message code="roomDesign.type.warehouse.itemCapacity" />:</b> <jstl:out value="${roomDesign.itemCapacity}" />
 	</p>
 </jstl:if>
