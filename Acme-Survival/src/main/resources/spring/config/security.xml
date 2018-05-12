@@ -112,7 +112,13 @@
 
 		<security:intercept-url pattern="/room/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
-
+			
+		<security:intercept-url pattern="/order/player/buy.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/order/player/ajaxCard.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 

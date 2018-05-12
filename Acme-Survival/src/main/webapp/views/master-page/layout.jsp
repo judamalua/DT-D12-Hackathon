@@ -35,6 +35,7 @@
 
 <script src="scripts/cookieAjax.js"></script>
 <script src="scripts/businessNameAjax.js"></script>
+<script src="scripts/main.js"></script>
 <script type="text/javascript">
 window.onload = function() {
 	initialize();
