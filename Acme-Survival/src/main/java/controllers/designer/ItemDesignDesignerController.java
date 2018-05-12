@@ -33,7 +33,6 @@ import domain.Actor;
 import domain.Configuration;
 import domain.Designer;
 import domain.ItemDesign;
-import domain.Player;
 import domain.Resource;
 import domain.Tool;
 
@@ -82,7 +81,7 @@ public class ItemDesignDesignerController extends AbstractController {
 		Configuration configuration;
 
 		try {
-			result = new ModelAndView("refuge/list");
+			result = new ModelAndView("itemDesign/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 
@@ -124,10 +123,7 @@ public class ItemDesignDesignerController extends AbstractController {
 			result = this.createEditModelAndView(itemDesign);
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge"))
-				result = new ModelAndView("redirect:/refuge/player/create.do");
-			else
-				result = new ModelAndView("redirect:/misc/403");
+			result = new ModelAndView("redirect:/misc/403");
 		}
 		return result;
 	}
@@ -141,7 +137,7 @@ public class ItemDesignDesignerController extends AbstractController {
 
 		try {
 			actor = this.actorService.findActorByPrincipal();
-			Assert.isTrue(actor instanceof Player);
+			Assert.isTrue(actor instanceof Designer);
 
 			if (tool) {
 				toolItem = this.toolService.create();
@@ -152,7 +148,7 @@ public class ItemDesignDesignerController extends AbstractController {
 			}
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:misc/403");
+			result = new ModelAndView("redirect:/misc/403");
 		}
 		return result;
 	}
@@ -233,6 +229,10 @@ public class ItemDesignDesignerController extends AbstractController {
 		result.addObject("itemDesign", itemDesign);
 		result.addObject("tool", itemDesign instanceof Tool);
 		result.addObject("message", message);
+		if (itemDesign instanceof Tool)
+			result.addObject("requestURI", "tool/designer/edit.do");
+		else
+			result.addObject("requestURI", "resource/designer/edit.do");
 
 		return result;
 

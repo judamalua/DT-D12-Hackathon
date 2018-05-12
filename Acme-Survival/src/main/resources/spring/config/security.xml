@@ -124,6 +124,12 @@
 
 		<security:intercept-url pattern="/itemDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
+			
+			<security:intercept-url pattern="/tool/designer/**"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+			
+			<security:intercept-url pattern="/resource/designer/**"
+			access="hasRole('DESIGNER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/law/termsAndConditions.do"
 			access="permitAll" requires-channel="https" />

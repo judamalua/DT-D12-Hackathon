@@ -21,7 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="tool/designer/edit.do?tool=${tool}" modelAttribute="itemDesign">
+<form:form action="${requestURI}" modelAttribute="itemDesign">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -55,13 +55,13 @@
 	<acme:checkbox code="itemDesign.finalMode" path="finalMode"
 		id="finalMode" />
 
-	<acme:submit name="save" code="tool.save" />
+	<acme:submit name="save" code="itemDesign.save" />
 
-	<jstl:if test="${tool.id!=0}">
-		<acme:delete clickCode="tool.delete.message" name="delete"
+	<jstl:if test="${itemDesign.id!=0}">
+		<acme:delete clickCode="itemDesign.delete.message" name="delete"
 			code="tool.delete" />
 	</jstl:if>
 	
-	<acme:cancel url="itemDesign/designer/list.do" code="tool.cancel" />
+	<acme:cancel url="itemDesign/designer/list.do" code="itemDesign.cancel" />
 
 </form:form>
