@@ -202,7 +202,17 @@
 					<li><a href="roomDesign/designer/list.do"><spring:message
 								code="master.page.room.design.list" /></a></li>
 					<li class="divider"></li>
-					<li><a href="#!">NOT YET IMPLEMENTED</a></li>
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
+								code="master.page.designer.tools.final" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
+								code="master.page.designer.tools.notFinal" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
+								code="master.page.designer.resources.final" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
+								code="master.page.designer.resources.notFinal" /></a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->
@@ -223,7 +233,7 @@
 					data-activates="dropdownManagerFunctions"><spring:message
 							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
-
+			
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message
 							code="master.page.login" /></a></li>

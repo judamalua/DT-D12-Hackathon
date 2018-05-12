@@ -13,36 +13,24 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 
-<acme:pagination requestURI="itemDesign/designer/list?page=" pageNum="${pageNum}"
-	page="${page}" />
+<acme:pagination requestURI="itemDesign/designer/list?page="
+	pageNum="${pageNum}" page="${page}" />
 
 <display:table name="itemDesigns" id="itemDesign"
 	requestURI="${requestURI}" class="displaytag">
 
-	<%-- 	<spring:message code="forum.image" var="image" /> --%>
-	<%-- 	<display:column property="image" title="${image}" /> --%>
 	<display:column>
 		<img class="forumImg" src="${itemDesign.imageUrl}" />
 	</display:column>
 
 	<spring:message code="itemDesign.name" var="nameTitle" />
 	<display:column title="${nameTitle}">
-		<jstl:if test="${lang==\"en\"}">
-			<jstl:out value="${itemDesign.name_en}" />
-		</jstl:if>
-		<jstl:if test="${lang==\"es\"}">
-			<jstl:out value="${itemDesign.name_es}" />
-		</jstl:if>
+		<jstl:out value="${itemDesign.name[lang]}" />
 	</display:column>
 
 	<spring:message code="itemDesign.description" var="descriptionTitle" />
 	<display:column title="${descriptionTitle}">
-		<jstl:if test="${lang==\"en\"}">
-			<jstl:out value="${itemDesign.description_en}" />
-		</jstl:if>
-		<jstl:if test="${lang==\"es\"}">
-			<jstl:out value="${itemDesign.description_es}" />
-		</jstl:if>
+		<jstl:out value="${itemDesign.description[lang]}" />
 	</display:column>
 
 	<jstl:if test="${!tool}">

@@ -6,8 +6,12 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ResourceRepository;
 import domain.Event;
@@ -33,6 +37,9 @@ public class ResourceService {
 
 	@Autowired
 	private EventService			eventService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -117,5 +124,44 @@ public class ResourceService {
 		for (final ProbabilityItem probabilityItem : propabilityItems)
 			this.probabilityItemService.delete(probabilityItem);
 
+	}
+
+	public Page<Resource> findFinal(final Pageable pageable) {
+		Page<Resource> result;
+
+		result = this.resourceRepository.findFinal(pageable);
+
+		return result;
+	}
+
+	public Page<Resource> findNotFinal(final Pageable pageable) {
+		Page<Resource> result;
+
+		result = this.resourceRepository.findNotFinal(pageable);
+
+		return result;
+	}
+
+	public Resource reconstruct(final Resource resource, final BindingResult binding) {
+		Resource result;
+
+		if (resource.getId() == 0)
+			result = resource;
+		else {
+			result = this.resourceRepository.findOne(resource.getId());
+
+			result.setFood(resource.getFood());
+			result.setDescription(resource.getDescription());
+			result.setFinalMode(resource.getFinalMode());
+			result.setImageUrl(resource.getImageUrl());
+			result.setMetal(resource.getMetal());
+			result.setWater(resource.getWater());
+			result.setWood(resource.getWood());
+
+		}
+		this.validator.validate(result, binding);
+		this.resourceRepository.flush();
+
+		return result;
 	}
 }

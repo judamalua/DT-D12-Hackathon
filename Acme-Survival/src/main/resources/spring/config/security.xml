@@ -62,7 +62,7 @@
 			access="isAnonymous()" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/register.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/actor/registerAsPlayer.do"
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/player/list.do"
@@ -75,7 +75,7 @@
 			access="hasRole('MANAGER')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/designer/edit.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/event/designer/edit.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/event/designer/list.do"
@@ -88,6 +88,7 @@
 			
 		<security:intercept-url pattern="/roomDesign/detailed.do"
 			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
+
 
 		<security:intercept-url pattern="/forum/list.do"
 			access="permitAll" requires-channel="https" />
@@ -114,7 +115,13 @@
 
 		<security:intercept-url pattern="/room/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
-
+			
+		<security:intercept-url pattern="/order/player/buy.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/order/player/ajaxCard.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 
@@ -123,6 +130,15 @@
 
 		<security:intercept-url pattern="/configuration/admin/**"
 			access="hasRole('ADMIN')" requires-channel="https" />
+
+		<security:intercept-url pattern="/itemDesign/designer/**"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+			
+			<security:intercept-url pattern="/tool/designer/**"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+			
+			<security:intercept-url pattern="/resource/designer/**"
+			access="hasRole('DESIGNER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/law/termsAndConditions.do"
 			access="permitAll" requires-channel="https" />
