@@ -92,7 +92,6 @@ window.onload = function() {
 </head>
 
 <body>
-
 	<div>
 		<tiles:insertAttribute name="header" />
 	</div>

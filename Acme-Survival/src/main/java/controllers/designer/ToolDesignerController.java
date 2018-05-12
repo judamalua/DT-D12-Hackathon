@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ConfigurationService;
 import services.ToolService;
 import controllers.AbstractController;
+import domain.Configuration;
 import domain.ItemDesign;
 import domain.Tool;
 
@@ -29,7 +31,10 @@ import domain.Tool;
 public class ToolDesignerController extends AbstractController {
 
 	@Autowired
-	private ToolService	toolService;
+	private ToolService				toolService;
+
+	@Autowired
+	private ConfigurationService	configurationService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -63,7 +68,6 @@ public class ToolDesignerController extends AbstractController {
 
 		return result;
 	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Tool itemDesign, final BindingResult binding) {
 		ModelAndView result;
@@ -96,11 +100,15 @@ public class ToolDesignerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final ItemDesign itemDesign, final String message) {
 		ModelAndView result;
+		Configuration configuration;
+
+		configuration = this.configurationService.findConfiguration();
 
 		result = new ModelAndView("itemDesign/edit");
 		result.addObject("itemDesign", itemDesign);
 		result.addObject("tool", true);
 		result.addObject("message", message);
+		result.addObject("languages", configuration.getLanguages());
 
 		return result;
 

@@ -101,9 +101,11 @@ public class ItemDesignDesignerController extends AbstractController {
 				result.addObject("itemDesigns", resources.getContent());
 				result.addObject("pageNum", resources.getTotalPages());
 			}
-			result.addObject("page", page);
 
-			result.addObject("requestURI", "itemDesign/designer/list.do?finalMode=" + finalMode + "&");
+			result.addObject("page", page);
+			result.addObject("tool", tool);
+
+			result.addObject("requestURI", "itemDesign/designer/list.do?finalMode=" + finalMode + "&tool=" + tool + "&");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");

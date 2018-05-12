@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ConfigurationService;
 import services.ResourceService;
 import controllers.AbstractController;
+import domain.Configuration;
 import domain.Resource;
 
 @Controller
@@ -28,7 +30,10 @@ import domain.Resource;
 public class ResourceDesignerController extends AbstractController {
 
 	@Autowired
-	private ResourceService	resourceService;
+	private ResourceService			resourceService;
+
+	@Autowired
+	private ConfigurationService	configurationService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -62,7 +67,6 @@ public class ResourceDesignerController extends AbstractController {
 
 		return result;
 	}
-
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Resource itemDesign, final BindingResult binding) {
 		ModelAndView result;
@@ -95,11 +99,15 @@ public class ResourceDesignerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Resource itemDesign, final String message) {
 		ModelAndView result;
+		Configuration configuration;
+
+		configuration = this.configurationService.findConfiguration();
 
 		result = new ModelAndView("itemDesign/edit");
 		result.addObject("itemDesign", itemDesign);
 		result.addObject("tool", false);
 		result.addObject("message", message);
+		result.addObject("languages", configuration.getLanguages());
 
 		return result;
 
