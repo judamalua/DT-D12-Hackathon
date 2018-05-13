@@ -61,6 +61,7 @@ public class AttackService {
 		defendant = this.refugeService.findOne(refugeId);
 
 		Assert.isTrue(this.playerKnowsRefugee(defendant));
+		Assert.isTrue(!this.playerAlreadyAttacking());
 
 		player = (Player) this.actorService.findActorByPrincipal();
 
@@ -113,6 +114,7 @@ public class AttackService {
 
 		Assert.notNull(attack);
 		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()));
+		Assert.isTrue(!this.playerAlreadyAttacking());
 
 		Attack result;
 
@@ -162,6 +164,30 @@ public class AttackService {
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		if (player.getRefuges().contains(refuge))
+			result = true;
+
+		return result;
+	}
+
+	/**
+	 * Returns true if the Player logged (the principal) is already involved in an Attack Mission.
+	 * 
+	 * @return
+	 */
+	public boolean playerAlreadyAttacking() {
+		Boolean result;
+		Player player;
+		Refuge refuge;
+		Date now;
+		Collection<Attack> attacks;
+
+		result = false;
+		player = (Player) this.actorService.findActorByPrincipal();
+		now = new Date();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		attacks = this.attackRepository.findAttacksThatEndsAfterDate(now, refuge.getId());
+
+		if (attacks.size() != 0)
 			result = true;
 
 		return result;
