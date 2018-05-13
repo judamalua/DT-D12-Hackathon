@@ -1,13 +1,20 @@
 
 package domain;
 
+import java.util.Map;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+
+import annotations.MapNotBlank;
+import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -16,33 +23,24 @@ public class Location extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name_en;
-	private String	name_es;
-	private String	point_a;
-	private String	point_b;
-	private String	point_c;
-	private String	point_d;
-	private boolean	finalMode;
+	private Map<String, String>	name;
+	private String				point_a;
+	private String				point_b;
+	private String				point_c;
+	private String				point_d;
+	private boolean				finalMode;
 
 
-	@NotBlank
-	@SafeHtml
-	public String getName_en() {
-		return this.name_en;
+	@NotNull
+	@MapNotBlank
+	@MapSafeHtml
+	@ElementCollection
+	public Map<String, String> getName() {
+		return this.name;
 	}
 
-	public void setName_en(final String name_en) {
-		this.name_en = name_en;
-	}
-
-	@NotBlank
-	@SafeHtml
-	public String getName_es() {
-		return this.name_es;
-	}
-
-	public void setName_es(final String name_es) {
-		this.name_es = name_es;
+	public void setName(final Map<String, String> name) {
+		this.name = name;
 	}
 
 	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
