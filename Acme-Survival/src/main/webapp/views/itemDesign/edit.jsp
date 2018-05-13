@@ -31,12 +31,14 @@
 	</p>
 
 	<jstl:forEach items="${languages}" var="lang">
-		<acme:textbox code="itemDesign.name_${lang}" path="name[${lang}]"
+		<acme:textboxMap errorPath="name" code="itemDesign.name_${lang}"
+			path="name[${lang}]" required="true" />
+
+		<acme:textareaMap errorPath="description"
+			code="itemDesign.description_${lang}" path="description[${lang}]"
 			required="true" />
-	
-	<acme:textarea code="itemDesign.description_${lang}" path="description[${lang}]"
-		required="true" />
 	</jstl:forEach>
+	
 	<acme:textbox code="itemDesign.imageUrl" path="imageUrl"
 		required="true" />
 
@@ -59,9 +61,11 @@
 
 	<jstl:if test="${itemDesign.id!=0}">
 		<acme:delete clickCode="itemDesign.delete.message" name="delete"
-			code="tool.delete" />
+			code="itemDesign.delete" />
 	</jstl:if>
-	
-	<acme:cancel url="itemDesign/designer/list.do?tool=${tool}&finalMode=false" code="itemDesign.cancel" />
+
+	<acme:cancel
+		url="itemDesign/designer/list.do?tool=${tool}&finalMode=false"
+		code="itemDesign.cancel" />
 
 </form:form>

@@ -13,6 +13,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
 
+import annotations.MapNotBlank;
+import annotations.MapSafeHtml;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public abstract class ItemDesign extends DomainEntity {
@@ -26,6 +29,8 @@ public abstract class ItemDesign extends DomainEntity {
 	private boolean				finalMode;
 
 
+	@MapNotBlank
+	@MapSafeHtml
 	@ElementCollection
 	@NotNull
 	public Map<String, String> getName() {
@@ -36,6 +41,8 @@ public abstract class ItemDesign extends DomainEntity {
 		this.name = name;
 	}
 
+	@MapNotBlank
+	@MapSafeHtml
 	@ElementCollection
 	@NotNull
 	public Map<String, String> getDescription() {

@@ -70,7 +70,7 @@
 	<display:column>
 		<security:authorize access="hasRole('DESIGNER')">
 			<acme:button
-				url="itemDesign/designer/edit.do?itemDesignId=${itemDesign.id}"
+				url="itemDesign/designer/edit.do?itemDesignId=${itemDesign.id}&tool=${tool}"
 				code="itemDesign.edit" />
 		</security:authorize>
 	</display:column>

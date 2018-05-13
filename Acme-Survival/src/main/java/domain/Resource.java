@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -18,6 +19,7 @@ public class Resource extends ItemDesign {
 	private double	metal;
 
 
+	@Min(0)
 	public double getWater() {
 		return this.water;
 	}
@@ -26,6 +28,7 @@ public class Resource extends ItemDesign {
 		this.water = water;
 	}
 
+	@Min(0)
 	public double getFood() {
 		return this.food;
 	}
@@ -34,6 +37,7 @@ public class Resource extends ItemDesign {
 		this.food = food;
 	}
 
+	@Min(0)
 	public double getWood() {
 		return this.wood;
 	}
@@ -42,6 +46,7 @@ public class Resource extends ItemDesign {
 		this.wood = wood;
 	}
 
+	@Min(0)
 	public double getMetal() {
 		return this.metal;
 	}
