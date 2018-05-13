@@ -39,6 +39,9 @@ public class RecolectionService {
 
 	// Simple CRUD methods --------------------------------------------------
 
+	//Recoleccion: controlador que reciba una location y redirigir a una vista que seleccione el personaje con un select (este no debe estar en una mision de recoleccion ya).
+	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado más de lo que puede llevar en la capacidad, tiene que decidir qué materias tirar y cuales quedarse.
+
 	public Recolection create() {
 		Recolection result;
 

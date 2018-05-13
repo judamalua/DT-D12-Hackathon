@@ -85,9 +85,6 @@ public class AttackService {
 	//Cuando termine el ataque, mostrar pantalla de resultados para el que ataca y el que ha sido atacado, poniendo lo que ha ganado y perdido cada uno
 	//Un jugador que ya está en una mision de ataque no puede crear otra mision de ataque.
 
-	//Recoleccion: controlador que reciba una location y redirigir a una vista que seleccione el personaje con un select (este no debe estar en una mision de recoleccion ya).
-	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado más de lo que puede llevar en la capacidad, tiene que decidir qué materias tirar y cuales quedarse.
-
 	public Collection<Attack> findAll() {
 
 		Collection<Attack> result;
