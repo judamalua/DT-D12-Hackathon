@@ -202,16 +202,16 @@
 					<li><a href="roomDesign/designer/list.do"><spring:message
 								code="master.page.room.design.list" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
 								code="master.page.designer.tools.final" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
 								code="master.page.designer.tools.notFinal" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
 								code="master.page.designer.resources.final" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
 								code="master.page.designer.resources.notFinal" /></a></li>
 				</ul>
 
@@ -247,8 +247,6 @@
 							code="master.page.refugeList" /></a></li>
 			</security:authorize>
 		</ul>
-
-		
 	</div>
 </nav>
 

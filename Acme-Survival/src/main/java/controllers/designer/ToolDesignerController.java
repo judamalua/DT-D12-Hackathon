@@ -48,6 +48,8 @@ public class ToolDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@ModelAttribute("itemDesign") Tool itemDesign, final BindingResult binding) {
 		ModelAndView result;
+		Configuration configuration;
+
 		try {
 			itemDesign = this.toolService.reconstruct(itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete
@@ -56,8 +58,11 @@ public class ToolDesignerController extends AbstractController {
 			result = this.createEditModelAndView(itemDesign, "refuge.params.error");
 		else
 			try {
-				Assert.isTrue(!itemDesign.getFinalMode());
 
+				configuration = this.configurationService.findConfiguration();
+
+				Assert.isTrue(!itemDesign.getFinalMode());
+				Assert.isTrue(itemDesign.getName().keySet().equals(configuration.getLanguages()));
 				this.toolService.save(itemDesign);
 
 				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "finalMode=" + itemDesign.getFinalMode() + "&");
@@ -68,6 +73,7 @@ public class ToolDesignerController extends AbstractController {
 
 		return result;
 	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Tool itemDesign, final BindingResult binding) {
 		ModelAndView result;
@@ -79,7 +85,7 @@ public class ToolDesignerController extends AbstractController {
 
 			this.toolService.delete(itemDesign);
 
-			result = new ModelAndView("redirect:/itemDesign/designer/list.do");
+			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode() + "&");
 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");

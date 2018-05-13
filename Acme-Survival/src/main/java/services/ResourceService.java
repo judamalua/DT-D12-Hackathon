@@ -159,8 +159,8 @@ public class ResourceService {
 			result.setWood(resource.getWood());
 
 		}
-		this.validator.validate(result, binding);
 		this.resourceRepository.flush();
+		this.validator.validate(result, binding);
 
 		return result;
 	}

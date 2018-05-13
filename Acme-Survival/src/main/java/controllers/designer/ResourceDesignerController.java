@@ -47,6 +47,7 @@ public class ResourceDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@ModelAttribute("itemDesign") Resource itemDesign, final BindingResult binding) {
 		ModelAndView result;
+		Configuration configuration;
 		try {
 			itemDesign = this.resourceService.reconstruct(itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete
@@ -55,11 +56,14 @@ public class ResourceDesignerController extends AbstractController {
 			result = this.createEditModelAndView(itemDesign, "refuge.params.error");
 		else
 			try {
+				configuration = this.configurationService.findConfiguration();
+
 				Assert.isTrue(!itemDesign.getFinalMode());
+				Assert.isTrue(itemDesign.getName().keySet().equals(configuration.getLanguages()));
 
 				this.resourceService.save(itemDesign);
 
-				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&");
+				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "finalMode" + itemDesign.getFinalMode() + "&");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");
@@ -78,7 +82,7 @@ public class ResourceDesignerController extends AbstractController {
 
 			this.resourceService.delete(itemDesign);
 
-			result = new ModelAndView("redirect:/itemDesign/designer/list.do");
+			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode() + "&");
 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(itemDesign, "refuge.commit.error");
