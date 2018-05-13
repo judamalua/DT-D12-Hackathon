@@ -46,7 +46,7 @@
 	<acme:submit name="save" code="attack.start" />
 	
 	<button type="button" class="btn" onclick="javascript: window.history.back()" >
-		<spring:message code="${code}" />
+		<spring:message code="attack.cancel" />
 	</button>
 	
 

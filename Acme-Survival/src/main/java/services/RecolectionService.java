@@ -9,9 +9,12 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.RecolectionRepository;
 import domain.Character;
+import domain.Location;
 import domain.Player;
 import domain.Recolection;
 import domain.Refuge;
@@ -36,16 +39,40 @@ public class RecolectionService {
 	@Autowired
 	private ActorService			actorService;
 
+	@Autowired
+	private MoveService				moveService;
+
+	@Autowired
+	private LocationService			locationService;
+
+	@Autowired
+	private Validator				validator;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
 	//Recoleccion: controlador que reciba una location y redirigir a una vista que seleccione el personaje con un select (este no debe estar en una mision de recoleccion ya).
 	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado más de lo que puede llevar en la capacidad, tiene que decidir qué materias tirar y cuales quedarse.
 
-	public Recolection create() {
+	public Recolection create(final int locationId) {
 		Recolection result;
+		Date startMoment, endMoment;
+		Long time;
+		Player player;
+		Refuge refuge;
+		Location location;
 
 		result = new Recolection();
+		location = this.locationService.findOne(locationId);
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		startMoment = new Date(System.currentTimeMillis() - 10);
+		time = this.moveService.timeBetweenLocations(refuge.getLocation(), location);
+		endMoment = new Date(System.currentTimeMillis() + time);
+
+		result.setStartDate(startMoment);
+		result.setEndMoment(endMoment);
+		result.setLocation(location);
 
 		return result;
 	}
@@ -131,5 +158,30 @@ public class RecolectionService {
 
 		return result;
 
+	}
+
+	public Recolection reconstruct(final Recolection recolection, final BindingResult binding) {
+		Recolection result = null;
+		Date startMoment, endMoment;
+		Long time;
+		Player player;
+		Refuge refuge;
+
+		if (recolection.getId() == 0) {
+			result = recolection;
+
+			player = (Player) this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			startMoment = new Date(System.currentTimeMillis() - 10);
+			time = this.moveService.timeBetweenLocations(refuge.getLocation(), recolection.getLocation());
+			endMoment = new Date(System.currentTimeMillis() + time);
+
+			result.setStartDate(startMoment);
+			result.setEndMoment(endMoment);
+
+		}
+		this.validator.validate(result, binding);
+
+		return result;
 	}
 }
