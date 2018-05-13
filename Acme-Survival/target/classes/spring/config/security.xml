@@ -159,7 +159,14 @@
 
 		<security:intercept-url pattern="/product/**"
 			access="permitAll" requires-channel="https" />
-			<security:intercept-url pattern="/attack/player/create"
+		
+		<security:intercept-url pattern="/attack/player/create"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/create"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/edit"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 

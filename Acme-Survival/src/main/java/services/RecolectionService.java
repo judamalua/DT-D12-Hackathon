@@ -100,10 +100,16 @@ public class RecolectionService {
 	}
 
 	public Recolection save(final Recolection recolection) {
-
-		assert recolection != null;
+		Assert.notNull(recolection);
+		Assert.notNull(recolection.getLocation());
+		Assert.notNull(recolection.getCharacter());
 
 		Recolection result;
+		Collection<Recolection> recolectionNotFinishedByCharacter;
+
+		recolectionNotFinishedByCharacter = this.findRecolectionNotFinishedByCharacter(recolection.getCharacter().getId());
+
+		Assert.isTrue(recolectionNotFinishedByCharacter.size() == 0);
 
 		result = this.recolectionRepository.save(recolection);
 
@@ -158,6 +164,16 @@ public class RecolectionService {
 
 		return result;
 
+	}
+
+	public Collection<Recolection> findRecolectionNotFinishedByCharacter(final int characterId) {
+		Collection<Recolection> result;
+		Date now;
+
+		now = new Date();
+		result = this.recolectionRepository.findRecolectionNotFinishedByCharacter(characterId, now);
+
+		return result;
 	}
 
 	public Recolection reconstruct(final Recolection recolection, final BindingResult binding) {
