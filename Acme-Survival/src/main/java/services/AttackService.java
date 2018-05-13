@@ -172,7 +172,7 @@ public class AttackService {
 	/**
 	 * Returns true if the Player logged (the principal) is already involved in an Attack Mission.
 	 * 
-	 * @return
+	 * @return true if the player is already involved in an attack mission
 	 */
 	public boolean playerAlreadyAttacking() {
 		Boolean result;
