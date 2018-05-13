@@ -2,6 +2,9 @@
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationService;
 import services.RoomDesignService;
+import domain.Configuration;
 import domain.Designer;
 import domain.RoomDesign;
 
@@ -30,34 +34,34 @@ public class RoomDesignController {
 
 	// Listing ----------------------------------------------------
 
-	//	@RequestMapping(value = "/list")
-	//	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
-	//		ModelAndView result;
-	//		Page<Product> products;
-	//		Pageable pageable;
-	//		Configuration configuration;
-	//
-	//		try {
-	//
-	//			configuration = this.configurationService.findConfiguration();
-	//
-	//			pageable = new PageRequest(page, configuration.getPageSize());
-	//			result = new ModelAndView("product/list");
-	//
-	//			products = this.roomDesignService.getFinalModeProducts(pageable);
-	//
-	//			result.addObject("designerDraftModeView", false);
-	//			result.addObject("products", products.getContent());
-	//			result.addObject("requestURI", "product/list.do");
-	//			result.addObject("page", page);
-	//			result.addObject("pageNum", products.getTotalPages());
-	//
-	//		} catch (final Throwable oops) {
-	//			result = new ModelAndView("redirect:/misc/403");
-	//		}
-	//
-	//		return result;
-	//	}
+	@RequestMapping(value = "/list")
+	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
+		ModelAndView result;
+		Page<RoomDesign> roomDesigns;
+		Pageable pageable;
+		Configuration configuration;
+
+		try {
+
+			configuration = this.configurationService.findConfiguration();
+
+			pageable = new PageRequest(page, configuration.getPageSize());
+			result = new ModelAndView("roomDesign/list");
+
+			roomDesigns = this.roomDesignService.findFinalRoomDesigns(pageable);
+
+			result.addObject("designerDraftModeView", false);
+			result.addObject("roomDesigns", roomDesigns.getContent());
+			result.addObject("requestURI", "roomDesign/list.do");
+			result.addObject("page", page);
+			result.addObject("pageNum", roomDesigns.getTotalPages());
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
 
 	// Detailed ---------------------------------------------------------
 

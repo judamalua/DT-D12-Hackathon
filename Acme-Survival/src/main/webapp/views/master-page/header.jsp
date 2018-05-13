@@ -199,8 +199,11 @@
 			<security:authorize access="hasRole('DESIGNER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownDesignerFunctions" class="dropdown-content">
+					<li><a href="roomDesign/list.do"><spring:message
+								code="master.page.room.design.list.final" /></a></li>
+					<li class="divider"></li>
 					<li><a href="roomDesign/designer/list.do"><spring:message
-								code="master.page.room.design.list" /></a></li>
+								code="master.page.room.design.list.draft" /></a></li>
 					<li class="divider"></li>
 					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
 								code="master.page.designer.tools.final" /></a></li>

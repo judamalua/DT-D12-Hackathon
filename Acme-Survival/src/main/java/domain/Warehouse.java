@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -16,6 +17,7 @@ public class Warehouse extends RoomDesign {
 	private Integer	itemCapacity;
 
 
+	@Min(1)
 	@NotNull
 	public Integer getItemCapacity() {
 		return this.itemCapacity;

@@ -30,6 +30,22 @@
 	<spring:message code="roomDesign.description" var="description" />
 	<display:column value="${roomDesign.description[currentLang]}" title="${description}" sortable="false" />
 	
+	<spring:message code="roomDesign.type" var="type" />
+	<display:column title = "${type}" sortable = "true">
+	<jstl:if test="${roomDesign[\"class\"].simpleName eq \"Barrack\"}">
+		<spring:message code = "roomDesign.type.barrack"/>
+	</jstl:if>
+	<jstl:if test="${roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
+		<spring:message code = "roomDesign.type.warehouse"/>
+	</jstl:if>
+	<jstl:if test="${roomDesign[\"class\"].simpleName eq \"RestorationRoom\"}">
+		<spring:message code = "roomDesign.type.restorationRoom"/>
+	</jstl:if>
+	<jstl:if test="${roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
+		<spring:message code = "roomDesign.type.resourceRoom"/>
+	</jstl:if>
+	</display:column>
+	
 	<security:authorize access="hasRole('DESIGNER')">
 	<jstl:if test="${designerDraftModeView && !product.finalMode}">
 		<!-- Checking if the principal is a designer and this is the view of the draft mode room designs, if so, he or she can edit the room designs -->
@@ -53,6 +69,14 @@
 
 <security:authorize access="hasRole('DESIGNER')">
 	<!-- Checking if the principal is a designer, so he or she can create new room designs -->
-	<br />
-	<acme:button url="roomDesign/designer/create.do" code="roomDesign.create"/>
+	<jstl:if test="${designerDraftModeView}">
+		<br />
+		<acme:button url="roomDesign/designer/createBarrack.do" code="roomDesign.create.barrack"/>
+		<br />
+		<acme:button url="roomDesign/designer/createWarehouse.do" code="roomDesign.create.warehouse"/>
+		<br />
+		<acme:button url="roomDesign/designer/createRestorationRoom.do" code="roomDesign.create.restorationRoom"/>
+		<br />
+		<acme:button url="roomDesign/designer/createResourceRoom.do" code="roomDesign.create.resourceRoom"/>
+		</jstl:if>
 </security:authorize>

@@ -32,10 +32,14 @@
 	
 	<jstl:if test="${isWarehouse}">
 		<acme:textbox code="roomDesign.type.warehouse.itemCapacity" path="itemCapacity" required="true"/>
+		
+		<acme:submit name="saveWarehouse" code="roomDesign.save"/>
 	</jstl:if>
 	
 	<jstl:if test="${isBarrack}">
 		<acme:textbox code="roomDesign.type.barrack.characterCapacity" path="characterCapacity" required="true"/>
+		
+		<acme:submit name="saveBarrack" code="roomDesign.save"/>
 	</jstl:if>
 	
 	<jstl:if test="${isRestorationRoom}">
@@ -44,6 +48,8 @@
 		<acme:textbox code="roomDesign.type.restorationRoom.food" path="food" required="true"/>
 		
 		<acme:textbox code="roomDesign.type.restorationRoom.water" path="water" required="true"/>
+		
+		<acme:submit name="saveRestorationRoom" code="roomDesign.save"/>
 	</jstl:if>
 	
 	<jstl:if test="${isResourceRoom}">
@@ -54,12 +60,25 @@
 		<acme:textbox code="roomDesign.type.resourceRoom.metal" path="metal" required="true"/>
 		
 		<acme:textbox code="roomDesign.type.resourceRoom.wood" path="wood" required="true"/>
+		
+		<acme:submit name="saveResourceRoom" code="roomDesign.save"/>
 	</jstl:if>
 
-	<acme:submit name="saveBarrack" code="roomDesign.save"/>
+	
 		
 	<jstl:if test="${roomDesign.id!=0}">
-		<acme:delete clickCode="roomDesign.confirm.delete" name="delete" code="roomDesign.delete"/>
+		<jstl:if test="${isBarrack}">
+			<acme:delete clickCode="roomDesign.confirm.delete" name="deleteBarrack" code="roomDesign.delete"/>
+		</jstl:if>
+		<jstl:if test="${isWarehouse}">
+			<acme:delete clickCode="roomDesign.confirm.delete" name="deleteWarehouse" code="roomDesign.delete"/>
+		</jstl:if>
+		<jstl:if test="${isRestorationRoom}">
+			<acme:delete clickCode="roomDesign.confirm.delete" name="deleteRestorationRoom" code="roomDesign.delete"/>
+		</jstl:if>
+		<jstl:if test="${isResourceRoom}">
+			<acme:delete clickCode="roomDesign.confirm.delete" name="deleteResourceRoom" code="roomDesign.delete"/>
+		</jstl:if>
 	</jstl:if>
 	<acme:cancel url="roomDesign/designer/list.do" code="roomDesign.cancel"/>
 </form:form>

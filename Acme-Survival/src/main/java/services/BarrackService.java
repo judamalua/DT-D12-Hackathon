@@ -32,8 +32,16 @@ public class BarrackService {
 
 	public Barrack create() {
 		Barrack result;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to create a product is a manager.
+		Assert.isTrue(actor instanceof Designer);
 
 		result = new Barrack();
+
+		// Setting final mode to false due to when the designer is creating the room design it cannot be in final mode
+		result.setFinalMode(false);
 
 		return result;
 	}

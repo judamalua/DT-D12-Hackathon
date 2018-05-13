@@ -205,7 +205,7 @@
 		<property name="costMetal" value="0" />
 		<property name="maxCapacityCharacters" value="1" />
 		<property name="finalMode" value="true" />
-		<property name="characterCapacity" value="0" />
+		<property name="characterCapacity" value="1" />
 	</bean>
 	<bean id="Barrack2" class="domain.Barrack">
 		<property name="name">

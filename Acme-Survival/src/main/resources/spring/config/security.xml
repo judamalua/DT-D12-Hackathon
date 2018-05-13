@@ -86,19 +86,9 @@
 		<security:intercept-url pattern="/roomDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/barrack/designer/**"
-			access="hasRole('DESIGNER')" requires-channel="https" />
-			
-		<security:intercept-url pattern="/warehouse/designer/**"
-			access="hasRole('DESIGNER')" requires-channel="https" />
-			
-		<security:intercept-url pattern="/restorationRoom/designer/**"
-			access="hasRole('DESIGNER')" requires-channel="https" />
-			
-		<security:intercept-url pattern="/resourceRoom/designer/**"
-			access="hasRole('DESIGNER')" requires-channel="https" />
-			
 		<security:intercept-url pattern="/roomDesign/detailed.do"
+			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/roomDesign/list.do"
 			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
 
 

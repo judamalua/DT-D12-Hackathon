@@ -79,10 +79,26 @@ public class RoomDesignService {
 
 	}
 
+	/**
+	 * Deletes the room design in parameters
+	 * 
+	 * @param roomDesign
+	 *            to be deleted
+	 * @author Juanmi
+	 */
 	public void delete(final RoomDesign roomDesign) {
 
 		assert roomDesign != null;
 		assert roomDesign.getId() != 0;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		// Checking that the user trying to delete a room design is a designer.
+		Assert.isTrue(actor instanceof Designer);
+		Assert.isTrue(this.roomDesignRepository.exists(roomDesign.getId()));
+		// Checking that the room design trying to be deleted is not in final mode.
+		Assert.isTrue(!roomDesign.getFinalMode());
 
 		Assert.isTrue(this.roomDesignRepository.exists(roomDesign.getId()));
 
@@ -91,6 +107,28 @@ public class RoomDesignService {
 	}
 
 	// Other business methods ------------------------------------------------------------------------------------
+
+	/**
+	 * This method marks a room design as final mode
+	 * 
+	 * @param roomDesign
+	 * @author Juanmi
+	 */
+	public void setFinalModeRoomDesign(final RoomDesign roomDesign) {
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		// Checking that the user trying to mark a room design as final mode is a designer.
+		Assert.isTrue(actor instanceof Designer);
+
+		// Checking that the room design that is going to be marked as final mode is not a final mode room design.
+		Assert.isTrue(!roomDesign.getFinalMode());
+
+		roomDesign.setFinalMode(true);
+
+		this.save(roomDesign);
+	}
 
 	public Collection<RoomDesign> findFinalRoomDesign() {
 		Collection<RoomDesign> result;
@@ -114,6 +152,23 @@ public class RoomDesignService {
 		Assert.notNull(pageable);
 
 		result = this.roomDesignRepository.findDraftRoomDesigns(pageable);
+
+		return result;
+	}
+
+	/**
+	 * This method returns a page of draft mode room designs
+	 * 
+	 * @param pageable
+	 * @return a page of room design
+	 * 
+	 * @author Juanmi
+	 */
+	public Page<RoomDesign> findFinalRoomDesigns(final Pageable pageable) {
+		Page<RoomDesign> result;
+		Assert.notNull(pageable);
+
+		result = this.roomDesignRepository.findFinalRoomDesigns(pageable);
 
 		return result;
 	}

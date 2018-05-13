@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import annotations.MapNotBlank;
@@ -49,6 +50,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.description = description;
 	}
 
+	@Min(0)
 	@NotNull
 	public Integer getMaxResistance() {
 		return this.maxResistance;
@@ -58,6 +60,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.maxResistance = maxResistance;
 	}
 
+	@Min(0)
 	@NotNull
 	public Double getCostWood() {
 		return this.costWood;
@@ -67,6 +70,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.costWood = costWood;
 	}
 
+	@Min(0)
 	@NotNull
 	public Double getCostMetal() {
 		return this.costMetal;
@@ -84,6 +88,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.finalMode = finalMode;
 	}
 
+	@Min(1)
 	@NotNull
 	public Integer getMaxCapacityCharacters() {
 		return this.maxCapacityCharacters;

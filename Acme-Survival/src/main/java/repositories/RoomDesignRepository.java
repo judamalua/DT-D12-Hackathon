@@ -19,4 +19,7 @@ public interface RoomDesignRepository extends JpaRepository<RoomDesign, Integer>
 
 	@Query("select rd from RoomDesign rd where rd.finalMode=false")
 	Page<RoomDesign> findDraftRoomDesigns(Pageable pageable);
+
+	@Query("select rd from RoomDesign rd where rd.finalMode=true")
+	Page<RoomDesign> findFinalRoomDesigns(Pageable pageable);
 }

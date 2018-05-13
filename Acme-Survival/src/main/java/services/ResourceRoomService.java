@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ResourceRoomRepository;
+import domain.Actor;
+import domain.Designer;
 import domain.ResourceRoom;
 
 @Service
@@ -20,15 +23,25 @@ public class ResourceRoomService {
 	@Autowired
 	private ResourceRoomRepository	resourceRoomRepository;
 
-
 	// Supporting services --------------------------------------------------
+	@Autowired
+	private ActorService			actorService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
 	public ResourceRoom create() {
 		ResourceRoom result;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to create a product is a manager.
+		Assert.isTrue(actor instanceof Designer);
 
 		result = new ResourceRoom();
+
+		// Setting final mode to false due to when the designer is creating the room design it cannot be in final mode
+		result.setFinalMode(false);
 
 		return result;
 	}
@@ -78,4 +91,3 @@ public class ResourceRoomService {
 
 	}
 }
-
