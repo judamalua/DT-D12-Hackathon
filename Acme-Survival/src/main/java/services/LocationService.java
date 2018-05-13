@@ -79,6 +79,12 @@ public class LocationService {
 
 	}
 
+	public Collection<Location> findAllLocationsByFinal() {
+		Collection<Location> result;
+		result = this.locationRepository.findAllLocationsByFinal();
+		return result;
+	}
+
 	//Business methods --------------------
 
 }
