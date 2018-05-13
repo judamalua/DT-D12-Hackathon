@@ -4,113 +4,35 @@ package controllers.designer;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.BarrackService;
 import services.ConfigurationService;
-import services.RoomDesignService;
-import domain.Actor;
 import domain.Barrack;
-import domain.Configuration;
-import domain.Designer;
 import domain.ResourceRoom;
 import domain.RestorationRoom;
 import domain.RoomDesign;
 import domain.Warehouse;
 
 @Controller
-@RequestMapping("/roomDesign/designer")
-public class RoomDesignDesignerController {
+@RequestMapping("/barrack/designer")
+public class BarrackDesignerController {
 
 	// Services -------------------------------------------------------
 
 	@Autowired
-	RoomDesignService		roomDesignService;
+	BarrackService			barrackService;
 	@Autowired
 	ActorService			actorService;
 	@Autowired
 	ConfigurationService	configurationService;
 
 
-	// Listing ----------------------------------------------------
-
-	/**
-	 * This method returns a model with the list of draft mode room designs
-	 * 
-	 * @param page
-	 * @return a model with the draft mode room designs
-	 * 
-	 * @author Juanmi
-	 */
-	@RequestMapping(value = "/list")
-	public ModelAndView listDraftMode(@RequestParam(defaultValue = "0") final int page) {
-		ModelAndView result;
-		Page<RoomDesign> draftModeRoomDesigns;
-		Actor actor;
-		Pageable pageable;
-		Configuration configuration;
-
-		try {
-
-			configuration = this.configurationService.findConfiguration();
-
-			pageable = new PageRequest(page, configuration.getPageSize());
-			result = new ModelAndView("roomDesign/list");
-			actor = this.actorService.findActorByPrincipal();
-			// Checking that the user trying to list draft mode products is a manager.
-			Assert.isTrue(actor instanceof Designer);
-
-			draftModeRoomDesigns = this.roomDesignService.findDraftRoomDesigns(pageable);
-
-			result.addObject("designerDraftModeView", true);
-			result.addObject("roomDesigns", draftModeRoomDesigns.getContent());
-			result.addObject("page", page);
-			result.addObject("requestURI", "roomDesign/designer/list.do");
-			result.addObject("pageNum", draftModeRoomDesigns.getTotalPages());
-
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
-		}
-
-		return result;
-	}
-
-	// Editing ---------------------------------------------------------
-
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int roomDesignId) {
-		ModelAndView result;
-		RoomDesign roomDesign;
-		Actor actor;
-
-		try {
-			actor = this.actorService.findActorByPrincipal();
-			// Checking that the user trying to edit the room design is a designer.
-			Assert.isTrue(actor instanceof Designer);
-
-			roomDesign = this.roomDesignService.findOne(roomDesignId);
-			Assert.notNull(roomDesign);
-
-			// Checking that the room design trying to be edited is not a final mode room design.
-			Assert.isTrue(!roomDesign.getFinalMode());
-
-			result = this.createEditModelAndView(roomDesign);
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
-		}
-
-		return result;
-	}
-	//
 	//	// Creating ---------------------------------------------------------
 	//
 	//	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -134,26 +56,7 @@ public class RoomDesignDesignerController {
 	//		return result;
 	//	}
 	//
-	//	// Discontinuing ---------------------------------------------------------
-	//
-	//	@RequestMapping(value = "/discontinue", method = RequestMethod.GET)
-	//	public ModelAndView discontinue(@RequestParam final int productId) {
-	//		ModelAndView result;
-	//		Product product;
-	//
-	//		try {
-	//			product = this.roomDesignService.findOne(productId);
-	//
-	//			this.roomDesignService.discontinueProduct(product);
-	//			result = new ModelAndView("redirect:/product/list.do");
-	//
-	//		} catch (final Throwable oops) {
-	//			result = new ModelAndView("redirect:/misc/403");
-	//		}
-	//
-	//		return result;
-	//	}
-	//
+
 	//	// Setting final mode ---------------------------------------------------------
 	//
 	//	@RequestMapping(value = "/final-mode", method = RequestMethod.GET)
@@ -176,19 +79,19 @@ public class RoomDesignDesignerController {
 	//
 	//	// Saving -------------------------------------------------------------------
 	//
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveBarrack")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid final Barrack barrack, final BindingResult binding) {
 		ModelAndView result;
 
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(barrack, "barrack.params.error");
+			result = this.createEditModelAndView(barrack, "roomDesign.params.error");
 		else
 			try {
-				this.roomDesignService.save(barrack);
-				result = new ModelAndView("redirect:list.do");
+				this.barrackService.save(barrack);
+				result = new ModelAndView("redirect:/roomDesign/list.do");
 
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(barrack, "barrack.commit.error");
+				result = this.createEditModelAndView(barrack, "roomDesign.commit.error");
 			}
 
 		return result;
