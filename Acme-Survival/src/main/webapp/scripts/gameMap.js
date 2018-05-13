@@ -1,5 +1,6 @@
 var map;
 function initMap() {
+	document.getElementsByTagName("h1")[0].innerHTML = "";
 	map = new google.maps.Map(document.getElementById('map'), {
 		center : {
 			lat : 0,
@@ -265,15 +266,27 @@ function initMap() {
 }
 
 function generateMap() {
-	debugger;
 	var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+	// IMAGE HANDLING ------------------------------------
 	var imageRefuge = {
-		url : 'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIGJhc2VQcm9maWxlPSJ0aW55IiB4bWxucz0iaHR0cDovL3d3dy53%0D%0AMy5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUw%0D%0AIiBvdmVyZmxvdz0iaW5oZXJpdCI+PHBhdGggZD0iTTI1IDZjLTEuMjYzIDAtMS44MzQuNjE2LTIu%0D%0AMjEgMS4yODZsLTE1LjcxIDI5LjU3MmgtMy4zOTVjLTEuNDgyIDAtMi42ODUgMS4xNDUtMi42ODUg%0D%0AMi41NzEgMCAxLjQyMyAxLjIwMyAyLjU3IDIuNjg1IDIuNTdoNDIuNjMyYzEuNDgxIDAgMi42ODUt%0D%0AMS4xNDcgMi42ODUtMi41NyAwLTEuNDI3LTEuMjAzLTIuNTcxLTIuNjg1LTIuNTcxaC0zLjM5N2wt%0D%0AMTUuNzA5LTI5LjU3M2MtLjM3Ny0uNjY5LS45NDctMS4yODUtMi4yMTEtMS4yODV6bTAgMTIuODU3%0D%0AbDguODQyIDE4LjAwMWgtMTcuNjg0bDguODQyLTE4LjAwMXoiLz48L3N2Zz4=',
-		size : new google.maps.Size(64, 64),
+		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAPBQTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////ZvvSvwAAAE50Uk5TAAEJDGF6BAI2qvqnGX/kDwsGCghSx/zovsCKDlGwkS6g8/ZlFnljFHPev7qWyeNCDaP9HMtBFcpKV4gH/sgTmF6XLyAD+1nwu/hYR1off06j1gAAAAFiS0dET25mQUkAAADjSURBVDjL3ZPHEoIwFEUBOzYsYC8g9t6wgF1QUd//f446iXUUNo4Lzyrv3jOTl0UI4peQFGnYW6w2u0HtcLpot4Hg8foAXH4mgG8Lhp7qUJjlACASjcWZy5xIptLMw3KZLA8YIUdRDjHPA1+49cVSGe5EKtVanT4fGk3ct9odeEu9iwSx974HoY8EafBBoIcmAjcyEWAsmwhCnnwVFAweJ9MXoTObW8/MZ/jhwmK5Wj8KqobW0tRrsNkWDQWAgWgmSP8isIqK4HY6EvQdhyOFlQh5f9Aw+hEJR/2aHPbyN7/mB05qA5w56QRThQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wNS0xM1QyMDozMzo1NSswMjowMHC0eyMAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDUtMTNUMjA6MzM6NTUrMDI6MDAB6cOfAAAAAElFTkSuQmCC',
+		size : new google.maps.Size(32, 32),
 		origin : new google.maps.Point(0, 0),
-		anchor : new google.maps.Point(26, 40)
+		anchor : new google.maps.Point(16, 16)
 	};
-	console.log(mapElements.refuge.gpsCoordinates.split(",")[0]);
+	var imageCharacter = {
+		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAAYagMeiWXwAAAAJiS0dEAP+Hj8y/AAAB6ElEQVRIx73Uy0uUURjH8c+MOmaI4tgFFeliGkW2CGrTWloULYLathGiRbuKFi0K/4LQXasEW1TUNoLCVdEFKUIiNNJKMfNW2cxINW+L3iYv70wzs+h3Fu/hcJ7vc31PhcKK2WSfdovSylBMq35pKddtLwdQ4aK0QCBwQSzqSvwfEWxREe6TqksHZD2wCGa9lIkOspACY6bUeKfP7WhALK9xTNxGB301KWVKqpTixa3X6bIXZkwa0FqKcUKTQ/pNWJIVCCzplSjevNt9qdD0zxpzvFhA0qzAD288NLcMMaizFMBzXU4aWxHFHXsKlHwV4AbO5mbwk0eyAoNO26W2WEBvzvcT+12TFpjx2E1dKxsWpawGLbn9W0+dc95rDQ7o0rb8auUq08C8hC9aNIcnGa8w7aq7jjqsNhzuPIpp0KjaEe/DBBZdyk1BQp366J9qtU75nqvBuBOqimvi38R6BAIjMuH32JpkC6rJgMBP3a6EzbxnRz5fUdpgGyY9c8s3Z9RKSkYD4nkAWzFs3oI+gwgEpQA2a8KwBaRMFMo2CrAuHJVhnws4KQCo04E5H4qpdxSgXgdGfSwXUKcdI+UDmjVi1HR5gBqdyBiXxe/XmVi+x2TtcaXddsoYCttXZa82s4bMFxPR/9cvP1KtOorzWGYAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDUtMTNUMjA6Mzc6NDArMDI6MDDnzfRgAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA1LTEzVDIwOjM3OjQwKzAyOjAwlpBM3AAAAABJRU5ErkJggg==',
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 16)
+	};
+	var imageEnemyRefuge = {
+		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAPNQTFRFAAAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA////Thsz2AAAAE90Uk5TAAABCQxhegQCNqr6pxl/5A8LBgoIUsf86L7Aig5RsJEuoPP2ZRZ5YxRz3r+6lsnjQg2j/RzLQRXKSleIB/7IE5hely8gA/tZ8Lv4WEdaH4OcN4cAAAABYktHRFDjbky8AAAA+ElEQVQ4y93TXVeCQBAGYAY0P9AUNTDLUhC1TEutsAQ/UkFFnf//b0R2KS4E7rzovdqdfc7OmbNnGeaCAZZjIeQYYvGrRDCAZCrNZwIBQPY6h5jOCwUAt1uxBD4MpRtRQsTybeVOcOpwX314FH4BsLW6jDRKg+OSalNGueVdAe2nZ/xLufPS7fHO4vWNiv5giGfTeydA/Th/jsonAdooAPBfEUD6jgA41iEcKE33bfzAoKHbyfQ0qQ8MZ/O4k/mMDq78LJYrPzAttylYpldYb9qhAHGkRgHtvwDRMEmkrU2AvZVoyRA1Rt/tLRr7QMDB9ir7nX6BL3sEQRyeyWFn/PIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDUtMTNUMjA6MzQ6NDArMDI6MDAM+k9jAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA1LTEzVDIwOjM0OjQwKzAyOjAwfaf33wAAAABJRU5ErkJggg==',
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 16)
+	};
+	// REFUGE HANDLING -------------------------------------
 	refuge = new google.maps.Marker({
 		position : {
 			lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
@@ -288,24 +301,25 @@ function generateMap() {
 		for ( var int4 = 0; int4 < mapElements.languages.length; int4++) {
 			if (mapElements.languages[int4] === getCookie("language")) {
 				contentString = '<b>' + mapTranslations.refuge.refugeMine[mapElements.languages[int4]] + '</b><br/><b>' + mapTranslations.refuge.name[mapElements.languages[int4]]
-						+ ": " + mapElements.refuge.name + '</b><br><br><a href="' + getMainDomain() + 'refuge/player/display.do">'
+						+ ": </b>" + mapElements.refuge.name + '<br/><br/><a href="' + getMainDomain() + 'refuge/player/display.do">'
 						+ mapTranslations.refuge.enterInRefuge[mapElements.languages[int4]] + '</a>';
 				usedLanguage = true;
 				break;
 			}
 		}
 		if (usedLanguage == false) {
-			contentString = '<b>' + mapTranslations.refuge.refugeMine["en"] + '</b><br/><b>' + mapTranslations.refuge.name["en"] + ": " + mapElements.refuge.name
-					+ '</b><br><br><a href="' + getMainDomain() + 'refuge/player/display.do">' + mapTranslations.refuge.enterInRefuge["en"] + '</a>';
+			contentString = '<b>' + mapTranslations.refuge.refugeMine["en"] + '</b><br/><b>' + mapTranslations.refuge.name["en"] + ": </b>" + mapElements.refuge.name
+					+ '<br/><br/><a href="' + getMainDomain() + 'refuge/player/display.do">' + mapTranslations.refuge.enterInRefuge["en"] + '</a>';
 		}
-		// Replace the info window's content and position.
 		infoWindow.setContent(contentString);
 		infoWindow.setPosition(event.latLng);
 
 		infoWindow.open(map);
 	});
+	// LOCATION HANDLING -----------------------------------
+	var zone = [];
 	for ( var int = 0; int < mapElements.locations.length; int++) {
-		var zone = new google.maps.Polygon({
+		zone[int] = new google.maps.Polygon({
 			paths : [
 					{
 						lat : Number(mapElements.locations[int].point_a.split(",")[0]),
@@ -328,7 +342,7 @@ function generateMap() {
 			fillOpacity : 0.35,
 			map : map
 		});
-		zone.addListener('click', function(event) {
+		zone[int].addListener('click', function(event) {
 			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
 			var currentInt = -1;
 			for ( var int2 = 0; int2 < mapElements.locations.length; int2++) {
@@ -363,20 +377,19 @@ function generateMap() {
 				var usedLanguage = false;
 				for ( var int3 = 0; int3 < mapElements.languages.length; int3++) {
 					if (mapElements.languages[int3] === getCookie("language")) {
-						contentString = '<b>' + mapTranslations.location.name[mapElements.languages[int3]] + ": </b>"
-								+ mapElements.locations[currentInt].name[mapElements.languages[int3]] + '<br><a href="' + getMainDomain()
-								+ 'recolection/player/start.do?locationId=' + mapElements.locations[currentInt].id + '">'
+						contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>'
+								+ mapTranslations.location.name[mapElements.languages[int3]] + ": </b>" + mapElements.locations[currentInt].name[mapElements.languages[int3]]
+								+ '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
 								+ mapTranslations.location.recolectionMissionStartLink[mapElements.languages[int3]] + '</a>';
 						usedLanguage = true;
 						break;
 					}
 				}
 				if (usedLanguage == false) {
-					contentString = '<b>' + mapTranslations.location.name["en"] + ": " + mapElements.locations[currentInt].name["en"] + '</b><br><br><a href="' + getMainDomain()
-							+ 'recolection/player/start.do?locationId=' + mapElements.locations[currentInt].id + '">' + mapTranslations.location.recolectionMissionStartLink["en"]
-							+ '</a>';
+					contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>' + mapTranslations.location.name["en"] + ": </b>"
+							+ mapElements.locations[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId='
+							+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.recolectionMissionStartLink["en"] + '</a>';
 				}
-				// Replace the info window's content and position.
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
 
@@ -384,8 +397,69 @@ function generateMap() {
 			}
 		});
 	}
-}
+	// KNOWN REFUGE HANDLING -------------------------------------
+	var refugeEnemy = [];
+	for ( var int5 = 0; int5 < mapElements.knownRefuges.length; int5++) {
+		refugeEnemy[int5] = new google.maps.Marker({
+			position : {
+				lat : Number(mapElements.knownRefuges[int5].gpsCoordinates.split(",")[0]),
+				lng : Number(mapElements.knownRefuges[int5].gpsCoordinates.split(",")[1])
+			},
+			map : map,
+			icon : imageEnemyRefuge
+		});
+		refugeEnemy[int5].addListener('click', function(event) {
+			var currentInt = -1;
+			var currentLow = null;
+			var contentString;
+			var usedLanguage = false;
+			for ( var int2 = 0; int2 < mapElements.knownRefuges.length; int2++) {
+				var m = {
+					x : event.latLng.lat(),
+					y : event.latLng.lng()
+				};
+				var r = {
+					x : Number(mapElements.knownRefuges[int2].gpsCoordinates.split(",")[0]),
+					y : Number(mapElements.knownRefuges[int2].gpsCoordinates.split(",")[1])
+				};
+				if (currentLow == null) {
+					currentLow = distanceBetweenPoints(m, r);
+					currentInt = int2;
+				} else {
+					if (distanceBetweenPoints(m, r) < currentLow) {
+						currentLow = distanceBetweenPoints(m, r);
+						currentInt = int2;
+					}
+				}
+			}
+			if (currentInt !== -1) {
+				for ( var int5 = 0; int5 < mapElements.languages.length; int5++) {
+					if (mapElements.languages[int5] === getCookie("language")) {
+						contentString = '<b>' + mapTranslations.refuge.refugeEnemy[mapElements.languages[int5]] + '</b><br/><b>'
+								+ mapTranslations.refuge.name[mapElements.languages[int5]] + ": </b>" + mapElements.knownRefuges[currentInt].name + '<br/><br/><a href="'
+								+ getMainDomain() + 'attack/player/create.do?refugeId=' + mapElements.knownRefuges[currentInt].id + '">'
+								+ mapTranslations.refuge.attackRefuge[mapElements.languages[int5]] + '</a>';
+						usedLanguage = true;
+						break;
+					}
+				}
+				if (usedLanguage == false) {
+					contentString = '<b>' + mapTranslations.refuge.refugeEnemy["en"] + '</b><br/><b>' + mapTranslations.refuge.name["en"] + ": </b>"
+							+ mapElements.knownRefuges[currentInt].name + '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?refugeId='
+							+ mapElements.knownRefuges[currentInt].id + '">' + mapTranslations.refuge.attackRefuge["en"] + '</a>';
+				}
+				infoWindow.setContent(contentString);
+				infoWindow.setPosition(event.latLng);
 
+				infoWindow.open(map);
+			}
+		});
+	}
+
+}
+function distanceBetweenPoints(m, r) {
+	return Math.sqrt(Math.pow((m.x - r.x), 2) + Math.pow((m.y - r.y), 2));
+}
 function pointInZone(m, r) {
 	var AB = vector(r.A, r.B);
 	var AM = vector(r.A, m);
@@ -426,6 +500,10 @@ function createElementsMain() {
 
 var mapTranslations = {
 	location : {
+		location : {
+			es : "Zona",
+			en : "Location"
+		},
 		name : {
 			es : "Nombre de zona",
 			en : "Location name"

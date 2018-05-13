@@ -95,6 +95,18 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="UserAccount8" class="security.UserAccount">
+		<property name="username" value="player3" />
+		<property name="password" value="1aa3814dca32e4c0b79a2ca047ef1db0" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="PLAYER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 
 	<!-- Other domain beans come here -->
 
@@ -156,6 +168,7 @@
 		<property name="phoneNumber" value="657894123" />
 		<property name="refuges">
 			<list>
+				<ref bean="Refuge2" />
 			</list>
 		</property>
 		<property name="userAccount" ref="UserAccount6" />
@@ -174,6 +187,21 @@
 			</list>
 		</property>
 		<property name="userAccount" ref="UserAccount7" />
+	</bean>
+	
+	<bean id="Player3" class="domain.Player">
+		<property name="name" value="Player 3" />
+		<property name="surname" value="Player 3" />
+		<property name="email" value="player3@mail.com" />
+		<property name="birthDate" value="1995/10/17" />
+		<property name="avatar"
+			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
+		<property name="phoneNumber" value="657894123" />
+		<property name="refuges">
+			<list>
+			</list>
+		</property>
+		<property name="userAccount" ref="UserAccount8" />
 	</bean>
 
 	<!-- %%%% Barracks %%%% -->
@@ -287,6 +315,19 @@
 		<property name="player" ref="Player1" />
 		<property name="location" ref="Location1" />
 		<property name="gpsCoordinates" value="41.18837169235602,-4.973904414537174" />
+		<property name="items">
+			<list>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="Refuge2" class="domain.Refuge">
+		<property name="code" value="WDJj786D02" />
+		<property name="name" value="Refuge 101" />
+		<property name="momentOfCreation" value="2018/04/12 00:00" />
+		<property name="player" ref="Player3" />
+		<property name="location" ref="Location2" />
+		<property name="gpsCoordinates" value="48.12651713159919,6.933350701309109" />
 		<property name="items">
 			<list>
 			</list>
