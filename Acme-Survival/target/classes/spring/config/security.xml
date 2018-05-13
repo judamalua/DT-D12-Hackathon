@@ -124,6 +124,12 @@
 		<security:intercept-url pattern="/order/player/ajaxCard.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
+		<security:intercept-url pattern="/map/player/display.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+		
+		<security:intercept-url pattern="/map/player/info.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 
