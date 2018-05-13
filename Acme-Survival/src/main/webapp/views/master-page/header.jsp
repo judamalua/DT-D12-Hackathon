@@ -180,6 +180,9 @@
 			<security:authorize access="hasRole('PLAYER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownPlayerFunctions" class="dropdown-content">
+					<li><a href="map/player/display.do"><spring:message
+								code="master.page.map" /></a></li>
+					<li class="divider"></li>
 					<li><a href="refuge/player/list.do"><spring:message
 								code="master.page.knowRefuge" /></a></li>
 					<li class="divider"></li>
