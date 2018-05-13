@@ -6,8 +6,12 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ToolRepository;
 import domain.Event;
@@ -37,6 +41,9 @@ public class ToolService {
 
 	@Autowired
 	private ProbabilityItemService	probabilityItemService;
+
+	@Autowired
+	private Validator				validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -137,6 +144,45 @@ public class ToolService {
 		Collection<Item> result;
 
 		result = this.toolRepository.findItemsByTool(toolId);
+
+		return result;
+	}
+
+	public Page<Tool> findFinal(final Pageable pageable) {
+		Page<Tool> result;
+
+		result = this.toolRepository.findFinal(pageable);
+
+		return result;
+	}
+
+	public Page<Tool> findNotFinal(final Pageable pageable) {
+		Page<Tool> result;
+
+		result = this.toolRepository.findNotFinal(pageable);
+
+		return result;
+	}
+
+	public Tool reconstruct(final Tool tool, final BindingResult binding) {
+		Tool result;
+
+		if (tool.getId() == 0)
+			result = tool;
+		else {
+			result = this.toolRepository.findOne(tool.getId());
+
+			result.setCapacity(tool.getCapacity());
+			result.setDescription(tool.getDescription());
+			result.setFinalMode(tool.getFinalMode());
+			result.setImageUrl(tool.getImageUrl());
+			result.setLuck(tool.getLuck());
+			result.setName(tool.getName());
+			result.setStrength(tool.getStrength());
+
+		}
+		this.toolRepository.flush();
+		this.validator.validate(result, binding);
 
 		return result;
 	}

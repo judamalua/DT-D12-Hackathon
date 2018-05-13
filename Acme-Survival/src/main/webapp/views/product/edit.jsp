@@ -18,14 +18,14 @@
 	
 	<acme:textbox code="product.pictureUrl" path="pictureUrl" required = "true"/>
 	
-	<acme:textarea code="product.name_en" path="name_en" required = "true"/>
-	<acme:textarea code="product.name_es" path="name_es" required = "true"/>
+	<acme:textboxMap code="product.name_en" path="name[en]" errorPath="name" required = "true"/>
+	<acme:textboxMap code="product.name_es" path="name[es]" errorPath="name" required = "true"/>
 	
-	<acme:textarea code="product.description_en" path="description_en" required = "true"/>
-	<acme:textarea code="product.description_es" path="description_es" required = "true"/>
+	<acme:textareaMap code="product.description_en" path="description[en]" errorPath="description" required = "true"/>
+	<acme:textareaMap code="product.description_es" path="description[es]" errorPath="description" required = "true"/>
 
 	<acme:textbox code="product.price" path="price" required="true" placeholder="1.50"/>
-	
+
 	<acme:submit name="save" code="product.save"/>
 		
 	<jstl:if test="${product.id!=0}">

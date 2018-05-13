@@ -27,26 +27,12 @@
 	</display:column>
 
 	<spring:message code="product.name" var="name" />
-	<jstl:if test="${currentLang == \"en\"}">
 	<display:column title="${name}" sortable="true">
-		<a href = "product/detailed.do?productId=${product.id}"><jstl:out value = "${product.name_en}"/></a>
+		<a href = "product/detailed.do?productId=${product.id}"><jstl:out value = "${product.name[currentLang]}"/></a>
 	</display:column>
-	</jstl:if>
-	
-	<jstl:if test="${currentLang == \"es\"}">
-	<display:column title="${name}" sortable="true">
-		<a href = "product/detailed.do?productId=${product.id}"><jstl:out value = "${product.name_es}"/></a>
-	</display:column>
-	</jstl:if>
 	
 	<spring:message code="product.description" var="description" />
-	<jstl:if test="${currentLang == \"en\"}">
-	<display:column property="description_en" title="${description}" sortable="false" />
-	</jstl:if>
-	
-	<jstl:if test="${currentLang == \"es\"}">
-	<display:column property="description_es" title="${description}" sortable="false" />
-	</jstl:if>
+	<display:column value="${product.description[currentLang]}" title="${description}" sortable="false" />
 	
 	<spring:message code="product.price" var="price" />
 	<display:column property="price" title="${price}" format="${formatPrice}" sortable="true" />
