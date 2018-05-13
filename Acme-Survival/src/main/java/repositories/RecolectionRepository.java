@@ -17,7 +17,7 @@ public interface RecolectionRepository extends JpaRepository<Recolection, Intege
 	@Query("select r.character from Recolection r where r.endMoment > ?1")
 	Collection<Character> findCharactersInRecolectionMission(Date date);
 
-	@Query("select r from Recolection r where r.characterId = ?1 and r.endMoment > ?2")
+	@Query("select r from Recolection r where r.character.id = ?1 and r.endMoment > ?2")
 	Collection<Recolection> findRecolectionNotFinishedByCharacter(int characterId, Date date);
 
 }
