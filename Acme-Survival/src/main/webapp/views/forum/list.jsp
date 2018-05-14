@@ -70,8 +70,10 @@
 				value="${thread.name}" /></a>
 		<br />
 		<jstl:forEach items="${thread.tags}" var="tag" varStatus="loop">
-			<jstl:out value="${tag}" />
-			<jstl:if test="${loop.index != looop.last-1}">
+			<div class="chip">
+				<jstl:out value="${tag}" />
+			</div>
+			<jstl:if test="${!loop.last}">
 				,
 			</jstl:if>
 		</jstl:forEach>

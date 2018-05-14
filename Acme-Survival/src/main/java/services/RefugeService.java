@@ -207,6 +207,8 @@ public class RefugeService {
 				room.setRefuge(result);
 				this.roomService.save(room);
 			}
+
+			characters = this.generateCharacters(result);
 		}
 
 		return result;
@@ -385,6 +387,21 @@ public class RefugeService {
 		randomNum = random.nextInt(size);
 
 		result = (Location) this.locationService.findAll().toArray()[randomNum];
+
+		return result;
+	}
+
+	private Collection<domain.Character> generateCharacters(final Refuge refuge) {
+		Collection<domain.Character> result;
+		domain.Character character;
+
+		result = new HashSet<>();
+
+		for (int i = 0; i < 3; i++) {//Poner número en configuración
+
+			character = this.characterService.save(this.characterService.generateCharacter(refuge.getId()));
+			result.add(character);
+		}
 
 		return result;
 	}
