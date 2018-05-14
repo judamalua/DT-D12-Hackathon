@@ -22,8 +22,7 @@ public class Character extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name;
-	private String	surname;
+	private String	fullName;
 	private int		currentHealth;
 	private int		currentWater;
 	private int		currentFood;
@@ -32,36 +31,27 @@ public class Character extends DomainEntity {
 	private int		capacity;
 	private int		level;
 	private int		experience;
-	private boolean	male;
 
 
-	@NotBlank
-	@SafeHtml
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public boolean getMale() {
-		return this.male;
-	}
-
-	public void setMale(final boolean male) {
-		this.male = male;
-	}
+	//private boolean	male;
 
 	@NotBlank
 	@SafeHtml
-	public String getSurname() {
-		return this.surname;
+	public String getFullName() {
+		return this.fullName;
 	}
 
-	public void setSurname(final String surname) {
-		this.surname = surname;
+	public void setFullName(final String fullName) {
+		this.fullName = fullName;
 	}
+
+	//	public boolean getMale() {
+	//		return this.male;
+	//	}
+	//
+	//	public void setMale(final boolean male) {
+	//		this.male = male;
+	//	}
 
 	@Min(value = 0)
 	public int getCurrentHealth() {
