@@ -17,6 +17,7 @@ import org.springframework.validation.Validator;
 import repositories.ForumRepository;
 import domain.Actor;
 import domain.Forum;
+import domain.Moderator;
 import domain.Player;
 import domain.Thread;
 
@@ -98,7 +99,8 @@ public class ForumService {
 			if (forum.getForum() != null)
 				Assert.isTrue(!allSubForums.contains(forum.getForum()));
 		}
-		Assert.isTrue(actor.equals(forum.getOwner()));
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(actor.equals(forum.getOwner()));
 
 		threads = new HashSet<>();
 
@@ -123,11 +125,12 @@ public class ForumService {
 
 		actor = this.actorService.findActorByPrincipal();
 
-		if (forum.getStaff() || forum.getStaff())
+		if (forum.getStaff())
 			Assert.isTrue(!(actor instanceof Player));
 
 		Assert.isTrue(this.forumRepository.exists(forum.getId()));
-
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(forum.getOwner().equals(forum));
 		this.deleteRecursive(forum);
 	}
 
@@ -201,8 +204,9 @@ public class ForumService {
 			result.setForum(forum.getForum());
 
 		}
-		this.forumRepository.flush();
+
 		this.validator.validate(result, binding);
+		this.forumRepository.flush();
 
 		return result;
 	}

@@ -73,9 +73,6 @@
 			<div class="chip">
 				<jstl:out value="${tag}" />
 			</div>
-			<jstl:if test="${!loop.last}">
-				,
-			</jstl:if>
 		</jstl:forEach>
 	</display:column>
 	<display:column>

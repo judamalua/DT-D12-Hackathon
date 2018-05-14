@@ -26,6 +26,7 @@ import services.ActorService;
 import services.ForumService;
 import services.ThreadService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Forum;
 import domain.Thread;
 
@@ -54,12 +55,18 @@ public class ThreadActorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final Integer threadId) {
 		ModelAndView result;
 		Thread thread;
+		Actor actor;
+		try {
+			actor = this.actorService.findActorByPrincipal();
 
-		this.actorService.checkActorLogin();
+			thread = this.threadService.findOne(threadId);
+			Assert.notNull(thread);
+			Assert.isTrue(thread.getActor().equals(actor));
 
-		thread = this.threadService.findOne(threadId);
-		result = this.createEditModelAndView(thread);
-
+			result = this.createEditModelAndView(thread);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
@@ -69,17 +76,20 @@ public class ThreadActorController extends AbstractController {
 		final Thread thread;
 		Forum forum;
 
-		this.actorService.checkActorLogin();
+		try {
+			this.actorService.checkActorLogin();
 
-		thread = this.threadService.create();
-		if (forumId != null) {
-			forum = this.forumService.findOne(forumId);
-			Assert.notNull(forum);
-			thread.setForum(forum);
+			thread = this.threadService.create();
+			if (forumId != null) {
+				forum = this.forumService.findOne(forumId);
+				Assert.notNull(forum);
+				thread.setForum(forum);
+			}
+
+			result = this.createEditModelAndView(thread);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
 		}
-
-		result = this.createEditModelAndView(thread);
-
 		return result;
 	}
 	//Updating forum ---------------------------------------------------------------------
@@ -112,18 +122,15 @@ public class ThreadActorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Thread thread, final BindingResult binding) {
+	public ModelAndView delete(@ModelAttribute("thread") Thread thread, final BindingResult binding) {
 		ModelAndView result;
 
 		try {
-			thread = this.threadService.reconstruct(thread, binding);
-		} catch (final Throwable oops) {
-		}
-		try {
+			thread = this.threadService.findOne(thread.getId());
 			this.threadService.delete(thread);
 
-			if (thread.getForum().getForum() != null)
-				result = new ModelAndView("redirect:/forum/list.do?forumId=" + thread.getForum().getForum().getId());
+			if (thread.getForum() != null)
+				result = new ModelAndView("redirect:/forum/list.do?forumId=" + thread.getForum().getId());
 			else
 				result = new ModelAndView("redirect:/forum/list.do");
 

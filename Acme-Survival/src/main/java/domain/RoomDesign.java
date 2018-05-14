@@ -11,6 +11,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import annotations.MapNotBlank;
+import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -30,6 +31,7 @@ public abstract class RoomDesign extends DomainEntity {
 
 	@NotNull
 	@MapNotBlank
+	@MapSafeHtml
 	@ElementCollection
 	public Map<String, String> getName() {
 		return this.name;
@@ -41,6 +43,7 @@ public abstract class RoomDesign extends DomainEntity {
 
 	@NotNull
 	@MapNotBlank
+	@MapSafeHtml
 	@ElementCollection
 	public Map<String, String> getDescription() {
 		return this.description;

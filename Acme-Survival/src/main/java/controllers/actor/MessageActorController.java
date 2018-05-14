@@ -12,6 +12,7 @@ package controllers.actor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.MessageService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Message;
 
 @Controller
@@ -46,26 +48,34 @@ public class MessageActorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int messageId) {
 		ModelAndView result;
 		Message message;
+		Actor actor;
+		try {
+			actor = this.actorService.findActorByPrincipal();
 
-		this.actorService.checkActorLogin();
+			message = this.messageService.findOne(messageId);
+			Assert.notNull(message);
+			Assert.isTrue(message.getActor().equals(actor));
 
-		message = this.messageService.findOne(messageId);
-		result = this.createEditModelAndView(message);
+			result = this.createEditModelAndView(message);
 
-		result.addObject("thread", message.getThread());
-
+			result.addObject("thread", message.getThread());
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
 		final Message message;
+		try {
+			this.actorService.checkActorLogin();
+			message = this.messageService.create();
 
-		this.actorService.checkActorLogin();
-		message = this.messageService.create();
-
-		result = this.createEditModelAndView(message);
-
+			result = this.createEditModelAndView(message);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
@@ -85,6 +95,8 @@ public class MessageActorController extends AbstractController {
 			result.addObject("thread", messageForm.getThread());
 		} else
 			try {
+				Assert.notNull(messageForm);
+
 				savedMessage = this.messageService.save(messageForm);
 				result = new ModelAndView("redirect:/message/list.do?threadId=" + savedMessage.getThread().getId());
 

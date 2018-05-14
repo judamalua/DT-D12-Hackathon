@@ -42,10 +42,10 @@ $(document).ready(function(){
 	</p>
 	
 	<ul id="resources">
-		
 	</ul>
 	<spring:message var="lang" code="master.page.current.lang" />
-	<acme:select id="roomDesign" items="${roomDesigns}" itemLabel="name_${lang}"
+	
+	<acme:select id="roomDesign" items="${roomDesigns}" itemLabel="name[${lang}]"
 		code="room.roomDesign" path="roomDesign" />
 
 	<acme:submit name="save" code="room.save" />

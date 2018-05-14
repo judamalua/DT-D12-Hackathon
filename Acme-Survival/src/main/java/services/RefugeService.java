@@ -295,6 +295,7 @@ public class RefugeService {
 
 		}
 		this.validator.validate(result, binding);
+		this.refugeRepository.flush();
 
 		return result;
 	}

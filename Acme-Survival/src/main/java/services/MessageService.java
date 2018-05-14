@@ -17,6 +17,7 @@ import org.springframework.validation.Validator;
 import repositories.MessageRepository;
 import domain.Actor;
 import domain.Message;
+import domain.Moderator;
 
 @Service
 @Transactional
@@ -74,7 +75,11 @@ public class MessageService {
 		Assert.notNull(message);
 
 		final Message result;
-		this.actorService.checkActorLogin();
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(message.getActor().equals(actor));
 
 		message.setMoment(new Date(System.currentTimeMillis() - 1));
 		result = this.messageRepository.save(message);
@@ -87,7 +92,11 @@ public class MessageService {
 
 		Assert.notNull(message);
 		Assert.isTrue(message.getId() != 0);
-		this.actorService.checkActorLogin();
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(message.getActor().equals(actor));
 
 		Assert.isTrue(this.messageRepository.exists(message.getId()));
 
@@ -135,6 +144,7 @@ public class MessageService {
 
 		}
 		this.validator.validate(result, binding);
+		this.messageRepository.flush();
 
 		return result;
 	}
