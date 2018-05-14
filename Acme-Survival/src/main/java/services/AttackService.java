@@ -115,20 +115,6 @@ public class AttackService {
 
 		Attack result;
 
-		/*
-		 * Date startMoment, endMoment;
-		 * Long time;
-		 * 
-		 * startMoment = new Date(System.currentTimeMillis() - 10);
-		 * time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
-		 * endMoment = new Date(System.currentTimeMillis() + time);
-		 * 
-		 * if (attack.getId() == 0) {
-		 * attack.setStartDate(startMoment);
-		 * attack.setEndMoment(endMoment);
-		 * }
-		 */
-
 		result = this.attackRepository.save(attack);
 
 		return result;
