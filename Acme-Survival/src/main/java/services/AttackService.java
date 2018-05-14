@@ -256,4 +256,23 @@ public class AttackService {
 
 		return result;
 	}
+
+	/**
+	 * This method checks if the Attack is finished or not.
+	 * 
+	 * @param attack
+	 * @return true if the Attack is finished
+	 */
+	public boolean hasFinished(final Attack attack) {
+		Boolean result;
+		Date now;
+
+		result = false;
+		now = new Date();
+
+		if (attack.getEndMoment().before(now))
+			result = true;
+
+		return result;
+	}
 }

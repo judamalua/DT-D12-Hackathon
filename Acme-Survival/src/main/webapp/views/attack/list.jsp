@@ -26,7 +26,11 @@
 <spring:message code="attack.defendant" var="titleDefendant" />
 <spring:message code="attack.startDate" var="titleStartDate" />
 <spring:message code="attack.endMoment" var="titleEndMoment" />
+<spring:message code="attack.results.title" var="titleResults" />
 <spring:message code="master.page.moment.format" var="formatMoment" />
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate var="currentDate" value="${now}"
+	pattern="yyyy-MM-dd HH:mm" />
 
 <!-- Pagination -->
 <acme:pagination requestURI="${requestUri}page=" pageNum="${pageNum}"
@@ -54,6 +58,12 @@
 	<display:column property="startDate" title="${titleStartDate}" format="${formatMoment}" sortable="true" class="${attackRowColor}"/>
 	
 	<display:column property="endMoment" title="${titleEndMoment}" format="${formatMoment}" sortable="true" class="${attackRowColor}"/>
+	
+	<jstl:if test="${attackList.endMoment < currentDate}">
+		<display:column title="${titleResults}" class="${attackRowColor}">
+			<a href="attack/player/results.do?attackId=${attackList.id}"><spring:message code="attack.results"/></a>
+		</display:column>
+	</jstl:if>
 	
 </display:table>
 

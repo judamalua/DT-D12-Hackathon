@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,6 +107,40 @@ public class AttackPlayerController extends AbstractController {
 			result.addObject("pageNum", attacks.getTotalPages());
 			result.addObject("requestUri", "attack/player/list.do?");
 			result.addObject("myRefugeId", refuge.getId());
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
+	@RequestMapping(value = "/results", method = RequestMethod.GET)
+	public ModelAndView results(final int attackId) {
+		ModelAndView result;
+		Attack attack;
+		Boolean attackerIsWinner;
+		Integer attackerStrength, defendantStrength;
+
+		try {
+			attack = this.attackService.findOne(attackId);
+
+			Assert.isTrue(this.attackService.hasFinished(attack));
+
+			attackerStrength = this.attackService.getStrengthSumByRefuge(attack.getAttacker().getId());
+			defendantStrength = this.attackService.getStrengthSumByRefuge(attack.getDefendant().getId());
+
+			if (attackerStrength > defendantStrength)
+				attackerIsWinner = true;
+			else
+				attackerIsWinner = false;
+
+			result = new ModelAndView("attack/results");
+
+			result.addObject("attack", attack);
+			result.addObject("attackerIsWinner", attackerIsWinner);
+			result.addObject("attackerStrength", attackerStrength);
+			result.addObject("defendantStrength", defendantStrength);
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
