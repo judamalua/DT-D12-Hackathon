@@ -27,27 +27,26 @@
 	<form:hidden path="version" />
 	<form:hidden path="defendant" />
 	
-	<spring:message code="attack.attacker"/>:
-	<jstl:out value="${attack.attacker}"/>
-	<br/>
+	<dl>
+  		<dt><spring:message code="attack.attacker"/>:</dt>
+  		<dd><jstl:out value="${attack.attacker.name}"/></dd>
+		
+		
+		<dt><spring:message code="attack.defendant"/>:</dt>
+		<dd><jstl:out value="${attack.defendant.name}"/></dd>
+		
+		<dt><spring:message code="attack.startDate.estimated"/>:</dt>
+		<dd><jstl:out value="${attack.startDate}"/></dd>
 	
-	<spring:message code="attack.defendant"/>:
-	<jstl:out value="${attack.defendant}"/>
-	<br/>
-	
-	<spring:message code="attack.startDate.estimated"/>:
-	<jstl:out value="${attack.startDate}"/>
-	<br/>
 
-	<spring:message code="attack.endMoment.estimated"/>:
-	<jstl:out value="${attack.endMoment}"/>
-	<br/>
+		<dt><spring:message code="attack.endMoment.estimated"/>:</dt>
+		<dd><jstl:out value="${attack.endMoment}"/></dd>
+	
+	</dl>
 	
 	<acme:submit name="save" code="attack.start" />
 	
-	<button type="button" class="btn" onclick="javascript: window.history.back()" >
-		<spring:message code="attack.cancel" />
-	</button>
+	<acme:cancel url="map/player/display.do" code="attack.cancel" />
 	
 
 </form:form>

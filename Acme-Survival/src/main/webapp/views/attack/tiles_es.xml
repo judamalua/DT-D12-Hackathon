@@ -17,7 +17,7 @@
 <tiles-definitions>
 
 	<definition name="attack/create" extends="master.page">	
-		<put-attribute name="title" value="Crear ataque" />
+		<put-attribute name="title" value="Empezar ataque" />
 		<put-attribute name="body" value="/views/attack/create.jsp" />
 	</definition>
 	

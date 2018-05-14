@@ -33,7 +33,7 @@ public class AttackPlayerController extends AbstractController {
 		Attack attack;
 		try {
 			attack = this.attackService.create(refugeId);
-			result = new ModelAndView("TODO");//TODO
+			result = new ModelAndView("attack/create");
 			result.addObject("attack", attack);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -55,7 +55,7 @@ public class AttackPlayerController extends AbstractController {
 		else
 			try {
 				this.attackService.save(attack);
-				result = new ModelAndView("TODO");//TODO
+				result = new ModelAndView("reditect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");
 			}

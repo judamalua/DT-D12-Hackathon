@@ -12,4 +12,5 @@ public interface DesignerConfigurationRepository extends JpaRepository<DesignerC
 
 	@Query("select dc from DesignerConfiguration dc")
 	DesignerConfiguration findDesignerConfiguration();
+
 }

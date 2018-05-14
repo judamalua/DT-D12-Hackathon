@@ -157,6 +157,22 @@
 		<property name="phoneNumber" value="657894123" />
 	</bean>
 
+	<!-- %%%% DesignerConfiguration %%%% -->
+	<bean id="DesignerConfiguration1" class="domain.DesignerConfiguration">
+		<property name="movingWood" value="5" />
+		<property name="movingMetal" value="5" />
+		<property name="movingFood" value="5" />
+		<property name="movingWater" value="5" />
+		<property name="kmPerSecond" value="5" />
+		<property name="foodWastedPerSecond" value="1" />
+		<property name="waterWastedPerSecond" value="1" />
+		<property name="refugeRecoverTime" value="10" />
+		<property name="waterFactorSteal" value="0.5" />
+		<property name="foodFactorSteal" value="0.5" />
+		<property name="metalFactorSteal" value="0.5" />
+		<property name="woodFactorSteal" value="0.5" />
+	</bean>
+	
 	<!-- %%%% Payers %%%% -->
 	<bean id="Player1" class="domain.Player">
 		<property name="name" value="Player 1" />
