@@ -109,8 +109,8 @@ public class ThreadActorController extends AbstractController {
 			try {
 				savedThread = this.threadService.save(thread);
 
-				if (savedThread.getForum().getForum() != null)
-					result = new ModelAndView("redirect:/forum/list.do?forumId=" + savedThread.getForum().getForum().getId());
+				if (savedThread.getForum() != null)
+					result = new ModelAndView("redirect:/forum/list.do?forumId=" + savedThread.getForum().getId());
 				else
 					result = new ModelAndView("redirect:/forum/list.do");
 
