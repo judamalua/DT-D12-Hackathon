@@ -226,8 +226,13 @@ public class CharacterService {
 		final Random r = new Random();
 
 		for (int i = 1; i <= 3; i++)
-			if (!(i == 3)) {
-				final Integer property = r.nextInt(30 - sum);
+			if ((i == 1)) {
+				final Integer property = r.nextInt(11) + 1;
+				properties.add(property);
+				sum += property;
+
+			} else if ((i == 2)) {
+				final Integer property = r.nextInt(21 - sum) + 1;
 				properties.add(property);
 				sum += property;
 
@@ -241,6 +246,29 @@ public class CharacterService {
 		character.setCapacity(properties.get(0));
 		character.setLuck(properties.get(1));
 		character.setStrength(properties.get(2));
+
+	}
+
+	public Character generateCharacter() {
+		Character character;
+		Faker faker;
+
+		faker = new Faker();
+		character = this.create();
+		final String name = faker.gameOfThrones().character();
+
+		character.setFullName(name);
+		character.setCurrentFood(100);
+		character.setCurrentHealth(100);
+		character.setCurrentWater(100);
+		character.setExperience(0);
+		character.setItem(null);
+		character.setLevel(1);
+		character.setRoom(null);
+
+		this.generateCharacterHabilities(character);
+
+		return character;
 
 	}
 
