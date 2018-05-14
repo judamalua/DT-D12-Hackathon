@@ -43,14 +43,6 @@ public class AttackService {
 
 	// Simple CRUD methods --------------------------------------------------
 
-	public Attack create() {
-		Attack result;
-
-		result = new Attack();
-
-		return result;
-	}
-
 	public Attack create(final int refugeId) {
 		Attack result;
 		Refuge defendant, attacker;
@@ -110,8 +102,8 @@ public class AttackService {
 	public Attack save(final Attack attack) {
 
 		Assert.notNull(attack);
-		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()));
-		Assert.isTrue(!this.playerAlreadyAttacking());
+		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()), "Player doesn't know the Refuge");
+		Assert.isTrue(!this.playerAlreadyAttacking(), "Player is already attacking");
 
 		Attack result;
 
@@ -247,5 +239,9 @@ public class AttackService {
 		this.validator.validate(result, binding);
 
 		return result;
+	}
+
+	public void flush() {
+		this.attackRepository.flush();
 	}
 }

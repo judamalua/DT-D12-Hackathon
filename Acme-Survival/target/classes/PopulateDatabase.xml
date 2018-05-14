@@ -106,6 +106,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="UserAccount9" class="security.UserAccount">
+		<property name="username" value="player4" />
+		<property name="password" value="12efaba7fd50f5c66bd295683c0ce2a7" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="PLAYER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 
 	<!-- Other domain beans come here -->
@@ -218,6 +230,21 @@
 			</list>
 		</property>
 		<property name="userAccount" ref="UserAccount8" />
+	</bean>
+	
+	<bean id="Player4" class="domain.Player">
+		<property name="name" value="Player 4" />
+		<property name="surname" value="Player 4" />
+		<property name="email" value="player4@mail.com" />
+		<property name="birthDate" value="1990/10/18" />
+		<property name="avatar"
+			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
+		<property name="phoneNumber" value="666555222" />
+		<property name="refuges">
+			<list>
+			</list>
+		</property>
+		<property name="userAccount" ref="UserAccount9" />
 	</bean>
 
 	<!-- %%%% Barracks %%%% -->
