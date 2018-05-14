@@ -13,6 +13,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
+
 <!-- This view lists final mode lootTables and discontinued lootTables -->
 
 <spring:message code = "master.page.current.lang" var = "currentLang" />
@@ -26,17 +27,23 @@
 
 
 	<spring:message code="lootTable.name" var="name" />
-	<spring:message code="lootTable.description" var="description" />
-	<spring:message code="lootTable.items" var="item" />
+	<spring:message code="lootTable.items" var="items" />
 	<spring:message code="lootTable.events" var="events" />
 	<spring:message code="lootTable.locations" var="locations" />
+	<spring:message code="lootTable.edit" var="editTitle" />
+	
 	
 	<display:column property="name" title="${name}" sortable="false" />
-	<display:column property="description" title="${description}" sortable="false" />
-	<display:column property="items" title="${fn:length(probabilityItems)}" sortable="false" />
-	<display:column property="events" title="${fn:length(probabilityEvents)}" sortable="false" />
-	<display:column property="locations" title="${fn:length(locations)}" sortable="false" />
+	<display:column value="${fn:length(lootTable.probabilityItems)}" title="${items}" sortable="false" />
+	<display:column value="${fn:length(lootTable.probabilityEvents)}" title="${events}" sortable="false" />
+	<display:column value="${fn:length(lootTable.locations)}" title="${locations}" sortable="false" />
+	<security:authorize access="hasRole('DESIGNER')">
+	<display:column title="${editTitle}">
 	
+	<acme:button url="lootTable/designer/edit.do?lootTableId=${lootTable.id}" code="lootTable.edit"/>
+	
+	</display:column>
+	</security:authorize>
 
 </display:table>
 

@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationService;
 import services.DesignerService;
+import services.EventService;
 import services.LootTableService;
 import controllers.AbstractController;
 import domain.Actor;
@@ -49,6 +50,8 @@ public class LootTableDesignerController extends AbstractController {
 	private LootTableService	lootTableService;
 	@Autowired
 	private ConfigurationService configurationService;
+	@Autowired
+	private EventService eventService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -187,6 +190,7 @@ public class LootTableDesignerController extends AbstractController {
 		result = new ModelAndView("lootTable/edit");
 		result.addObject("message", messageCode);
 		result.addObject("lootTable", lootTable);
+		result.addObject("events", eventService.findAll());
 
 		return result;
 
