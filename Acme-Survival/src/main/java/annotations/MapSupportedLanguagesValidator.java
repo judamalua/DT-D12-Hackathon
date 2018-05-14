@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import services.ConfigurationService;
 
-public class MapSupportedLanguagesValidator implements ConstraintValidator<MapNotBlank, Map<String, String>> {
+public class MapSupportedLanguagesValidator implements ConstraintValidator<MapSupportedLanguages, Map<String, String>> {
 
 	@Autowired
 	private ConfigurationService	configurationService;
 
 
 	@Override
-	public void initialize(final MapNotBlank constraintAnnotation) {
+	public void initialize(final MapSupportedLanguages constraintAnnotation) {
 	}
 
 	@Override
