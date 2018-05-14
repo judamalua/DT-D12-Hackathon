@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import javax.transaction.Transactional;
 
+import org.ajbrown.namemachine.Gender;
+import org.ajbrown.namemachine.Name;
+import org.ajbrown.namemachine.NameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +20,7 @@ import repositories.CharacterRepository;
 import domain.Actor;
 import domain.Character;
 import domain.Player;
+import domain.Refuge;
 
 @Service
 @Transactional
@@ -34,6 +38,9 @@ public class CharacterService {
 
 	@Autowired
 	private ActorService		actorService;
+
+	@Autowired
+	private RefugeService		refugeService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -171,6 +178,41 @@ public class CharacterService {
 		return result;
 	}
 
+	/**
+	 * That method generate a random character,set it to a refuge and locate it in a room
+	 * 
+	 * @param refugeId
+	 * @return Character
+	 * @author Luis
+	 **/
+	public Character generateCharacter(final int refugeId) {
+		Character character;
+		Refuge refuge;
+		NameGenerator nameGenerator;
+
+		nameGenerator = new NameGenerator();
+		character = this.create();
+		refuge = this.refugeService.findOne(refugeId);
+		final Name nameGen = nameGenerator.generateName();
+		final Boolean isMale = nameGen.getGender().equals(Gender.MALE) ? true : false;
+
+		character.setName(nameGen.getFirstName());
+		character.setSurname(nameGen.getLastName());
+		character.setMale(isMale);
+		character.setCurrentFood(100);
+		character.setCurrentHealth(100);
+		character.setCurrentWater(100);
+		character.setExperience(0);
+		character.setCapacity(10);
+		character.setLuck(10);
+		character.setItem(null);
+		character.setLevel(1);
+		character.setRefuge(refuge);
+		character.setRoom(null);
+
+		return character;
+
+	}
 	public Collection<Character> findCharactersByRefuge(final int refugeId) {
 		Collection<Character> result;
 
@@ -195,4 +237,5 @@ public class CharacterService {
 
 		return result;
 	}
+
 }
