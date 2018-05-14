@@ -6,8 +6,10 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -29,17 +31,18 @@ public class ProbabilityEvent extends DomainEntity {
 
 
 	// Relationships ----------------------------------------------------------
-	private Collection<Event>	events;
+	private Event event;
 
 
 	@Valid
-	@OneToMany
-	public Collection<Event> getEvents() {
-		return this.events;
+	@NotNull
+	@ManyToOne(optional = false)
+	public Event getEvent() {
+		return this.event;
 	}
 
-	public void setEvents(final Collection<Event> events) {
-		this.events = events;
+	public void setEvent(final Event event) {
+		this.event = event;
 
 	}
 }

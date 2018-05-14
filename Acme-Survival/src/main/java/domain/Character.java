@@ -32,6 +32,7 @@ public class Character extends DomainEntity {
 	private int		capacity;
 	private int		level;
 	private int		experience;
+	private boolean	male;
 
 
 	@NotBlank
@@ -42,6 +43,14 @@ public class Character extends DomainEntity {
 
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	public boolean getMale() {
+		return this.male;
+	}
+
+	public void setMale(final boolean male) {
+		this.male = male;
 	}
 
 	@NotBlank
@@ -135,7 +144,7 @@ public class Character extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Refuge getRefuge() {
 		return this.refuge;
 	}

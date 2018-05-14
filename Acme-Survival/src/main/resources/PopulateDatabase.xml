@@ -531,6 +531,58 @@
 			value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
 		<property name="align" value="center" />
 	</bean>
+	
+	<bean id="LootTable1" class="domain.LootTable">
+		<property name="name" value="Bosque" />
+		<property name="probabilityEvents">
+		<list>
+		<ref bean="ProbabilityEvent1" />
+		</list>
+		</property>
+		<property name="probabilityItems">
+		<list>
+		</list>
+		</property>
+		<property name="locations">
+		<list>
+		</list>
+		</property>
+	</bean>
+	
+	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
+		<property name="value" value="0.40" />
+		<property name="event" ref="Event1" />
+	</bean>
+	
+	<bean id="Event1" class="domain.Event">
+	<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Event Eng 1</value></entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>EVENT ESP 1</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Description test event</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Test de descripcion de evento</value></entry>
+			</map>
+		</property>
+	<property name="health" value="0.40" />
+	<property name="water" value="0.40" />
+	<property name="food" value="0.40" />
+	<property name="finalMode" value="false" />
+	<property name="findCharacter" value="false" />
+	</bean>
 
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">
