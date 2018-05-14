@@ -8,9 +8,6 @@ import java.util.Random;
 
 import javax.transaction.Transactional;
 
-import org.ajbrown.namemachine.Gender;
-import org.ajbrown.namemachine.Name;
-import org.ajbrown.namemachine.NameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +16,9 @@ import org.springframework.util.Assert;
 import org.springframework.validation.Validator;
 
 import repositories.CharacterRepository;
+
+import com.github.javafaker.Faker;
+
 import domain.Actor;
 import domain.Character;
 import domain.Player;
@@ -192,17 +192,14 @@ public class CharacterService {
 	public Character generateCharacter(final int refugeId) {
 		Character character;
 		Refuge refuge;
-		NameGenerator nameGenerator;
+		Faker faker;
 
-		nameGenerator = new NameGenerator();
+		faker = new Faker();
 		character = this.create();
 		refuge = this.refugeService.findOne(refugeId);
-		final Name nameGen = nameGenerator.generateName();
-		final Boolean isMale = nameGen.getGender().equals(Gender.MALE) ? true : false;
+		final String name = faker.gameOfThrones().character();
 
-		character.setName(nameGen.getFirstName());
-		character.setSurname(nameGen.getLastName());
-		character.setMale(isMale);
+		character.setFullName(name);
 		character.setCurrentFood(100);
 		character.setCurrentHealth(100);
 		character.setCurrentWater(100);
