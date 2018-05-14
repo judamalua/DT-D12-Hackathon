@@ -194,6 +194,9 @@
 					<li class="divider"></li>
 					<li><a href="inventory/player/display.do"><spring:message
 								code="master.page.myInventory" /></a></li>
+					<li class="divider"></li>
+					<li><a href="attack/player/list.do"><spring:message
+								code="master.page.myAttacks" /></a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->

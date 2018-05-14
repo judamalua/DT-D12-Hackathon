@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -243,5 +245,15 @@ public class AttackService {
 
 	public void flush() {
 		this.attackRepository.flush();
+	}
+
+	public Page<Attack> findAllAttacksByPlayer(final int refugeId, final Pageable pageable) {
+		Page<Attack> result;
+
+		Assert.notNull(pageable);
+
+		result = this.attackRepository.findAllAttacksByPlayer(refugeId, pageable);
+
+		return result;
 	}
 }
