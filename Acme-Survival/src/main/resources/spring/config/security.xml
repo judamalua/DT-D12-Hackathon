@@ -82,6 +82,12 @@
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/event/designer/create.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
+		<security:intercept-url pattern="/lootTable/designer/edit.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+		<security:intercept-url pattern="/lootTable/designer/list.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+		<security:intercept-url pattern="/lootTable/designer/create.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
 			
 		<security:intercept-url pattern="/roomDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
@@ -124,6 +130,12 @@
 		<security:intercept-url pattern="/order/player/ajaxCard.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
+		<security:intercept-url pattern="/map/player/display.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+		
+		<security:intercept-url pattern="/map/player/info.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 
@@ -153,6 +165,15 @@
 
 		<security:intercept-url pattern="/product/**"
 			access="permitAll" requires-channel="https" />
+		
+		<security:intercept-url pattern="/attack/player/create"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/create"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/edit"
+			access="hasRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/**"

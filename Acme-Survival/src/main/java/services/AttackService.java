@@ -9,9 +9,13 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.Player;
+import domain.Refuge;
 
 @Service
 @Transactional
@@ -27,6 +31,15 @@ public class AttackService {
 	@Autowired
 	private MoveService			moveService;
 
+	@Autowired
+	private RefugeService		refugeService;
+
+	@Autowired
+	private ActorService		actorService;
+
+	@Autowired
+	private Validator			validator;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -37,6 +50,40 @@ public class AttackService {
 
 		return result;
 	}
+
+	public Attack create(final int refugeId) {
+		Attack result;
+		Refuge defendant, attacker;
+		Date startMoment, endMoment;
+		Long time;
+		Player player;
+
+		defendant = this.refugeService.findOne(refugeId);
+
+		Assert.isTrue(this.playerKnowsRefugee(defendant));
+		Assert.isTrue(!this.playerAlreadyAttacking());
+
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		attacker = this.refugeService.findRefugeByPlayer(player.getId());
+
+		startMoment = new Date(System.currentTimeMillis() - 10);
+		time = this.moveService.timeBetweenLocations(attacker.getLocation(), defendant.getLocation());
+		endMoment = new Date(System.currentTimeMillis() + time);
+
+		result = new Attack();
+
+		result.setAttacker(attacker);
+		result.setDefendant(defendant);
+		result.setStartDate(startMoment);
+		result.setEndMoment(endMoment);
+
+		return result;
+
+	}
+	//Controlador: entra la id del refugio al que atacar; se comprueba que la persona tenga en su lista de refugios conocidos tal refugio, crear la mision de ataque, se pone el timer y empieza
+	//Cuando termine el ataque, mostrar pantalla de resultados para el que ataca y el que ha sido atacado, poniendo lo que ha ganado y perdido cada uno
+	//Un jugador que ya está en una mision de ataque no puede crear otra mision de ataque.
 
 	public Collection<Attack> findAll() {
 
@@ -63,19 +110,24 @@ public class AttackService {
 	public Attack save(final Attack attack) {
 
 		Assert.notNull(attack);
+		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()));
+		Assert.isTrue(!this.playerAlreadyAttacking());
 
 		Attack result;
-		Date startMoment, endMoment;
-		Long time;
 
-		startMoment = new Date(System.currentTimeMillis() - 10);
-		time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
-		endMoment = new Date(System.currentTimeMillis() + time);
-
-		if (attack.getId() == 0) {
-			attack.setStartDate(startMoment);
-			attack.setEndMoment(endMoment);
-		}
+		/*
+		 * Date startMoment, endMoment;
+		 * Long time;
+		 * 
+		 * startMoment = new Date(System.currentTimeMillis() - 10);
+		 * time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
+		 * endMoment = new Date(System.currentTimeMillis() + time);
+		 * 
+		 * if (attack.getId() == 0) {
+		 * attack.setStartDate(startMoment);
+		 * attack.setEndMoment(endMoment);
+		 * }
+		 */
 
 		result = this.attackRepository.save(attack);
 
@@ -93,12 +145,56 @@ public class AttackService {
 
 	}
 
+	/**
+	 * This method checks that the player who is connected (the principal)
+	 * knows the refuge passed as a param
+	 * 
+	 * @param refuge
+	 * @return true if the player knows the refuge
+	 * @author antrodart
+	 */
+	public boolean playerKnowsRefugee(final Refuge refuge) {
+		Boolean result;
+		Player player;
+
+		result = false;
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		if (player.getRefuges().contains(refuge))
+			result = true;
+
+		return result;
+	}
+
+	/**
+	 * Returns true if the Player logged (the principal) is already involved in an Attack Mission.
+	 * 
+	 * @return true if the player is already involved in an attack mission
+	 */
+	public boolean playerAlreadyAttacking() {
+		Boolean result;
+		Player player;
+		Refuge refuge;
+		Date now;
+		Collection<Attack> attacks;
+
+		result = false;
+		player = (Player) this.actorService.findActorByPrincipal();
+		now = new Date();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		attacks = this.attackRepository.findAttacksThatEndsAfterDate(now, refuge.getId());
+
+		if (attacks.size() != 0)
+			result = true;
+
+		return result;
+	}
 	//Business methods --------------------
 	/**
 	 * This methot returns the number of resources stolen in the Attack. If the attacker loses, it returns 0 or a negative number.
 	 * 
 	 * @param attack
-	 * @return resources stolen of the Attack. If is a lost, then it returns 0.
+	 * @return resources stolen of the Attack. If is a lost, then it returns 0 or a negative number.
 	 */
 	public Integer getResourcesOfAttack(final Attack attack) {
 		Integer strengthSumAttacker, strengthSumDefendant;
@@ -136,6 +232,33 @@ public class AttackService {
 		Integer result;
 
 		result = this.attackRepository.getStrengthSumByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Attack reconstruct(final Attack attack, final BindingResult binding) {
+		Attack result = null;
+		Date startMoment, endMoment;
+		Long time;
+		Player player;
+		Refuge attacker;
+
+		if (attack.getId() == 0) {
+			result = attack;
+
+			player = (Player) this.actorService.findActorByPrincipal();
+
+			attacker = this.refugeService.findRefugeByPlayer(player.getId());
+
+			startMoment = new Date(System.currentTimeMillis() - 10);
+			time = this.moveService.timeBetweenLocations(attacker.getLocation(), result.getDefendant().getLocation());
+			endMoment = new Date(System.currentTimeMillis() + time);
+
+			attack.setAttacker(attacker);
+			attack.setStartDate(startMoment);
+			attack.setEndMoment(endMoment);
+		}
+		this.validator.validate(result, binding);
 
 		return result;
 	}

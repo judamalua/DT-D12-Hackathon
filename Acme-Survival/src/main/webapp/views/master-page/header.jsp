@@ -131,6 +131,9 @@
 						<li><a href="event/designer/list.do"><spring:message
 									code="master.page.events" /> </a></li>
 						<li class="divider"></li>
+						<li><a href="lootTable/designer/list.do"><spring:message
+									code="master.page.lootTables" /> </a></li>
+						<li class="divider"></li>
 						<li><a href="j_spring_security_logout"><spring:message
 									code="master.page.logout" /> </a></li>
 						
@@ -180,6 +183,9 @@
 			<security:authorize access="hasRole('PLAYER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownPlayerFunctions" class="dropdown-content">
+					<li><a href="map/player/display.do"><spring:message
+								code="master.page.map" /></a></li>
+					<li class="divider"></li>
 					<li><a href="refuge/player/list.do"><spring:message
 								code="master.page.knowRefuge" /></a></li>
 					<li class="divider"></li>

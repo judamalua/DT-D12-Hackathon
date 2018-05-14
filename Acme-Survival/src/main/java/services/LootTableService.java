@@ -7,8 +7,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.LootTableRepository;
+import domain.Event;
 import domain.LootTable;
 
 @Service
@@ -19,6 +22,8 @@ public class LootTableService {
 
 	@Autowired
 	private LootTableRepository	lootTableRepository;
+	@Autowired
+	private Validator				validator;
 
 
 	// Supporting services --------------------------------------------------
@@ -77,5 +82,26 @@ public class LootTableService {
 		this.lootTableRepository.delete(lootTable);
 
 	}
+	
+	public LootTable reconstruct(final LootTable lootTable, final BindingResult binding) {
+		LootTable result;
+
+		if (lootTable.getId() == 0) {
+			result = lootTable;
+		} else {
+			result = this.lootTableRepository.findOne(lootTable.getId());
+			result.setName(lootTable.getName());
+			result.setFinalMode(lootTable.getFinalMode());
+			result.setLocations(lootTable.getLocations());
+			result.setProbabilityEvents(lootTable.getProbabilityEvents());
+			result.setProbabilityItems(lootTable.getProbabilityItems());
+		}
+		this.validator.validate(result, binding);
+		return result;
+	}
+		
+	
+	
+	
 }
 
