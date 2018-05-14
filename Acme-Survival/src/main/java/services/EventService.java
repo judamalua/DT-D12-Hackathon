@@ -100,10 +100,8 @@ public class EventService {
 			result = event;
 		} else {
 			result = this.eventRepository.findOne(event.getId());
-			result.setDescription_es(event.getDescription_es());
-			result.setDescription_en(event.getDescription_en());
-			result.setName_es(event.getName_es());
-			result.setName_en(event.getName_en());
+			result.setDescription(event.getDescription());
+			result.setName(event.getName());
 			result.setFinalMode(event.getFinalMode());
 			result.setFood(event.getFood());
 			result.setHealth(event.getHealth());

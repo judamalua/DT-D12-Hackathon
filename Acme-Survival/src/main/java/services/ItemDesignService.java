@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -34,6 +36,18 @@ public class ItemDesignService {
 
 		Assert.notNull(this.itemDesignRepository);
 		result = this.itemDesignRepository.findAll();
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
+	public Page<ItemDesign> findAll(final Pageable pageable) {
+
+		Page<ItemDesign> result;
+
+		Assert.notNull(this.itemDesignRepository);
+		result = this.itemDesignRepository.findAll(pageable);
 		Assert.notNull(result);
 
 		return result;
@@ -85,6 +99,22 @@ public class ItemDesignService {
 		Collection<ProbabilityItem> result;
 
 		result = this.itemDesignRepository.findProbabilityItemsByItemDesign(itemDesignId);
+
+		return result;
+	}
+
+	public Page<ItemDesign> findNotFinal(final Pageable pageable) {
+		Page<ItemDesign> result;
+
+		result = this.itemDesignRepository.findNotFinal(pageable);
+
+		return result;
+	}
+
+	public Page<ItemDesign> findFinal(final Pageable pageable) {
+		Page<ItemDesign> result;
+
+		result = this.itemDesignRepository.findFinal(pageable);
 
 		return result;
 	}

@@ -21,7 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="tool/designer/edit.do" modelAttribute="tool">
+<form:form action="${requestURI}" modelAttribute="itemDesign">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -30,13 +30,17 @@
 		<em><spring:message code="form.required.params" /></em>
 	</p>
 
-	<acme:textbox code="itemDesign.name_es" path="name_es" required="true" />
-	<acme:textbox code="itemDesign.name_en" path="name_en" required="true" />
-	<acme:textarea code="itemDesign.description_es" path="description_es"
+	<jstl:forEach items="${languages}" var="lang">
+		<acme:textboxMap errorPath="name" code="itemDesign.name_${lang}"
+			path="name[${lang}]" required="true" />
+
+		<acme:textareaMap errorPath="description"
+			code="itemDesign.description_${lang}" path="description[${lang}]"
+			required="true" />
+	</jstl:forEach>
+	
+	<acme:textbox code="itemDesign.imageUrl" path="imageUrl"
 		required="true" />
-	<acme:textarea code="itemDesign.description_en" path="description_en"
-		required="true" />
-	<acme:textbox code="itemDesign.imageUrl" path="imageUrl" required="true" />
 
 	<jstl:if test="${tool}">
 		<acme:textbox code="tool.strength" path="strength" required="true" />
@@ -49,15 +53,19 @@
 		<acme:textbox code="resource.metal" path="metal" required="true" />
 		<acme:textbox code="resource.wood" path="wood" required="true" />
 	</jstl:if>
-	
-	<acme:checkbox code="itemDesign.finalMode" path="finalMode" id="finalMode" />
-	
-	<acme:submit name="save" code="tool.save" />
 
-	<jstl:if test="${tool.id!=0}">
-		<acme:delete clickCode="tool.delete.message" name="delete"
-			code="tool.delete" />
+	<acme:checkbox code="itemDesign.finalMode" path="finalMode"
+		id="finalMode" />
+
+	<acme:submit name="save" code="itemDesign.save" />
+
+	<jstl:if test="${itemDesign.id!=0}">
+		<acme:delete clickCode="itemDesign.delete.message" name="delete"
+			code="itemDesign.delete" />
 	</jstl:if>
-	<acme:cancel url="itemDesign/designer/list.do" code="tool.cancel" />
+
+	<acme:cancel
+		url="itemDesign/designer/list.do?tool=${tool}&finalMode=false"
+		code="itemDesign.cancel" />
 
 </form:form>

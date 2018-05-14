@@ -42,18 +42,6 @@
 						<li><a href="actor/admin/edit.do"><spring:message
 									code="master.page.actorEdit" /></a></li>
 						<li class="divider"></li>
-						<li><a href="actor/admin/registerManager.do"><spring:message
-									code="master.page.registerManager" /></a></li>
-						<li class="divider"></li>
-						<li><a href="actor/admin/registerModerator.do"><spring:message
-									code="master.page.registerModerator" /></a></li>
-						<li class="divider"></li>
-						<li><a href="actor/admin/registerDesigner.do"><spring:message
-									code="master.page.registerDesigner" /></a></li>
-						<li class="divider"></li>
-						<li><a href="actor/admin/register.do"><spring:message
-									code="master.page.registerAdmin" /></a></li>
-						<li class="divider"></li>
 						<li><a href="actor/display.do"><spring:message
 									code="master.page.actorProfile" /></a></li>
 						<li class="divider"></li>
@@ -143,6 +131,9 @@
 						<li><a href="event/designer/list.do"><spring:message
 									code="master.page.events" /> </a></li>
 						<li class="divider"></li>
+						<li><a href="lootTable/designer/list.do"><spring:message
+									code="master.page.lootTables" /> </a></li>
+						<li class="divider"></li>
 						<li><a href="j_spring_security_logout"><spring:message
 									code="master.page.logout" /> </a></li>
 						
@@ -165,7 +156,16 @@
 				<!-- Dropdown Structure -->
 				<ul id="dropdownAdminFunctions" class="dropdown-content">
 					<li><a href="actor/admin/register.do"><spring:message
-								code="master.page.createAdmin" /></a></li>
+									code="master.page.registerAdmin" /></a></li>			
+					<li class="divider"></li>
+					<li><a href="actor/admin/RegisterManager.do"><spring:message
+									code="master.page.registerManager" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/admin/RegisterModerator.do"><spring:message
+									code="master.page.registerModerator" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/admin/RegisterDesigner.do"><spring:message
+									code="master.page.registerDesigner" /></a></li>
 					<li class="divider"></li>
 					<li><a href="dashboard/admin/list.do"><spring:message
 								code="master.page.dashboardList" /></a></li>
@@ -183,6 +183,9 @@
 			<security:authorize access="hasRole('PLAYER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownPlayerFunctions" class="dropdown-content">
+					<li><a href="map/player/display.do"><spring:message
+								code="master.page.map" /></a></li>
+					<li class="divider"></li>
 					<li><a href="refuge/player/list.do"><spring:message
 								code="master.page.knowRefuge" /></a></li>
 					<li class="divider"></li>
@@ -191,12 +194,43 @@
 					<li class="divider"></li>
 					<li><a href="inventory/player/display.do"><spring:message
 								code="master.page.myInventory" /></a></li>
+					<li class="divider"></li>
+					<li><a href="attack/player/list.do"><spring:message
+								code="master.page.myAttacks" /></a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->
 				<li><a class="dropdown-button" href="#!"
 					data-activates="dropdownPlayerFunctions"><spring:message
 							code="master.page.player" /><i class="material-icons right">arrow_drop_down</i></a></li>
+			</security:authorize>
+			
+			<security:authorize access="hasRole('DESIGNER')">
+				<!-- Dropdown Structure -->
+				<ul id="dropdownDesignerFunctions" class="dropdown-content">
+					<li><a href="roomDesign/list.do"><spring:message
+								code="master.page.room.design.list.final" /></a></li>
+					<li class="divider"></li>
+					<li><a href="roomDesign/designer/list.do"><spring:message
+								code="master.page.room.design.list.draft" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
+								code="master.page.designer.tools.final" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
+								code="master.page.designer.tools.notFinal" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
+								code="master.page.designer.resources.final" /></a></li>
+					<li class="divider"></li>
+					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
+								code="master.page.designer.resources.notFinal" /></a></li>
+				</ul>
+
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-button" href="#!"
+					data-activates="dropdownDesignerFunctions"><spring:message
+							code="master.page.designer" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
 
 			<security:authorize access="hasRole('MANAGER')">
@@ -211,7 +245,7 @@
 					data-activates="dropdownManagerFunctions"><spring:message
 							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
-
+			
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message
 							code="master.page.login" /></a></li>
@@ -225,8 +259,6 @@
 							code="master.page.refugeList" /></a></li>
 			</security:authorize>
 		</ul>
-
-		
 	</div>
 </nav>
 

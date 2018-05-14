@@ -16,11 +16,11 @@
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	
-	<acme:textarea code="event.name_en" path="name_en" required = "true"/>
-	<acme:textarea code="event.name_es" path="name_es" required = "true"/>
+	<acme:textboxMap code="event.name_en" path="name[en]" errorPath="name" required = "true"/>
+	<acme:textboxMap code="event.name_es" path="name[es]" errorPath ="name" required = "true"/>
 	
-	<acme:textarea code="event.description_en" path="description_en" required = "true"/>
-	<acme:textarea code="event.description_es" path="description_es" required = "true"/>
+	<acme:textboxMap code="event.description_en" path="description[en]" errorPath="description" required = "true"/>
+	<acme:textboxMap code="event.description_es" path="description[es]" errorPath="description" required = "true"/>
 	
 	<acme:textarea code="event.health" path="health" required = "true"/>
 	<acme:textarea code="event.food" path="food" required = "true"/>

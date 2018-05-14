@@ -35,10 +35,12 @@
 
 <script src="scripts/cookieAjax.js"></script>
 <script src="scripts/businessNameAjax.js"></script>
+<script src="scripts/widgEditor.js"></script>
+<script src="scripts/gameMap.js"></script>
+<script src="scripts/main.js"></script>
 <script type="text/javascript">
 window.onload = function() {
-	  checkCookie();
-	  getBusinessName();
+	initialize();
 	};
 
 </script>
@@ -60,6 +62,7 @@ window.onload = function() {
 <link rel="stylesheet" href="styles/jmenu.css" media="screen"
 	type="text/css" />
 <link rel="stylesheet" href="styles/displaytag.css" type="text/css">
+<link rel="stylesheet" href="styles/attackRowColor.css" type="text/css">
 <!-- <link rel="stylesheet" href="styles/style.css" type="text/css"> -->
 <!-- <link rel="stylesheet" href="styles/bootstrap-datetimepicker.css"
 	type="text/css"> -->
@@ -92,7 +95,6 @@ window.onload = function() {
 </head>
 
 <body>
-
 	<div>
 		<tiles:insertAttribute name="header" />
 	</div>

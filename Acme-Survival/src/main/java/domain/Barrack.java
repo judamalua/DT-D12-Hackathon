@@ -4,6 +4,8 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -12,14 +14,16 @@ public class Barrack extends RoomDesign {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private int	characterCapacity;
+	private Integer	characterCapacity;
 
 
-	public int getCharacterCapacity() {
+	@Min(1)
+	@NotNull
+	public Integer getCharacterCapacity() {
 		return this.characterCapacity;
 	}
 
-	public void setCharacterCapacity(final int characterCapacity) {
+	public void setCharacterCapacity(final Integer characterCapacity) {
 		this.characterCapacity = characterCapacity;
 	}
 
