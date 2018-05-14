@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -42,14 +44,6 @@ public class AttackService {
 
 
 	// Simple CRUD methods --------------------------------------------------
-
-	public Attack create() {
-		Attack result;
-
-		result = new Attack();
-
-		return result;
-	}
 
 	public Attack create(final int refugeId) {
 		Attack result;
@@ -110,24 +104,10 @@ public class AttackService {
 	public Attack save(final Attack attack) {
 
 		Assert.notNull(attack);
-		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()));
-		Assert.isTrue(!this.playerAlreadyAttacking());
+		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()), "Player doesn't know the Refuge");
+		Assert.isTrue(!this.playerAlreadyAttacking(), "Player is already attacking");
 
 		Attack result;
-
-		/*
-		 * Date startMoment, endMoment;
-		 * Long time;
-		 * 
-		 * startMoment = new Date(System.currentTimeMillis() - 10);
-		 * time = this.moveService.timeBetweenLocations(attack.getAttacker().getLocation(), attack.getDefendant().getLocation());
-		 * endMoment = new Date(System.currentTimeMillis() + time);
-		 * 
-		 * if (attack.getId() == 0) {
-		 * attack.setStartDate(startMoment);
-		 * attack.setEndMoment(endMoment);
-		 * }
-		 */
 
 		result = this.attackRepository.save(attack);
 
@@ -259,6 +239,39 @@ public class AttackService {
 			attack.setEndMoment(endMoment);
 		}
 		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public void flush() {
+		this.attackRepository.flush();
+	}
+
+	public Page<Attack> findAllAttacksByPlayer(final int refugeId, final Pageable pageable) {
+		Page<Attack> result;
+
+		Assert.notNull(pageable);
+
+		result = this.attackRepository.findAllAttacksByPlayer(refugeId, pageable);
+
+		return result;
+	}
+
+	/**
+	 * This method checks if the Attack is finished or not.
+	 * 
+	 * @param attack
+	 * @return true if the Attack is finished
+	 */
+	public boolean hasFinished(final Attack attack) {
+		Boolean result;
+		Date now;
+
+		result = false;
+		now = new Date();
+
+		if (attack.getEndMoment().before(now))
+			result = true;
 
 		return result;
 	}

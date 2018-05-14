@@ -135,6 +135,7 @@ public class MoveService {
 		final Double longitudeEnd;
 		final Double lonDistance;
 		final Double latDistance;
+		Double kmPerSecond;
 
 		latitudeOrigin = new Double(origin.getPoint_a().split(",")[0]);
 		longitudeOrigin = new Double(origin.getPoint_a().split(",")[1]);
@@ -151,8 +152,9 @@ public class MoveService {
 		distance = Math.pow(distance, 2);//Distanca in kilometres
 
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+		kmPerSecond = designerConfiguration.getKmPerSecond();
 
-		result = (long) (distance * 1000 / designerConfiguration.getKmPerSecond());
+		result = (long) ((distance * 1000) / kmPerSecond);
 
 		return result;
 	}

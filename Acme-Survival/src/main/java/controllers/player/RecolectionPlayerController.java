@@ -56,7 +56,7 @@ public class RecolectionPlayerController extends AbstractController {
 		else
 			try {
 				recolection = this.recolectionService.save(recolection);
-				result = this.createEditModelAndView(recolection);
+				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");
 			}

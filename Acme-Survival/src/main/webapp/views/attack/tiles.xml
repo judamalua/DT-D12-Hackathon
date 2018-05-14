@@ -17,9 +17,17 @@
 <tiles-definitions>
 
 	<definition name="attack/create" extends="master.page">	
-		<put-attribute name="title" value="Create attack" />
+		<put-attribute name="title" value="Start attack" />
 		<put-attribute name="body" value="/views/attack/create.jsp" />
 	</definition>
 	
+	<definition name="attack/list" extends="master.page">	
+		<put-attribute name="title" value="List of attacks" />
+		<put-attribute name="body" value="/views/attack/list.jsp" />
+	</definition>
 	
+	<definition name="attack/results" extends="master.page">	
+		<put-attribute name="title" value="Attack results" />
+		<put-attribute name="body" value="/views/attack/results.jsp" />
+	</definition>
 </tiles-definitions>

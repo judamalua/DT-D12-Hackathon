@@ -166,13 +166,19 @@
 		<security:intercept-url pattern="/product/**"
 			access="permitAll" requires-channel="https" />
 		
-		<security:intercept-url pattern="/attack/player/create"
+		<security:intercept-url pattern="/attack/player/create.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/recolection/player/create"
+		<security:intercept-url pattern="/attack/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/recolection/player/edit"
+		<security:intercept-url pattern="/attack/player/results.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/create.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/edit.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 

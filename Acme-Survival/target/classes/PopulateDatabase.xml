@@ -106,6 +106,18 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="UserAccount9" class="security.UserAccount">
+		<property name="username" value="player4" />
+		<property name="password" value="12efaba7fd50f5c66bd295683c0ce2a7" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="PLAYER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 
 	<!-- Other domain beans come here -->
@@ -157,6 +169,22 @@
 		<property name="phoneNumber" value="657894123" />
 	</bean>
 
+	<!-- %%%% DesignerConfiguration %%%% -->
+	<bean id="DesignerConfiguration1" class="domain.DesignerConfiguration">
+		<property name="movingWood" value="5" />
+		<property name="movingMetal" value="5" />
+		<property name="movingFood" value="5" />
+		<property name="movingWater" value="5" />
+		<property name="kmPerSecond" value="5" />
+		<property name="foodWastedPerSecond" value="1" />
+		<property name="waterWastedPerSecond" value="1" />
+		<property name="refugeRecoverTime" value="10" />
+		<property name="waterFactorSteal" value="0.5" />
+		<property name="foodFactorSteal" value="0.5" />
+		<property name="metalFactorSteal" value="0.5" />
+		<property name="woodFactorSteal" value="0.5" />
+	</bean>
+	
 	<!-- %%%% Payers %%%% -->
 	<bean id="Player1" class="domain.Player">
 		<property name="name" value="Player 1" />
@@ -202,6 +230,21 @@
 			</list>
 		</property>
 		<property name="userAccount" ref="UserAccount8" />
+	</bean>
+	
+	<bean id="Player4" class="domain.Player">
+		<property name="name" value="Player 4" />
+		<property name="surname" value="Player 4" />
+		<property name="email" value="player4@mail.com" />
+		<property name="birthDate" value="1990/10/18" />
+		<property name="avatar"
+			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
+		<property name="phoneNumber" value="666555222" />
+		<property name="refuges">
+			<list>
+			</list>
+		</property>
+		<property name="userAccount" ref="UserAccount9" />
 	</bean>
 
 	<!-- %%%% Barracks %%%% -->
