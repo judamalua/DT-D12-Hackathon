@@ -21,6 +21,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+<spring:message var="format" code="master.page.moment.format.out" />
+<fmt:formatDate var="formatAttackStartDate"
+	value="${attack.startDate}" pattern="${format}" />
+<fmt:formatDate var="formatAttackEndMoment"
+	value="${attack.endMoment}" pattern="${format}" />
+
 <form:form action="attack/player/create.do" modelAttribute="attack">
 
 	<form:hidden path="id" />
@@ -36,11 +42,10 @@
 		<dd><jstl:out value="${attack.defendant.name}"/></dd>
 		
 		<dt><spring:message code="attack.startDate.estimated"/>:</dt>
-		<dd><jstl:out value="${attack.startDate}"/></dd>
+		<dd><jstl:out value="${formatAttackStartDate}"/></dd>
 	
-
 		<dt><spring:message code="attack.endMoment.estimated"/>:</dt>
-		<dd><jstl:out value="${attack.endMoment}"/></dd>
+		<dd><jstl:out value="${formatAttackEndMoment}"/></dd>
 	
 	</dl>
 	

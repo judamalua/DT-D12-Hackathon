@@ -55,7 +55,7 @@ public class AttackPlayerController extends AbstractController {
 		else
 			try {
 				this.attackService.save(attack);
-				result = new ModelAndView("reditect:/map/player/display.do");
+				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");
 			}
