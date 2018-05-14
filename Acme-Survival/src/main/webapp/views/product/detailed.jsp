@@ -60,6 +60,6 @@
 
 <security:authorize access="hasRole('PLAYER')">
 <jstl:if test="${!product.discontinued}">
-	<acme:button url="/Acme-Survival/DANI-HAZ-EL-PUTO-BOTON" code="product.buy"/>
+	<acme:button url="order/player/buy.do?productId=${product.id}" code="product.buy"/>
 </jstl:if>
 </security:authorize>

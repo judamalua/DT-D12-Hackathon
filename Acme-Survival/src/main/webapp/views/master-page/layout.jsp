@@ -35,10 +35,12 @@
 
 <script src="scripts/cookieAjax.js"></script>
 <script src="scripts/businessNameAjax.js"></script>
+<script src="scripts/widgEditor.js"></script>
+<script src="scripts/gameMap.js"></script>
+<script src="scripts/main.js"></script>
 <script type="text/javascript">
 window.onload = function() {
-	  checkCookie();
-	  getBusinessName();
+	initialize();
 	};
 
 </script>
@@ -92,7 +94,6 @@ window.onload = function() {
 </head>
 
 <body>
-
 	<div>
 		<tiles:insertAttribute name="header" />
 	</div>

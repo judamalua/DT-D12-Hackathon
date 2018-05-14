@@ -4,6 +4,8 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -12,41 +14,49 @@ public class ResourceRoom extends RoomDesign {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private double	water;
-	private double	food;
-	private double	metal;
-	private double	wood;
+	private Double	water;
+	private Double	food;
+	private Double	metal;
+	private Double	wood;
 
 
-	public double getWater() {
+	@Min(0)
+	@NotNull
+	public Double getWater() {
 		return this.water;
 	}
 
-	public void setWater(final double water) {
+	public void setWater(final Double water) {
 		this.water = water;
 	}
 
-	public double getFood() {
+	@Min(0)
+	@NotNull
+	public Double getFood() {
 		return this.food;
 	}
 
-	public void setFood(final double food) {
+	public void setFood(final Double food) {
 		this.food = food;
 	}
 
-	public double getMetal() {
+	@Min(0)
+	@NotNull
+	public Double getMetal() {
 		return this.metal;
 	}
 
-	public void setMetal(final double metal) {
+	public void setMetal(final Double metal) {
 		this.metal = metal;
 	}
 
-	public double getWood() {
+	@Min(0)
+	@NotNull
+	public Double getWood() {
 		return this.wood;
 	}
 
-	public void setWood(final double wood) {
+	public void setWood(final Double wood) {
 		this.wood = wood;
 	}
 

@@ -20,12 +20,13 @@ public class MapNotBlankValidator implements ConstraintValidator<MapNotBlank, Ma
 			res = false;
 			return res;
 		}
+
 		for (final String s : value.values())
 			if (s == null || s.equals("")) {
 				res = false;
 				break;
 			}
+
 		return res;
 	}
-
 }

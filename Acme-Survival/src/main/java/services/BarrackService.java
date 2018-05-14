@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.BarrackRepository;
+import domain.Actor;
 import domain.Barrack;
+import domain.Designer;
 
 @Service
 @Transactional
@@ -20,15 +23,25 @@ public class BarrackService {
 	@Autowired
 	private BarrackRepository	barrackRepository;
 
-
 	// Supporting services --------------------------------------------------
+	@Autowired
+	private ActorService		actorService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
 	public Barrack create() {
 		Barrack result;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to create a product is a manager.
+		Assert.isTrue(actor instanceof Designer);
 
 		result = new Barrack();
+
+		// Setting final mode to false due to when the designer is creating the room design it cannot be in final mode
+		result.setFinalMode(false);
 
 		return result;
 	}
@@ -58,8 +71,13 @@ public class BarrackService {
 	public Barrack save(final Barrack barrack) {
 
 		assert barrack != null;
-
+		Actor actor;
 		Barrack result;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		// To edit or create a room design the principal must be a designer
+		Assert.isTrue(actor instanceof Designer);
 
 		result = this.barrackRepository.save(barrack);
 
@@ -78,4 +96,3 @@ public class BarrackService {
 
 	}
 }
-

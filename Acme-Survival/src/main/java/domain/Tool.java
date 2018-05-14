@@ -4,6 +4,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -17,6 +18,7 @@ public class Tool extends ItemDesign {
 	private double	capacity;
 
 
+	@Min(0)
 	public double getStrength() {
 		return this.strength;
 	}
@@ -25,6 +27,7 @@ public class Tool extends ItemDesign {
 		this.strength = strength;
 	}
 
+	@Min(0)
 	public double getLuck() {
 		return this.luck;
 	}
@@ -33,6 +36,7 @@ public class Tool extends ItemDesign {
 		this.luck = luck;
 	}
 
+	@Min(0)
 	public double getCapacity() {
 		return this.capacity;
 	}
