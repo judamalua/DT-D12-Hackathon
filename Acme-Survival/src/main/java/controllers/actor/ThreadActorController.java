@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,6 +74,7 @@ public class ThreadActorController extends AbstractController {
 		thread = this.threadService.create();
 		if (forumId != null) {
 			forum = this.forumService.findOne(forumId);
+			Assert.notNull(forum);
 			thread.setForum(forum);
 		}
 

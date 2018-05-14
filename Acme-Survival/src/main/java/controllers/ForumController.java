@@ -96,7 +96,7 @@ public class ForumController extends AbstractController {
 			}
 
 			if (forumId == null)
-				forums = this.forumService.findForums(staff, pageable);
+				forums = this.forumService.findRootForums(staff, pageable);
 			else {
 				forums = this.forumService.findSubForums(forumId, staff, pageable);
 				threads = this.threadsService.findThreadsByForum(forumId, threadPageable);

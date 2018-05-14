@@ -168,7 +168,7 @@ public class ForumService {
 		this.forumRepository.delete(forum);
 	}
 
-	public Page<Forum> findForums(final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findRootForums(final Boolean staff, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.notNull(pageable);
 
@@ -198,8 +198,10 @@ public class ForumService {
 			result.setImage(forum.getImage());
 			result.setStaff(forum.getStaff());
 			result.setSupport(forum.getSupport());
+			result.setForum(forum.getForum());
 
 		}
+		this.forumRepository.flush();
 		this.validator.validate(result, binding);
 
 		return result;
@@ -229,7 +231,7 @@ public class ForumService {
 		subForums = this.findSubForums(forumId);
 		result = subForums;
 
-		for (final Forum subForum : subForums) {
+		for (final Forum subForum : new HashSet<Forum>(subForums)) {
 			subsubForums = this.findSubForums(subForum.getId());
 			if (subsubForums.size() > 0)
 				result.addAll(this.findAllSubForums(subForum.getId()));

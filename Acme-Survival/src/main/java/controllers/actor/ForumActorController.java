@@ -100,14 +100,11 @@ public class ForumActorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Forum forum, final BindingResult binding) {
+	public ModelAndView delete(@ModelAttribute("forumForm") Forum forum, final BindingResult binding) {
 		ModelAndView result;
 
 		try {
-			forum = this.forumService.reconstruct(forum, binding);
-		} catch (final Throwable oops) {
-		}
-		try {
+			forum = this.forumService.findOne(forum.getId());
 			this.forumService.delete(forum);
 
 			if (forum.getForum() != null)
