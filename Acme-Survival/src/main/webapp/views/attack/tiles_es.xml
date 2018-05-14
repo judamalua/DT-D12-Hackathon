@@ -26,4 +26,8 @@
 		<put-attribute name="body" value="/views/attack/list.jsp" />
 	</definition>
 	
+	<definition name="attack/results" extends="master.page">	
+		<put-attribute name="title" value="Resultados del ataque" />
+		<put-attribute name="body" value="/views/attack/results.jsp" />
+	</definition>
 </tiles-definitions>
