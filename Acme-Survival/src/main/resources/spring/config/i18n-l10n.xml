@@ -46,6 +46,7 @@
 		<value>/views/creditCard/messages</value>
 		<value>/views/roomDesign/messages</value>
 		<value>/views/map/messages</value>
+		<value>/views/lootTable/messages</value>
 	</util:list>
 
 </beans>
