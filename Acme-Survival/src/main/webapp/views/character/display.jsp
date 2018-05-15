@@ -21,8 +21,13 @@
 
 
 <!--Base Info-->
+<div class="characterImage" style="height:200px; width:200px;"></div>
 <strong><spring:message code="character.fullName" />:</strong>
-<jstl:out value="${character.fullName}" />
+<div class ="characterName"><jstl:out value="${character.fullName}" /></div>
+<div class ="characterGenre" hidden="true"><jstl:if test="${character.male}">Male</jstl:if>
+<jstl:if test="${!character.male}">Female</jstl:if></div>
+
+
 
 
 

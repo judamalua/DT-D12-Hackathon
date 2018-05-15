@@ -208,6 +208,7 @@ public class CharacterService {
 		character.setLevel(1);
 		character.setRefuge(refuge);
 		character.setRoom(null);
+		character.setMale(true);
 
 		this.generateCharacterHabilities(character);
 
