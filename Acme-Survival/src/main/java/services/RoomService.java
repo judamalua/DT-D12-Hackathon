@@ -160,6 +160,7 @@ public class RoomService {
 		Assert.notNull(result);
 
 		this.validator.validate(result, binding);
+		this.roomRepository.flush();
 
 		return result;
 	}
