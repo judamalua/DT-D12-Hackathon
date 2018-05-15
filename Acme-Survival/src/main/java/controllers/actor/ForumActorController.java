@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,12 +50,18 @@ public class ForumActorController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int forumId) {
 		ModelAndView result;
 		Forum forum;
+		Actor actor;
+		try {
+			actor = this.actorService.findActorByPrincipal();
 
-		this.actorService.checkActorLogin();
+			forum = this.forumService.findOne(forumId);
+			Assert.notNull(forum);
+			Assert.isTrue(forum.getOwner().equals(actor));
 
-		forum = this.forumService.findOne(forumId);
-		result = this.createEditModelAndView(forum);
-
+			result = this.createEditModelAndView(forum);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
@@ -62,12 +69,14 @@ public class ForumActorController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result;
 		final Forum forum;
+		try {
+			this.actorService.checkActorLogin();
+			forum = this.forumService.create();
 
-		this.actorService.checkActorLogin();
-		forum = this.forumService.create();
-
-		result = this.createEditModelAndView(forum);
-
+			result = this.createEditModelAndView(forum);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
@@ -86,6 +95,7 @@ public class ForumActorController extends AbstractController {
 			result = this.createEditModelAndView(sendedForum, "forum.params.error");
 		else
 			try {
+				Assert.notNull(forum);
 				savedForum = this.forumService.save(forum);
 				if (savedForum.getForum() != null)
 					result = new ModelAndView("redirect:/forum/list.do?forumId=" + savedForum.getForum().getId() + "&staff=" + savedForum.getStaff());
@@ -100,14 +110,11 @@ public class ForumActorController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(Forum forum, final BindingResult binding) {
+	public ModelAndView delete(@ModelAttribute("forumForm") Forum forum, final BindingResult binding) {
 		ModelAndView result;
 
 		try {
-			forum = this.forumService.reconstruct(forum, binding);
-		} catch (final Throwable oops) {
-		}
-		try {
+			forum = this.forumService.findOne(forum.getId());
 			this.forumService.delete(forum);
 
 			if (forum.getForum() != null)

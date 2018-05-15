@@ -37,8 +37,8 @@
 
 	<display:column title="">
 		<img class="forumImg" src="${forum.image}" />
-			<a href="forum/list.do?forumId=${forum.id}"><jstl:out
-					value="${forum.name}" /></a>
+		<a href="forum/list.do?forumId=${forum.id}"><jstl:out
+				value="${forum.name}" /></a>
 		<br />
 		<jstl:out value="${forum.description}" />
 	</display:column>
@@ -59,8 +59,8 @@
 
 </display:table>
 
-<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNumThread}"
-	page="${pageThread}" />
+<acme:pagination requestURI="${requestURI}page="
+	pageNum="${pageNumThread}" page="${pageThread}" />
 
 <display:table name="threads" id="thread" requestURI="${requestURI}"
 	class="displaytag">
@@ -70,13 +70,11 @@
 				value="${thread.name}" /></a>
 		<br />
 		<jstl:forEach items="${thread.tags}" var="tag" varStatus="loop">
-			<jstl:out value="${tag}" />
-			<jstl:if test="${loop.index != looop.last-1}">
-				,
-			</jstl:if>
+			<div class="chip">
+				<jstl:out value="${tag}" />
+			</div>
 		</jstl:forEach>
 	</display:column>
-
 	<display:column>
 		<jstl:if test="${ownThreads != null and ownThreads[thread_rowNum-1]}">
 			<acme:button url="thread/actor/edit.do?threadId=${thread.id}"

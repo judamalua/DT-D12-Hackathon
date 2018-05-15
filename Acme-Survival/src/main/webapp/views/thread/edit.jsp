@@ -42,9 +42,10 @@
 	</jstl:if>
 	<acme:submit name="save" code="thread.save" />
 
-	<acme:delete clickCode="thread.delete.message" name="delete"
-		code="thread.delete" />
-
+	<jstl:if test="${thread.id!=0}">
+		<acme:delete clickCode="thread.delete.message" name="delete"
+			code="thread.delete" />
+	</jstl:if>
 	<jstl:if test="${thread.forum==null}">
 		<acme:cancel url="forum/list.do" code="thread.cancel" />
 	</jstl:if>
