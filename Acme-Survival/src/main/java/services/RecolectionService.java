@@ -73,6 +73,7 @@ public class RecolectionService {
 		result.setStartDate(startMoment);
 		result.setEndMoment(endMoment);
 		result.setLocation(location);
+		result.setPlayer(player);
 
 		return result;
 	}
@@ -106,10 +107,13 @@ public class RecolectionService {
 
 		Recolection result;
 		Collection<Recolection> recolectionNotFinishedByCharacter;
+		Player player;
 
 		recolectionNotFinishedByCharacter = this.findRecolectionNotFinishedByCharacter(recolection.getCharacter().getId());
+		player = (Player) this.actorService.findActorByPrincipal();
 
 		Assert.isTrue(recolectionNotFinishedByCharacter.size() == 0);
+		Assert.isTrue(recolection.getPlayer().equals(player));
 
 		result = this.recolectionRepository.save(recolection);
 
@@ -194,6 +198,7 @@ public class RecolectionService {
 
 			result.setStartDate(startMoment);
 			result.setEndMoment(endMoment);
+			result.setPlayer(player);
 
 		}
 		this.validator.validate(result, binding);
