@@ -89,4 +89,7 @@
 			<acme:button url="room/player/create.do" code="refuge.room.create" />
 		</jstl:if>
 	</jstl:if>
+	
+	<br/>
+	<acme:button url="character/player/list.do" code="refuge.characters" />
 </security:authorize>

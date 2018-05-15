@@ -13,19 +13,18 @@
 <spring:message code="master.page.moment.format" var="formatDate" />
 <spring:message code="master.page.birthDate.format" var="formatBirthDate" />
 
+<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}?page="/>
 
 <!-- Pagination -->
 
-<acme:pagination requestURI = "character/player/list.do?anonymous=${anonymous}&page=" pageNum = "${pageNum}" page = "${page}"/>
 
-<display:table name="characters" id="row" requestURI="character/list.do"
+
+<display:table name="characters" id="character" requestURI="character/player/list.do"
 	class="displaytag">
 
-	<spring:message code="character.name" var="name" />
-	<display:column property="name" title="${name}" sortable="true" />
-
-	<spring:message code="player.surname" var="surname" />
-	<display:column property="surname" title="${surname}" sortable="true" />
+	<spring:message code="character.fullName" var="fullName" />
+	<display:column property="fullName" title="${name}" sortable="true" />
+	
 
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">

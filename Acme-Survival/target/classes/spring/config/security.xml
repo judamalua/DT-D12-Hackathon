@@ -180,6 +180,14 @@
 			
 		<security:intercept-url pattern="/recolection/player/edit.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
+		<security:intercept-url pattern="/character/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/character/player/display.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/**"

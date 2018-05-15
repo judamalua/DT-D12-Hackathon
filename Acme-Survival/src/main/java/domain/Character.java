@@ -31,9 +31,18 @@ public class Character extends DomainEntity {
 	private int		capacity;
 	private int		level;
 	private int		experience;
+	private boolean	male;
 
 
 	//private boolean	male;
+
+	public boolean getMale() {
+		return this.male;
+	}
+
+	public void setMale(final boolean male) {
+		this.male = male;
+	}
 
 	@NotBlank
 	@SafeHtml
@@ -153,9 +162,9 @@ public class Character extends DomainEntity {
 		this.item = item;
 
 	}
+
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
+	@ManyToOne
 	public Room getRoom() {
 		return this.room;
 	}

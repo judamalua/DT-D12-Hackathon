@@ -21,5 +21,15 @@
 		<put-attribute name="body" value="/views/recolection/edit.jsp" />
 	</definition>
 	
+	<definition name="recolection/list" extends="master.page">	
+		<put-attribute name="title" value="List of recolections" />
+		<put-attribute name="body" value="/views/recolection/list.jsp" />
+	</definition>
+	
+	<definition name="recolection/results" extends="master.page">	
+		<put-attribute name="title" value="Recolection results" />
+		<put-attribute name="body" value="/views/recolection/results.jsp" />
+	</definition>
+	
 	
 </tiles-definitions>

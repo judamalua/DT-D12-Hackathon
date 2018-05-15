@@ -150,17 +150,19 @@ public class ResourceService {
 		else {
 			result = this.resourceRepository.findOne(resource.getId());
 
-			result.setFood(resource.getFood());
+			result.setName(resource.getName());
 			result.setDescription(resource.getDescription());
 			result.setFinalMode(resource.getFinalMode());
 			result.setImageUrl(resource.getImageUrl());
 			result.setMetal(resource.getMetal());
 			result.setWater(resource.getWater());
 			result.setWood(resource.getWood());
+			result.setFood(resource.getFood());
 
 		}
-		this.resourceRepository.flush();
+
 		this.validator.validate(result, binding);
+		this.resourceRepository.flush();
 
 		return result;
 	}
