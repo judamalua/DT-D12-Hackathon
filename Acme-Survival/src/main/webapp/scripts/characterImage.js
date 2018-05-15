@@ -1,6 +1,6 @@
 function generateCharacters() {
-	for ( var int = 0; int < document.getElementsByClassName("charaterGenre").length; int++) {
-		var genre = document.getElementsByClassName("charaterGenre")[int].innerHTML;
+	for ( var int = 0; int < document.getElementsByClassName("characterGenre").length; int++) {
+		var genre = document.getElementsByClassName("characterGenre")[int].innerHTML;
 		var name = document.getElementsByClassName("characterName")[int].innerHTML;
 		var avatars;
 		if (genre === "Male") {

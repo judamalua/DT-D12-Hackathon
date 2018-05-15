@@ -79,13 +79,12 @@ public class CharacterPlayerController extends AbstractController {
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-
 			characters = this.characterService.findCharactersByRefugePageable(refuge.getId(), pageable);
 
-			result.addObject("character", characters.getContent());
+			result.addObject("characters", characters.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", characters.getTotalPages());
-			result.addObject("requestURI", "character/player/list.do?");
+			result.addObject("requestURI", "character/list");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
