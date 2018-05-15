@@ -2,6 +2,7 @@ function initialize() {
 	checkCookie();
 	getBusinessName();
 	widgInit();
+	generateCharacters();
 }
 
 function getMainDomain() {

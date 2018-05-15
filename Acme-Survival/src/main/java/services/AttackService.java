@@ -71,6 +71,7 @@ public class AttackService {
 		result.setDefendant(defendant);
 		result.setStartDate(startMoment);
 		result.setEndMoment(endMoment);
+		result.setPlayer(player);
 
 		return result;
 
@@ -108,6 +109,11 @@ public class AttackService {
 		Assert.isTrue(!this.playerAlreadyAttacking(), "Player is already attacking");
 
 		Attack result;
+		Player player;
+
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		Assert.isTrue(attack.getPlayer().equals(player));
 
 		result = this.attackRepository.save(attack);
 
@@ -237,6 +243,7 @@ public class AttackService {
 			attack.setAttacker(attacker);
 			attack.setStartDate(startMoment);
 			attack.setEndMoment(endMoment);
+			result.setPlayer(player);
 		}
 		this.validator.validate(result, binding);
 
