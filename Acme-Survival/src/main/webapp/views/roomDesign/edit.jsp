@@ -16,11 +16,14 @@
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	
-	<acme:textboxMap code="roomDesign.name_en" path="name[en]" errorPath="name" required = "true"/>
-	<acme:textboxMap code="roomDesign.name_es" path="name[es]" errorPath="name" required = "true"/>
-	
-	<acme:textareaMap code="roomDesign.description_en" path="description[en]" errorPath="description" required = "true"/>
-	<acme:textareaMap code="roomDesign.description_es" path="description[es]" errorPath="description" required = "true"/>
+	<jstl:forEach items="${languages}" var="lang">
+		<acme:textboxMap errorPath="name" code="roomDesign.name_${lang}"
+			path="name[${lang}]" required="true" />
+
+		<acme:textareaMap errorPath="description"
+			code="roomDesign.description_${lang}" path="description[${lang}]"
+			required="true" />
+	</jstl:forEach>
 
 	<acme:textbox code="roomDesign.maxResistance" path="maxResistance" required="true"/>
 	
