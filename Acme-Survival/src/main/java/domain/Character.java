@@ -153,9 +153,9 @@ public class Character extends DomainEntity {
 		this.item = item;
 
 	}
+
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
+	@ManyToOne
 	public Room getRoom() {
 		return this.room;
 	}
