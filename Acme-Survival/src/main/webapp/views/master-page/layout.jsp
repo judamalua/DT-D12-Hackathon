@@ -33,10 +33,15 @@
 <script type="text/javascript" src="scripts/jmenu.js"></script>
 <script type="text/javascript" src="scripts/materialize.js"></script>
 
+<script src="scripts/translation.js"></script>
+<script src="scripts/characterImage.js"></script>
 <script src="scripts/cookieAjax.js"></script>
 <script src="scripts/businessNameAjax.js"></script>
 <script src="scripts/widgEditor.js"></script>
 <script src="scripts/gameMap.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@dicebear/avatars@2.0.0/dist/avatars.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@dicebear/avatars-male-sprites@1.0.0/dist/sprites.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@dicebear/avatars-female-sprites@1.0.0/dist/sprites.min.js"></script>
 <script src="scripts/main.js"></script>
 <script type="text/javascript">
 window.onload = function() {
