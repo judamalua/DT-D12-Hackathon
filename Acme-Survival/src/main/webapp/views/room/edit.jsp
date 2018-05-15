@@ -24,19 +24,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#roomDesign').change(function(){
-		
 		$.get('room/player/resources.do?roomDesignId='+$('select option:selected').val(), function(result){
-			$('#resources').html(result);
+			
 		});
 	});
 });
 </script>
+Hola:${wood}
+
 
 <form:form action="room/player/edit.do" modelAttribute="room">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-
+	
+	
 	<p>
 		<em><spring:message code="form.required.params" /></em>
 	</p>

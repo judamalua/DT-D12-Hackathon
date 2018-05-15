@@ -14,6 +14,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,11 +25,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.InventoryService;
+import services.RefugeService;
 import services.RoomDesignService;
 import services.RoomService;
 import controllers.AbstractController;
 import domain.Actor;
+import domain.Inventory;
 import domain.Player;
+import domain.Refuge;
 import domain.Room;
 import domain.RoomDesign;
 
@@ -44,6 +49,12 @@ public class RoomPlayerController extends AbstractController {
 
 	@Autowired
 	private RoomDesignService	roomDesignService;
+
+	@Autowired
+	private RefugeService		refugeService;
+
+	@Autowired
+	private InventoryService	inventoryService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -95,16 +106,28 @@ public class RoomPlayerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/resources", method = RequestMethod.GET)
-	public @ResponseBody
-	String getResources(@RequestParam final String roomDesignId) {
-		String result;
+	@ResponseBody
+	public void getResources(@RequestParam final String roomDesignId, final ModelMap modelMap) {
 		RoomDesign roomDesign;
+		final Refuge refuge;
+		final Inventory inventory;
+		final Actor actor;
 
-		roomDesign = this.roomDesignService.findOne(Integer.parseInt(roomDesignId));
-		result = "<li> metal: " + roomDesign.getCostMetal() + "</li><br/>" + "<li> wood: " + roomDesign.getCostWood() + "</li><br/>";
-		return result;
+		actor = this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+
+		if (roomDesignId != null && roomDesignId != "" && !roomDesignId.equals("0")) {
+
+			roomDesign = this.roomDesignService.findOne(Integer.parseInt(roomDesignId));
+			if (roomDesign.getCostMetal() <= inventory.getMetal() && roomDesign.getCostWood() <= inventory.getWood()) {
+				modelMap.addAttribute("wood", roomDesign.getCostWood());
+				modelMap.addAttribute("metal", roomDesign.getCostMetal());
+			} else
+				modelMap.addAttribute("error", "room.resources.error");
+		}
+
 	}
-
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
