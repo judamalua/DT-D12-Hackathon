@@ -39,7 +39,7 @@ public class CharacterServiceTest extends AbstractTest {
 
 		for (int i = 1; i < 15; i++) {
 			final domain.Character character = this.characterService.generateCharacter();
-			System.out.println(character.getFullName() + "," + character.getCapacity() + "," + character.getLuck() + "," + character.getStrength());
+			System.out.println(character.getFullName() + ",capacity=" + character.getCapacity() + ",luck=" + character.getLuck() + ",strenght=" + character.getStrength());
 		}
 
 	}
@@ -48,12 +48,12 @@ public class CharacterServiceTest extends AbstractTest {
 	public void testLevelSelector() {
 		final Random r = new Random();
 
-		for (int i = 1; i < 15; i++) {
+		for (int i = 1; i < 50; i++) {
 			final domain.Character character = this.characterService.generateCharacter();
 			character.setExperience(r.nextInt(1000000));
 			this.characterService.calculateLevel(character);
 
-			System.out.println(character.getExperience() + ",level=" + character.getLevel());
+			System.out.println(character.getFullName() + ",capacity=" + character.getCapacity() + ",luck=" + character.getLuck() + ",strenght=" + character.getStrength() + "experience=" + character.getExperience() + ",level=" + character.getLevel());
 
 		}
 

@@ -80,7 +80,7 @@ public class Character extends DomainEntity {
 		this.currentFood = currentFood;
 	}
 
-	@Min(value = 100)
+	@Min(value = 1)
 	public int getStrength() {
 		return this.strength;
 	}
@@ -89,7 +89,7 @@ public class Character extends DomainEntity {
 		this.strength = strength;
 	}
 
-	@Min(value = 10)
+	@Min(value = 1)
 	public int getLuck() {
 		return this.luck;
 	}
@@ -98,7 +98,7 @@ public class Character extends DomainEntity {
 		this.luck = luck;
 	}
 
-	@Min(value = 10)
+	@Min(value = 1)
 	public int getCapacity() {
 		return this.capacity;
 	}
