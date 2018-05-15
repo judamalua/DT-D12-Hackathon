@@ -21,12 +21,8 @@
 
 
 <!--Base Info-->
-<strong><spring:message code="character.name" />:</strong>
-<jstl:out value="${character.name}" />
-<br />
-<strong><spring:message code="character.surname" />:</strong>
-<jstl:out value="${character.surname}" />
-<br />
+<strong><spring:message code="character.fullName" />:</strong>
+<jstl:out value="${character.fullName}" />
 
 
 
@@ -37,18 +33,21 @@
 
 <strong><spring:message code="character.currentHealth" />:</strong>
 <div class="w3-section w3-light-grey">
+   <i class="material-icons right">local_hospital</i>
   <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.currentHealth}%">
   	<jstl:out value="${character.currentHealth}" /></div> 
 </div><br>
 
 <strong><spring:message code="character.currentFood" />:</strong>
 <div class="w3-section w3-light-grey">
+	<i class="material-icons right">restaurant</i>
   <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.currentFood}%">
   	<jstl:out value="${character.currentFood}" /></div> 
 </div><br>
 
 <strong><spring:message code="character.currentWater" />:</strong>
 <div class="w3-section w3-light-grey">
+	<i class="material-icons right">free_breakfast</i>
   <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.currentWater}%">
   	<jstl:out value="${character.currentWater}" /></div> 
 </div><br>
@@ -56,18 +55,13 @@
 <strong><spring:message code="character.experience" />:</strong>
 <div class="w3-section w3-light-grey">
   <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.experience}%">
-  	<jstl:out value="${character.experience}" /></div> 
+  	<jstl:out value="${character.experience}" /><br/>Level:<jstl:out value="${character.level}" /></div> 
 </div><br>
-
-
 
 </div>
 
 
-<!--Level and Experience-->
 
-
-<strong><spring:message code="character.experience" />:</strong>
 
 
 

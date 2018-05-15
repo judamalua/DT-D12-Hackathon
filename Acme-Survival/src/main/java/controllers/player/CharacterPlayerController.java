@@ -79,7 +79,6 @@ public class CharacterPlayerController extends AbstractController {
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-
 			characters = this.characterService.findCharactersByRefugePageable(refuge.getId(), pageable);
 
 			result.addObject("character", characters.getContent());

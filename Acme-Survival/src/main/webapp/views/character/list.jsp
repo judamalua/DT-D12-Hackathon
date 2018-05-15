@@ -21,11 +21,9 @@
 <display:table name="characters" id="row" requestURI="character/list.do"
 	class="displaytag">
 
-	<spring:message code="character.name" var="name" />
-	<display:column property="name" title="${name}" sortable="true" />
-
-	<spring:message code="player.surname" var="surname" />
-	<display:column property="surname" title="${surname}" sortable="true" />
+	<spring:message code="character.fullname" var="fullname" />
+	<display:column property="fullname" title="${name}" sortable="true" />
+	
 
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">
