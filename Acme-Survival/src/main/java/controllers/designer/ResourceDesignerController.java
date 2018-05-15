@@ -58,12 +58,11 @@ public class ResourceDesignerController extends AbstractController {
 			try {
 				configuration = this.configurationService.findConfiguration();
 
-				Assert.isTrue(!itemDesign.getFinalMode());
-				Assert.isTrue(itemDesign.getName().keySet().equals(configuration.getLanguages()));
+				Assert.isTrue(configuration.getLanguages().containsAll(itemDesign.getName().keySet()));
 
 				this.resourceService.save(itemDesign);
 
-				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "finalMode" + itemDesign.getFinalMode() + "&");
+				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode());
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");
@@ -82,7 +81,7 @@ public class ResourceDesignerController extends AbstractController {
 
 			this.resourceService.delete(itemDesign);
 
-			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode() + "&");
+			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode());
 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(itemDesign, "refuge.commit.error");

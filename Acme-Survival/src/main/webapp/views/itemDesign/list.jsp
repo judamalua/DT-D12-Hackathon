@@ -13,7 +13,7 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <spring:message code="master.page.current.lang" var="currentLang" />
-		
+
 <acme:pagination requestURI="itemDesign/designer/list?page="
 	pageNum="${pageNum}" page="${page}" />
 
@@ -69,9 +69,11 @@
 
 	<display:column>
 		<security:authorize access="hasRole('DESIGNER')">
-			<acme:button
-				url="itemDesign/designer/edit.do?itemDesignId=${itemDesign.id}&tool=${tool}"
-				code="itemDesign.edit" />
+			<jstl:if test="${!itemDesign.finalMode}">
+				<acme:button
+					url="itemDesign/designer/edit.do?itemDesignId=${itemDesign.id}&tool=${tool}"
+					code="itemDesign.edit" />
+			</jstl:if>
 		</security:authorize>
 	</display:column>
 

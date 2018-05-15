@@ -22,33 +22,46 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <script type="text/javascript">
-$(document).ready(function(){
-	$('#roomDesign').change(function(){
-		$.get('room/player/resources.do?roomDesignId='+$('select option:selected').val(), function(result){
-			
+	$(document).ready(function() {
+		$('#resourceError').hide();
+		$('#resources').hide();
+		$('#roomDesign').change(function() {
+			$.get('room/player/resources.do?roomDesignId=' + $('select option:selected').val(), function(result) {
+				if (result == 'error') {
+					$('#resourceError').show();
+				} else if (result.length > 0) {
+					$('#wood').html(result.split(',')[0]);
+					$('#metal').html(result.split(',')[1]);
+					$('#resources').show();
+				} else {
+					$('#resourceError').hide();
+					$('#resources').hide();
+				}
+			});
 		});
 	});
-});
 </script>
-Hola:${wood}
-
-
 <form:form action="room/player/edit.do" modelAttribute="room">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	
-	
+
+
 	<p>
 		<em><spring:message code="form.required.params" /></em>
 	</p>
-	
-	<ul id="resources">
-	</ul>
+
+	<div id="resources">
+		<spring:message code="room.wood" />:<div id="wood"></div>
+		<spring:message code="room.metal" />:<div id="metal"></div>
+	</div>
+	<div id="resourceError" class="error">
+		<spring:message code="room.resources.error" />
+	</div>
 	<spring:message var="lang" code="master.page.current.lang" />
-	
-	<acme:select id="roomDesign" items="${roomDesigns}" itemLabel="name[${lang}]"
-		code="room.roomDesign" path="roomDesign" />
+
+	<acme:select id="roomDesign" items="${roomDesigns}"
+		itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
 
 	<acme:submit name="save" code="room.save" />
 
@@ -56,6 +69,6 @@ Hola:${wood}
 		<acme:delete clickCode="room.delete.message" name="delete"
 			code="room.delete" />
 	</jstl:if>
-	<acme:cancel url="forum/list.do" code="room.cancel" />
+	<acme:cancel url="refuge/player/display.do" code="room.cancel" />
 
 </form:form>
