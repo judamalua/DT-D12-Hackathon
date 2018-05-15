@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -180,6 +182,16 @@ public class RecolectionService {
 		return result;
 	}
 
+	public Page<Recolection> findRecolectionsByPlayer(final int playerId, final Pageable pageable) {
+		Page<Recolection> result;
+
+		Assert.notNull(pageable);
+
+		result = this.recolectionRepository.findRecolectionsByPlayer(playerId, pageable);
+
+		return result;
+
+	}
 	public Recolection reconstruct(final Recolection recolection, final BindingResult binding) {
 		Recolection result = null;
 		Date startMoment, endMoment;
