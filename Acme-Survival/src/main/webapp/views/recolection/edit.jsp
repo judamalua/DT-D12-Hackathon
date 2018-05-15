@@ -9,8 +9,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-<p><em><spring:message code = "form.required.params"/></em></p>
-
+<spring:message var="format" code="master.page.moment.format.out" />
+<fmt:formatDate var="formatRecolectionStartDate"
+	value="${recolection.startDate}" pattern="${format}" />
+<fmt:formatDate var="formatRecolectionEndMoment"
+	value="${recolection.endMoment}" pattern="${format}" />
+	
 <form:form id = "form" action="recolection/player/edit.do" modelAttribute ="recolection">
 	
 	<form:hidden path="id"/>
@@ -18,20 +22,21 @@
 	<form:hidden path="location"/>
 	
 	<acme:select code="recolection.character" path="character" items="${characters}" itemLabel="name"/>
-	<br/>
-	
+	<br />
+
 	<spring:message code="recolection.startDate.estimated"/>:
-	<jstl:out value="${recolection.startDate}"/>
+	<jstl:out value="${formatRecolectionStartDate}"/>
 	<br/>
 
 	<spring:message code="recolection.endMoment.estimated"/>:
-	<jstl:out value="${recolection.endMoment}"/>
+	<jstl:out value="${formatRecolectionEndMoment}"/>
 	<br/>
 
+	<div class="cleared-div">
 	<acme:submit name="save" code="recolection.start"/>
-		
 	
 	<button type="button" class="btn" onclick="javascript: window.history.back()" >
 		<spring:message code="recolection.cancel" />
 	</button>
+	</div>
 </form:form>
