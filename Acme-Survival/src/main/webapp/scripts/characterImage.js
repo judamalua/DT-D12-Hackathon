@@ -10,7 +10,7 @@ function generateCharacters() {
 			avatars = new Avatars(Avatars.sprites.female);
 		}
 		if (genre !== "Male" && genre !== "Female") {
-			avatars = '<svg><text x="0" y="15" fill="red">Sorry, only two genders are supported</text></svg>';
+			avatars = '<svg><text x="0" y="15" fill="red">Sorry, gender is stored in a boolean ;)</text></svg>';
 		}
 		var svg = avatars.create(name);
 		document.getElementsByByClassName("characterImage")[int].innerHTML = svg;
