@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -106,8 +105,9 @@ public class RoomPlayerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/resources", method = RequestMethod.GET)
-	@ResponseBody
-	public void getResources(@RequestParam final String roomDesignId, final ModelMap modelMap) {
+	public @ResponseBody
+	String getResources(@RequestParam final String roomDesignId) {
+		String result;
 		RoomDesign roomDesign;
 		final Refuge refuge;
 		final Inventory inventory;
@@ -120,13 +120,13 @@ public class RoomPlayerController extends AbstractController {
 		if (roomDesignId != null && roomDesignId != "" && !roomDesignId.equals("0")) {
 
 			roomDesign = this.roomDesignService.findOne(Integer.parseInt(roomDesignId));
-			if (roomDesign.getCostMetal() <= inventory.getMetal() && roomDesign.getCostWood() <= inventory.getWood()) {
-				modelMap.addAttribute("wood", roomDesign.getCostWood());
-				modelMap.addAttribute("metal", roomDesign.getCostMetal());
-			} else
-				modelMap.addAttribute("error", "room.resources.error");
-		}
-
+			if (roomDesign.getCostMetal() <= inventory.getMetal() && roomDesign.getCostWood() <= inventory.getWood())
+				result = roomDesign.getCostWood() + "," + roomDesign.getCostMetal();
+			else
+				result = "error";
+		} else
+			result = "";
+		return result;
 	}
 	//Updating forum ---------------------------------------------------------------------
 

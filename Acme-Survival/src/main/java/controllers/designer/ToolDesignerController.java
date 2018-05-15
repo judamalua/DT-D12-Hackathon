@@ -61,11 +61,10 @@ public class ToolDesignerController extends AbstractController {
 
 				configuration = this.configurationService.findConfiguration();
 
-				Assert.isTrue(!itemDesign.getFinalMode());
-				Assert.isTrue(itemDesign.getName().keySet().equals(configuration.getLanguages()));
+				Assert.isTrue(configuration.getLanguages().containsAll(itemDesign.getName().keySet()));
 				this.toolService.save(itemDesign);
 
-				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "finalMode=" + itemDesign.getFinalMode() + "&");
+				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "&finalMode=" + itemDesign.getFinalMode());
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");
@@ -85,7 +84,7 @@ public class ToolDesignerController extends AbstractController {
 
 			this.toolService.delete(itemDesign);
 
-			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode() + "&");
+			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode());
 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(itemDesign, "itemDesign.commit.error");

@@ -181,8 +181,8 @@ public class ToolService {
 			result.setStrength(tool.getStrength());
 
 		}
-		this.toolRepository.flush();
 		this.validator.validate(result, binding);
+		this.toolRepository.flush();
 
 		return result;
 	}

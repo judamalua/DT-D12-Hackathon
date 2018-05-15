@@ -121,6 +121,7 @@ public class ItemDesignDesignerController extends AbstractController {
 			Assert.isTrue(this.actorService.findActorByPrincipal() instanceof Designer);
 
 			itemDesign = this.itemDesignService.findOne(itemDesignId);
+			Assert.isTrue(!itemDesign.getFinalMode());
 
 			result = this.createEditModelAndView(itemDesign);
 
