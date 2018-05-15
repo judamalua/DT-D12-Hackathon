@@ -467,6 +467,9 @@ public class RoomDesignDesignerController {
 	protected ModelAndView createEditModelAndView(final RoomDesign roomDesign, final String messageCode) {
 		ModelAndView result;
 		boolean isWarehouse = false, isRestorationRoom = false, isBarrack = false, isResourceRoom = false;
+		Configuration configuration;
+
+		configuration = this.configurationService.findConfiguration();
 
 		result = new ModelAndView("roomDesign/edit");
 
@@ -485,6 +488,7 @@ public class RoomDesignDesignerController {
 		result.addObject("isRestorationRoom", isRestorationRoom);
 		result.addObject("isBarrack", isBarrack);
 		result.addObject("isResourceRoom", isResourceRoom);
+		result.addObject("languages", configuration.getLanguages());
 
 		result.addObject("message", messageCode);
 
