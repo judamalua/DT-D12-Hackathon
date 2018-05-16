@@ -10,10 +10,15 @@
 
 package sample;
 
+import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Random;
 
 import javax.transaction.Transactional;
 
+import org.ajbrown.namemachine.Gender;
+import org.ajbrown.namemachine.Name;
+import org.ajbrown.namemachine.NameGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +40,7 @@ public class CharacterServiceTest extends AbstractTest {
 
 
 	@Test
-	public void testGenerateCharacter() {
+	public void testGenerateCharacter() throws FileNotFoundException {
 
 		for (int i = 1; i < 15; i++) {
 			final domain.Character character = this.characterService.generateCharacter();
@@ -45,7 +50,7 @@ public class CharacterServiceTest extends AbstractTest {
 	}
 
 	@Test
-	public void testLevelSelector() {
+	public void testLevelSelector() throws FileNotFoundException {
 		final Random r = new Random();
 
 		for (int i = 1; i < 50; i++) {
@@ -58,4 +63,15 @@ public class CharacterServiceTest extends AbstractTest {
 		}
 
 	}
+	@Test
+	public void testNameSelector() {
+		final NameGenerator generator = new NameGenerator();
+
+		// generate 1000 female names
+		final List<Name> names = generator.generateNames(1000, Gender.FEMALE);
+
+		System.out.println(names.get(0));
+
+	}
+
 }

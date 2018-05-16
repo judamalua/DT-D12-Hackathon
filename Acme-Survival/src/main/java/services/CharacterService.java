@@ -1,10 +1,13 @@
 
 package services;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.transaction.Transactional;
 
@@ -16,9 +19,6 @@ import org.springframework.util.Assert;
 import org.springframework.validation.Validator;
 
 import repositories.CharacterRepository;
-
-import com.github.javafaker.Faker;
-
 import domain.Actor;
 import domain.Character;
 import domain.Player;
@@ -188,18 +188,19 @@ public class CharacterService {
 	 * @param refugeId
 	 * @return Character
 	 * @author Luis
+	 * @throws FileNotFoundException
 	 **/
-	public Character generateCharacter(final int refugeId) {
+	public Character generateCharacter(final int refugeId) throws FileNotFoundException {
 		Character character;
 		Refuge refuge;
-		Faker faker;
+		//Faker faker;
 
-		faker = new Faker();
+		//faker = new Faker();
 		character = this.create();
 		refuge = this.refugeService.findOne(refugeId);
-		final String name = faker.gameOfThrones().character();
+		//final String name = faker.gameOfThrones().character();
 
-		character.setFullName(name);
+		this.generateCharacterName(character);
 		character.setCurrentFood(100);
 		character.setCurrentHealth(100);
 		character.setCurrentWater(100);
@@ -208,7 +209,6 @@ public class CharacterService {
 		character.setLevel(1);
 		character.setRefuge(refuge);
 		character.setRoom(null);
-		character.setMale(true);
 
 		this.generateCharacterHabilities(character);
 
@@ -250,15 +250,15 @@ public class CharacterService {
 
 	}
 
-	public Character generateCharacter() {
+	public Character generateCharacter() throws FileNotFoundException {
 		Character character;
-		Faker faker;
+		//Faker faker;
 
-		faker = new Faker();
+		//faker = new Faker();
 		character = this.create();
-		final String name = faker.gameOfThrones().character();
+		//final String name = faker.gameOfThrones().character();
 
-		character.setFullName(name);
+		this.generateCharacterName(character);
 		character.setCurrentFood(100);
 		character.setCurrentHealth(100);
 		character.setCurrentWater(100);
@@ -320,6 +320,43 @@ public class CharacterService {
 		result = this.characterRepository.findCharactersByRoom(roomId);
 
 		return result;
+	}
+
+	public void generateCharacterName(final Character character) throws FileNotFoundException {
+		final File male = new File("/images/maleNames.txt");
+		final File female = new File("/images/femaleNames.txt");
+		Scanner s = null;
+		final Random random = new Random();
+
+		int i = random.nextInt(1);
+
+		//Nombre Masculino 
+		if (i == 0) {
+			s = new Scanner(male);
+			final int stop = random.nextInt(100);
+			for (final int puntero = 0; i < 101; i++) {
+				s.nextLine();
+				if (puntero == stop)
+					break;
+			}
+			final String maleName = s.nextLine();
+			character.setFullName(maleName);
+			character.setMale(true);
+
+		} else {
+			s = new Scanner(female);
+			final int stop = random.nextInt(100);
+			for (final int puntero = 0; i < 101; i++) {
+				s.nextLine();
+				if (puntero == stop)
+					break;
+			}
+			final String femaleName = s.nextLine();
+			character.setFullName(femaleName);
+			character.setMale(false);
+
+		}
+
 	}
 
 }
