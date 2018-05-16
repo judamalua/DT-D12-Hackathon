@@ -21,7 +21,7 @@
 	<form:hidden path="version"/>
 	<form:hidden path="location"/>
 	
-	<acme:select code="recolection.character" path="character" items="${characters}" itemLabel="name"/>
+	<acme:select code="recolection.character" path="character" items="${characters}" itemLabel="fullName"/>
 	<br />
 
 	<spring:message code="recolection.startDate.estimated"/>:
