@@ -1,7 +1,6 @@
 
 package services;
 
-import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Date;
 
@@ -74,7 +73,7 @@ public class MoveService {
 
 	}
 
-	public Move save(final Move move) throws FileNotFoundException {
+	public Move save(final Move move) {
 
 		Assert.notNull(move);
 

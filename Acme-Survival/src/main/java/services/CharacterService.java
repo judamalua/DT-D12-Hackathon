@@ -1,13 +1,10 @@
 
 package services;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +16,9 @@ import org.springframework.util.Assert;
 import org.springframework.validation.Validator;
 
 import repositories.CharacterRepository;
+
+import com.github.javafaker.Faker;
+
 import domain.Actor;
 import domain.Character;
 import domain.Player;
@@ -188,19 +188,26 @@ public class CharacterService {
 	 * @param refugeId
 	 * @return Character
 	 * @author Luis
-	 * @throws FileNotFoundException
 	 **/
-	public Character generateCharacter(final int refugeId) throws FileNotFoundException {
+	public Character generateCharacter(final int refugeId) {
 		Character character;
 		Refuge refuge;
-		//Faker faker;
+		Faker faker;
+		final Random random = new Random();
+		int sexo;
 
-		//faker = new Faker();
+		sexo = random.nextInt(2);
+		faker = new Faker();
 		character = this.create();
 		refuge = this.refugeService.findOne(refugeId);
-		//final String name = faker.gameOfThrones().character();
+		final String name = faker.gameOfThrones().character();
 
-		this.generateCharacterName(character);
+		if (sexo == 0)
+			character.setMale(true);
+		else
+			character.setMale(false);
+
+		character.setFullName(name);
 		character.setCurrentFood(100);
 		character.setCurrentHealth(100);
 		character.setCurrentWater(100);
@@ -250,15 +257,15 @@ public class CharacterService {
 
 	}
 
-	public Character generateCharacter() throws FileNotFoundException {
+	public Character generateCharacter() {
 		Character character;
-		//Faker faker;
+		Faker faker;
 
-		//faker = new Faker();
+		faker = new Faker();
 		character = this.create();
-		//final String name = faker.gameOfThrones().character();
+		final String name = faker.gameOfThrones().character();
 
-		this.generateCharacterName(character);
+		character.setFullName(name);
 		character.setCurrentFood(100);
 		character.setCurrentHealth(100);
 		character.setCurrentWater(100);
@@ -322,41 +329,41 @@ public class CharacterService {
 		return result;
 	}
 
-	public void generateCharacterName(final Character character) throws FileNotFoundException {
-		final File male = new File("/images/maleNames.txt");
-		final File female = new File("/images/femaleNames.txt");
-		Scanner s = null;
-		final Random random = new Random();
-
-		int i = random.nextInt(1);
-
-		//Nombre Masculino 
-		if (i == 0) {
-			s = new Scanner(male);
-			final int stop = random.nextInt(100);
-			for (final int puntero = 0; i < 101; i++) {
-				s.nextLine();
-				if (puntero == stop)
-					break;
-			}
-			final String maleName = s.nextLine();
-			character.setFullName(maleName);
-			character.setMale(true);
-
-		} else {
-			s = new Scanner(female);
-			final int stop = random.nextInt(100);
-			for (final int puntero = 0; i < 101; i++) {
-				s.nextLine();
-				if (puntero == stop)
-					break;
-			}
-			final String femaleName = s.nextLine();
-			character.setFullName(femaleName);
-			character.setMale(false);
-
-		}
-
-	}
+	//	public void generateCharacterName(final Character character) throws FileNotFoundException {
+	//		final File male = new File("maleNames.txt");
+	//		final File female = new File("femaleNames.txt");
+	//		Scanner s = null;
+	//		final Random random = new Random();
+	//
+	//		int i = random.nextInt(1);
+	//
+	//		//Nombre Masculino 
+	//		if (i == 0) {
+	//			s = new Scanner(male);
+	//			final int stop = random.nextInt(100);
+	//			for (final int puntero = 0; i < 101; i++) {
+	//				s.nextLine();
+	//				if (puntero == stop)
+	//					break;
+	//			}
+	//			final String maleName = s.nextLine();
+	//			character.setFullName(maleName);
+	//			character.setMale(true);
+	//
+	//		} else {
+	//			s = new Scanner(female);
+	//			final int stop = random.nextInt(100);
+	//			for (final int puntero = 0; i < 101; i++) {
+	//				s.nextLine();
+	//				if (puntero == stop)
+	//					break;
+	//			}
+	//			final String femaleName = s.nextLine();
+	//			character.setFullName(femaleName);
+	//			character.setMale(false);
+	//
+	//		}
+	//
+	//	}
 
 }

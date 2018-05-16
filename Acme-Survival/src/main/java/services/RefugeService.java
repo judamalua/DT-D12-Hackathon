@@ -1,7 +1,6 @@
 
 package services;
 
-import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -119,7 +118,7 @@ public class RefugeService {
 
 	}
 
-	public Refuge save(final Refuge refuge) throws FileNotFoundException {
+	public Refuge save(final Refuge refuge) {
 
 		Assert.isTrue(refuge != null);
 
@@ -393,7 +392,7 @@ public class RefugeService {
 		return result;
 	}
 
-	private Collection<domain.Character> generateCharacters(final Refuge refuge) throws FileNotFoundException {
+	private Collection<domain.Character> generateCharacters(final Refuge refuge) {
 		Collection<domain.Character> result;
 		domain.Character character;
 
