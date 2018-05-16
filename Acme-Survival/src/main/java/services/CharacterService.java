@@ -297,10 +297,47 @@ public class CharacterService {
 		else
 			for (int i = currentLevel + 1; i <= 100; i++) {
 				finalLevel = i;
-				if (experience < (i + 1) * (i + 1) * 100)
+				this.LevelUP(character);
+				if (i == 100 || experience < (i + 1) * (i + 1) * 100)
 					break;
 			}
 		character.setLevel(finalLevel);
+
+		Assert.isTrue(character.getLevel() == 100 || ((character.getLevel() + 1) * (character.getLevel() + 1) * 100) > character.getExperience());
+
+	}
+
+	/**
+	 * That private method calculate the updated properties off a character when it level up
+	 * 
+	 * @author Luis
+	 **/
+	private void LevelUP(final Character character) {
+		Integer sum = 0;
+		final List<Integer> properties = new ArrayList<Integer>();
+		final Random r = new Random();
+
+		for (int i = 1; i <= 3; i++)
+			if ((i == 1)) {
+				final Integer property = r.nextInt(2) + 1;
+				properties.add(property);
+				sum += property;
+
+			} else if ((i == 2)) {
+				final Integer property = r.nextInt(2) + 1;
+				properties.add(property);
+				sum += property;
+
+			} else {
+				final Integer last = (5 - sum);
+				properties.add(last);
+				sum += last;
+			}
+		Assert.isTrue(sum == 5);
+
+		character.setCapacity(character.getCapacity() + properties.get(0));
+		character.setLuck(character.getLuck() + properties.get(1));
+		character.setStrength(character.getStrength() + properties.get(2));
 
 	}
 
@@ -365,5 +402,9 @@ public class CharacterService {
 	//		}
 	//
 	//	}
+
+	public void flush() {
+		this.characterRepository.flush();
+	}
 
 }
