@@ -8,7 +8,7 @@
  * http://www.tdg-seville.info/License.html
  */
 
-package sample;
+package services;
 
 import java.io.FileNotFoundException;
 import java.util.List;
