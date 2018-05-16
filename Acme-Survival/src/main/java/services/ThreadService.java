@@ -78,7 +78,7 @@ public class ThreadService {
 		Assert.notNull(thread);
 
 		Thread result;
-		final Collection<Message> messages;
+		Collection<Message> messages;
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
