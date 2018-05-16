@@ -26,6 +26,10 @@ var mapTranslations = {
 			es : "Nombre del refugio",
 			en : "Refuge name"
 		},
+		playerName : {
+			es : "Dueño del refugio",
+			en : "Refuge owner"
+		},
 		enterInRefuge : {
 			es : "Entrar en el refugio",
 			en : "Enter in the refuge"
