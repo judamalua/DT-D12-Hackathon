@@ -24,7 +24,7 @@ import domain.Product;
 	"classpath:spring/junit.xml"
 })
 @Transactional
-public class ProductServiceTest extends AbstractTest {
+public class RoomDesignServiceTest extends AbstractTest {
 
 	@Autowired
 	public ActorService			actorService;
