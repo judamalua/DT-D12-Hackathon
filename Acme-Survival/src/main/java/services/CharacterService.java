@@ -193,11 +193,19 @@ public class CharacterService {
 		Character character;
 		Refuge refuge;
 		Faker faker;
+		final Random random = new Random();
+		int sexo;
 
+		sexo = random.nextInt(2);
 		faker = new Faker();
 		character = this.create();
 		refuge = this.refugeService.findOne(refugeId);
 		final String name = faker.gameOfThrones().character();
+
+		if (sexo == 0)
+			character.setMale(true);
+		else
+			character.setMale(false);
 
 		character.setFullName(name);
 		character.setCurrentFood(100);
@@ -208,7 +216,6 @@ public class CharacterService {
 		character.setLevel(1);
 		character.setRefuge(refuge);
 		character.setRoom(null);
-		character.setMale(true);
 
 		this.generateCharacterHabilities(character);
 
@@ -321,5 +328,42 @@ public class CharacterService {
 
 		return result;
 	}
+
+	//	public void generateCharacterName(final Character character) throws FileNotFoundException {
+	//		final File male = new File("maleNames.txt");
+	//		final File female = new File("femaleNames.txt");
+	//		Scanner s = null;
+	//		final Random random = new Random();
+	//
+	//		int i = random.nextInt(1);
+	//
+	//		//Nombre Masculino 
+	//		if (i == 0) {
+	//			s = new Scanner(male);
+	//			final int stop = random.nextInt(100);
+	//			for (final int puntero = 0; i < 101; i++) {
+	//				s.nextLine();
+	//				if (puntero == stop)
+	//					break;
+	//			}
+	//			final String maleName = s.nextLine();
+	//			character.setFullName(maleName);
+	//			character.setMale(true);
+	//
+	//		} else {
+	//			s = new Scanner(female);
+	//			final int stop = random.nextInt(100);
+	//			for (final int puntero = 0; i < 101; i++) {
+	//				s.nextLine();
+	//				if (puntero == stop)
+	//					break;
+	//			}
+	//			final String femaleName = s.nextLine();
+	//			character.setFullName(femaleName);
+	//			character.setMale(false);
+	//
+	//		}
+	//
+	//	}
 
 }

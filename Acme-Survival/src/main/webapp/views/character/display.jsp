@@ -77,15 +77,16 @@
 	
 	
 	<spring:message code="character.level" />:<jstl:out value="${character.level}" /><br> 
-	<spring:message code="character.experience" />:<jstl:out value="${character.experience}" />
+	
 	
 	<div class="w3-progress-container w3-light-orange">
-		
+		<i class="material-icons right">exposure_plus_1</i>
 		<div class="w3-progressbar w3-orange w3-center"
-			style="width:${(character.experience/((character.level+1)*(character.level+1)*100))*100}%">
+			style="width:50%">
 			<jstl:out value="${(character.experience/((character.level+1)*(character.level+1)*100))*100}%" />
 			
 		</div>
+		<spring:message code="character.experience" />:<jstl:out value="${character.experience}" />
 	</div>
 
 
