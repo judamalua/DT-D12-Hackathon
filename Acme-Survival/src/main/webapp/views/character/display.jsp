@@ -25,7 +25,7 @@
 
 <!--Base Info-->
 <br>
-<h3><jstl:out value="${character.fullName}" /></h3>
+<h3 class="characterName"><jstl:out value="${character.fullName}" /></h3>
 <div class="characterImage" style="height: 200px; width: 200px;"></div>
 
 

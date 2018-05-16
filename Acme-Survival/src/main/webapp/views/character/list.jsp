@@ -23,8 +23,14 @@
 	class="displaytag">
 
 	<spring:message code="character.fullName" var="fullName" />
-	<display:column property="fullName" title="${name}" sortable="true" />
-	
+	<display:column class="characterName" property="fullName" title="${name}" sortable="true" />
+	<display:column>
+	<div class="characterGenre" hidden="true">
+	<jstl:if test="${character.male}">Male</jstl:if>
+	<jstl:if test="${!character.male}">Female</jstl:if>
+	</div>
+	<div class="characterImage" style="height: 100px; width: 100px;"></div>
+	</display:column>
 
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">
