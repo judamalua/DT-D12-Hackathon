@@ -11,7 +11,10 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet" href="styles/circleBar.css">
+
 
 
 
@@ -21,66 +24,91 @@
 
 
 <!--Base Info-->
-<div class="characterImage" style="height:200px; width:200px;"></div>
-<strong><spring:message code="character.fullName" />:</strong>
-<div class ="characterName"><jstl:out value="${character.fullName}" /></div>
-<div class ="characterGenre" hidden="true"><jstl:if test="${character.male}">Male</jstl:if>
-<jstl:if test="${!character.male}">Female</jstl:if></div>
+<br>
+<h3><jstl:out value="${character.fullName}" /></h3>
+<div class="characterImage" style="height: 200px; width: 200px;"></div>
 
 
+<div class="characterGenre" hidden="true">
+	<jstl:if test="${character.male}">Male</jstl:if>
+	<jstl:if test="${!character.male}">Female</jstl:if>
+</div>
+
+
+
+<br><br>
 
 
 
 
 <!--Property bars-->
-<div style=" border-style: solid;
-    border-width: 5px;">
+<div style="border-style: solid; border-width: 5px;">
 
-<strong><spring:message code="character.currentHealth" />:</strong>
-<div class="w3-section w3-light-grey">
-   <i class="material-icons right">local_hospital</i>
-  <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.currentHealth}%">
-  	<jstl:out value="${character.currentHealth}" /></div> 
-</div><br>
+	<strong><spring:message code="character.currentHealth" />:</strong>
+	<div class="3-progress-container w3-light-green">
+		<i class="material-icons right">local_hospital</i>
+		<div class="w3-progressbar w3-green w3-center"
+			style="width:${character.currentHealth}%">
+			<jstl:out value="${character.currentHealth}" />
+			%
+		</div>
+	</div>
+	<br> <strong><spring:message code="character.currentFood" />:</strong>
+	<div class="3-progress-container w3-light-red">
+		<i class="material-icons right">restaurant</i>
+		<div class="w3-progressbar w3-red w3-center"
+			style="width:${character.currentFood}%">
+			<jstl:out value="${character.currentFood}" />
+			%
+		</div>
+	</div>
+	<br> <strong><spring:message
+			code="character.currentWater" />:</strong>
+	<div class="w3-progress-container w3-light-blue">
+		<i class="material-icons right">free_breakfast</i>
+		<div class="w3-progressbar w3-blue w3-center"
+			style="width:${character.currentWater}%">
+			<jstl:out value="${character.currentWater}" />
+			%
+		</div>
+	</div>
+			
+			<br> 
+	
+	
+	<spring:message code="character.level" />:<jstl:out value="${character.level}" /><br> 
+	<spring:message code="character.experience" />:<jstl:out value="${character.experience}" />
+	
+	<div class="w3-progress-container w3-light-orange">
+		
+		<div class="w3-progressbar w3-orange w3-center"
+			style="width:${(character.experience/((character.level+1)*(character.level+1)*100))*100}%">
+			<jstl:out value="${(character.experience/((character.level+1)*(character.level+1)*100))*100}%" />
+			
+		</div>
+	</div>
 
-<strong><spring:message code="character.currentFood" />:</strong>
-<div class="w3-section w3-light-grey">
-	<i class="material-icons right">restaurant</i>
-  <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.currentFood}%">
-  	<jstl:out value="${character.currentFood}" /></div> 
-</div><br>
 
-<strong><spring:message code="character.currentWater" />:</strong>
-<div class="w3-section w3-light-grey">
-	<i class="material-icons right">free_breakfast</i>
-  <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.currentWater}%">
-  	<jstl:out value="${character.currentWater}" /></div> 
-</div><br>
+	<br>
+	
 
-<strong><spring:message code="character.experience" />:</strong>
-<div class="w3-section w3-light-grey">
-  <div class="w3-container w3-padding-small w3-red w3-center" style="width:${character.experience}%">
-  	<jstl:out value="${character.experience}" /><br/>Level:<jstl:out value="${character.level}" /></div> 
-</div><br>
 
 </div>
 
 
 
 
-
-
-
 <!--Power-->
+
+<br><br>
+
 <i class="material-icons">fitness_center</i>
 <strong><spring:message code="character.strength" />:</strong>
 <jstl:out value="${character.strength}" />
-<br />
 
 <i class="material-icons">star</i>
 <strong><spring:message code="character.luck" />:</strong>
 <jstl:out value="${character.luck}" />
-<br />
 
 <i class="material-icons">build</i>
 <strong><spring:message code="character.capacity" />:</strong>
@@ -88,5 +116,4 @@
 <br />
 
 
-	
 
