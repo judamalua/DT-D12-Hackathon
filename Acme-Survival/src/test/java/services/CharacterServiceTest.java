@@ -10,23 +10,20 @@
 
 package services;
 
-import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Random;
 
 import javax.transaction.Transactional;
 
-import org.ajbrown.namemachine.Gender;
-import org.ajbrown.namemachine.Name;
-import org.ajbrown.namemachine.NameGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
-import services.CharacterService;
 import utilities.AbstractTest;
+import domain.Player;
+import domain.Refuge;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -38,39 +35,236 @@ public class CharacterServiceTest extends AbstractTest {
 	@Autowired
 	public CharacterService	characterService;
 
+	@Autowired
+	public ActorService		actorService;
 
+	@Autowired
+	public RefugeService	refugeService;
+
+
+	//*****************************Positive Methods*************************************
+
+	/**
+	 * This method test auto-generate character method
+	 * 
+	 * @author Luis
+	 */
 	@Test
-	public void testGenerateCharacter() throws FileNotFoundException {
+	public void testGenerateCharacter() {
 
-		for (int i = 1; i < 15; i++) {
-			final domain.Character character = this.characterService.generateCharacter();
-			System.out.println(character.getFullName() + ",capacity=" + character.getCapacity() + ",luck=" + character.getLuck() + ",strenght=" + character.getStrength());
-		}
+		for (int i = 1; i < 10; i++)
+			this.characterService.generateCharacter();
 
 	}
 
+	/**
+	 * This method test Level selector of a character
+	 * 
+	 * @author Luis
+	 */
 	@Test
-	public void testLevelSelector() throws FileNotFoundException {
+	public void testLevelSelector() {
 		final Random r = new Random();
 
-		for (int i = 1; i < 50; i++) {
+		for (int i = 1; i < 10; i++) {
 			final domain.Character character = this.characterService.generateCharacter();
 			character.setExperience(r.nextInt(1000000));
 			this.characterService.calculateLevel(character);
 
-			System.out.println(character.getFullName() + ",capacity=" + character.getCapacity() + ",luck=" + character.getLuck() + ",strenght=" + character.getStrength() + "experience=" + character.getExperience() + ",level=" + character.getLevel());
-
 		}
 
 	}
+
+	/**
+	 * This method test that when a character have more than 1000000 of experience his level is always 100
+	 * 
+	 * @author Luis
+	 */
 	@Test
-	public void testNameSelector() {
-		final NameGenerator generator = new NameGenerator();
+	public void testMaxLevel() {
+		final domain.Character character = this.characterService.generateCharacter();
+		character.setExperience(10004000);
+		this.characterService.calculateLevel(character);
 
-		// generate 1000 female names
-		final List<Name> names = generator.generateNames(1000, Gender.FEMALE);
+		Assert.isTrue(character.getLevel() == 100);
 
-		System.out.println(names.get(0));
+	}
+	/**
+	 * This method test that a character save in database correctly
+	 * 
+	 * @author Luis
+	 */
+	@Test
+	public void testSaveCharacter() {
+
+		final domain.Character character = this.createCharacter();
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+	//*****************************Negative Methods*************************************
+	/**
+	 * This method test that can´t save a character with a water value lesser than 0
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative1() {
+		final domain.Character character = this.createCharacter();
+		character.setCurrentWater(-1);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a water value greater than 100
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative2() {
+		final domain.Character character = this.createCharacter();
+		character.setCurrentWater(101);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a food value lesser than 0
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative3() {
+		final domain.Character character = this.createCharacter();
+		character.setCurrentFood(-1);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a food value greater than 100
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative4() {
+		final domain.Character character = this.createCharacter();
+		character.setCurrentFood(101);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a health value lesser than 0
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative5() {
+		final domain.Character character = this.createCharacter();
+		character.setCurrentHealth(-1);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a health value greater than 100
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative6() {
+		final domain.Character character = this.createCharacter();
+		character.setCurrentHealth(101);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a level value lesser than 1
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative7() {
+		final domain.Character character = this.createCharacter();
+		character.setLevel(0);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a level value greater than 100
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative8() {
+		final domain.Character character = this.createCharacter();
+		character.setLevel(101);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	/**
+	 * This method test that can´t save a character with a experience value lesser than 0
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSaveCharacterNegative9() {
+		final domain.Character character = this.createCharacter();
+		character.setExperience(-1);
+
+		this.characterService.save(character);
+		this.characterService.flush();
+
+		super.unauthenticate();
+
+	}
+
+	private domain.Character createCharacter() {
+		super.authenticate("Player1");
+		final Player player = (Player) this.actorService.findActorByPrincipal();
+		final Refuge refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		final domain.Character result = this.characterService.generateCharacter(refuge.getId());
+		return result;
 
 	}
 

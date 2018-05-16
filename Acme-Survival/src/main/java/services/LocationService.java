@@ -85,6 +85,11 @@ public class LocationService {
 		return result;
 	}
 
+	public Collection<Location> findAllLocationsByNotFinal() {
+		Collection<Location> result;
+		result = this.locationRepository.findAllLocationsByNotFinal();
+		return result;
+	}
 	//Business methods --------------------
 
 }

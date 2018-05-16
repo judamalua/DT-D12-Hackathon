@@ -21,11 +21,18 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<script src="scripts/designerMap.js"></script>
 <div id="mapElements" hidden="true"></div>
 <div class="row">
 	<div id="map" style="height: 800px;"></div>
 </div>
-<script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMap">
-	
-</script>
+<security:authorize access="hasRole('PLAYER')">
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMap">
+	</script>
+</security:authorize>
+<security:authorize access="hasRole('DESIGNER')">
+	<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMapDesigner">
+	</script>
+</security:authorize>
