@@ -21,19 +21,13 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="refuge/player/edit.do" modelAttribute="refuge">
+<form:form action="move/player/confirm.do" modelAttribute="move">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
+	<form:hidden path="location" />
 
-	<p>
-		<em><spring:message code="form.required.params" /></em>
-	</p>
-
-	<acme:textbox code="refuge.name" path="name" required="true" />
-
-	<acme:submit name="save" code="refuge.save" />
-
-	<acme:cancel url="refuge/list.do" code="refuge.cancel" />
-
+	<acme:submit name="confirm" code="move.save" />
+	
+	<acme:cancel url="refuge/player/display.do" code="move.cancel"/>
 </form:form>

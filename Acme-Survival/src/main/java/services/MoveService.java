@@ -7,11 +7,17 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MoveRepository;
+import domain.Actor;
 import domain.DesignerConfiguration;
+import domain.Inventory;
 import domain.Location;
 import domain.Move;
 import domain.Player;
@@ -39,6 +45,12 @@ public class MoveService {
 
 	@Autowired
 	private PlayerService					playerService;
+
+	@Autowired
+	private InventoryService				inventoryService;
+
+	@Autowired
+	private Validator						validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -82,6 +94,8 @@ public class MoveService {
 		this.actorService.checkActorLogin();
 		Refuge refuge, savedRefuge;
 		final Collection<Player> playersKnowsRefuge;
+		Inventory inventory;
+		DesignerConfiguration designerConfiguration;
 
 		move.setStartDate(new Date(System.currentTimeMillis() - 1));
 		time = this.timeBetweenLocations(move.getRefuge().getLocation(), move.getLocation());
@@ -91,9 +105,21 @@ public class MoveService {
 		refuge.setGpsCoordinates(this.refugeService.generateRandomCoordinates(move.getLocation()));
 
 		savedRefuge = this.refugeService.save(refuge);
+
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+
+		inventory = this.inventoryService.findInventoryByRefuge(savedRefuge.getId());
 		move.setRefuge(savedRefuge);
 
+		inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
+		inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
+		inventory.setWood(inventory.getMetal() - designerConfiguration.getMovingMetal());
+		inventory.setWood(inventory.getFood() - designerConfiguration.getMovingFood());
+
+		this.inventoryService.save(inventory);
+
 		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(savedRefuge.getId());
+
 		for (final Player player : playersKnowsRefuge) {
 			player.getRefuges().remove(savedRefuge);
 			this.actorService.save(player);
@@ -121,6 +147,16 @@ public class MoveService {
 		Collection<Move> result;
 
 		result = this.moveRepository.findMovesByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Page<Move> findMovesByRefuge(final int refugeId, final Pageable pageable) {
+		Assert.isTrue(refugeId != 0);
+
+		Page<Move> result;
+
+		result = this.moveRepository.findMovesByRefuge(refugeId, pageable);
 
 		return result;
 	}
@@ -155,6 +191,24 @@ public class MoveService {
 		kmPerSecond = designerConfiguration.getKmPerSecond();
 
 		result = (long) ((distance * 1000) / kmPerSecond);
+
+		return result;
+	}
+
+	public Move reconstruct(final Move move, final BindingResult binding) {
+		Move result;
+		Actor actor;
+		Refuge refuge;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+		result = move;
+
+		result.setRefuge(refuge);
+
+		this.validator.validate(result, binding);
+		this.moveRepository.flush();
 
 		return result;
 	}
