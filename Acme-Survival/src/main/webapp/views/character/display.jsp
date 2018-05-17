@@ -32,15 +32,29 @@
 <div class="characterGenre" hidden="true">
 	<jstl:if test="${character.male}">Male</jstl:if>
 	<jstl:if test="${!character.male}">Female</jstl:if>
+	
+</div>
+<br>
+<acme:button url="item/player/list.do?characterId=${character.id} " code="item.equip" />
+
+<div class="relative1">
+	<jstl:if test="${character.item==null}">
+	<div style="height: 200px; width: 200px;"><img  src="${item.itemDesign.imageUrl}" /></div>
+	</jstl:if>
+	
+
+
+
 </div>
 
 
 
-<br><br>
+<br>
 
 
 
 
+<br>
 <!--Property bars-->
 <div style="border-style: solid; border-width: 5px;">
 

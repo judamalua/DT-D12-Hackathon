@@ -94,6 +94,9 @@
 			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/roomDesign/list.do"
 			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/item/player/list.do"
+			access="hasAnyRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/forum/list.do"

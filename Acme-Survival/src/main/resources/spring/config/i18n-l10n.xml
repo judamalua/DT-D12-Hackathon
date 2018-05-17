@@ -48,6 +48,7 @@
 		<value>/views/map/messages</value>
 		<value>/views/lootTable/messages</value>
 		<value>/views/notification/messages</value>
+		<value>/views/item/messages</value>
 	</util:list>
 
 </beans>
