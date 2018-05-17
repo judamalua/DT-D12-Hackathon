@@ -26,7 +26,38 @@
 <!--Base Info-->
 <br>
 <h3 class="characterName"><jstl:out value="${character.fullName}" /></h3>
-<div class="characterImage" style="height: 200px; width: 200px;"></div>
+
+
+
+
+
+	<div style="width: 200px; float: left;">
+		<div class="characterImage" style="height: 200px; width: 200px;">
+		</div>
+		<br>
+		
+	</div>
+
+
+	
+
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 <div class="characterGenre" hidden="true">
@@ -34,22 +65,6 @@
 	<jstl:if test="${!character.male}">Female</jstl:if>
 	
 </div>
-<br>
-<acme:button url="item/player/list.do?characterId=${character.id} " code="item.equip" />
-
-<div class="relative1">
-	<jstl:if test="${character.item==null}">
-	<div style="height: 200px; width: 200px;"><img  src="${item.itemDesign.imageUrl}" /></div>
-	</jstl:if>
-	
-
-
-
-</div>
-
-
-
-<br>
 
 
 
@@ -109,8 +124,20 @@
 
 
 </div>
+<br>
 
 
+
+
+<div>
+	<img style="height: 200px; width: 200px;" src=" ${character.item.tool.imageUrl}"/>
+</div>
+
+
+
+
+<acme:button url="item/player/list.do?characterId=${character.id} "
+			code="item.equip" />
 
 
 <!--Power-->

@@ -21,37 +21,37 @@
 	requestURI="${requestURI}" class="displaytag">
 
 	<display:column>
-		<img class="forumImg" src="${item.itemDesign.imageUrl}" />
+		<img class="forumImg" src="${item.tool.imageUrl}" />
 	</display:column>
 
 <spring:message code="item.name" var="nameTitle" />
 	<display:column title="${nameTitle}">
-		<jstl:out value="${item.itemDesign.name[currentLang]}" />
+		<jstl:out value="${item.tool.name[currentLang]}" />
 	</display:column>
 	
 
 	<spring:message code="item.description" var="descriptionTitle" />
 	<display:column title="${descriptionTitle}">
-		<jstl:out value="${item.itemDesign.description[currentLang]}" />
+		<jstl:out value="${item.tool.description[currentLang]}" />
 	</display:column>
 
 	
 	<spring:message code="tool.strength" var="strengthTitle" />
-	<display:column title="${strengthTitle}" property="itemDesign.strength" />
+	<display:column title="${strengthTitle}" property="tool.strength" />
 
 	<spring:message code="tool.luck" var="luckTitle" />
-	<display:column title="${luckTitle}" property="itemDesign.luck" />
+	<display:column title="${luckTitle}" property="tool.luck" />
 
 	<spring:message code="tool.capacity" var="capacityTitle" />
-	<display:column title="${strengthTitle}" property="itemDesign.capacity" />
+	<display:column title="${strengthTitle}" property="tool.capacity" />
 	
 
 
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">
-			<jstl:if test="${!(item.isEquipped)}">
+			<jstl:if test="${!(item.equipped)}">
 				<acme:button
-					url="item/player/equip.do?itemId=${item.id}"
+					url="item/player/equip.do?itemId=${item.id}&characterId=${characterId}"
 					code="item.equip" />
 			</jstl:if>
 		</security:authorize>
