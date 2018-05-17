@@ -16,7 +16,7 @@ import services.ActorService;
 import services.AttackService;
 import services.ConfigurationService;
 import services.LocationService;
-import services.RecolectionService;
+import services.GatherService;
 import services.RefugeService;
 import domain.Actor;
 import domain.Location;
@@ -44,7 +44,7 @@ public class MapPlayerController {
 	private AttackService			attackService;
 
 	@Autowired
-	private RecolectionService		recolectionService;
+	private GatherService		gatherService;
 
 
 	// Map display -----------------------------------------------------------

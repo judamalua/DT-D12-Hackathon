@@ -10,33 +10,33 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <spring:message var="format" code="master.page.moment.format.out" />
-<fmt:formatDate var="formatRecolectionStartDate"
-	value="${recolection.startDate}" pattern="${format}" />
-<fmt:formatDate var="formatRecolectionEndMoment"
-	value="${recolection.endMoment}" pattern="${format}" />
+<fmt:formatDate var="formatgatherStartDate"
+	value="${gather.startDate}" pattern="${format}" />
+<fmt:formatDate var="formatgatherEndMoment"
+	value="${gather.endMoment}" pattern="${format}" />
 	
-<form:form id = "form" action="recolection/player/edit.do" modelAttribute ="recolection">
+<form:form id = "form" action="gather/player/edit.do" modelAttribute ="gather">
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
 	<form:hidden path="location"/>
 	
-	<acme:select code="recolection.character" path="character" items="${characters}" itemLabel="fullName"/>
+	<acme:select code="gather.character" path="character" items="${characters}" itemLabel="fullName"/>
 	<br />
 
-	<spring:message code="recolection.startDate.estimated"/>:
-	<jstl:out value="${formatRecolectionStartDate}"/>
+	<spring:message code="gather.startDate.estimated"/>:
+	<jstl:out value="${formatgatherStartDate}"/>
 	<br/>
 
-	<spring:message code="recolection.endMoment.estimated"/>:
-	<jstl:out value="${formatRecolectionEndMoment}"/>
+	<spring:message code="gather.endMoment.estimated"/>:
+	<jstl:out value="${formatgatherEndMoment}"/>
 	<br/>
 
 	<div class="cleared-div">
-	<acme:submit name="save" code="recolection.start"/>
+	<acme:submit name="save" code="gather.start"/>
 	
 	<button type="button" class="btn" onclick="javascript: window.history.back()" >
-		<spring:message code="recolection.cancel" />
+		<spring:message code="gather.cancel" />
 	</button>
 	</div>
 </form:form>
