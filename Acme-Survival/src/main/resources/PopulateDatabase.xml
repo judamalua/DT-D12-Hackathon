@@ -559,10 +559,10 @@
 			<map>
 				<entry>
 					<key><value>en</value></key>
-					<value>Event Eng 1</value></entry>
+					<value>You found a village</value></entry>
 				<entry>
 					<key><value>es</value></key>
-					<value>EVENT ESP 1</value>
+					<value>Encontraste una villa en el camino</value>
 				</entry>
 			</map>
 		</property>
@@ -570,11 +570,11 @@
 			<map>
 				<entry>
 					<key><value>en</value></key>
-					<value>Description test event</value>
+					<value>Description about village event</value>
 				</entry>
 				<entry>
 					<key><value>es</value></key>
-					<value>Test de descripcion de evento</value></entry>
+					<value>Descripcion sobre el evento ded la villa</value></entry>
 			</map>
 		</property>
 	<property name="health" value="0.40" />
@@ -583,7 +583,126 @@
 	<property name="finalMode" value="false" />
 	<property name="findCharacter" value="false" />
 	</bean>
+	
+		<bean id="Event2" class="domain.Event">
+	<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Incredible event</value></entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Evento increible</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>You cant believe what actually happenned</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>No puedes creer lo que acaba de ocurrir</value></entry>
+			</map>
+		</property>
+	<property name="health" value="0.35" />
+	<property name="water" value="0.70" />
+	<property name="food" value="0.10" />
+	<property name="finalMode" value="false" />
+	<property name="findCharacter" value="false" />
+	</bean>
+	
+		<bean id="Event3" class="domain.Event">
+	<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>City event</value></entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Evento en ciudad</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>City event description</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Descripcion del evento de la ciudad</value></entry>
+			</map>
+		</property>
+	<property name="health" value="0.20" />
+	<property name="water" value="1" />
+	<property name="food" value="0.80" />
+	<property name="finalMode" value="false" />
+	<property name="findCharacter" value="false" />
+	</bean>
 
+	<bean id="Tool1" class="domain.Tool">
+	<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Sword</value></entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Espada</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Excalibur's sword</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Espada de excalibur</value></entry>
+			</map>
+		</property>
+	<property name="imageUrl" value="http://icons.iconarchive.com/icons/raindropmemory/legendora/256/sword-icon.png" />
+	<property name="finalMode" value="false" />
+		<property name="strength" value="0.30" />
+	<property name="luck" value="0.30" />
+	<property name="capacity" value="0.30" />
+	</bean>
+	
+		<bean id="Tool2" class="domain.Tool">
+	<property name="name">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Helmet</value></entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Casco</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key><value>en</value></key>
+					<value>Kevlar Helmet</value>
+				</entry>
+				<entry>
+					<key><value>es</value></key>
+					<value>Casco Kevlar</value></entry>
+			</map>
+		</property>
+	<property name="imageUrl" value="http://www.myiconfinder.com/uploads/iconsets/256-256-d074a5a83cb693e59484ec9cf62953ee-helmet.png" />
+	<property name="finalMode" value="false" />
+	<property name="strength" value="0.30" />
+	<property name="luck" value="0.30" />
+	<property name="capacity" value="0.30" />
+	</bean>
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">
 		<property name="name">
