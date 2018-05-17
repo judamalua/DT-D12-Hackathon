@@ -99,8 +99,8 @@
 		<bean class="converters.ProductToStringConverter" />
 		<bean class="converters.StringToProductConverter" />
 
-		<bean class="converters.RecollectionToStringConverter" />
-		<bean class="converters.StringToRecollectionConverter" />
+		<bean class="converters.GatherToStringConverter" />
+		<bean class="converters.StringToGatherConverter" />
 
 		<bean class="converters.RefugeToStringConverter" />
 		<bean class="converters.StringToRefugeConverter" />
