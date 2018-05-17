@@ -27,6 +27,7 @@ import domain.Move;
 import domain.Player;
 import domain.Refuge;
 import domain.Room;
+import domain.Warehouse;
 
 @Service
 @Transactional
@@ -71,6 +72,9 @@ public class RefugeService {
 
 	@Autowired
 	private Validator			validator;
+
+	@Autowired
+	private RoomDesignService	roomDesignService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -417,4 +421,27 @@ public class RefugeService {
 		return result;
 	}
 
+	/**
+	 * That methods get total capacity of items of a refuge
+	 * 
+	 * @author Luis
+	 */
+	public int getCurrentCapacity(final Refuge refuge) {
+		Collection<Room> rooms;
+		Collection<Item> items;
+		int capacity = 0;
+
+		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
+		items = this.itemService.findItemsByRefuge(refuge.getId());
+
+		for (final Room r : rooms)
+			if (r.getRoomDesign() instanceof Warehouse) {
+				final Warehouse warehouse = (Warehouse) r.getRoomDesign();
+				capacity += warehouse.getItemCapacity();
+			}
+		capacity -= items.size();
+
+		return capacity;
+
+	}
 }

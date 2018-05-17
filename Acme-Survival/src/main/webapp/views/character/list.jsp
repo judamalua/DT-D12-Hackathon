@@ -22,7 +22,7 @@
 <display:table name="characters" id="character" requestURI="character/player/list.do"
 	class="displaytag">
 
-	<spring:message code="character.fullName" var="fullName" />
+	<spring:message code="character.fullName" var="name" />
 	<display:column class="characterName" property="fullName" title="${name}" sortable="true" />
 	<display:column>
 	<div class="characterGenre" hidden="true">

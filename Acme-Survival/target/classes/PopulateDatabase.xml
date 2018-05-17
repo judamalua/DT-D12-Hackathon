@@ -388,6 +388,41 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- %%%%%% domain.Character %%%%%% -->
+	<bean id="Charcter1" class="domain.Character">
+		<property name="capacity" value="12" />
+		<property name="luck" value="7" />
+		<property name="strength" value="11" />
+		<property name="currentHealth" value="100" />
+		<property name="currentWater" value="100" />
+		<property name="currentFood" value="100" />
+		<property name="fullName" value="Rob Stark" />
+		<property name="level" value="1" />
+		<property name="experience" value="0" />
+		<property name="male" value="true" />	
+		<property name="refuge" ref="Refuge1" />
+	
+	</bean>
+	
+	<!-- %%%%%% domain.Item %%%%%% -->
+	<bean id="Item1" class="domain.Item">
+		<property name="Equipped" value="false" />
+		<property name="tool" ref="Tool1" />
+		<property name="refuge" ref="Refuge1" />
+		
+	</bean>
+	
+	<bean id="Item2" class="domain.Item">
+		<property name="Equipped" value="false" />
+		<property name="tool" ref="Tool2" />
+		<property name="refuge" ref="Refuge1" />
+		
+	</bean>
+	
+	
+	
+	
 
 	<!-- %%%%%% domain.Inventory %%%%%% -->
 	<bean id="Inventory1" class="domain.Inventory">
@@ -681,9 +716,9 @@
 		</property>
 	<property name="imageUrl" value="http://icons.iconarchive.com/icons/raindropmemory/legendora/256/sword-icon.png" />
 	<property name="finalMode" value="false" />
-		<property name="strength" value="0.30" />
-	<property name="luck" value="0.30" />
-	<property name="capacity" value="0.30" />
+		<property name="strength" value="10" />
+	<property name="luck" value="2" />
+	<property name="capacity" value="2" />
 	</bean>
 	
 		<bean id="Tool2" class="domain.Tool">
@@ -711,9 +746,9 @@
 		</property>
 	<property name="imageUrl" value="http://www.myiconfinder.com/uploads/iconsets/256-256-d074a5a83cb693e59484ec9cf62953ee-helmet.png" />
 	<property name="finalMode" value="false" />
-	<property name="strength" value="0.30" />
-	<property name="luck" value="0.30" />
-	<property name="capacity" value="0.30" />
+	<property name="strength" value="5" />
+	<property name="luck" value="2" />
+	<property name="capacity" value="1" />
 	</bean>
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">

@@ -29,12 +29,13 @@ import controllers.AbstractController;
 import domain.Actor;
 import domain.Character;
 import domain.Configuration;
+import domain.Item;
 import domain.Player;
 import domain.Refuge;
 
 @Controller
-@RequestMapping("/character/player")
-public class CharacterPlayerController extends AbstractController {
+@RequestMapping("/item/player")
+public class ItemPlayerController extends AbstractController {
 
 	@Autowired
 	private RefugeService			refugeService;
@@ -46,15 +47,15 @@ public class CharacterPlayerController extends AbstractController {
 	private ActorService			actorService;
 
 	@Autowired
-	private ItemService				itemService;
+	private ConfigurationService	configurationService;
 
 	@Autowired
-	private ConfigurationService	configurationService;
+	private ItemService				itemService;
 
 
 	// Constructors -----------------------------------------------------------
 
-	public CharacterPlayerController() {
+	public ItemPlayerController() {
 		super();
 	}
 
@@ -69,26 +70,26 @@ public class CharacterPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int characterId) {
 		ModelAndView result;
-		Page<Character> characters;
+		Page<Item> items;
 		Refuge refuge;
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
 
 		try {
-			result = new ModelAndView("character/list");
+			result = new ModelAndView("item/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			characters = this.characterService.findCharactersByRefugePageable(refuge.getId(), pageable);
+			items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
 
-			result.addObject("characters", characters.getContent());
+			result.addObject("items", items.getContent());
 			result.addObject("page", page);
-			result.addObject("pageNum", characters.getTotalPages());
-			result.addObject("requestURI", "character/list");
+			result.addObject("pageNum", items.getTotalPages());
+			result.addObject("characterId", characterId);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -97,30 +98,28 @@ public class CharacterPlayerController extends AbstractController {
 	}
 
 	/**
-	 * That method returns a model and view with the character display
+	 * That method returns a model and view with the character display with a new Item Equipped
 	 * 
 	 * @param characterId
 	 * 
 	 * @return ModelandView
 	 * @author Luis
 	 */
-	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam(required = true) final Integer characterId, @RequestParam(required = false, defaultValue = "false") final boolean discard) {
+	@RequestMapping("/equip")
+	public ModelAndView display(@RequestParam(required = true) final Integer itemId, @RequestParam(required = true) final Integer characterId) {
 		ModelAndView result;
 		Actor player;
 		Character character;
-		Refuge refuge;
+		Item item;
 
 		try {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
 			Assert.isTrue((player instanceof Player));
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
-			if (discard == true)
-				this.itemService.UpdateDiscard(character);
-			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
-			character = this.characterService.findOne(characterId);
+			item = this.itemService.findOne(itemId);
+			this.itemService.UpdateEquipped(item, characterId);
+
 			result.addObject("character", character);
 
 		} catch (final Throwable oops) {
@@ -128,4 +127,5 @@ public class CharacterPlayerController extends AbstractController {
 		}
 		return result;
 	}
+
 }

@@ -29,8 +29,6 @@
 	class="displaytag">
 
 	<spring:message code="message.image" var="image" />
-	<display:column property="image" title="${image}" />
-
 	<display:column>
 		<img src="${row.image}" />
 		<jstl:out value="${row.text}" />
