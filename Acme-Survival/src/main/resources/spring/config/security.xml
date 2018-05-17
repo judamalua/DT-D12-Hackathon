@@ -97,6 +97,8 @@
 			
 		<security:intercept-url pattern="/item/player/list.do"
 			access="hasAnyRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/item/player/equip.do"
+			access="hasAnyRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/forum/list.do"

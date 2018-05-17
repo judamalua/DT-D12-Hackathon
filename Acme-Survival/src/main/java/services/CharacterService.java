@@ -114,7 +114,6 @@ public class CharacterService {
 			Assert.isTrue(character.getCurrentFood() <= 100);
 			Assert.isTrue(character.getCurrentHealth() <= 100);
 			Assert.isTrue(character.getCurrentWater() <= 100);
-			Assert.isTrue(character.getItem() == null);
 			Assert.isTrue(character.getLevel() >= 1);
 			this.calculateLevel(character);
 

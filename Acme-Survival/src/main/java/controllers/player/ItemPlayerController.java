@@ -110,27 +110,15 @@ public class ItemPlayerController extends AbstractController {
 		ModelAndView result;
 		Actor player;
 		Character character;
-		Refuge refuge;
 		Item item;
 
 		try {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
 			Assert.isTrue((player instanceof Player));
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
 			item = this.itemService.findOne(itemId);
-			//Actualización de objeto equipado y el que desequipa
-			if (character.getItem() != null) {
-				character.getItem().setEquipped(false);
-				this.itemService.save(character.getItem());
-				character.setItem(null);
-			}
-			Assert.isTrue(!item.isEquipped());
-			character.setItem(item);
-			item.setEquipped(true);
-			this.itemService.save(item);
-			this.characterService.save(character);
+			this.itemService.UpdateEquipped(item, characterId);
 
 			result.addObject("character", character);
 
