@@ -16,9 +16,9 @@ import org.springframework.validation.Validator;
 
 import repositories.GatherRepository;
 import domain.Character;
+import domain.Gather;
 import domain.Location;
 import domain.Player;
-import domain.Gather;
 import domain.Refuge;
 
 @Service
@@ -33,22 +33,22 @@ public class GatherService {
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private RefugeService			refugeService;
+	private RefugeService		refugeService;
 
 	@Autowired
-	private CharacterService		characterService;
+	private CharacterService	characterService;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private MoveService				moveService;
+	private MoveService			moveService;
 
 	@Autowired
-	private LocationService			locationService;
+	private LocationService		locationService;
 
 	@Autowired
-	private Validator				validator;
+	private Validator			validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -214,6 +214,16 @@ public class GatherService {
 
 		}
 		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Collection<Gather> findGathersFinishedByPlayer(final int playerId) {
+		Collection<Gather> result;
+		Date now;
+
+		now = new Date();
+		result = this.gatherRepository.findGathersFinishedByPlayer(playerId, now);
 
 		return result;
 	}

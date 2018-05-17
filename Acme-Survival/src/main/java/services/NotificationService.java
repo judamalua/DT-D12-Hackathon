@@ -18,6 +18,7 @@ import org.springframework.validation.Validator;
 
 import repositories.NotificationRepository;
 import domain.Attack;
+import domain.Gather;
 import domain.Notification;
 import domain.Player;
 
@@ -36,6 +37,9 @@ public class NotificationService {
 
 	@Autowired
 	private AttackService			attackService;
+
+	@Autowired
+	private GatherService			gatherService;
 
 	@Autowired
 	private Validator				validator;
@@ -147,6 +151,7 @@ public class NotificationService {
 		Attack attack;
 		Player player;
 		Notification notification;
+		Collection<Gather> gathers;
 		Map<String, String> title, body;
 		Date now;
 
@@ -178,6 +183,12 @@ public class NotificationService {
 				}
 
 			}
+
+		gathers = this.gatherService.findGathersFinishedByPlayer(player.getId());
+
+		for (final Gather g : gathers) {
+
+		}
 	}
 
 	public Notification findNotificationByMission(final int missionId) {
