@@ -124,7 +124,8 @@ public class RefugeService {
 
 		Refuge result;
 		Collection<Player> playersKnowsRefuge;
-		Collection<Attack> attacksWhereAttacked, attacksWhereDefend;
+		Attack attackWhereAttacked;
+		Collection<Attack> attacksWhereDefend;
 		Collection<Item> items;
 		Collection<Move> moves;
 		Collection<domain.Character> characters;
@@ -139,7 +140,7 @@ public class RefugeService {
 
 		if (refuge.getId() != 0) {
 			playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
-			attacksWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
+			attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
 			attacksWhereDefend = this.attackService.findAttacksByDefendant(refuge.getId());
 			characters = this.characterService.findCharactersByRefuge(refuge.getId());
 			items = this.itemService.findItemsByRefuge(refuge.getId());
@@ -153,9 +154,16 @@ public class RefugeService {
 				this.playerService.save(player);
 			}
 
-			for (final Attack attack : attacksWhereAttacked) {
-				attack.setAttacker(result);
-				this.attackService.save(attack);
+			/*
+			 * for (final Attack attack : attacksWhereAttacked) {
+			 * attack.setAttacker(result);
+			 * this.attackService.save(attack);
+			 * }
+			 */
+
+			if (attackWhereAttacked != null) {
+				attackWhereAttacked.setAttacker(result);
+				this.attackService.save(attackWhereAttacked);
 			}
 
 			for (final Attack attack : attacksWhereDefend) {
@@ -221,6 +229,7 @@ public class RefugeService {
 		Assert.isTrue(this.refugeRepository.exists(refuge.getId()));
 
 		Collection<Player> playersKnowsRefuge;
+		Attack attackWhereAttacked;
 		Collection<Attack> attacks;
 		Collection<Item> items;
 		Collection<Move> moves;
@@ -233,8 +242,9 @@ public class RefugeService {
 		Assert.isTrue(actor.equals(refuge.getPlayer()));
 
 		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
-		attacks = this.attackService.findAttacksByAttacker(refuge.getId());
-		attacks.addAll(this.attackService.findAttacksByDefendant(refuge.getId()));
+		attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
+		attacks = this.attackService.findAttacksByDefendant(refuge.getId());
+		attacks.add(attackWhereAttacked);
 		characters = this.characterService.findCharactersByRefuge(refuge.getId());
 		items = this.itemService.findItemsByRefuge(refuge.getId());
 		moves = this.moveService.findMovesByRefuge(refuge.getId());
