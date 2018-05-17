@@ -25,7 +25,10 @@
 <!-- Variable declaration -->
 
 <spring:message code = "master.page.current.lang" var = "currentLang" />
-<spring:message code="master.page.moment.format" var="formatMoment" />
+<spring:message code="master.page.moment.format.out" var="format" />
+
+<fmt:formatDate var="formatNotificationMoment"
+	value="${notification.moment}" pattern="${format}" />
 
 <h2>
 	<jstl:out value="${notification.title[currentLang]}" />
@@ -33,7 +36,7 @@
 <br/>
 
 <p>
-	<jstl:out value="${notification.moment}" pattern="${formatMoment}" />
+	<jstl:out value="${formatNotificationMoment}"/>
 </p>
 
 <p>
