@@ -38,7 +38,7 @@
 <p>
 	<jstl:out value="${formatNotificationMoment}"/>
 </p>
-
+<br/>
 <p>
 	<jstl:out value="${notification.body[currentLang]}" />
 </p>
