@@ -24,10 +24,11 @@
 		<img class="forumImg" src="${item.itemDesign.imageUrl}" />
 	</display:column>
 
-	<spring:message code="item.name" var="nameTitle" />
+<spring:message code="item.name" var="nameTitle" />
 	<display:column title="${nameTitle}">
 		<jstl:out value="${item.itemDesign.name[currentLang]}" />
 	</display:column>
+	
 
 	<spring:message code="item.description" var="descriptionTitle" />
 	<display:column title="${descriptionTitle}">
