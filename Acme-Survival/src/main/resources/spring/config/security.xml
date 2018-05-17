@@ -35,10 +35,6 @@
 
 		<security:intercept-url pattern="/cookie/policy.do"
 			access="permitAll" requires-channel="https" />
-		<security:intercept-url pattern="/cookie/ajax/es.do"
-			access="permitAll" requires-channel="https" />
-		<security:intercept-url pattern="/cookie/ajax/en.do"
-			access="permitAll" requires-channel="https" />
 
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" requires-channel="https" />
@@ -61,6 +57,8 @@
 		<security:intercept-url pattern="/actor/register.do"
 			access="isAnonymous()" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/register.do"
+			access="hasRole('ADMIN')" requires-channel="https" />
+		<security:intercept-url pattern="/actor/admin/list-actors.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
 
 		<security:intercept-url pattern="/actor/registerAsPlayer.do"
@@ -184,15 +182,21 @@
 		<security:intercept-url pattern="/attack/player/results.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/recolection/player/create.do"
+		<security:intercept-url pattern="/gather/player/create.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/recolection/player/edit.do"
+		<security:intercept-url pattern="/gather/player/edit.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/recolection/player/list.do"
+		<security:intercept-url pattern="/gather/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-
+			
+		<security:intercept-url pattern="/notification/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/notification/player/display.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/character/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/character/player/display.do"

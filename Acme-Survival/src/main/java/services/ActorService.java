@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -272,6 +274,15 @@ public class ActorService {
 		result.setEmail(actor.getEmail());
 		result.setBirthDate(actor.getBirthDate());
 		result.setAvatar(actor.getAvatar());
+
+		return result;
+	}
+
+	public Page<Actor> findAllActors(final Pageable pageable) {
+		Page<Actor> result;
+		Assert.notNull(pageable);
+
+		result = this.actorRepository.findAllActors(pageable);
 
 		return result;
 	}

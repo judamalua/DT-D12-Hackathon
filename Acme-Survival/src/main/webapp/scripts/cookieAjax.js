@@ -16,33 +16,19 @@ function acceptCookies() {
 	document.cookie = "acceptCookies=true;path=/";
 }
 function showCookieMessage() {
-	var language = getCookie("language");
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			if (language == "es") {
-				document.getElementsByClassName("cookies")[0].innerHTML = '<div class="row"><div class="col s12 m6"><div class="card red darken-4"><div class="card-content white-text"><span class="card-title">Sobre las cookies</span><p>'
-						+ this.responseText
-						+ '</p></div><div class="card-action"><a href="'
-						+ getMainDomain()
-						+ 'cookie/policy.do">Política de cookies</a><a href="javascript:void(0);" onClick="acceptCookies();">Aceptar las cookies </a></div></div></div></div>';
-			} else {
-				document.getElementsByClassName("cookies")[0].innerHTML = '<div class="row"><div class="col s12 m6"><div class="card red darken-4"><div class="card-content white-text"><span class="card-title">About cookies</span><p>'
-						+ this.responseText
-						+ '</p></div><div class="card-action"><a href="'
-						+ getMainDomain()
-						+ 'cookie/policy.do">Cookie policy</a><a href="javascript:void(0);" onClick="acceptCookies();">Accept cookies </a></div></div></div></div>';
-			}
-		}
-	};
-	if (language == "es") {
-		xhttp.open("GET", getMainDomain() + "cookie/ajax/es.do", true);
-	} else {
-		xhttp.open("GET", getMainDomain() + "cookie/ajax/en.do", true);
-	}
-	xhttp.send();
+	var language = getLanguageToUse();
+	document.getElementsByClassName("cookies")[0].innerHTML = '<div class="row"><div class="col s12 m6"><div class="card red darken-4"><div class="card-content white-text"><span class="card-title">'
+			+ cookiesTranslation.title[language]
+			+ '</span><p>'
+			+ cookiesTranslation.message[language]
+			+ '</p></div><div class="card-action"><a href="'
+			+ getMainDomain()
+			+ 'cookie/policy.do">'
+			+ cookiesTranslation.cookiePolicy[language]
+			+ '</a><a href="javascript:void(0);" onClick="acceptCookies();">'
+			+ cookiesTranslation.acceptCookies[language] + '</a></div></div></div></div>';
 
-}
+};
 function checkCookie() {
 	var acceptCookies = getCookie("acceptCookies");
 	if (acceptCookies != "" && acceptCookies != null) {

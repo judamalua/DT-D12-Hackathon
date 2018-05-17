@@ -16,19 +16,19 @@
        
 <tiles-definitions>
 
-	<definition name="recolection/edit" extends="master.page">	
+	<definition name="gather/edit" extends="master.page">	
 		<put-attribute name="title" value="Editar misión de recolección" />
-		<put-attribute name="body" value="/views/recolection/edit.jsp" />
+		<put-attribute name="body" value="/views/gather/edit.jsp" />
 	</definition>
 	
-	<definition name="recolection/list" extends="master.page">	
+	<definition name="gather/list" extends="master.page">	
 		<put-attribute name="title" value="Lista de recolecciones" />
-		<put-attribute name="body" value="/views/recolection/list.jsp" />
+		<put-attribute name="body" value="/views/gather/list.jsp" />
 	</definition>
 		
-	<definition name="recolection/results" extends="master.page">	
+	<definition name="gather/results" extends="master.page">	
 		<put-attribute name="title" value="Resultados de la recolección" />
-		<put-attribute name="body" value="/views/recolection/results.jsp" />
+		<put-attribute name="body" value="/views/gather/results.jsp" />
 	</definition>
 	
 </tiles-definitions>
