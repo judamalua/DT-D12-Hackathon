@@ -3,6 +3,8 @@ package services;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -15,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.NotificationRepository;
+import domain.Attack;
 import domain.Notification;
 import domain.Player;
 
@@ -30,6 +33,9 @@ public class NotificationService {
 	// Supporting services --------------------------------------------------
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private AttackService			attackService;
 
 	@Autowired
 	private Validator				validator;
@@ -80,9 +86,11 @@ public class NotificationService {
 
 		Assert.isTrue(notification.getPlayer().equals(player));
 
-		now = new Date();
+		if (notification.getId() == 0) {
+			now = new Date();
 
-		notification.setMoment(now);
+			notification.setMoment(now);
+		}
 
 		result = this.notificationRepository.save(notification);
 
@@ -133,6 +141,51 @@ public class NotificationService {
 
 	public void flush() {
 		this.notificationRepository.flush();
+	}
+
+	public void generateNotifications() {
+		Attack attack;
+		Player player;
+		Notification notification;
+		Map<String, String> title, body;
+		Date now;
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		attack = this.attackService.findAttackByPlayer(player.getId());
+		now = new Date();
+
+		if (attack != null)
+			if (attack.getEndMoment().before(now)) {
+				notification = this.findNotificationByMission(attack.getId());
+
+				if (notification == null) {
+					notification = this.create();
+					title = new HashMap<String, String>();
+					body = new HashMap<String, String>();
+
+					title.put("es", "elbixo");
+					title.put("en", "thebixo");
+					body.put("es", "elbody");
+					body.put("en", "thebody");
+
+					notification.setBody(body);
+					notification.setTitle(title);
+					notification.setMission(attack);
+
+					this.save(notification);
+
+					this.flush();
+				}
+
+			}
+	}
+
+	public Notification findNotificationByMission(final int missionId) {
+		Notification result;
+
+		result = this.notificationRepository.findNotificationByMission(missionId);
+
+		return result;
 	}
 
 }

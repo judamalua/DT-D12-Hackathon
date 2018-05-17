@@ -73,6 +73,23 @@ public class AttackPlayerController extends AbstractController {
 			}
 		return result;
 	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int attackId) {
+		ModelAndView result;
+		Attack attack;
+
+		try {
+			attack = this.attackService.findOne(attackId);
+			this.attackService.delete(attack);
+
+			result = new ModelAndView("redirect:/map/player/display.do");
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
 	/*
 	 * @RequestMapping(value = "/list", method = RequestMethod.GET)
 	 * public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {

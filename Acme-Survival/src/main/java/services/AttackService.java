@@ -14,6 +14,7 @@ import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.Notification;
 import domain.Player;
 import domain.Refuge;
 
@@ -39,6 +40,9 @@ public class AttackService {
 
 	@Autowired
 	private Validator			validator;
+
+	@Autowired
+	private NotificationService	notificationService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -132,11 +136,18 @@ public class AttackService {
 
 	}
 	public void delete(final Attack attack) {
-
-		assert attack != null;
-		assert attack.getId() != 0;
-
+		Assert.notNull(attack);
+		Assert.isTrue(attack.getId() != 0);
 		Assert.isTrue(this.attackRepository.exists(attack.getId()));
+
+		Notification notification;
+
+		notification = this.notificationService.findNotificationByMission(attack.getId());
+
+		if (notification != null) {
+			notification.setMission(null);
+			this.notificationService.save(notification);
+		}
 
 		this.attackRepository.delete(attack);
 
