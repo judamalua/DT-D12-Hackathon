@@ -379,16 +379,19 @@ function generateMap() {
 					if (mapElements.languages[int3] === getCookie("language")) {
 						contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>'
 								+ mapTranslations.location.name[mapElements.languages[int3]] + ": </b>" + mapElements.locations[currentInt].name[mapElements.languages[int3]]
-								+ '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
-								+ mapTranslations.location.recolectionMissionStartLink[mapElements.languages[int3]] + '</a>';
+								+ '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
+								+ mapTranslations.location.gatherMissionStartLink[mapElements.languages[int3]] + '</a><br/><a href="' + getMainDomain()
+								+ 'move/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
+								+ mapTranslations.location.moveStartLink[mapElements.languages[int3]] + '</a>';
 						usedLanguage = true;
 						break;
 					}
 				}
 				if (usedLanguage == false) {
 					contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>' + mapTranslations.location.name["en"] + ": </b>"
-							+ mapElements.locations[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId='
-							+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.recolectionMissionStartLink["en"] + '</a>';
+							+ mapElements.locations[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId='
+							+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.gatherMissionStartLink["en"] + '</a><br/><a href="' + getMainDomain()
+							+ 'move/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">' + mapTranslations.location.moveStartLink["en"] + '</a>';
 				}
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
