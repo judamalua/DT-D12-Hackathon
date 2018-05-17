@@ -34,10 +34,6 @@
 
 	<acme:submit name="save" code="refuge.save" />
 
-	<jstl:if test="${refuge.id!=0}">
-		<acme:delete clickCode="refuge.delete.message" name="delete"
-			code="refuge.delete" />
-	</jstl:if>
 	<acme:cancel url="refuge/list.do" code="refuge.cancel" />
 
 </form:form>

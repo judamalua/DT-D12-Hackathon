@@ -35,10 +35,6 @@
 
 		<security:intercept-url pattern="/cookie/policy.do"
 			access="permitAll" requires-channel="https" />
-		<security:intercept-url pattern="/cookie/ajax/es.do"
-			access="permitAll" requires-channel="https" />
-		<security:intercept-url pattern="/cookie/ajax/en.do"
-			access="permitAll" requires-channel="https" />
 
 		<security:intercept-url pattern="/views/misc/index.jsp"
 			access="permitAll" requires-channel="https" />
@@ -90,14 +86,23 @@
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/lootTable/designer/create.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/roomDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/roomDesign/detailed.do"
 			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/roomDesign/list.do"
 			access="hasAnyRole('DESIGNER','PLAYER')" requires-channel="https" />
+
+		<security:intercept-url pattern="/item/player/list.do"
+			access="hasAnyRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/item/player/equip.do"
+			access="hasAnyRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/item/player/remove.do"
+			access="hasAnyRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/item/player/armory.do"
+			access="hasAnyRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/forum/list.do"
@@ -114,6 +119,9 @@
 		<security:intercept-url pattern="/inventory/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
+		<security:intercept-url pattern="/move/player/**"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
 		<security:intercept-url pattern="/refuge/list.do"
 			access="permitAll" requires-channel="https" />
 
@@ -125,25 +133,25 @@
 
 		<security:intercept-url pattern="/room/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/order/player/buy.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/order/player/ajaxCard.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/map/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-		
+
 		<security:intercept-url pattern="/map/player/info.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/location/designer/display.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-		
+
 		<security:intercept-url pattern="/location/designer/info.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 
@@ -155,11 +163,11 @@
 
 		<security:intercept-url pattern="/itemDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
-			<security:intercept-url pattern="/tool/designer/**"
+
+		<security:intercept-url pattern="/tool/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
-			<security:intercept-url pattern="/resource/designer/**"
+
+		<security:intercept-url pattern="/resource/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/law/termsAndConditions.do"
@@ -173,23 +181,32 @@
 
 		<security:intercept-url pattern="/product/**"
 			access="permitAll" requires-channel="https" />
-		
+
 		<security:intercept-url pattern="/attack/player/create.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/attack/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/attack/player/results.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
-		<security:intercept-url pattern="/recolection/player/create.do"
+		<security:intercept-url pattern="/attack/player/delete.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
-		<security:intercept-url pattern="/recolection/player/edit.do"
+
+		<security:intercept-url pattern="/gather/player/create.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
-		<security:intercept-url pattern="/recolection/player/list.do"
+
+		<security:intercept-url pattern="/gather/player/edit.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
+		<security:intercept-url pattern="/gather/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
+		<security:intercept-url pattern="/notification/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
+		<security:intercept-url pattern="/notification/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/character/player/list.do"

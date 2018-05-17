@@ -22,10 +22,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <!-- Variable declaration -->
-<spring:message code="recolection.startDate" var="titleStartDate" />
-<spring:message code="recolection.endMoment" var="titleEndMoment" />
+<spring:message code="gather.startDate" var="titleStartDate" />
+<spring:message code="gather.endMoment" var="titleEndMoment" />
 <spring:message code="master.page.moment.format" var="formatMoment" />
-<spring:message code="recolection.results.title" var="titleResults" />
+<spring:message code="gather.results.title" var="titleResults" />
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate var="currentDate" value="${now}"
 	pattern="yyyy-MM-dd HH:mm" />
@@ -35,16 +35,16 @@
 	page="${page}" />
 	
 <!-- Table -->
-<display:table name="${recolections}" id="recolectionList"
+<display:table name="${gathers}" id="gatherList"
 	requestURI="${requestUri}page=${page}">
 
 	<display:column property="startDate" title="${titleStartDate}" format="${formatMoment}" sortable="true" />
 	
 	<display:column property="endMoment" title="${titleEndMoment}" format="${formatMoment}" sortable="true" />
 	
-	<jstl:if test="${recolectionList.endMoment < currentDate}">
+	<jstl:if test="${gatherList.endMoment < currentDate}">
 		<display:column title="${titleResults}">
-			<a href="recolection/player/results.do?attackId=${recolectionList.id}"><spring:message code="recolection.results"/></a>
+			<a href="gather/player/results.do?attackId=${gatherList.id}"><spring:message code="gather.results"/></a>
 		</display:column>
 	</jstl:if>
 	
