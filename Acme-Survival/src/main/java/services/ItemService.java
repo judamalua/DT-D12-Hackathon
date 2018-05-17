@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -38,7 +40,7 @@ public class ItemService {
 		Item result;
 
 		result = new Item();
-		result.setEquiped(false);
+		result.setEquipped(false);
 
 		return result;
 	}
@@ -102,6 +104,15 @@ public class ItemService {
 		Collection<Item> result;
 
 		result = this.itemRepository.findItemsByRefuge(refugeId);
+
+		return result;
+	}
+	public Page<Item> findItemsByRefuge(final int refugeId, final Pageable pageable) {
+		Assert.isTrue(refugeId != 0);
+
+		Page<Item> result;
+
+		result = this.itemRepository.findItemsByRefuge(refugeId, pageable);
 
 		return result;
 	}

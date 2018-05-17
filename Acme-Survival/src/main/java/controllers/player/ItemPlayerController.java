@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.CharacterService;
 import services.ConfigurationService;
+import services.ItemService;
 import services.RefugeService;
 import controllers.AbstractController;
 import domain.Actor;
@@ -48,6 +49,9 @@ public class ItemPlayerController extends AbstractController {
 	@Autowired
 	private ConfigurationService	configurationService;
 
+	@Autowired
+	private ItemService				itemService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -66,26 +70,26 @@ public class ItemPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int characterId) {
 		ModelAndView result;
-		Page<Character> characters;
+		Page<Item> items;
 		Refuge refuge;
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
 
 		try {
-			result = new ModelAndView("character/list");
+			result = new ModelAndView("item/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			characters = this.characterService.findCharactersByRefugePageable(refuge.getId(), pageable);
+			items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
 
-			result.addObject("characters", characters.getContent());
+			result.addObject("items", items.getContent());
 			result.addObject("page", page);
-			result.addObject("pageNum", characters.getTotalPages());
-			result.addObject("requestURI", "character/list");
+			result.addObject("pageNum", items.getTotalPages());
+			result.addObject("characterId", characterId);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -94,7 +98,7 @@ public class ItemPlayerController extends AbstractController {
 	}
 
 	/**
-	 * That method returns a model and view with the character display
+	 * That method returns a model and view with the character display with a new Item Equipped
 	 * 
 	 * @param characterId
 	 * 
@@ -107,7 +111,7 @@ public class ItemPlayerController extends AbstractController {
 		Actor player;
 		Character character;
 		Refuge refuge;
-		final Item item;
+		Item item;
 
 		try {
 			result = new ModelAndView("character/display");
@@ -115,7 +119,18 @@ public class ItemPlayerController extends AbstractController {
 			Assert.isTrue((player instanceof Player));
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
-			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+			item = this.itemService.findOne(itemId);
+			//Actualización de objeto equipado y el que desequipa
+			if (character.getItem() != null) {
+				character.getItem().setEquipped(false);
+				this.itemService.save(character.getItem());
+				character.setItem(null);
+			}
+			Assert.isTrue(!item.isEquipped());
+			character.setItem(item);
+			item.setEquipped(true);
+			this.itemService.save(item);
+			this.characterService.save(character);
 
 			result.addObject("character", character);
 

@@ -15,15 +15,15 @@ public class Item extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	boolean	isEquiped;
+	boolean	isEquipped;
 
 
-	public boolean isEquiped() {
-		return this.isEquiped;
+	public boolean isEquipped() {
+		return this.isEquipped;
 	}
 
-	public void setEquiped(final boolean isEquiped) {
-		this.isEquiped = isEquiped;
+	public void setEquipped(final boolean isEquipped) {
+		this.isEquipped = isEquipped;
 	}
 
 
