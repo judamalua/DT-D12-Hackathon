@@ -15,4 +15,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 	@Query("select n from Notification n where n.player.id = ?1")
 	Page<Notification> findNotificationsByPlayer(int playerId, Pageable pageable);
 
+	@Query("select n from Notification n where n.mission.id = ?1")
+	Notification findNotificationByMission(int missionId);
+
 }

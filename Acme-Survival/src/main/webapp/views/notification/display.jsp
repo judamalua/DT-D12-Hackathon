@@ -42,3 +42,12 @@
 <p>
 	<jstl:out value="${notification.body[currentLang]}" />
 </p>
+
+<jstl:if test="${attackId != null}">
+	<acme:button url="attack/player/delete.do?attackId=${attackId}" code="notification.finish.result"/>
+</jstl:if>
+
+<jstl:if test="${gatherId != null}">
+	<acme:button url="gather/player/delete.do?attackId=${gatherId}" code="notification.finish.result"/>
+</jstl:if>
+
