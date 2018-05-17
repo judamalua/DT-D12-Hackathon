@@ -1,7 +1,6 @@
 
 package domain;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -9,7 +8,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -81,9 +79,8 @@ public class Refuge extends DomainEntity {
 
 
 	// Relationships ----------------------------------------------------------
-	private Player				player;
-	private Collection<Item>	items;
-	private Location			location;
+	private Player		player;
+	private Location	location;
 
 
 	@Valid
@@ -97,16 +94,7 @@ public class Refuge extends DomainEntity {
 		this.player = player;
 
 	}
-	@Valid
-	@OneToMany
-	public Collection<Item> getItems() {
-		return this.items;
-	}
 
-	public void setItems(final Collection<Item> items) {
-		this.items = items;
-
-	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)

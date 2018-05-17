@@ -21,12 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
-import services.ConfigurationService;
 import services.DesignerConfigurationService;
 import services.InventoryService;
 import services.LocationService;
 import services.MoveService;
-import services.PlayerService;
 import services.RefugeService;
 import controllers.AbstractController;
 import domain.DesignerConfiguration;
@@ -44,9 +42,6 @@ public class MovePlayerController extends AbstractController {
 	private RefugeService					refugeService;
 
 	@Autowired
-	private PlayerService					playerService;
-
-	@Autowired
 	private MoveService						moveService;
 
 	@Autowired
@@ -61,9 +56,6 @@ public class MovePlayerController extends AbstractController {
 	@Autowired
 	private DesignerConfigurationService	designerConfigurationService;
 
-	@Autowired
-	private ConfigurationService			configurationService;
-
 
 	// Constructors -----------------------------------------------------------
 
@@ -73,7 +65,7 @@ public class MovePlayerController extends AbstractController {
 
 	//Updating forum ---------------------------------------------------------------------
 
-	@RequestMapping(value = "/create", method = RequestMethod.GET, params = "save")
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final Integer locationId) {
 		ModelAndView result;
 		Player player;
@@ -103,8 +95,6 @@ public class MovePlayerController extends AbstractController {
 			else
 				result = this.createEditModelAndView(move, "move.resources.error");
 
-			result = new ModelAndView("redirect:/refuge/player/display.do");
-
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge"))
 				result = new ModelAndView("redirect:/refuge/player/create.do");
@@ -115,7 +105,7 @@ public class MovePlayerController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/confirm", method = RequestMethod.GET, params = "confirm")
+	@RequestMapping(value = "/confirm", method = RequestMethod.POST, params = "confirm")
 	public ModelAndView confirm(@ModelAttribute("move") Move move, final BindingResult binding) {
 		ModelAndView result;
 		Player player;

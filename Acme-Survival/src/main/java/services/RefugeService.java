@@ -274,14 +274,12 @@ public class RefugeService {
 		Refuge result;
 		Actor actor;
 		Location location;
-		Collection<Item> items;
 		String gpsCoordinates;
 
 		if (refuge.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
 			location = this.getRandomLocation();
-			items = new HashSet<Item>();
 			gpsCoordinates = this.generateRandomCoordinates(location);
 			result = refuge;
 
@@ -289,7 +287,6 @@ public class RefugeService {
 			result.setPlayer((Player) actor);
 			result.setMomentOfCreation(new Date(System.currentTimeMillis() - 1));
 			result.setLocation(location);
-			result.setItems(items);
 			result.setGpsCoordinates(gpsCoordinates);
 
 		} else {
