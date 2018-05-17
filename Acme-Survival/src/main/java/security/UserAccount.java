@@ -52,6 +52,9 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	private String					password;
 	private Collection<Authority>	authorities;
 
+	// Ban attribute
+	private boolean					banned;
+
 
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
@@ -110,7 +113,10 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	@Transient
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		if (this.banned == false)
+			return true;
+		else
+			return false;
 	}
 
 	@Transient
@@ -122,7 +128,18 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	@Transient
 	@Override
 	public boolean isEnabled() {
-		return true;
+		if (this.banned == false)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean getBanned() {
+		return this.banned;
+	}
+
+	public void setBanned(final boolean banned) {
+		this.banned = banned;
 	}
 
 }
