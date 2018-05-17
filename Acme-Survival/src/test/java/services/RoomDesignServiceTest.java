@@ -1,20 +1,28 @@
 
 package services;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Barrack;
 import domain.ResourceRoom;
 import domain.RestorationRoom;
+import domain.RoomDesign;
 import domain.Warehouse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -63,11 +71,354 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 			{
 				// This test checks that authenticated designers can create a barrack
-				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.0,
+				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a barrack with maxResistance set to the minimum
+				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */0, /* costWood */2.,
 				/* costMetal */3.0,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
 				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
 				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
 				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a barrack with costWood set to the minimum
+				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */0.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a barrack with costMetal set to the minimum
+				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */0.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a barrack with maxCapacityCharacters set to the minimum
+				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */1, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a barrack with characterCapacityBarrack set to the minimum
+				RoomType.BARRACK, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */1, /* Integer characterCapacityBarrack */1, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a warehouse
+				RoomType.WAREHOUSE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */3,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a warehouse with itemCapacityWarehouse set to minimum
+				RoomType.WAREHOUSE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */1,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a restoration room
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a restoration room with healthRestorationRoom set to minimum
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */0., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a restoration room with foodRestorationRoom set to minimum
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */0., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a restoration room with waterRestorationRoom set to minimum
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */0.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a resource room
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a resource room with waterResourceRoom set to minimum
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */0., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a resource room with foodResourceRoom set to minimum
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */0., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a resource room with metalResourceRoom set to minimum
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */0., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers can create a resource room with woodResourceRoom set to minimum
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */0.,
+				/* Class<?> expected */null
+			}, {
+				// This test checks that authenticated designers cannot create a resource room with a negative waterResourceRoom
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */-2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a resource room with a negative foodResourceRoom
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */-2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a resource room with a negative metalResourceRoom
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */-2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a resource room with a negative woodResourceRoom
+				RoomType.RESOURCE_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */-2.,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a restoration room with a negative healthRestorationRoom
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */-2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a restoration room with a negative foodRestorationRoom
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */-2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a restoration room with a negative waterRestorationRoom
+				RoomType.RESTORATION_ROOM, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */-2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a warehouse with itemCapacityWarehouse set to 0
+				RoomType.WAREHOUSE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */0,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a barrack with a blank English name
+				RoomType.BARRACK, "Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a barrack with a blank Spanish name
+				RoomType.BARRACK, "Designer1", "TestName", "", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a blank English description
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a blank Spanish description
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "Test description", "", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a negative maxResistance
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */-3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a negative costWood
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */-2.,
+				/* costMetal */3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a negative costMetal
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */-3.,/* maxCapacityCharacters */4, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a maxCapacityCharacters equals to 0
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */0, /* Integer characterCapacityBarrack */3, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a room design with a characterCapacityBarrack equals to 0
+				RoomType.BARRACK, "Designer1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */0, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated players cannot create a barrack
+				RoomType.BARRACK, "Player1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */0, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated players cannot create a warehouse
+				RoomType.WAREHOUSE, "Player1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */2,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated players cannot create a restoration room
+				RoomType.RESTORATION_ROOM, "Player1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated players cannot create a resource room
+				RoomType.RESOURCE_ROOM, "Player1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated moderators cannot create a barrack
+				RoomType.BARRACK, "Moderator1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */0, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated moderators cannot create a warehouse
+				RoomType.WAREHOUSE, "Moderator1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */2,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated moderators cannot create a restoration room
+				RoomType.RESTORATION_ROOM, "Moderator1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated moderators cannot create a resource room
+				RoomType.RESOURCE_ROOM, "Moderator1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated managers cannot create a barrack
+				RoomType.BARRACK, "Manager1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */0, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated managers cannot create a warehouse
+				RoomType.WAREHOUSE, "Manager1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */2,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated managers cannot create a restoration room
+				RoomType.RESTORATION_ROOM, "Manager1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated managers cannot create a resource room
+				RoomType.RESOURCE_ROOM, "Manager1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated admins cannot create a barrack
+				RoomType.BARRACK, "Admin1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */0, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated admins cannot create a warehouse
+				RoomType.WAREHOUSE, "Admin1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */2,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated admins cannot create a restoration room
+				RoomType.RESTORATION_ROOM, "Admin1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */2., /* Double foodRestorationRoom */2., /* Double waterRestorationRoom */2.,
+				/* Double waterResourceRoom */null, /* Double foodResourceRoom */null, /* Double metalResourceRoom */null, /* Double woodResourceRoom */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
+				// This test checks that authenticated admins cannot create a resource room
+				RoomType.RESOURCE_ROOM, "Admin1", "TestName", "Nombre prueba", "Test description", "Descripción prueba", /* maxResistance */3, /* costWood */2.,
+				/* costMetal */3.,/* maxCapacityCharacters */3, /* Integer characterCapacityBarrack */null, /* Integer itemCapacityWarehouse */null,
+				/* Double healthRestorationRoom */null, /* Double foodRestorationRoom */null, /* Double waterRestorationRoom */null,
+				/* Double waterResourceRoom */2., /* Double foodResourceRoom */2., /* Double metalResourceRoom */2., /* Double woodResourceRoom */2.,
+				/* Class<?> expected */IllegalArgumentException.class
 			}
 
 		/*
@@ -94,43 +445,30 @@ public class RoomDesignServiceTest extends AbstractTest {
 				(Double) testingData[i][7], (Double) testingData[i][8], (Integer) testingData[i][9], (Integer) testingData[i][10], (Integer) testingData[i][11], (Double) testingData[i][12], (Double) testingData[i][13], (Double) testingData[i][14],
 				(Double) testingData[i][15], (Double) testingData[i][16], (Double) testingData[i][17], (Double) testingData[i][18], (Class<?>) testingData[i][19]);
 	}
+	/**
+	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as designer must
+	 * be able to list the room designs set to final mode
+	 * 
+	 * @author Juanmi
+	 */
+	@Test
+	public void driverListFinalModeRoomDesigns() {
+		final Object testingData[][] = {
+			{
+				// This test checks that designers can list final mode room designs
+				"Designer1", null
+			}, {
+				// This test checks that designers that do not exist cannot list final mode room designs
+				"Designer100", IllegalArgumentException.class
+			}, {
+				// This test checks that players that do not exist cannot list final mode room designs
+				"Player100", IllegalArgumentException.class
+			}
+		};
 
-	//	/**
-	//	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as any role must
-	//	 * be able to list the products of the marketplace
-	//	 * 
-	//	 * @author Juanmi
-	//	 */
-	//	@Test
-	//	public void driverListFinalModeProducts() {
-	//		final Object testingData[][] = {
-	//			{
-	//				// This test checks that unauthenticated users can list products
-	//				null, null
-	//			}, {
-	//				// This test checks that authenticated players can list products
-	//				"Player1", null
-	//			}, {
-	//				// This test checks that authenticated managers can list products
-	//				"Manager1", null
-	//			}, {
-	//				// This test checks that authenticated moderators can list products
-	//				"Moderator1", null
-	//			}, {
-	//				// This test checks that authenticated designers can list products
-	//				"Designer1", null
-	//			}, {
-	//				// This test checks that authenticated admins can list products
-	//				"Admin1", null
-	//			}, {
-	//				// This test checks that a user that does not exist cannot list products
-	//				"Player500", IllegalArgumentException.class
-	//			}
-	//		};
-	//
-	//		for (int i = 0; i < testingData.length; i++)
-	//			this.templateListFinalModeProducts((String) testingData[i][0], (Class<?>) testingData[i][1]);
-	//	}
+		for (int i = 0; i < testingData.length; i++)
+			this.templateListFinalModeRoomDesigns((String) testingData[i][0], (Class<?>) testingData[i][1]);
+	}
 	//
 	//	/**
 	//	 * This driver checks several tests regarding functional requirement number TODO: X.X: An authenticated manager must be able to list draft mode products
@@ -385,6 +723,8 @@ public class RoomDesignServiceTest extends AbstractTest {
 				//private Integer	characterCapacity;
 
 				resultBarrack.setCharacterCapacity(characterCapacity);
+
+				this.roomDesignService.save(resultBarrack);
 			} else if (roomType.equals(RoomType.WAREHOUSE)) {
 
 				resultWarehouse = this.warehouseService.create();
@@ -398,6 +738,8 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				//private Integer	itemCapacity;
 				resultWarehouse.setItemCapacity(itemCapacity);
+
+				this.roomDesignService.save(resultWarehouse);
 
 			} else if (roomType.equals(RoomType.RESTORATION_ROOM)) {
 				resultRestorationRoom = this.restorationRoomService.create();
@@ -416,6 +758,8 @@ public class RoomDesignServiceTest extends AbstractTest {
 				resultRestorationRoom.setHealth(healthRestorationRoom);
 				resultRestorationRoom.setFood(foodRestorationRoom);
 				resultRestorationRoom.setWater(waterRestorationRoom);
+
+				this.roomDesignService.save(resultRestorationRoom);
 
 			} else if (roomType.equals(RoomType.RESOURCE_ROOM)) {
 				resultResourceRoom = this.resourceRoomService.create();
@@ -436,6 +780,8 @@ public class RoomDesignServiceTest extends AbstractTest {
 				resultResourceRoom.setFood(foodResourceRoom);
 				resultResourceRoom.setMetal(metalResourceRoom);
 				resultResourceRoom.setWood(woodResourceRoom);
+
+				this.roomDesignService.save(resultResourceRoom);
 			}
 
 			//			private Map<String, String>	name;
@@ -446,7 +792,6 @@ public class RoomDesignServiceTest extends AbstractTest {
 			//			private boolean				finalMode;
 			//			private Integer				maxCapacityCharacters;
 
-			this.roomDesignService.save(resultBarrack);
 			this.roomDesignService.flush();
 
 			super.unauthenticate();
@@ -457,31 +802,31 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 		this.checkExceptions(expected, caught);
 	}
-	//	protected void templateListFinalModeProducts(final String username, final Class<?> expected) {
-	//		Class<?> caught;
-	//		Collection<Product> products;
-	//		Page<Product> pageProducts;
-	//		Pageable pageable;
-	//
-	//		caught = null;
-	//
-	//		try {
-	//			pageable = new PageRequest(0, this.configurationService.findConfiguration().getPageSize());
-	//
-	//			super.authenticate(username);
-	//			pageProducts = this.roomDesignService.getFinalModeProducts(pageable);
-	//			products = pageProducts.getContent();
-	//
-	//			Assert.notNull(products);
-	//
-	//			super.unauthenticate();
-	//
-	//		} catch (final Throwable oops) {
-	//			caught = oops.getClass();
-	//		}
-	//
-	//		this.checkExceptions(expected, caught);
-	//	}
+	protected void templateListFinalModeRoomDesigns(final String username, final Class<?> expected) {
+		Class<?> caught;
+		Collection<RoomDesign> roomDesign;
+		Page<RoomDesign> pageRoomDesigns;
+		Pageable pageable;
+
+		caught = null;
+
+		try {
+			pageable = new PageRequest(0, this.configurationService.findConfiguration().getPageSize());
+
+			super.authenticate(username);
+			pageRoomDesigns = this.roomDesignService.findFinalRoomDesigns(pageable);
+			roomDesign = pageRoomDesigns.getContent();
+
+			Assert.notNull(roomDesign);
+
+			super.unauthenticate();
+
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+	}
 	//
 	//	protected void templateListDraftModeProducts(final String username, final Class<?> expected) {
 	//		Class<?> caught;
