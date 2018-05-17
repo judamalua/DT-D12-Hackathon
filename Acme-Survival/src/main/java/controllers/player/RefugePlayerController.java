@@ -239,27 +239,6 @@ public class RefugePlayerController extends AbstractController {
 		return result;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Refuge refuge, final BindingResult binding) {
-		ModelAndView result;
-		Player player;
-		Refuge ownRefuge;
-
-		try {
-			player = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
-			Assert.notNull(ownRefuge);
-			Assert.isTrue(ownRefuge.equals(refuge));
-			this.refugeService.delete(ownRefuge);
-
-			result = new ModelAndView("redirect:/refuge/list.do");
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(refuge, "refuge.commit.error");
-		}
-
-		return result;
-	}
-
 	// Ancillary methods --------------------------------------------------
 
 	protected ModelAndView createEditModelAndView(final Refuge refuge) {
