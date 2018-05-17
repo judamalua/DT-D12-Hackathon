@@ -88,5 +88,19 @@
 			</span>
 		</div>
 	</li>
+	
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="inventory.wood" />
+		</div>
+
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out value="${inventory.wood}"></jstl:out>
+				</p>
+			</span>
+		</div>
+	</li>
 
 </ul>
