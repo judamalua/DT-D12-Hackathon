@@ -8,9 +8,13 @@ var mapTranslations = {
 			es : "Nombre de zona",
 			en : "Location name"
 		},
-		recolectionMissionStartLink : {
+		gatherMissionStartLink : {
 			es : "Iniciar misión de recolección en esta zona",
-			en : "Start recolection mission in this location"
+			en : "Start gather mission in this location"
+		},
+		moveStartLink : {
+			es : "Mover tu refugio a esta zona",
+			en : "Move your refuge to this location"
 		}
 	},
 	refuge : {
