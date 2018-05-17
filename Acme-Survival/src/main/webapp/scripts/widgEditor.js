@@ -716,7 +716,7 @@ widgEditor.prototype.writeDocument = function(documentContent) {
 /* Toolbar items */
 function widgToolbar(theEditor) {
 	var self = this;
-	var language = getCookie("language");
+	var language = getLanguageToUse();
 
 	this.widgEditorObject = theEditor;
 
@@ -730,67 +730,31 @@ function widgToolbar(theEditor) {
 	for ( var i = 0; i < widgToolbarItems.length; i++) {
 		switch (widgToolbarItems[i]) {
 			case "bold":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonBold", "widgButtonBold", "Negrita", "bold");
-				} else {
-					this.addButton(this.theList.id + "ButtonBold", "widgButtonBold", "Bold", "bold");
-
-				}
-
+				this.addButton(this.theList.id + "ButtonBold", "widgButtonBold", widgEditorTranslation.bold[language], "bold");
 				break;
 
 			case "italic":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonItalic", "widgButtonItalic", "Cursiva", "italic");
-				} else {
-					this.addButton(this.theList.id + "ButtonItalic", "widgButtonItalic", "Italic", "italic");
-				}
-
+				this.addButton(this.theList.id + "ButtonItalic", "widgButtonItalic", widgEditorTranslation.italic[language], "italic");
 				break;
 
 			case "hyperlink":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonLink", "widgButtonLink", "Hipervínculo", "link");
-				} else {
-					this.addButton(this.theList.id + "ButtonLink", "widgButtonLink", "Hyperlink", "link");
-				}
-
+				this.addButton(this.theList.id + "ButtonLink", "widgButtonLink", widgEditorTranslation.link[language], "link");
 				break;
 
 			case "unorderedlist":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonUnordered", "widgButtonUnordered", "Lista No Ordenada", "insertunorderedlist");
-				} else {
-					this.addButton(this.theList.id + "ButtonUnordered", "widgButtonUnordered", "Unordered List", "insertunorderedlist");
-				}
-
+				this.addButton(this.theList.id + "ButtonUnordered", "widgButtonUnordered", widgEditorTranslation.unorderedlist[language], "insertunorderedlist");
 				break;
 
 			case "orderedlist":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonOrdered", "widgButtonOrdered", "Lista Ordenada", "insertorderedlist");
-				} else {
-					this.addButton(this.theList.id + "ButtonOrdered", "widgButtonOrdered", "Ordered List", "insertorderedlist");
-				}
-
+				this.addButton(this.theList.id + "ButtonOrdered", "widgButtonOrdered", widgEditorTranslation.orderedlist[language], "insertorderedlist");
 				break;
 
 			case "image":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonImage", "widgButtonImage", "Insertar Imagen", "image");
-				} else {
-					this.addButton(this.theList.id + "ButtonImage", "widgButtonImage", "Insert Image", "image");
-				}
-
+				this.addButton(this.theList.id + "ButtonImage", "widgButtonImage", widgEditorTranslation.image[language], "image");
 				break;
 
 			case "htmlsource":
-				if (language == "es") {
-					this.addButton(this.theList.id + "ButtonHTML", "widgButtonHTML", "Código Fuente", "html");
-				} else {
-					this.addButton(this.theList.id + "ButtonHTML", "widgButtonHTML", "HTML Source", "html");
-				}
-
+				this.addButton(this.theList.id + "ButtonHTML", "widgButtonHTML", widgEditorTranslation.htmlsource[language], "html");
 				break;
 
 			case "blockformat":
@@ -929,7 +893,7 @@ widgToolbar.prototype.setState = function(theState, theStatus) {
 
 /* Action taken when toolbar item activated */
 function widgToolbarAction() {
-	var language = getCookie("language");
+	var language = getLanguageToUse();
 	var theToolbar = this.parentNode.parentNode.widgToolbarObject;
 	var theWidgEditor = theToolbar.widgEditorObject;
 	var theIframe = theWidgEditor.theIframe;
@@ -960,34 +924,19 @@ function widgToolbarAction() {
 					theSelection = theIframe.contentWindow.document.selection.createRange().text;
 
 					if (theSelection == "") {
-						debugger;
-						if (language == "es") {
-							alert("Por favor selecciona el texto para generar el enlace.");
-						} else {
-							alert("Please select the text you wish to hyperlink.");
-						}
-
+						alert(widgEditorTranslation.linkSelect[language]);
 						break;
 					}
 				} else {
 					theSelection = theIframe.contentWindow.getSelection();
 
 					if (theSelection == "") {
-						if (language == "es") {
-							alert("Por favor selecciona el texto para generar el enlace.");
-						} else {
-							alert("Please select the text you wish to hyperlink.");
-						}
-
+						alert(widgEditorTranslation.linkSelect[language]);
 						break;
 					}
 				}
 				var theURL;
-				if (language == "es") {
-					theURL = prompt("Inserta la URL para este link:", "http://");
-				} else {
-					theURL = prompt("Enter the URL for this link:", "http://");
-				}
+				theURL = prompt(widgEditorTranslation.linkInsert[language], "http://");
 				if (theURL != null) {
 					theIframe.contentWindow.document.execCommand("CreateLink", false, theURL);
 					theWidgEditor.theToolbar.setState("Link", "on");
@@ -1002,35 +951,18 @@ function widgToolbarAction() {
 			var theHeight;
 			var theWidth;
 
-			if (language == "es") {
-				theImage = prompt("Introduce la localización de esta imagen:", "");
-			} else {
-				theImage = prompt("Enter the location for this image:", "");
-			}
+			theImage = prompt(widgEditorTranslation.imageLocation[language], "");
 
 			if (theImage != null && theImage != "") {
-				if (language == "es") {
-					theAlt = prompt("Introduce un texto alternativo a esta imagen:", "");
-				} else {
-					theAlt = prompt("Enter the alternate text for this image:", "");
-				}
-
+				theAlt = prompt(widgEditorTranslation.imageText[language], "");
 			}
 
 			if ((theImage != null && theImage != "") && (theAlt != null && theAlt != "")) {
-				if (language == "es") {
-					theHeight = prompt("Introduce la altura de esta imagen:", "");
-				} else {
-					theHeight = prompt("Enter height of this image:", "");
-				}
+				theHeight = prompt(widgEditorTranslation.imageHeight[language], "");
 			}
 
 			if ((theImage != null && theImage != "") && (theAlt != null && theAlt != "") && (theHeight != null && theHeight != "")) {
-				if (language == "es") {
-					theWidth = prompt("Introduce la anchura de esta imagen:", "");
-				} else {
-					theWidth = prompt("Enter width of this image:", "");
-				}
+				theWidth = prompt(widgEditorTranslation.imageWidth[language], "");
 			}
 			if ((theImage != null && theImage != "") && (theAlt != null && theAlt != "") && (theHeight != null && theHeight != "") && (theWidth != null && theWidth != "")) {
 
