@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.CharacterService;
 import services.ConfigurationService;
+import services.ItemService;
 import services.RefugeService;
 import controllers.AbstractController;
 import domain.Actor;
@@ -43,6 +44,9 @@ public class CharacterPlayerController extends AbstractController {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private ItemService				itemService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -101,7 +105,7 @@ public class CharacterPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam(required = true) final Integer characterId) {
+	public ModelAndView display(@RequestParam(required = true) final Integer characterId, @RequestParam(required = false, defaultValue = "false") final boolean discard) {
 		ModelAndView result;
 		Actor player;
 		Character character;
@@ -113,8 +117,10 @@ public class CharacterPlayerController extends AbstractController {
 			Assert.isTrue((player instanceof Player));
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
+			if (discard == true)
+				this.itemService.UpdateDiscard(character);
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
-
+			character = this.characterService.findOne(characterId);
 			result.addObject("character", character);
 
 		} catch (final Throwable oops) {
@@ -122,5 +128,4 @@ public class CharacterPlayerController extends AbstractController {
 		}
 		return result;
 	}
-
 }

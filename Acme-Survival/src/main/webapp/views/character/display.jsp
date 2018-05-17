@@ -128,12 +128,15 @@
 
 
 
-
+<jstl:if test="${character.item !=null}">
 <div>
 	<img style="height: 200px; width: 200px;" src=" ${character.item.tool.imageUrl}"/>
 </div>
 
+<acme:button url="character/player/display.do?characterId=${character.id}&discard=true"
+			code="item.discard" />
 
+</jstl:if>
 
 
 <acme:button url="item/player/list.do?characterId=${character.id} "
