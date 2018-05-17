@@ -106,7 +106,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="UserAccount9" class="security.UserAccount">
 		<property name="username" value="player4" />
 		<property name="password" value="12efaba7fd50f5c66bd295683c0ce2a7" />
@@ -156,7 +156,7 @@
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
 	</bean>
-	
+
 	<!-- %%%% Designers %%%% -->
 	<bean id="Designer1" class="domain.Designer">
 		<property name="name" value="Designer 1" />
@@ -168,7 +168,7 @@
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
 	</bean>
-	
+
 	<!-- %%%% Moderators %%%% -->
 	<bean id="Moderator" class="domain.Moderator">
 		<property name="name" value="Moderator 1" />
@@ -196,7 +196,7 @@
 		<property name="metalFactorSteal" value="0.5" />
 		<property name="woodFactorSteal" value="0.5" />
 	</bean>
-	
+
 	<!-- %%%% Payers %%%% -->
 	<bean id="Player1" class="domain.Player">
 		<property name="name" value="Player 1" />
@@ -228,7 +228,7 @@
 		</property>
 		<property name="userAccount" ref="UserAccount7" />
 	</bean>
-	
+
 	<bean id="Player3" class="domain.Player">
 		<property name="name" value="Player 3" />
 		<property name="surname" value="Player 3" />
@@ -243,7 +243,7 @@
 		</property>
 		<property name="userAccount" ref="UserAccount8" />
 	</bean>
-	
+
 	<bean id="Player4" class="domain.Player">
 		<property name="name" value="Player 4" />
 		<property name="surname" value="Player 4" />
@@ -264,23 +264,33 @@
 		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Barrack</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Barraca</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Barraca</value>
+				</entry>
 			</map>
 		</property>
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>English stuff</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Cuidado no te piquen las chinches.</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Cuidado no te piquen las chinches.</value>
+				</entry>
 			</map>
 		</property>
 		<property name="maxResistance" value="10" />
@@ -294,23 +304,33 @@
 		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Testing barrack</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Barracones de test</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Barracones de test</value>
+				</entry>
 			</map>
 		</property>
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Enlglish test barracks</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Prueba barracones</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Prueba barracones</value>
+				</entry>
 			</map>
 		</property>
 		<property name="maxResistance" value="10" />
@@ -370,12 +390,8 @@
 		<property name="player" ref="Player1" />
 		<property name="location" ref="Location1" />
 		<property name="gpsCoordinates" value="41.18837169235602,-4.973904414537174" />
-		<property name="items">
-			<list>
-			</list>
-		</property>
 	</bean>
-	
+
 	<bean id="Refuge2" class="domain.Refuge">
 		<property name="code" value="WDJj786D02" />
 		<property name="name" value="Refuge 101" />
@@ -383,12 +399,8 @@
 		<property name="player" ref="Player3" />
 		<property name="location" ref="Location2" />
 		<property name="gpsCoordinates" value="48.12651713159919,6.933350701309109" />
-		<property name="items">
-			<list>
-			</list>
-		</property>
 	</bean>
-	
+
 	<!-- %%%%%% domain.Character %%%%%% -->
 	<bean id="Character1" class="domain.Character">
 		<property name="capacity" value="12" />
@@ -402,29 +414,42 @@
 		<property name="experience" value="325" />
 		<property name="male" value="true" />	
 		<property name="refuge" ref="Refuge1" />
-	
+
 	</bean>
-	
+
 	<!-- %%%%%% domain.Item %%%%%% -->
 	<bean id="Item1" class="domain.Item">
-		<property name="Equipped" value="false" />
+		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool1" />
 		<property name="refuge" ref="Refuge1" />
-		
 	</bean>
-	
+
 	<bean id="Item2" class="domain.Item">
-		<property name="Equipped" value="false" />
+		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool2" />
 		<property name="refuge" ref="Refuge1" />
-		
 	</bean>
-	
-	
-	
-	
-	
-	
+
+	<bean id="Item3" class="domain.Item">
+		<property name="equipped" value="false" />
+		<property name="tool" ref="Tool3" />
+		<property name="refuge" ref="Refuge1" />
+	</bean>
+	<bean id="Item4" class="domain.Item">
+		<property name="equipped" value="false" />
+		<property name="tool" ref="Tool4" />
+		<property name="refuge" ref="Refuge1" />
+	</bean>
+	<bean id="Item5" class="domain.Item">
+		<property name="equipped" value="false" />
+		<property name="tool" ref="Tool5" />
+		<property name="refuge" ref="Refuge1" />
+	</bean>
+	<bean id="Item6" class="domain.Item">
+		<property name="equipped" value="false" />
+		<property name="tool" ref="Tool6" />
+		<property name="refuge" ref="Refuge1" />
+	</bean>
 
 	<!-- %%%%%% domain.Inventory %%%%%% -->
 	<bean id="Inventory1" class="domain.Inventory">
@@ -439,14 +464,19 @@
 	<!-- %%%%%% domain.Location %%%%%% -->
 	<bean id="Location1" class="domain.Location">
 		<property name="name">
-		<map>
+			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Iberian peninsula</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Península Ibérica</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Península Ibérica</value>
+				</entry>
 			</map>
 		</property>
 		<property name="point_a" value="43.462291589880365,-9.544216914537174" />
@@ -455,17 +485,22 @@
 		<property name="point_d" value="36.819621891697544,-9.719998164537174" />
 		<property name="finalMode" value="true" />
 	</bean>
-	
+
 	<bean id="Location2" class="domain.Location">
 		<property name="name">
-		<map>
+			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Central Europe</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Europa Central</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Europa Central</value>
+				</entry>
 			</map>
 		</property>
 		<property name="point_a" value="48.169594971562844,-4.52916137221257" />
@@ -580,37 +615,42 @@
 			value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
 		<property name="align" value="center" />
 	</bean>
-	
+
 	<bean id="LootTable1" class="domain.LootTable">
 		<property name="name" value="Bosque" />
 		<property name="probabilityEvents">
-		<list>
-		<ref bean="ProbabilityEvent1" />
-		</list>
+			<list>
+				<ref bean="ProbabilityEvent1" />
+			</list>
 		</property>
 		<property name="probabilityItems">
-		<list>
-		</list>
+			<list>
+			</list>
 		</property>
 		<property name="locations">
-		<list>
-		</list>
+			<list>
+			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
 		<property name="value" value="0.40" />
 		<property name="event" ref="Event1" />
 	</bean>
-	
+
 	<bean id="Event1" class="domain.Event">
-	<property name="name">
+		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>You found a village</value></entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>You found a village</value>
+				</entry>
 				<entry>
-					<key><value>es</value></key>
+					<key>
+						<value>es</value>
+					</key>
 					<value>Encontraste una villa en el camino</value>
 				</entry>
 			</map>
@@ -618,29 +658,39 @@
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Description about village event</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Descripcion sobre el evento ded la villa</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Descripcion sobre el evento ded la villa</value>
+				</entry>
 			</map>
 		</property>
-	<property name="health" value="0.40" />
-	<property name="water" value="0.40" />
-	<property name="food" value="0.40" />
-	<property name="finalMode" value="false" />
-	<property name="findCharacter" value="false" />
+		<property name="health" value="0.40" />
+		<property name="water" value="0.40" />
+		<property name="food" value="0.40" />
+		<property name="finalMode" value="false" />
+		<property name="findCharacter" value="false" />
 	</bean>
-	
-		<bean id="Event2" class="domain.Event">
-	<property name="name">
+
+	<bean id="Event2" class="domain.Event">
+		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>Incredible event</value></entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Incredible event</value>
+				</entry>
 				<entry>
-					<key><value>es</value></key>
+					<key>
+						<value>es</value>
+					</key>
 					<value>Evento increible</value>
 				</entry>
 			</map>
@@ -648,29 +698,39 @@
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>You cant believe what actually happenned</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>No puedes creer lo que acaba de ocurrir</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>No puedes creer lo que acaba de ocurrir</value>
+				</entry>
 			</map>
 		</property>
-	<property name="health" value="0.35" />
-	<property name="water" value="0.70" />
-	<property name="food" value="0.10" />
-	<property name="finalMode" value="false" />
-	<property name="findCharacter" value="false" />
+		<property name="health" value="0.35" />
+		<property name="water" value="0.70" />
+		<property name="food" value="0.10" />
+		<property name="finalMode" value="false" />
+		<property name="findCharacter" value="false" />
 	</bean>
-	
-		<bean id="Event3" class="domain.Event">
-	<property name="name">
+
+	<bean id="Event3" class="domain.Event">
+		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>City event</value></entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>City event</value>
+				</entry>
 				<entry>
-					<key><value>es</value></key>
+					<key>
+						<value>es</value>
+					</key>
 					<value>Evento en ciudad</value>
 				</entry>
 			</map>
@@ -678,29 +738,39 @@
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>City event description</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Descripcion del evento de la ciudad</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Descripcion del evento de la ciudad</value>
+				</entry>
 			</map>
 		</property>
-	<property name="health" value="0.20" />
-	<property name="water" value="1" />
-	<property name="food" value="0.80" />
-	<property name="finalMode" value="false" />
-	<property name="findCharacter" value="false" />
+		<property name="health" value="0.20" />
+		<property name="water" value="1" />
+		<property name="food" value="0.80" />
+		<property name="finalMode" value="false" />
+		<property name="findCharacter" value="false" />
 	</bean>
-
+	<!-- %%%%% Tools %%%%% -->
 	<bean id="Tool1" class="domain.Tool">
-	<property name="name">
+		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>Sword</value></entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Sword</value>
+				</entry>
 				<entry>
-					<key><value>es</value></key>
+					<key>
+						<value>es</value>
+					</key>
 					<value>Espada</value>
 				</entry>
 			</map>
@@ -708,29 +778,40 @@
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Excalibur's sword</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Espada de excalibur</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Espada de excalibur</value>
+				</entry>
 			</map>
 		</property>
-	<property name="imageUrl" value="http://icons.iconarchive.com/icons/raindropmemory/legendora/256/sword-icon.png" />
-	<property name="finalMode" value="false" />
+		<property name="imageUrl"
+			value="http://icons.iconarchive.com/icons/raindropmemory/legendora/256/sword-icon.png" />
+		<property name="finalMode" value="false" />
 		<property name="strength" value="10" />
-	<property name="luck" value="2" />
-	<property name="capacity" value="2" />
+		<property name="luck" value="2" />
+		<property name="capacity" value="2" />
 	</bean>
-	
-		<bean id="Tool2" class="domain.Tool">
-	<property name="name">
+
+	<bean id="Tool2" class="domain.Tool">
+		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>Helmet</value></entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Helmet</value>
+				</entry>
 				<entry>
-					<key><value>es</value></key>
+					<key>
+						<value>es</value>
+					</key>
 					<value>Casco</value>
 				</entry>
 			</map>
@@ -738,42 +819,353 @@
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Kevlar Helmet</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Casco Kevlar</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Casco Kevlar</value>
+				</entry>
 			</map>
 		</property>
-	<property name="imageUrl" value="http://www.myiconfinder.com/uploads/iconsets/256-256-d074a5a83cb693e59484ec9cf62953ee-helmet.png" />
-	<property name="finalMode" value="false" />
-	<property name="strength" value="5" />
-	<property name="luck" value="2" />
-	<property name="capacity" value="1" />
+		<property name="imageUrl"
+			value="http://www.myiconfinder.com/uploads/iconsets/256-256-d074a5a83cb693e59484ec9cf62953ee-helmet.png" />
+		<property name="finalMode" value="false" />
+		<property name="strength" value="5" />
+		<property name="luck" value="2" />
+		<property name="capacity" value="1" />
 	</bean>
-	<!-- %%%%%% domain.Product %%%%%% -->
-	<bean id="Product1" class="domain.Product">
+
+	<bean id="Tool3" class="domain.Tool">
 		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>White t-shirt</value>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Axe</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Camiseta blanca</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Hacha</value>
+				</entry>
 			</map>
 		</property>
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>White t-shirt that can buy cheaper in any other store</value>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Open your own path with an axe</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Camiseta blanca que puedes encontrar más barata en cualquier otra tienda</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Abre tu propio camino a hachazos</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://cdn.pixabay.com/photo/2016/01/15/11/51/axe-1141489_960_720.png" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="4" />
+		<property name="luck" value="0" />
+		<property name="capacity" value="1" />
+	</bean>
+	<bean id="Tool4" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Flip-flop</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Chancla</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>My mother's flip-flop. It's better than nothing.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>La chancla de mi madre. Es mejor que nada.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.coloquialmente.com/sites/default/files/inline-images/chancla.png" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="20" />
+		<property name="luck" value="1" />
+		<property name="capacity" value="0" />
+	</bean>
+
+	<bean id="Tool5" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Backpack</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Mochila</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>With this backpack, survival will be a walk through the
+						countryside.
+					</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Con esta mochila, la supervivencia será un paseo por el
+						campo.
+					</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://ae01.alicdn.com/kf/HTB1wYv0OpXXXXcyXVXXq6xXFXXXB/224604427/HTB1wYv0OpXXXXcyXVXXq6xXFXXXB.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="0" />
+		<property name="luck" value="1" />
+		<property name="capacity" value="2" />
+	</bean>
+
+
+	<bean id="Tool6" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Flash light</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Linterna</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Light your way.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Ilumina tu camino.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.reliper.com/wp-content/uploads/2015/07/STINGER-HL-75440-3.png" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="0" />
+		<property name="luck" value="4" />
+		<property name="capacity" value="0" />
+	</bean>
+
+	<bean id="Tool7" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Test design tool</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Diseño de herramienta de prueba</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Future implementation.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Futura implementación.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.ipmglobal.net/img/ipm-guys-gears-resource-mgmt.jpg" />
+		<property name="finalMode" value="false" />
+		<property name="strength" value="0" />
+		<property name="luck" value="0" />
+		<property name="capacity" value="0" />
+	</bean>
+	<bean id="Tool8" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Katana</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Katana</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Be careful, it cuts.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Cuidado que corta.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.zombiesplayground.com/images/Product/large/MC-ZB-059RD.png" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="15" />
+		<property name="luck" value="0" />
+		<property name="capacity" value="0" />
+	</bean>
+
+	<bean id="Tool9" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Saw</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Sierra</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Give me a saw and I will move the world.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Dame una sierra y moveré el mundo.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://http2.mlstatic.com/sierra-bahco-268-6-150mm-bi-metal-hecho-en-alemania-D_NQ_NP_4922-MLA4019138731_032013-F.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="1" />
+		<property name="luck" value="2" />
+		<property name="capacity" value="0" />
+	</bean>
+
+
+	<!-- %%%%%% domain.Product %%%%%% -->
+	<bean id="Product1" class="domain.Product">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>White t-shirt</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Camiseta blanca</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>White t-shirt that can buy cheaper in any other store
+					</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Camiseta blanca que puedes encontrar más barata en cualquier
+						otra tienda
+					</value>
+				</entry>
 			</map>
 		</property>
 		<property name="pictureUrl"
@@ -786,10 +1178,15 @@
 		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
-					<value>Piano in English</value></entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Piano in English</value>
+				</entry>
 				<entry>
-					<key><value>es</value></key>
+					<key>
+						<value>es</value>
+					</key>
 					<value>Piano en español</value>
 				</entry>
 			</map>
@@ -797,12 +1194,17 @@
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Sing us a song you're the piano man</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Cántanos una canción esta noche</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Cántanos una canción esta noche</value>
+				</entry>
 			</map>
 		</property>
 		<property name="pictureUrl"
@@ -815,23 +1217,33 @@
 		<property name="name">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>Product in proccess</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Producto en proceso</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Producto en proceso</value>
+				</entry>
 			</map>
 		</property>
 		<property name="description">
 			<map>
 				<entry>
-					<key><value>en</value></key>
+					<key>
+						<value>en</value>
+					</key>
 					<value>We are working on it</value>
 				</entry>
 				<entry>
-					<key><value>es</value></key>
-					<value>Estamos trabajando en ello</value></entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Estamos trabajando en ello</value>
+				</entry>
 			</map>
 		</property>
 		<property name="pictureUrl"
@@ -839,6 +1251,767 @@
 		<property name="price" value="99399.00" />
 		<property name="finalMode" value="false" />
 		<property name="discontinued" value="false" />
+	</bean>
+	<bean id="Product4" class="domain.Product">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Funko survival</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Funko superviviente</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Colecciona a los personajes de tu juego favorito.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Collect the characters of your favorite game.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="https://cdn3.volusion.com/ondfq.dtexo/v/vspfiles/photos/FK10493-2.jpg?1517950095" />
+		<property name="price" value="45.20" />
+		<property name="finalMode" value="true" />
+		<property name="discontinued" value="false" />
+	</bean>
+	<bean id="Product5" class="domain.Product">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>AK toy</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Juguete de AK</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Kill your boredom and be like the protagonists of your
+						favorite game.
+					</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Mata tu aburrimiento y sé como los protagonistas de tu juego
+						favorito.
+					</value>
+				</entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="https://www.kids-army.com/content/images/thumbs/0000122_toy-special-forces-ak-47.jpg" />
+		<property name="price" value="15.20" />
+		<property name="finalMode" value="true" />
+		<property name="discontinued" value="false" />
+	</bean>
+
+	<bean id="Product6" class="domain.Product">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Nuke cole</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Nuke cole</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Drink the most famous drink of your favorite ga... Oh wait!
+					</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Bebete la bebida más famosa de tu juego favori... Espera un
+						momento!
+					</value>
+				</entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="https://vignette.wikia.nocookie.net/fallout/images/5/54/Nuka-Cola_Wild.png/revision/latest?cb=20160902224419" />
+		<property name="price" value="15.20" />
+		<property name="finalMode" value="true" />
+		<property name="discontinued" value="false" />
+	</bean>
+	<bean id="Product7" class="domain.Product">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>My first fire</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>My first fire</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Make your own fire!</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>¡Haz tu propio fuego!</value>
+				</entry>
+			</map>
+		</property>
+		<property name="pictureUrl"
+			value="https://i.chzbgr.com/full/9108298496/h6FF768B8/" />
+		<property name="price" value="56.23" />
+		<property name="finalMode" value="true" />
+		<property name="discontinued" value="false" />
+	</bean>
+
+	<!-- %%%% ItemDesign %%%% -->
+
+	<bean id="Resource1" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Agua con mala pinta</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Water with bad looking</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Is this potable?</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>¿Esto es potable?</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://thumbs.dreamstime.com/b/bottle-dirty-water-illustration-plastic-glass-half-full-brown-example-53288065.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="water" value="1" />
+		<property name="food" value="0" />
+		<property name="metal" value="0" />
+		<property name="wood" value="0" />
+	</bean>
+
+
+
+	<bean id="Resource2" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Gears</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Engranajes</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>With this, everything will go smoothly.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Con esto, todo irá sobre ruedas.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://pre00.deviantart.net/8d06/th/pre/i/2014/266/0/2/engranaje_png_by_turnlastsong-d80aede.png" />
+		<property name="finalMode" value="true" />
+		<property name="water" value="0" />
+		<property name="food" value="0" />
+		<property name="metal" value="2" />
+		<property name="wood" value="0" />
+	</bean>
+
+
+
+	<bean id="Resource3" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Test design resource</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Diseño de recurso de prueba</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Future implementation.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Futura implementación.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.ipmglobal.net/img/ipm-guys-gears-resource-mgmt.jpg" />
+		<property name="finalMode" value="false" />
+		<property name="water" value="0" />
+		<property name="food" value="0" />
+		<property name="metal" value="0" />
+		<property name="wood" value="0" />
+	</bean>
+
+
+	<bean id="Resource4" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Trunks</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Troncos</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>What's up, buddy.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Que pasa tronco.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://www.carpinteriacaballeroleon.com/wp-content/uploads/2013/10/troncos-de-madera.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="water" value="0" />
+		<property name="food" value="0" />
+		<property name="metal" value="0" />
+		<property name="wood" value="3" />
+	</bean>
+
+	<bean id="Resource5" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Broken boards</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Tablas rotas</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>This is useful.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Esto es util.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://st.depositphotos.com/1062793/5012/i/950/depositphotos_50123215-stock-photo-collection-pieces-of-broken-planks.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="water" value="0" />
+		<property name="food" value="0" />
+		<property name="metal" value="0" />
+		<property name="wood" value="1" />
+	</bean>
+
+
+
+	<bean id="Resource6" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Canned food</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Comida enlatada</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>It tastes like my mom food.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Saben como los de mi mamá.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.cellshop.com/v2/305870-large_default/comida-enlatada-la-coste-a-feij-es-preto-precocidos-400-gr.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="wood" value="0" />
+		<property name="food" value="2" />
+		<property name="metal" value="0" />
+		<property name="water" value="0" />
+	</bean>
+
+	<bean id="Resource7" class="domain.Resource">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Canned food</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Comida enlatada</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>It tastes like my mom food.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Saben como los de mi mamá.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://as01.epimg.net/epik/imagenes/2017/10/31/portada/1509469785_213048_1509471547_noticia_normal.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="wood" value="0" />
+		<property name="food" value="3" />
+		<property name="metal" value="0" />
+		<property name="water" value="0" />
+	</bean>
+
+
+	<!-- %%%% RoomDesign %%%% -->
+	<bean id="RoomDesign1" class="domain.RestorationRoom">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Nursing</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Enfermería</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Healthy Curiana Frog Butt.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Sana Curiana culito de rana.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="5" />
+		<property name="costMetal" value="5" />
+		<property name="finalMode" value="true" />
+		<property name="maxCapacityCharacters" value="2" />
+		<property name="health" value="1" />
+		<property name="food" value="0" />
+		<property name="water" value="0" />
+	</bean>
+
+	<bean id="RoomDesign2" class="domain.Barrack">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Little bed</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Little bed</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Do not eat bedbugs.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Que no te coman las chinches.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="1" />
+		<property name="costMetal" value="1" />
+		<property name="finalMode" value="true" />
+		<property name="maxCapacityCharacters" value="1" />
+		<property name="characterCapacity" value="1" />
+	</bean>
+
+
+	<bean id="RoomDesign3" class="domain.ResourceRoom">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Purifier</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Purificadora</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Purify your soul.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Purifica hasta tu alma.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="1" />
+		<property name="costMetal" value="4" />
+		<property name="finalMode" value="true" />
+		<property name="maxCapacityCharacters" value="1" />
+		<property name="water" value="1" />
+		<property name="food" value="0" />
+		<property name="metal" value="0" />
+		<property name="wood" value="0" />
+	</bean>
+
+	<bean id="RoomDesign4" class="domain.Warehouse">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Little warehouse</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Pequeño almacén</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Save all.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Guardalo todo.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="1" />
+		<property name="costMetal" value="4" />
+		<property name="finalMode" value="true" />
+		<property name="maxCapacityCharacters" value="1" />
+		<property name="itemCapacity" value="3" />
+	</bean>
+
+	<bean id="RoomDesign5" class="domain.Barrack">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Normal bed</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Cama normal</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Sleep tigth.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Duerme bien.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="2" />
+		<property name="costMetal" value="2" />
+		<property name="finalMode" value="true" />
+		<property name="maxCapacityCharacters" value="2" />
+		<property name="characterCapacity" value="2" />
+	</bean>
+	<bean id="RoomDesign6" class="domain.Barrack">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Good bed</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Buena cama</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>I sleep better than in apocalypse.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Duermo mejor que antes del apocalipsis.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="4" />
+		<property name="costMetal" value="4" />
+		<property name="finalMode" value="true" />
+		<property name="maxCapacityCharacters" value="4" />
+		<property name="characterCapacity" value="4" />
+	</bean>
+
+	<bean id="RoomDesign7" class="domain.Barrack">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Test barrack</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Prueba de barraca</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Future implementation.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Futura implementación.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="0" />
+		<property name="costMetal" value="0" />
+		<property name="finalMode" value="false" />
+		<property name="maxCapacityCharacters" value="4" />
+		<property name="characterCapacity" value="1" />
 	</bean>
 
 	<!-- %%%% Configuration %%%% -->
@@ -851,7 +2024,7 @@
 		<property name="businessNameFirst" value="Acme" />
 		<property name="businessNameLast" value="Survival" />
 		<property name="pageSize" value="5" />
-		<property name="languages" >
+		<property name="languages">
 			<list>
 				<value>es</value>
 				<value>en</value>
