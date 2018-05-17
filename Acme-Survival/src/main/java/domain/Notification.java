@@ -9,6 +9,7 @@ import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -70,6 +71,7 @@ public class Notification extends DomainEntity {
 	// Relationships -------------------------------------------------------------
 
 	private Player	player;
+	private Mission	mission;
 
 
 	@NotNull
@@ -81,4 +83,15 @@ public class Notification extends DomainEntity {
 	public void setPlayer(final Player player) {
 		this.player = player;
 	}
+
+	@Valid
+	@OneToOne(optional = true)
+	public Mission getMission() {
+		return this.mission;
+	}
+
+	public void setMission(final Mission mission) {
+		this.mission = mission;
+	}
+
 }

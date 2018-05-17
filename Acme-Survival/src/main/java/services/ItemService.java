@@ -122,14 +122,14 @@ public class ItemService {
 			oldItem.setEquipped(false);
 			//update propertis
 			character.setCapacity(character.getCapacity() - oldItem.getTool().getCapacity());
-			character.setCapacity(character.getStrength() - oldItem.getTool().getStrength());
-			character.setCapacity(character.getLuck() - oldItem.getTool().getLuck());
+			character.setStrength(character.getStrength() - oldItem.getTool().getStrength());
+			character.setLuck(character.getLuck() - oldItem.getTool().getLuck());
 			this.itemRepository.save(oldItem);
 
 			character.setItem(item);
 			character.setCapacity(character.getCapacity() + item.getTool().getCapacity());
-			character.setCapacity(character.getStrength() + item.getTool().getStrength());
-			character.setCapacity(character.getLuck() + item.getTool().getLuck());
+			character.setStrength(character.getStrength() + item.getTool().getStrength());
+			character.setLuck(character.getLuck() + item.getTool().getLuck());
 			item.setEquipped(true);
 
 			this.itemRepository.save(item);
@@ -138,8 +138,8 @@ public class ItemService {
 		} else {
 			character.setItem(item);
 			character.setCapacity(character.getCapacity() + item.getTool().getCapacity());
-			character.setCapacity(character.getStrength() + item.getTool().getStrength());
-			character.setCapacity(character.getLuck() + item.getTool().getLuck());
+			character.setStrength(character.getStrength() + item.getTool().getStrength());
+			character.setLuck(character.getLuck() + item.getTool().getLuck());
 			item.setEquipped(true);
 
 			this.itemRepository.save(item);
@@ -154,14 +154,37 @@ public class ItemService {
 
 	}
 
+	/**
+	 * Update a discard of a item
+	 * 
+	 * @Luis
+	 */
+	public Item UpdateDiscard(final domain.Character character) {
+		Item result;
+
+		Assert.isTrue(character.getItem() != null && character.getItem().getEquipped());
+
+		final Item oldItem = character.getItem();
+		oldItem.setEquipped(false);
+		character.setCapacity(character.getCapacity() - oldItem.getTool().getCapacity());
+		character.setStrength(character.getStrength() - oldItem.getTool().getStrength());
+		character.setLuck(character.getLuck() - oldItem.getTool().getLuck());
+		result = this.itemRepository.save(oldItem);
+		character.setItem(null);
+		this.characterService.save(character);
+
+		return result;
+
+	}
+
 	public void delete(final Item item) {
 		assert item != null;
 		assert item.getId() != 0;
 
+		Assert.isTrue(!item.getEquipped());
 		Assert.isTrue(this.itemRepository.exists(item.getId()));
 
 		this.itemRepository.delete(item);
-		this.refugeService.save(item.getRefuge());
 
 	}
 
@@ -182,6 +205,11 @@ public class ItemService {
 		result = this.itemRepository.findItemsByRefuge(refugeId, pageable);
 
 		return result;
+	}
+
+	public void flush() {
+		this.itemRepository.flush();
+
 	}
 
 }

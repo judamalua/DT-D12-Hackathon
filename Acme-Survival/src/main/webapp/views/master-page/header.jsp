@@ -158,13 +158,13 @@
 					<li><a href="actor/admin/register.do"><spring:message
 									code="master.page.registerAdmin" /></a></li>			
 					<li class="divider"></li>
-					<li><a href="actor/admin/RegisterManager.do"><spring:message
+					<li><a href="actor/admin/registerManager.do"><spring:message
 									code="master.page.registerManager" /></a></li>
 					<li class="divider"></li>
-					<li><a href="actor/admin/RegisterModerator.do"><spring:message
+					<li><a href="actor/admin/registerModerator.do"><spring:message
 									code="master.page.registerModerator" /></a></li>
 					<li class="divider"></li>
-					<li><a href="actor/admin/RegisterDesigner.do"><spring:message
+					<li><a href="actor/admin/registerDesigner.do"><spring:message
 									code="master.page.registerDesigner" /></a></li>
 					<li class="divider"></li>
 					<li><a href="dashboard/admin/list.do"><spring:message
@@ -200,6 +200,9 @@
 					<li class="divider"></li>
 					<li><a href="notification/player/list.do"><spring:message
 								code="master.page.myNotifications" /></a></li>
+					<li class="divider"></li>
+					<li><a href="item/player/armory.do"><spring:message
+								code="master.page.armory" /></a></li>
 
 				</ul>
 

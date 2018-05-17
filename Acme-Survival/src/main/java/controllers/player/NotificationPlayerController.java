@@ -15,6 +15,7 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.NotificationService;
 import controllers.AbstractController;
+import domain.Attack;
 import domain.Configuration;
 import domain.Notification;
 import domain.Player;
@@ -39,6 +40,24 @@ public class NotificationPlayerController extends AbstractController {
 		super();
 	}
 
+	//Generate notifications ---------------------------------------------------------------
+	/*
+	 * @RequestMapping(value="/generate", method = RequestMethod.GET){
+	 * public ModelAndView generate(){
+	 * ModelAndView result;
+	 * 
+	 * try{
+	 * this.notificationService.generateNotifications();
+	 * result = new ModelAndView("redirect:/notification/player/list.do");
+	 * }catch(final Throwable oops){
+	 * result = new ModelAndView("redirect:/misc/403");
+	 * }
+	 * 
+	 * return result;
+	 * }
+	 * }
+	 */
+
 	//List --------------------------------------------------------------------
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
@@ -55,6 +74,7 @@ public class NotificationPlayerController extends AbstractController {
 			result = new ModelAndView("notification/list");
 
 			player = (Player) this.actorService.findActorByPrincipal();
+			this.notificationService.generateNotifications();
 			notifications = this.notificationService.findNotificationsByPlayer(player.getId(), pageable);
 
 			result.addObject("notifications", notifications.getContent());
@@ -81,6 +101,11 @@ public class NotificationPlayerController extends AbstractController {
 
 			result.addObject("notification", notification);
 
+			if (notification.getMission() != null)
+				if (notification.getMission() instanceof Attack)
+					result.addObject("attackId", notification.getMission().getId());
+				else
+					result.addObject("gatherId", notification.getMission().getId());
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
