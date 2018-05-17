@@ -188,8 +188,14 @@
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
 		<security:intercept-url pattern="/gather/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />ç
+			
+		<security:intercept-url pattern="/notification/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-
+			
+		<security:intercept-url pattern="/notification/player/display.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/character/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/character/player/display.do"

@@ -137,6 +137,9 @@
 
 		<bean class="converters.InventoryToStringConverter" />
 		<bean class="converters.StringToInventoryConverter" />
+		
+		<bean class="converters.NotificationToStringConverter" />
+		<bean class="converters.StringToNotificationConverter" />
 
 	</util:list>
 

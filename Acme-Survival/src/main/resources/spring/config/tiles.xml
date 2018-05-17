@@ -46,6 +46,7 @@
 		<value>/views/roomDesign/tiles.xml</value>
 		<value>/views/map/tiles.xml</value>
 		<value>/views/lootTable/tiles.xml</value>
+		<value>/views/notification/tiles.xml</value>
 	</util:list>
 
 </beans>
