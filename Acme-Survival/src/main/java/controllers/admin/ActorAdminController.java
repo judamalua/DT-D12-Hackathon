@@ -12,22 +12,30 @@ package controllers.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
 import services.ActorService;
 import services.AdminService;
+import services.ConfigurationService;
 import services.DesignerService;
 import services.ManagerService;
 import services.ModeratorService;
+import services.UserAccountService;
 import controllers.AbstractController;
+import domain.Actor;
 import domain.Admin;
+import domain.Configuration;
 import domain.Designer;
 import domain.Manager;
 import domain.Moderator;
@@ -38,15 +46,19 @@ import forms.ActorForm;
 public class ActorAdminController extends AbstractController {
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 	@Autowired
-	private ManagerService		managerService;
+	private ManagerService			managerService;
 	@Autowired
-	private ModeratorService	moderatorService;
+	private ModeratorService		moderatorService;
 	@Autowired
-	private DesignerService		designerService;
+	private DesignerService			designerService;
 	@Autowired
-	private AdminService		adminService;
+	private AdminService			adminService;
+	@Autowired
+	private UserAccountService		userAccountService;
+	@Autowired
+	private ConfigurationService	configurationService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -254,9 +266,9 @@ public class ActorAdminController extends AbstractController {
 		return result;
 	}
 
-	//Saving manager ---------------------------------------------------------------------
+	//Saving Moderator ---------------------------------------------------------------------
 	/**
-	 * That method saves an manager in the system
+	 * That method saves a moderator in the system
 	 * 
 	 * @param save
 	 * @return ModelandView
@@ -277,7 +289,7 @@ public class ActorAdminController extends AbstractController {
 		else
 			try {
 				auth = new Authority();
-				auth.setAuthority(Authority.MANAGER);
+				auth.setAuthority(Authority.MODERATOR);
 				Assert.isTrue(moderator.getUserAccount().getAuthorities().contains(auth));
 				Assert.isTrue(actor.getConfirmPassword().equals(moderator.getUserAccount().getPassword()), "Passwords do not match");
 				this.actorService.registerActor(moderator);
@@ -316,9 +328,9 @@ public class ActorAdminController extends AbstractController {
 		return result;
 	}
 
-	//Saving manager ---------------------------------------------------------------------
+	//Saving designer ---------------------------------------------------------------------
 	/**
-	 * That method saves an manager in the system
+	 * That method saves a designer in the system
 	 * 
 	 * @param save
 	 * @return ModelandView
@@ -339,7 +351,7 @@ public class ActorAdminController extends AbstractController {
 		else
 			try {
 				auth = new Authority();
-				auth.setAuthority(Authority.MANAGER);
+				auth.setAuthority(Authority.DESIGNER);
 				Assert.isTrue(designer.getUserAccount().getAuthorities().contains(auth));
 				Assert.isTrue(actor.getConfirmPassword().equals(designer.getUserAccount().getPassword()), "Passwords do not match");
 				this.actorService.registerActor(designer);
@@ -353,6 +365,66 @@ public class ActorAdminController extends AbstractController {
 					result = this.createEditModelAndViewRegister(actor, "admin.commit.error");
 			}
 
+		return result;
+	}
+
+	@RequestMapping("/list-actors")
+	public ModelAndView listActors(@RequestParam(defaultValue = "0") final int page) {
+		ModelAndView result;
+		Page<Actor> actors;
+		Pageable pageable;
+		Configuration configuration;
+
+		result = new ModelAndView("actor/list-actors");
+
+		configuration = this.configurationService.findConfiguration();
+
+		pageable = new PageRequest(page, configuration.getPageSize());
+		actors = this.actorService.findAllActors(pageable);
+
+		result.addObject("actors", actors.getContent());
+		result.addObject("requestURI", "actor/admin/list-actors.do");
+		result.addObject("page", page);
+		result.addObject("pageNum", actors.getTotalPages());
+
+		return result;
+	}
+
+	@RequestMapping(value = "/ban", method = RequestMethod.GET)
+	public ModelAndView ban(final int actorId) {
+		ModelAndView result;
+
+		try {
+			final Actor actor = this.actorService.findOne(actorId);
+
+			Assert.notNull(actor);
+			Assert.isTrue(!actor.getUserAccount().getBanned());
+
+			this.userAccountService.ban(actor);
+
+			result = this.listActors(0);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/unban", method = RequestMethod.GET)
+	public ModelAndView unban(final int actorId) {
+		ModelAndView result;
+
+		try {
+			final Actor actor = this.actorService.findOne(actorId);
+
+			Assert.notNull(actor);
+			Assert.isTrue(actor.getUserAccount().getBanned());
+
+			this.userAccountService.unban(actor);
+
+			result = this.listActors(0);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 	// Ancillary methods --------------------------------------------------

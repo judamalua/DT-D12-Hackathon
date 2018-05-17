@@ -62,6 +62,8 @@
 			access="isAnonymous()" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/register.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
+		<security:intercept-url pattern="/actor/admin/list-actors.do"
+			access="hasRole('ADMIN')" requires-channel="https" />
 
 		<security:intercept-url pattern="/actor/registerAsPlayer.do"
 			access="permitAll" requires-channel="https" />
@@ -136,6 +138,12 @@
 		<security:intercept-url pattern="/map/player/info.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
+		<security:intercept-url pattern="/location/designer/display.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+		
+		<security:intercept-url pattern="/location/designer/info.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/product/manager/**"
 			access="hasRole('MANAGER')" requires-channel="https" />
 
@@ -179,6 +187,14 @@
 			access="hasRole('PLAYER')" requires-channel="https" />
 			
 		<security:intercept-url pattern="/recolection/player/edit.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/recolection/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+
+		<security:intercept-url pattern="/character/player/list.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/character/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 

@@ -16,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.ThreadRepository;
 import domain.Actor;
 import domain.Message;
+import domain.Moderator;
 import domain.Thread;
 
 @Service
@@ -77,9 +78,15 @@ public class ThreadService {
 		Assert.notNull(thread);
 
 		Thread result;
-		final Collection<Message> messages;
+		Collection<Message> messages;
+		Actor actor;
 
-		this.actorService.checkActorLogin();
+		actor = this.actorService.findActorByPrincipal();
+
+		Assert.notNull(thread);
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(thread.getActor().equals(actor));
+
 		result = this.threadRepository.save(thread);
 
 		if (thread.getId() != 0) {
@@ -101,6 +108,12 @@ public class ThreadService {
 		Assert.isTrue(this.threadRepository.exists(thread.getId()));
 
 		final Collection<Message> messages;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(thread.getActor().equals(actor));
 
 		messages = this.messageService.findMessagesByThread(thread.getId());
 
@@ -108,7 +121,6 @@ public class ThreadService {
 			this.messageService.delete(message);
 
 		this.threadRepository.delete(thread);
-
 	}
 
 	public Collection<Thread> findThreadsByForum(final int forumId) {
@@ -148,6 +160,7 @@ public class ThreadService {
 
 		}
 		this.validator.validate(result, binding);
+		this.threadRepository.flush();
 
 		return result;
 	}

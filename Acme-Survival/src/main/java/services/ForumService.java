@@ -17,6 +17,7 @@ import org.springframework.validation.Validator;
 import repositories.ForumRepository;
 import domain.Actor;
 import domain.Forum;
+import domain.Moderator;
 import domain.Player;
 import domain.Thread;
 
@@ -98,7 +99,8 @@ public class ForumService {
 			if (forum.getForum() != null)
 				Assert.isTrue(!allSubForums.contains(forum.getForum()));
 		}
-		Assert.isTrue(actor.equals(forum.getOwner()));
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(actor.equals(forum.getOwner()));
 
 		threads = new HashSet<>();
 
@@ -123,11 +125,12 @@ public class ForumService {
 
 		actor = this.actorService.findActorByPrincipal();
 
-		if (forum.getStaff() || forum.getStaff())
+		if (forum.getStaff())
 			Assert.isTrue(!(actor instanceof Player));
 
 		Assert.isTrue(this.forumRepository.exists(forum.getId()));
-
+		if (!(actor instanceof Moderator))
+			Assert.isTrue(forum.getOwner().equals(forum));
 		this.deleteRecursive(forum);
 	}
 
@@ -168,7 +171,7 @@ public class ForumService {
 		this.forumRepository.delete(forum);
 	}
 
-	public Page<Forum> findForums(final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findRootForums(final Boolean staff, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.notNull(pageable);
 
@@ -198,9 +201,12 @@ public class ForumService {
 			result.setImage(forum.getImage());
 			result.setStaff(forum.getStaff());
 			result.setSupport(forum.getSupport());
+			result.setForum(forum.getForum());
 
 		}
+
 		this.validator.validate(result, binding);
+		this.forumRepository.flush();
 
 		return result;
 	}
@@ -229,7 +235,7 @@ public class ForumService {
 		subForums = this.findSubForums(forumId);
 		result = subForums;
 
-		for (final Forum subForum : subForums) {
+		for (final Forum subForum : new HashSet<Forum>(subForums)) {
 			subsubForums = this.findSubForums(subForum.getId());
 			if (subsubForums.size() > 0)
 				result.addAll(this.findAllSubForums(subForum.getId()));

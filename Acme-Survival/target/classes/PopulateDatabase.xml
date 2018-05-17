@@ -157,7 +157,7 @@
 		<property name="phoneNumber" value="657894123" />
 	</bean>
 	
-	<!-- %%%% Designer %%%% -->
+	<!-- %%%% Designers %%%% -->
 	<bean id="Designer1" class="domain.Designer">
 		<property name="name" value="Designer 1" />
 		<property name="surname" value="Designer 1" />
@@ -167,6 +167,18 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
+	</bean>
+	
+	<!-- %%%% Moderators %%%% -->
+	<bean id="Moderator" class="domain.Moderator">
+		<property name="name" value="Moderator 1" />
+		<property name="surname" value="Moderator 1" />
+		<property name="email" value="moderator1@mail.com" />
+		<property name="birthDate" value="1995/10/07" />
+		<property name="userAccount" ref="UserAccount4" />
+		<property name="avatar"
+			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
+		<property name="phoneNumber" value="657844123" />
 	</bean>
 
 	<!-- %%%% DesignerConfiguration %%%% -->

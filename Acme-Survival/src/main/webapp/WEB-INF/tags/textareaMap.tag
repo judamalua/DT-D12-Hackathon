@@ -37,7 +37,6 @@
 </jstl:if>
 
 <%-- Definition --%>
-
 <div class="form-group">
 	<div class="row">
 	<div class="input-field col s3">

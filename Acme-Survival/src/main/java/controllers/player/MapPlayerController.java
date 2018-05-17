@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.AttackService;
 import services.ConfigurationService;
 import services.LocationService;
+import services.RecolectionService;
 import services.RefugeService;
 import domain.Actor;
 import domain.Location;
@@ -37,6 +39,12 @@ public class MapPlayerController {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private AttackService			attackService;
+
+	@Autowired
+	private RecolectionService		recolectionService;
 
 
 	// Map display -----------------------------------------------------------
@@ -116,7 +124,8 @@ public class MapPlayerController {
 	//		      },
 	//		      "character": {
 	//		        "name": "Pepe",
-	//		        "surname": "Palotes"
+	//		        "surname": "Palotes",
+	//				"genre":"Male",
 	//		      },
 	//		      "endMoment": 123424323423
 	//		    }
@@ -168,6 +177,7 @@ public class MapPlayerController {
 
 	private JSONObject getOnGoingAttack() {
 		final JSONObject result = new JSONObject();
+		//Attack attack = this.attackService.findAllAttacksByPlayer(refugeId, pageable)
 		// TODO Finish this
 		return result;
 	}

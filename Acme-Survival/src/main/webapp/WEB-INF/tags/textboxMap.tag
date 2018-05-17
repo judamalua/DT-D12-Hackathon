@@ -41,7 +41,6 @@
 </jstl:if>
 
 <%-- Definition --%>
-
 <div>
 	<div class="row">
 	<div class="input-field col s3">

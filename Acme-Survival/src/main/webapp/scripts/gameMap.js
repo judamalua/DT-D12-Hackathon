@@ -379,16 +379,19 @@ function generateMap() {
 					if (mapElements.languages[int3] === getCookie("language")) {
 						contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>'
 								+ mapTranslations.location.name[mapElements.languages[int3]] + ": </b>" + mapElements.locations[currentInt].name[mapElements.languages[int3]]
-								+ '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
-								+ mapTranslations.location.recolectionMissionStartLink[mapElements.languages[int3]] + '</a>';
+								+ '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
+								+ mapTranslations.location.gatherMissionStartLink[mapElements.languages[int3]] + '</a><br/><a href="' + getMainDomain()
+								+ 'move/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
+								+ mapTranslations.location.moveStartLink[mapElements.languages[int3]] + '</a>';
 						usedLanguage = true;
 						break;
 					}
 				}
 				if (usedLanguage == false) {
 					contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>' + mapTranslations.location.name["en"] + ": </b>"
-							+ mapElements.locations[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId='
-							+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.recolectionMissionStartLink["en"] + '</a>';
+							+ mapElements.locations[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId='
+							+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.gatherMissionStartLink["en"] + '</a><br/><a href="' + getMainDomain()
+							+ 'move/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">' + mapTranslations.location.moveStartLink["en"] + '</a>';
 				}
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
@@ -436,8 +439,9 @@ function generateMap() {
 				for ( var int5 = 0; int5 < mapElements.languages.length; int5++) {
 					if (mapElements.languages[int5] === getCookie("language")) {
 						contentString = '<b>' + mapTranslations.refuge.refugeEnemy[mapElements.languages[int5]] + '</b><br/><b>'
-								+ mapTranslations.refuge.name[mapElements.languages[int5]] + ": </b>" + mapElements.knownRefuges[currentInt].name + '<br/><br/><a href="'
-								+ getMainDomain() + 'attack/player/create.do?refugeId=' + mapElements.knownRefuges[currentInt].id + '">'
+								+ mapTranslations.refuge.name[mapElements.languages[int5]] + ": </b>" + mapElements.knownRefuges[currentInt].name + '<br/><b>'
+								+ mapTranslations.refuge.playerName[mapElements.languages[int5]] + ": </b>" + mapElements.knownRefuges[currentInt].playerName
+								+ '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?refugeId=' + mapElements.knownRefuges[currentInt].id + '">'
 								+ mapTranslations.refuge.attackRefuge[mapElements.languages[int5]] + '</a>';
 						usedLanguage = true;
 						break;
@@ -445,7 +449,8 @@ function generateMap() {
 				}
 				if (usedLanguage == false) {
 					contentString = '<b>' + mapTranslations.refuge.refugeEnemy["en"] + '</b><br/><b>' + mapTranslations.refuge.name["en"] + ": </b>"
-							+ mapElements.knownRefuges[currentInt].name + '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?refugeId='
+							+ mapElements.knownRefuges[currentInt].name + '<br/><b>' + mapTranslations.refuge.playerName["en"] + ": </b>"
+							+ mapElements.knownRefuges[currentInt].playerName + '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?refugeId='
 							+ mapElements.knownRefuges[currentInt].id + '">' + mapTranslations.refuge.attackRefuge["en"] + '</a>';
 				}
 				infoWindow.setContent(contentString);
@@ -497,42 +502,3 @@ function createElementsMain() {
 	xhttp.send();
 
 }
-
-var mapTranslations = {
-	location : {
-		location : {
-			es : "Zona",
-			en : "Location"
-		},
-		name : {
-			es : "Nombre de zona",
-			en : "Location name"
-		},
-		recolectionMissionStartLink : {
-			es : "Iniciar misión de recolección en esta zona",
-			en : "Start recolection mission in this location"
-		}
-	},
-	refuge : {
-		refugeMine : {
-			es : "Mi refugio",
-			en : "My refuge"
-		},
-		refugeEnemy : {
-			es : "Refugio enemigo",
-			en : "Enemy refuge"
-		},
-		name : {
-			es : "Nombre del refugio",
-			en : "Refuge name"
-		},
-		enterInRefuge : {
-			es : "Entrar en el refugio",
-			en : "Enter in the refuge"
-		},
-		attackRefuge : {
-			es : "Atacar este refugio",
-			en : "Attack this refuge"
-		}
-	}
-};

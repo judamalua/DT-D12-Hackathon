@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Attack;
+import domain.Player;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -31,6 +32,9 @@ public class AttackServiceTest extends AbstractTest {
 	@Autowired
 	private AttackService	attackService;
 
+	@Autowired
+	private ActorService	actorService;
+
 
 	/**
 	 * This test checks that the Player can Attack a Refuge that he already knows.
@@ -39,11 +43,15 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPositive() {
 		int refugeId;
 		Attack attack, saved;
+		Player player;
 
 		super.authenticate("player1"); //The player knows the Refuge
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		attack.setPlayer(player);
 
 		saved = this.attackService.save(attack);
 
@@ -61,11 +69,16 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPlayerDoesntKnowRefuge() {
 		int refugeId;
 		Attack attack, saved;
+		Player player;
 
 		super.authenticate("player4"); //The player doesn't know the Refuge
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
+
+		player = (Player) this.actorService.findActorByPrincipal();
+
+		attack.setPlayer(player);
 
 		saved = this.attackService.save(attack);
 
@@ -83,12 +96,15 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackOwnPlayerRefuge() {
 		int refugeId;
 		Attack attack, saved;
+		Player player;
 
 		super.authenticate("player3"); //The player doesn't know the Refuge
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
+		player = (Player) this.actorService.findActorByPrincipal();
 
+		attack.setPlayer(player);
 		saved = this.attackService.save(attack);
 
 		this.attackService.flush();
@@ -105,12 +121,15 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPlayerIsAlreadyAttacking() {
 		int refugeId;
 		Attack attack, attack2, saved, saved2;
+		Player player;
 
 		super.authenticate("player1"); //The player knows the Refuge and attacks it.
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
+		player = (Player) this.actorService.findActorByPrincipal();
 
+		attack.setPlayer(player);
 		saved = this.attackService.save(attack);
 
 		this.attackService.flush();

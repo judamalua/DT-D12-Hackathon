@@ -22,8 +22,7 @@ public class Character extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name;
-	private String	surname;
+	private String	fullName;
 	private int		currentHealth;
 	private int		currentWater;
 	private int		currentFood;
@@ -32,27 +31,36 @@ public class Character extends DomainEntity {
 	private int		capacity;
 	private int		level;
 	private int		experience;
+	private boolean	male;
 
+
+	//private boolean	male;
+
+	public boolean getMale() {
+		return this.male;
+	}
+
+	public void setMale(final boolean male) {
+		this.male = male;
+	}
 
 	@NotBlank
 	@SafeHtml
-	public String getName() {
-		return this.name;
+	public String getFullName() {
+		return this.fullName;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setFullName(final String fullName) {
+		this.fullName = fullName;
 	}
 
-	@NotBlank
-	@SafeHtml
-	public String getSurname() {
-		return this.surname;
-	}
-
-	public void setSurname(final String surname) {
-		this.surname = surname;
-	}
+	//	public boolean getMale() {
+	//		return this.male;
+	//	}
+	//
+	//	public void setMale(final boolean male) {
+	//		this.male = male;
+	//	}
 
 	@Min(value = 0)
 	public int getCurrentHealth() {
@@ -81,7 +89,7 @@ public class Character extends DomainEntity {
 		this.currentFood = currentFood;
 	}
 
-	@Min(value = 100)
+	@Min(value = 1)
 	public int getStrength() {
 		return this.strength;
 	}
@@ -90,7 +98,7 @@ public class Character extends DomainEntity {
 		this.strength = strength;
 	}
 
-	@Min(value = 10)
+	@Min(value = 1)
 	public int getLuck() {
 		return this.luck;
 	}
@@ -99,7 +107,7 @@ public class Character extends DomainEntity {
 		this.luck = luck;
 	}
 
-	@Min(value = 10)
+	@Min(value = 1)
 	public int getCapacity() {
 		return this.capacity;
 	}
@@ -135,7 +143,7 @@ public class Character extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Refuge getRefuge() {
 		return this.refuge;
 	}
@@ -154,9 +162,9 @@ public class Character extends DomainEntity {
 		this.item = item;
 
 	}
+
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
+	@ManyToOne
 	public Room getRoom() {
 		return this.room;
 	}

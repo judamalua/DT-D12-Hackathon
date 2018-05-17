@@ -55,16 +55,9 @@
 
 			<spring:message code="refuge.room.name" var="nameRoomTitle" />
 			<display:column title="${nameRoomTitle}">
-				<jstl:if test="${lang==\"es\"}">
-					<jstl:out value="${room.roomDesign.name_es}" />
-					<br />
-					<jstl:out value="${room.roomDesign.description_es}" />
-				</jstl:if>
-				<jstl:if test="${lang==\"en\"}">
-					<jstl:out value="${room.roomDesign.name_en}" />
-					<br />
-					<jstl:out value="${room.roomDesign.description_en}" />
-				</jstl:if>
+				<jstl:out value="${room.roomDesign.name[lang]}" />
+				<br />
+				<jstl:out value="${room.roomDesign.description[lang]}" />
 			</display:column>
 
 			<spring:message code="refuge.room.resistance"
@@ -96,4 +89,7 @@
 			<acme:button url="room/player/create.do" code="refuge.room.create" />
 		</jstl:if>
 	</jstl:if>
+	
+	<br/>
+	<acme:button url="character/player/list.do" code="refuge.characters" />
 </security:authorize>

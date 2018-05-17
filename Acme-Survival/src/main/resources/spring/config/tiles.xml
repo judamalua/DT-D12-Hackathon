@@ -41,6 +41,7 @@
 		<value>/views/itemDesign/tiles.xml</value>
 		<value>/views/attack/tiles.xml</value>
 		<value>/views/recolection/tiles.xml</value>
+		<value>/views/character/tiles.xml</value>
 		<value>/views/creditCard/tiles.xml</value>
 		<value>/views/roomDesign/tiles.xml</value>
 		<value>/views/map/tiles.xml</value>
