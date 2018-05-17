@@ -62,6 +62,8 @@
 			access="isAnonymous()" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/register.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
+		<security:intercept-url pattern="/actor/admin/list-actors.do"
+			access="hasRole('ADMIN')" requires-channel="https" />
 
 		<security:intercept-url pattern="/actor/registerAsPlayer.do"
 			access="permitAll" requires-channel="https" />

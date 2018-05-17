@@ -172,6 +172,9 @@
 					<li class="divider"></li>
 					<li><a href="configuration/admin/list.do"><spring:message
 								code="master.page.configuration" /></a></li>
+					<li class="divider"></li>
+					<li><a href="actor/admin/list-actors.do"><spring:message
+								code="master.page.list.actors" /></a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->
