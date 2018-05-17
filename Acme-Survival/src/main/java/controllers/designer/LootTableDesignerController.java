@@ -30,6 +30,7 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.DesignerService;
 import services.EventService;
+import services.ItemDesignService;
 import services.LootTableService;
 import controllers.AbstractController;
 import domain.Actor;
@@ -52,6 +53,8 @@ public class LootTableDesignerController extends AbstractController {
 	private ConfigurationService configurationService;
 	@Autowired
 	private EventService eventService;
+	@Autowired
+	private ItemDesignService itemDesignService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -191,6 +194,7 @@ public class LootTableDesignerController extends AbstractController {
 		result.addObject("message", messageCode);
 		result.addObject("lootTable", lootTable);
 		result.addObject("events", eventService.findAll());
+		result.addObject("items", itemDesignService.findAll());
 
 		return result;
 

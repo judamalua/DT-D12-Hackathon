@@ -41,13 +41,15 @@
 		<value>/views/event/messages</value>
 		<value>/views/itemDesign/messages</value>
 		<value>/views/attack/messages</value>
-		<value>/views/recolection/messages</value>
+		<value>/views/gather/messages</value>
 		<value>/views/roomDesign/messages</value>
 		<value>/views/creditCard/messages</value>
 		<value>/views/roomDesign/messages</value>
 		<value>/views/map/messages</value>
 		<value>/views/lootTable/messages</value>
 		<value>/views/move/messages</value>
+		<value>/views/notification/messages</value>
+		<value>/views/item/messages</value>
 	</util:list>
 
 </beans>

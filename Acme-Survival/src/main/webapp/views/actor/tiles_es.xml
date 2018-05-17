@@ -26,10 +26,14 @@
 		<put-attribute name="body" value="/views/actor/display.jsp" />
 	</definition>
 	
-	
 	<definition name="admin/register" extends="master.page">	
 		<put-attribute name="title" value="Datos de Registro" />
 		<put-attribute name="body" value="/views/actor/register.jsp" />
+	</definition>
+	
+	<definition name="actor/list-actors" extends="master.page">	
+		<put-attribute name="title" value="Lista de cuentas" />
+		<put-attribute name="body" value="/views/actor/list-actors.jsp" />
 	</definition>
 	
 </tiles-definitions>

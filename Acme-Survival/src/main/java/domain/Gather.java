@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Recolection extends Mission {
+public class Gather extends Mission {
 
 	// Constructors -----------------------------------------------------------
 

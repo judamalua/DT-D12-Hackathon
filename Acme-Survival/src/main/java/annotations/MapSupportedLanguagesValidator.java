@@ -28,7 +28,7 @@ public class MapSupportedLanguagesValidator implements ConstraintValidator<MapSu
 			return res;
 		}
 
-		res = value.keySet().containsAll(this.configurationService.findConfiguration().getLanguages());
+		res = this.configurationService.findConfiguration().getLanguages().containsAll(value.keySet());
 
 		return res;
 	}
