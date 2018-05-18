@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.DesignerConfiguration;
 import domain.Notification;
 import domain.Player;
 import domain.Refuge;
@@ -25,24 +27,27 @@ public class AttackService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private AttackRepository	attackRepository;
+	private AttackRepository		attackRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private MoveService			moveService;
+	private MoveService				moveService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private RefugeService			refugeService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator				validator;
 
 	@Autowired
-	private NotificationService	notificationService;
+	private NotificationService		notificationService;
+
+	@Autowired
+	private DesignerConfiguration	designerConfiguration;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -210,6 +215,33 @@ public class AttackService {
 
 		return result;
 
+	}
+
+	/**
+	 * This method receives the number of resources that the attacker can steal in an attack;
+	 * and returns an Array<Integer> where the first Integer is the water the attacker stole,
+	 * the second the food, the third the metal and the fourth the wood.
+	 * 
+	 * @param attack
+	 * @param resources
+	 * @return
+	 */
+	public ArrayList<Integer> getCollectionResourcesOfAttack(final Integer resources) {
+		ArrayList<Integer> result;
+		Integer waterStole, foodStole, metalStole, woodStole;
+
+		result = new ArrayList<Integer>();
+		waterStole = (int) Math.round(resources * this.designerConfiguration.getWaterFactorSteal());
+		foodStole = (int) Math.round(resources * this.designerConfiguration.getFoodFactorSteal());
+		metalStole = (int) Math.round(resources * this.designerConfiguration.getMetalFactorSteal());
+		woodStole = (int) Math.round(resources * this.designerConfiguration.getWoodFactorSteal());
+
+		result.add(waterStole);
+		result.add(foodStole);
+		result.add(metalStole);
+		result.add(woodStole);
+
+		return result;
 	}
 	public Attack findAttacksByAttacker(final int refugeId) {
 		Assert.isTrue(refugeId != 0);

@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -165,13 +166,8 @@ public class NotificationService {
 
 				if (notification == null) {
 					notification = this.create();
-					title = new HashMap<String, String>();
-					body = new HashMap<String, String>();
-
-					title.put("es", "elbixo");
-					title.put("en", "thebixo");
-					body.put("es", "elbody");
-					body.put("en", "thebody");
+					title = this.generetateTitleMapResultByAttack(attack);
+					body = this.generetateTitleBodyResultByAttack(attack);
 
 					notification.setBody(body);
 					notification.setTitle(title);
@@ -189,6 +185,60 @@ public class NotificationService {
 		for (final Gather g : gathers) {
 
 		}
+	}
+
+	public Map<String, String> generetateTitleMapResultByAttack(final Attack attack) {
+		Map<String, String> result;
+		Integer resources;
+		String titleEs, titleEn;
+
+		result = new HashMap<String, String>();
+		resources = this.attackService.getResourcesOfAttack(attack);
+
+		if (resources <= 0) {
+			titleEs = "El defensor resistió el ataque";
+			titleEn = "The defendant resisted the attack";
+		} else {
+			titleEs = "El atacante consiguió robar recursos";
+			titleEn = "The attacker managed to steal resources";
+		}
+
+		result.put("es", titleEs);
+		result.put("en", titleEn);
+
+		return result;
+
+	}
+
+	public Map<String, String> generetateTitleBodyResultByAttack(final Attack attack) {
+		Map<String, String> result;
+		Integer resources;
+		Integer waterStolen, foodStolen, metalStolen, woodStolen;
+		ArrayList<Integer> resourcesStolen;
+		String bodyEs, bodyEn;
+
+		result = new HashMap<String, String>();
+		resources = this.attackService.getResourcesOfAttack(attack);
+		resourcesStolen = this.attackService.getCollectionResourcesOfAttack(resources);
+
+		if (resources <= 0) {
+			bodyEs = "El atacante no condiguió robar ningún recurso.";
+			bodyEn = "The attacker didn't steal any resources.";
+		} else {
+			waterStolen = resourcesStolen.get(0);
+			foodStolen = resourcesStolen.get(1);
+			metalStolen = resourcesStolen.get(2);
+			woodStolen = resourcesStolen.get(3);
+			bodyEs = "El atacante consiguió robar: \n" + waterStolen + " Agua \n" + foodStolen + " Comida \n" + metalStolen + "Metal \n" + woodStolen + "Madera.";
+
+			bodyEn = "The attacker could steal: \n" + waterStolen + " Water \n" + foodStolen + " Food \n" + metalStolen + "Metal \n" + woodStolen + "Wood.";
+		}
+
+		result.put("es", bodyEs);
+		result.put("en", bodyEn);
+
+		return result;
+
 	}
 
 	public Notification findNotificationByMission(final int missionId) {

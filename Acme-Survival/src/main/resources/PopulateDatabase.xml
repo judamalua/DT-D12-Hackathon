@@ -191,10 +191,10 @@
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="10" />
-		<property name="waterFactorSteal" value="0.5" />
-		<property name="foodFactorSteal" value="0.5" />
-		<property name="metalFactorSteal" value="0.5" />
-		<property name="woodFactorSteal" value="0.5" />
+		<property name="waterFactorSteal" value="0.25" />
+		<property name="foodFactorSteal" value="0.25" />
+		<property name="metalFactorSteal" value="0.25" />
+		<property name="woodFactorSteal" value="0.25" />
 	</bean>
 
 	<!-- %%%% Payers %%%% -->

@@ -25,7 +25,7 @@ public interface GatherRepository extends JpaRepository<Gather, Integer> {
 	@Query("select g from Gather g where g.player.id = ?1")
 	Page<Gather> findRecolectionsByPlayer(int playerId, Pageable pageable);
 
-	@Query("select g from Gather g where g.player.id = ?1 and g where g.endMoment < ?2")
+	@Query("select g from Gather g where g.player.id = ?1 and g.endMoment < ?2")
 	Collection<Gather> findGathersFinishedByPlayer(int playerId, Date date);
 
 }
