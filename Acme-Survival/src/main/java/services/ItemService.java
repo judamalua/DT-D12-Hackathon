@@ -181,10 +181,10 @@ public class ItemService {
 		assert item != null;
 		assert item.getId() != 0;
 
+		Assert.isTrue(!item.getEquipped());
 		Assert.isTrue(this.itemRepository.exists(item.getId()));
 
 		this.itemRepository.delete(item);
-		this.refugeService.save(item.getRefuge());
 
 	}
 
@@ -205,6 +205,11 @@ public class ItemService {
 		result = this.itemRepository.findItemsByRefuge(refugeId, pageable);
 
 		return result;
+	}
+
+	public void flush() {
+		this.itemRepository.flush();
+
 	}
 
 }

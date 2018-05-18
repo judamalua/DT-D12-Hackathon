@@ -128,4 +128,66 @@ public class ItemPlayerController extends AbstractController {
 		return result;
 	}
 
+	/**
+	 * That method remove a item from your refuge
+	 * 
+	 * @param characterId
+	 * 
+	 * @return ModelandView
+	 * @author Luis
+	 */
+	@RequestMapping("/remove")
+	public ModelAndView remove(@RequestParam(required = true) final Integer itemId) {
+		ModelAndView result;
+		Actor player;
+		Item item;
+
+		try {
+			player = this.actorService.findActorByPrincipal();
+			Assert.isTrue((player instanceof Player));
+			item = this.itemService.findOne(itemId);
+			this.itemService.delete(item);
+			result = this.arsenal(0);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+		return result;
+	}
+
+	/**
+	 * That method returns a model and view with the characters list of a player
+	 * 
+	 * @param page
+	 * 
+	 * @return ModelandView
+	 * @author Luis
+	 */
+	@RequestMapping("/armory")
+	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page) {
+		ModelAndView result;
+		Page<Item> items;
+		Refuge refuge;
+		Pageable pageable;
+		Configuration configuration;
+		Player player;
+
+		try {
+			result = new ModelAndView("item/armory");
+			configuration = this.configurationService.findConfiguration();
+			pageable = new PageRequest(page, configuration.getPageSize());
+			player = (Player) this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
+
+			result.addObject("items", items.getContent());
+			result.addObject("page", page);
+			result.addObject("pageNum", items.getTotalPages());
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+		return result;
+	}
+
 }
