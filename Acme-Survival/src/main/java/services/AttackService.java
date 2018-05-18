@@ -27,27 +27,27 @@ public class AttackService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private AttackRepository		attackRepository;
+	private AttackRepository				attackRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private MoveService				moveService;
+	private MoveService						moveService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private RefugeService					refugeService;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private Validator				validator;
+	private Validator						validator;
 
 	@Autowired
-	private NotificationService		notificationService;
+	private NotificationService				notificationService;
 
 	@Autowired
-	private DesignerConfiguration	designerConfiguration;
+	private DesignerConfigurationService	designerConfigurationService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -211,6 +211,9 @@ public class AttackService {
 		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
 		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
 
+		if (strengthSumDefendant == null)
+			strengthSumDefendant = 1;
+
 		result = strengthSumAttacker - strengthSumDefendant;
 
 		return result;
@@ -229,12 +232,15 @@ public class AttackService {
 	public ArrayList<Integer> getCollectionResourcesOfAttack(final Integer resources) {
 		ArrayList<Integer> result;
 		Integer waterStole, foodStole, metalStole, woodStole;
+		DesignerConfiguration dc;
+
+		dc = this.designerConfigurationService.findDesignerConfiguration();
 
 		result = new ArrayList<Integer>();
-		waterStole = (int) Math.round(resources * this.designerConfiguration.getWaterFactorSteal());
-		foodStole = (int) Math.round(resources * this.designerConfiguration.getFoodFactorSteal());
-		metalStole = (int) Math.round(resources * this.designerConfiguration.getMetalFactorSteal());
-		woodStole = (int) Math.round(resources * this.designerConfiguration.getWoodFactorSteal());
+		waterStole = (int) Math.round(resources * dc.getWaterFactorSteal());
+		foodStole = (int) Math.round(resources * dc.getFoodFactorSteal());
+		metalStole = (int) Math.round(resources * dc.getMetalFactorSteal());
+		woodStole = (int) Math.round(resources * dc.getWoodFactorSteal());
 
 		result.add(waterStole);
 		result.add(foodStole);
