@@ -3,8 +3,10 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.validation.Validator;
 
 import repositories.CharacterRepository;
 
@@ -21,8 +22,11 @@ import com.github.javafaker.Faker;
 
 import domain.Actor;
 import domain.Character;
+import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
+import domain.RestorationRoom;
+import domain.Room;
 
 @Service
 @Transactional
@@ -36,10 +40,10 @@ public class CharacterService {
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private Validator			validator;
+	private ActorService		actorService;
 
 	@Autowired
-	private ActorService		actorService;
+	private InventoryService	inventoryService;
 
 	@Autowired
 	private RefugeService		refugeService;
@@ -85,6 +89,9 @@ public class CharacterService {
 		Character result;
 
 		result = this.characterRepository.findOne(characterId);
+
+		if (result != null && result.getRoom() != null && result.getRoom().getRoomDesign() instanceof RestorationRoom)
+			result = this.updateStats(result);
 
 		return result;
 
@@ -217,7 +224,7 @@ public class CharacterService {
 		character.setRefuge(refuge);
 		character.setRoom(null);
 
-		this.generateCharacterHabilities(character);
+		this.generateCharacterAbilities(character);
 
 		return character;
 
@@ -228,7 +235,7 @@ public class CharacterService {
 	 * 
 	 * @author Luis
 	 **/
-	private void generateCharacterHabilities(final Character character) {
+	private void generateCharacterAbilities(final Character character) {
 		Integer sum = 0;
 		final List<Integer> properties = new ArrayList<Integer>();
 		final Random r = new Random();
@@ -274,7 +281,7 @@ public class CharacterService {
 		character.setLevel(1);
 		character.setRoom(null);
 
-		this.generateCharacterHabilities(character);
+		this.generateCharacterAbilities(character);
 
 		return character;
 
@@ -407,4 +414,57 @@ public class CharacterService {
 		this.characterRepository.flush();
 	}
 
+	private Character updateStats(final Character character) {
+
+		Assert.notNull(character);
+
+		Room room;
+		RestorationRoom restorationRoom;
+		Character result;
+		Inventory inventory;
+		Double food, water, health;
+		Date entrance, currentDate;
+		long hours;
+
+		room = character.getRoom();
+
+		restorationRoom = (RestorationRoom) room.getRoomDesign();
+
+		inventory = this.inventoryService.findInventoryByRefuge(character.getRefuge().getId());
+
+		entrance = character.getRoomEntrance();
+		currentDate = new Date();
+
+		hours = TimeUnit.MILLISECONDS.toHours(currentDate.getTime() - entrance.getTime());
+
+		food = restorationRoom.getFood() * hours;
+		health = restorationRoom.getHealth() * hours;
+		water = restorationRoom.getWater() * hours;
+
+		if (character.getCurrentFood() + food < 100) {
+			character.setCurrentFood((int) (character.getCurrentFood() + food));
+			inventory.setFood(inventory.getFood() - food);
+		} else
+			character.setCurrentFood(100);
+
+		if (character.getCurrentHealth() + health < 100)
+			character.setCurrentHealth((int) (character.getCurrentHealth() + health));
+		else
+			character.setCurrentHealth(100);
+
+		if (character.getCurrentWater() + water < 100) {
+			character.setCurrentWater((int) (character.getCurrentWater() + water));
+			inventory.setWater(inventory.getWater() - water);
+		} else
+			character.setCurrentWater(100);
+
+		if (hours > 0)
+			character.setRoomEntrance(currentDate);
+
+		this.inventoryService.save(inventory);
+
+		result = this.save(character);
+
+		return result;
+	}
 }

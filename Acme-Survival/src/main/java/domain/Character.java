@@ -1,18 +1,24 @@
 
 package domain;
 
+import java.util.Date;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -32,6 +38,7 @@ public class Character extends DomainEntity {
 	private int		level;
 	private int		experience;
 	private boolean	male;
+	private Date	roomEntrance;
 
 
 	//private boolean	male;
@@ -132,6 +139,17 @@ public class Character extends DomainEntity {
 
 	public void setExperience(final int experience) {
 		this.experience = experience;
+	}
+
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+	public Date getRoomEntrance() {
+		return this.roomEntrance;
+	}
+
+	public void setRoomEntrance(final Date roomEntrance) {
+		this.roomEntrance = roomEntrance;
 	}
 
 

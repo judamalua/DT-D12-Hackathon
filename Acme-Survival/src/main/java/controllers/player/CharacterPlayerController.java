@@ -10,6 +10,8 @@
 
 package controllers.player;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,12 +27,14 @@ import services.CharacterService;
 import services.ConfigurationService;
 import services.ItemService;
 import services.RefugeService;
+import services.RoomService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Character;
 import domain.Configuration;
 import domain.Player;
 import domain.Refuge;
+import domain.Room;
 
 @Controller
 @RequestMapping("/character/player")
@@ -47,6 +51,9 @@ public class CharacterPlayerController extends AbstractController {
 
 	@Autowired
 	private ItemService				itemService;
+
+	@Autowired
+	private RoomService				roomService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -117,10 +124,52 @@ public class CharacterPlayerController extends AbstractController {
 			Assert.isTrue((player instanceof Player));
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
-			if (discard == true)
+			if (discard)
 				this.itemService.UpdateDiscard(character);
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
 			character = this.characterService.findOne(characterId);
+			result.addObject("character", character);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+		return result;
+	}
+
+	/**
+	 * That method returns a model and view with the character display
+	 * 
+	 * @param characterId
+	 * 
+	 * @return ModelandView
+	 * @author Luis
+	 */
+	@RequestMapping("/move")
+	public ModelAndView move(@RequestParam final Integer characterId, @RequestParam final Integer roomId) {
+		ModelAndView result;
+		Actor player;
+		Character character;
+		Refuge refuge;
+		Room room;
+		Integer numCharacter;
+
+		try {
+			result = new ModelAndView("character/display");
+			player = this.actorService.findActorByPrincipal();
+			Assert.isTrue((player instanceof Player));
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			character = this.characterService.findOne(characterId);
+			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+			room = this.roomService.findOne(roomId);
+
+			numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
+
+			Assert.isTrue(numCharacter > room.getRoomDesign().getMaxResistance());
+
+			character.setRoom(room);
+			character.setRoomEntrance(new Date());
+			character = this.characterService.save(character);
+
 			result.addObject("character", character);
 
 		} catch (final Throwable oops) {

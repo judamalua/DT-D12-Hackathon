@@ -14,7 +14,7 @@
 
 <spring:message code="master.page.current.lang" var="currentLang" />
 
-<acme:pagination requestURI="itemDesign/designer/list?page="
+<acme:pagination requestURI="itemDesign/designer/list.do?tool=${tool}&finalMode=${finalMode}&page="
 	pageNum="${pageNum}" page="${page}" />
 
 <display:table name="itemDesigns" id="itemDesign"
@@ -36,7 +36,7 @@
 
 	<jstl:if test="${!tool}">
 		<spring:message code="resource.water" var="waterTitle" />
-		<display:column title="${strengthTitle}" property="water" />
+		<display:column title="${waterTitle}" property="water" />
 
 		<spring:message code="resource.food" var="foodTitle" />
 		<display:column title="${foodTitle}" property="food" />
@@ -76,13 +76,12 @@
 			</jstl:if>
 		</security:authorize>
 	</display:column>
-
 </display:table>
-
+<br/>
 <security:authorize access="hasRole('DESIGNER')">
 	<acme:button url="itemDesign/designer/create.do?tool=true"
 		code="tool.create" />
-
+	<br/>
 	<acme:button url="itemDesign/designer/create.do?tool=false"
 		code="resource.create" />
 </security:authorize>

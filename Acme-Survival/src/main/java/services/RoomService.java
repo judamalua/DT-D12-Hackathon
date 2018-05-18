@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +18,7 @@ import repositories.RoomRepository;
 import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
+import domain.ResourceRoom;
 import domain.Room;
 
 @Service
@@ -128,6 +130,21 @@ public class RoomService {
 		Collection<Room> result;
 
 		result = this.roomRepository.findRoomsByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Collection<Room> findResourceRoomsByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Collection<Room> rooms, result;
+
+		rooms = this.roomRepository.findRoomsByRefuge(refugeId);
+		result = new HashSet<>();
+
+		for (final Room room : rooms)
+			if (room.getRoomDesign() instanceof ResourceRoom)
+				result.add(room);
 
 		return result;
 	}

@@ -453,11 +453,11 @@
 
 	<!-- %%%%%% domain.Inventory %%%%%% -->
 	<bean id="Inventory1" class="domain.Inventory">
-		<property name="water" value="3" />
-		<property name="food" value="3" />
-		<property name="wood" value="3" />
-		<property name="metal" value="3" />
-		<property name="capacity" value="20" />
+		<property name="water" value="20" />
+		<property name="food" value="20" />
+		<property name="wood" value="20" />
+		<property name="metal" value="20" />
+		<property name="capacity" value="100" />
 		<property name="refuge" ref="Refuge1" />
 	</bean>
 
@@ -1842,7 +1842,7 @@
 		</property>
 		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
-		<property name="costMetal" value="4" />
+		<property name="costMetal" value="3" />
 		<property name="finalMode" value="true" />
 		<property name="maxCapacityCharacters" value="1" />
 		<property name="water" value="1" />

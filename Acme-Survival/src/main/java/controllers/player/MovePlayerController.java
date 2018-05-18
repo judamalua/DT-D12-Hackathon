@@ -92,8 +92,10 @@ public class MovePlayerController extends AbstractController {
 			if (inventory.getFood() >= designerConfiguration.getMovingFood() && inventory.getMetal() >= designerConfiguration.getMovingMetal() && inventory.getWater() >= designerConfiguration.getMovingWater()
 				&& inventory.getWood() >= designerConfiguration.getMovingWood())
 				result = this.createEditModelAndView(move, "move.confirm");
-			else
+			else {
 				result = this.createEditModelAndView(move, "move.resources.error");
+				result.addObject("error", true);
+			}
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge"))

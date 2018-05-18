@@ -104,6 +104,7 @@ public class ItemDesignDesignerController extends AbstractController {
 
 			result.addObject("page", page);
 			result.addObject("tool", tool);
+			result.addObject("finalMode", finalMode);
 
 			result.addObject("requestURI", "itemDesign/designer/list.do?finalMode=" + finalMode + "&tool=" + tool + "&");
 

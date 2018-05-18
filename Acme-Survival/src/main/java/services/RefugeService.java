@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -26,6 +27,7 @@ import domain.Location;
 import domain.Move;
 import domain.Player;
 import domain.Refuge;
+import domain.ResourceRoom;
 import domain.Room;
 import domain.Warehouse;
 
@@ -73,9 +75,6 @@ public class RefugeService {
 	@Autowired
 	private Validator			validator;
 
-	@Autowired
-	private RoomDesignService	roomDesignService;
-
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -117,6 +116,9 @@ public class RefugeService {
 		Assert.isTrue(refugeId != 0);
 
 		result = this.refugeRepository.findOne(refugeId);
+
+		if (result != null)
+			this.updateInventory(result);
 
 		return result;
 
@@ -184,10 +186,10 @@ public class RefugeService {
 				this.itemService.save(item);
 			}
 
-			for (final Move move : moves) {
-				move.setRefuge(result);
-				this.moveService.save(move);
-			}
+			//			for (final Move move : moves) {
+			//				move.setRefuge(result);
+			//				this.moveService.save(move);
+			//			}
 
 			for (final Room room : rooms) {
 				room.setRefuge(result);
@@ -439,6 +441,71 @@ public class RefugeService {
 		capacity -= items.size();
 
 		return capacity;
+
+	}
+
+	private Double getInventoryCapacity(final Inventory inventory) {
+		Double result;
+		Double currentSize;
+
+		currentSize = inventory.getMetal() + inventory.getWater() + inventory.getWood() + inventory.getFood();
+
+		result = inventory.getCapacity() - currentSize;
+
+		return result;
+	}
+
+	public void updateInventory(final Refuge refuge) {
+
+		Inventory inventory;
+		Collection<Room> resourceRooms;
+		Double inventoryCapacity;
+		Integer hours;
+		long difference;
+		Date currentDate;
+
+		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+
+		resourceRooms = this.roomService.findResourceRoomsByRefuge(refuge.getId());
+
+		if (resourceRooms.size() > 0 && refuge.getLastView() != null) {
+			inventoryCapacity = this.getInventoryCapacity(inventory);
+
+			currentDate = new Date();
+
+			difference = currentDate.getTime() - refuge.getLastView().getTime();
+
+			hours = (int) TimeUnit.MILLISECONDS.toHours(difference);
+
+			for (final Room room : resourceRooms) {
+				if ((inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getFood()) < inventory.getCapacity()) {
+					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWater() < inventory.getCapacity()) {
+					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWood() < inventory.getCapacity()) {
+					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getMetal() < inventory.getCapacity()) {
+					inventory.setWood(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+			}
+			if (hours > 0)
+				refuge.setLastView(new Date());
+		} else
+			refuge.setLastView(new Date());
 
 	}
 }
