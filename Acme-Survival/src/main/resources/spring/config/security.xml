@@ -190,7 +190,7 @@
 
 		<security:intercept-url pattern="/attack/player/results.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/attack/player/delete.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
@@ -212,6 +212,8 @@
 		<security:intercept-url pattern="/character/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/character/player/display.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/character/player/move.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 

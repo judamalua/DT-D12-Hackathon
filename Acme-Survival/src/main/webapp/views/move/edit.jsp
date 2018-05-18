@@ -27,7 +27,9 @@
 	<form:hidden path="version" />
 	<form:hidden path="location" />
 
-	<acme:submit name="confirm" code="move.save" />
-	
-	<acme:cancel url="refuge/player/display.do" code="move.cancel"/>
+	<jstl:if test="${!error}">
+		<acme:submit name="confirm" code="move.save" />
+	</jstl:if>
+
+	<acme:cancel url="refuge/player/display.do" code="move.cancel" />
 </form:form>

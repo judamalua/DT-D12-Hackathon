@@ -130,7 +130,7 @@ public class ForumService {
 
 		Assert.isTrue(this.forumRepository.exists(forum.getId()));
 		if (!(actor instanceof Moderator))
-			Assert.isTrue(forum.getOwner().equals(forum));
+			Assert.isTrue(forum.getOwner().equals(actor));
 		this.deleteRecursive(forum);
 	}
 

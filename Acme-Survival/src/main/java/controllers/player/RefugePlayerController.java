@@ -140,6 +140,8 @@ public class RefugePlayerController extends AbstractController {
 			} else
 				refuge = this.refugeService.findOne(refugeId);
 
+			this.refugeService.updateInventory(refuge);
+
 			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
 			owner = ownRefuge != null && ownRefuge.equals(refuge);
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
@@ -211,11 +213,13 @@ public class RefugePlayerController extends AbstractController {
 		Refuge sendedRefuge = null;
 		Player player;
 		Refuge ownRefuge;
+
 		try {
 			sendedRefuge = refuge;
 			refuge = this.refugeService.reconstruct(refuge, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
+
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(sendedRefuge, "refuge.params.error");
 		else

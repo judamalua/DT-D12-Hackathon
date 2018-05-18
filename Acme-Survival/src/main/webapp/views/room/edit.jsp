@@ -29,10 +29,12 @@
 			$.get('room/player/resources.do?roomDesignId=' + $('select option:selected').val(), function(result) {
 				if (result == 'error') {
 					$('#resourceError').show();
+					$('#resources').hide();
 				} else if (result.length > 0) {
 					$('#wood').html(result.split(',')[0]);
 					$('#metal').html(result.split(',')[1]);
 					$('#resources').show();
+					$('#resourceError').hide();
 				} else {
 					$('#resourceError').hide();
 					$('#resources').hide();
