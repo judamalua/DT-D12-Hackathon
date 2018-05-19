@@ -172,10 +172,9 @@ body {
 	background-color: #fff;
 }
 
-.pagination li.active {
-	background-color: #A2A2A2;
+.slider .indicators .indicator-item.active {
+    background-color: white;
 }
-
 /*Nav and footer Materialize color*/
 nav{
 	background-color: #797D7F;
@@ -190,13 +189,8 @@ nav{
 	clear: both;
 }
 
-.slider .indicators .indicator-item.active{
-	background-color: #797D7F;
-}
-
-
 .slider .indicators .indicator-item{
-	background-color: #797D7F;
+	background-color: none;
 }
    
 .slider-image{
@@ -208,6 +202,10 @@ nav{
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating){
 	color: #f5f5f5;
+}
+
+.red.darken-4 {
+    background-color: #797D7F !important;
 }
 
 .dropdown-content {
