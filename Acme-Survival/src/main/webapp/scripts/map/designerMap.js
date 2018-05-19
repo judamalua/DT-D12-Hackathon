@@ -319,16 +319,14 @@ function generateMap() {
 						y : Number(mapElements.locations[int2].point_d.split(",")[1])
 					}
 				};
-				if (pointInZone(m, r)) {
+				if (pointInZone2(m, r)) {
 					currentInt = int2;
 				}
 			}
 			if (currentInt != -1) {
 				var language = getLanguageToUse();
 				var contentString = '<b>' + mapTranslations.location.location[language] + '</b><br/><b>' + mapTranslations.location.name[language] + ": </b>"
-						+ mapElements.locations[currentInt].name[language] + '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId='
-						+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.gatherMissionStartLink[language] + '</a><br/><a href="' + getMainDomain()
-						+ 'move/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">' + mapTranslations.location.moveStartLink[language] + '</a>';
+						+ mapElements.locations[currentInt].name[language];
 
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
@@ -389,7 +387,7 @@ function generateMap() {
 						y : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[1])
 					}
 				};
-				if (pointInZone(m, r)) {
+				if (pointInZone2(m, r)) {
 					currentInt = int2;
 				}
 			}
