@@ -117,8 +117,10 @@ public class RefugeService {
 
 		result = this.refugeRepository.findOne(refugeId);
 
-		if (result != null)
+		if (result != null) {
 			this.updateInventory(result);
+			this.updateLocation(result);
+		}
 
 		return result;
 
@@ -133,7 +135,6 @@ public class RefugeService {
 		Attack attackWhereAttacked;
 		Collection<Attack> attacksWhereDefend;
 		Collection<Item> items;
-		Collection<Move> moves;
 		Collection<domain.Character> characters;
 		Collection<Room> rooms;
 		Actor actor;
@@ -150,7 +151,6 @@ public class RefugeService {
 			attacksWhereDefend = this.attackService.findAttacksByDefendant(refuge.getId());
 			characters = this.characterService.findCharactersByRefuge(refuge.getId());
 			items = this.itemService.findItemsByRefuge(refuge.getId());
-			moves = this.moveService.findMovesByRefuge(refuge.getId());
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId());
 			inventory = this.inventoryService.findInventoryByRefuge(result.getId());
 
@@ -349,6 +349,8 @@ public class RefugeService {
 		Refuge result;
 
 		result = this.refugeRepository.findRefugeByPlayer(playerId);
+		if (result != null)
+			this.updateLocation(result);
 
 		return result;
 	}
@@ -507,5 +509,25 @@ public class RefugeService {
 		} else
 			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 
+	}
+
+	private Refuge updateLocation(final Refuge refuge) {
+
+		Move move;
+		Refuge result;
+		result = refuge;
+		Date currentDate;
+
+		move = this.moveService.findMostRecentMoveByRefuge(refuge.getId());
+		currentDate = new Date();
+
+		if (move != null && move.getEndDate().before(currentDate) && !move.getLocation().equals(refuge.getLocation())) {
+			refuge.setLocation(move.getLocation());
+			refuge.setGpsCoordinates(this.generateRandomCoordinates(move.getLocation()));
+
+			result = this.save(refuge);
+		}
+
+		return result;
 	}
 }
