@@ -20,16 +20,19 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<div class="form-group">
+	<div class="row">
+		<form:form action="move/player/confirm.do" modelAttribute="move">
 
-<form:form action="move/player/confirm.do" modelAttribute="move">
+			<form:hidden path="id" />
+			<form:hidden path="version" />
+			<form:hidden path="location" />
 
-	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<form:hidden path="location" />
+			<jstl:if test="${!error}">
+				<acme:submit name="confirm" code="move.save" />
+			</jstl:if>
 
-	<jstl:if test="${!error}">
-		<acme:submit name="confirm" code="move.save" />
-	</jstl:if>
-
-	<acme:cancel url="refuge/player/display.do" code="move.cancel" />
-</form:form>
+			<acme:cancel url="refuge/player/display.do" code="move.cancel" />
+		</form:form>
+	</div>
+</div>

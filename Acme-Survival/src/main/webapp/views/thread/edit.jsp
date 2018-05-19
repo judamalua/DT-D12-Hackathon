@@ -20,7 +20,12 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<script>
+$(document).ready(function() {
+	$('.chips').chips();
+});
 
+</script>
 <form:form action="thread/actor/edit.do" modelAttribute="thread">
 
 	<form:hidden path="id" />
@@ -33,9 +38,10 @@
 	</p>
 
 	<acme:textbox code="thread.name" path="name" required="true" />
-
+	
+	<spring:message code="thread.tags.info"/>
 	<acme:textarea code="thread.tags" path="tags" />
-
+	
 	<jstl:if test="${thread.forum==null}">
 		<acme:select items="${forums}" itemLabel="name" code="thread.forum"
 			path="forum" />
