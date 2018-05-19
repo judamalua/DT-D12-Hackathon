@@ -356,7 +356,7 @@ function generateMap() {
 						y : Number(mapElements.locations[int2].point_d.split(",")[1])
 					}
 				};
-				if (pointInZone(m, r)) {
+				if (pointInZone2(m, r)) {
 					currentInt = int2;
 				}
 			}
@@ -427,6 +427,7 @@ function createElementsMain() {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (this.responseText != "null") {
+				console.log(this.responseText);
 				document.getElementById("mapElements").innerHTML = this.responseText;
 				generateMap();
 			}

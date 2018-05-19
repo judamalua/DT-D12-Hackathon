@@ -319,7 +319,7 @@ function generateMap() {
 						y : Number(mapElements.locations[int2].point_d.split(",")[1])
 					}
 				};
-				if (pointInZone(m, r)) {
+				if (pointInZone2(m, r)) {
 					currentInt = int2;
 				}
 			}
@@ -389,7 +389,7 @@ function generateMap() {
 						y : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[1])
 					}
 				};
-				if (pointInZone(m, r)) {
+				if (pointInZone2(m, r)) {
 					currentInt = int2;
 				}
 			}
