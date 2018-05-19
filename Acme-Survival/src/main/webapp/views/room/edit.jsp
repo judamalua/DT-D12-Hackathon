@@ -43,34 +43,42 @@
 		});
 	});
 </script>
-<form:form action="room/player/edit.do" modelAttribute="room">
+<div class="form-group">
+	<div class="row">
+		<form:form action="room/player/edit.do" modelAttribute="room">
 
-	<form:hidden path="id" />
-	<form:hidden path="version" />
+			<form:hidden path="id" />
+			<form:hidden path="version" />
 
 
-	<p>
-		<em><spring:message code="form.required.params" /></em>
-	</p>
+			<p>
+				<em><spring:message code="form.required.params" /></em>
+			</p>
 
-	<div id="resources">
-		<spring:message code="room.wood" />:<div id="wood"></div>
-		<spring:message code="room.metal" />:<div id="metal"></div>
+			<div id="resources">
+				<spring:message code="room.wood" />
+				:
+				<div id="wood"></div>
+				<spring:message code="room.metal" />
+				:
+				<div id="metal"></div>
+			</div>
+			<div id="resourceError" class="error">
+				<spring:message code="room.resources.error" />
+			</div>
+			<spring:message var="lang" code="master.page.current.lang" />
+
+			<acme:select id="roomDesign" items="${roomDesigns}"
+				itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
+
+			<acme:submit name="save" code="room.save" />
+
+			<jstl:if test="${room.id!=0}">
+				<acme:delete clickCode="room.delete.message" name="delete"
+					code="room.delete" />
+			</jstl:if>
+			<acme:cancel url="refuge/player/display.do" code="room.cancel" />
+
+		</form:form>
 	</div>
-	<div id="resourceError" class="error">
-		<spring:message code="room.resources.error" />
-	</div>
-	<spring:message var="lang" code="master.page.current.lang" />
-
-	<acme:select id="roomDesign" items="${roomDesigns}"
-		itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
-
-	<acme:submit name="save" code="room.save" />
-
-	<jstl:if test="${room.id!=0}">
-		<acme:delete clickCode="room.delete.message" name="delete"
-			code="room.delete" />
-	</jstl:if>
-	<acme:cancel url="refuge/player/display.do" code="room.cancel" />
-
-</form:form>
+</div>
