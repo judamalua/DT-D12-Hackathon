@@ -18,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationService;
 import services.GatherService;
+import services.LocationService;
+import services.MoveService;
+import services.RefugeService;
 import controllers.AbstractController;
 import domain.Character;
 import domain.Configuration;
@@ -29,13 +32,22 @@ import domain.Player;
 public class GatherPlayerController extends AbstractController {
 
 	@Autowired
-	private GatherService		gatherService;
+	private GatherService			gatherService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private RefugeService			refugeService;
+
+	@Autowired
+	private MoveService				moveService;
+
+	@Autowired
+	private LocationService			locationService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -118,7 +130,7 @@ public class GatherPlayerController extends AbstractController {
 
 	private ModelAndView createEditModelAndView(final Gather gather, final String message) {
 		ModelAndView result;
-		Collection<Character> elegibleCharacters;
+		final Collection<Character> elegibleCharacters;
 
 		elegibleCharacters = this.gatherService.findCharactersElegible();
 		result = new ModelAndView("gather/edit");
@@ -126,6 +138,7 @@ public class GatherPlayerController extends AbstractController {
 		result.addObject("gather", gather);
 		result.addObject("message", message);
 		result.addObject("characters", elegibleCharacters);
+		//result.addObject("formatGatherEndMoment", endMoment);
 
 		return result;
 	}
