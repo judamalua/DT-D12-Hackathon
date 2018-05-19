@@ -29,7 +29,7 @@ import domain.Player;
 public class GatherPlayerController extends AbstractController {
 
 	@Autowired
-	private GatherService		gatherService;
+	private GatherService			gatherService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -118,7 +118,7 @@ public class GatherPlayerController extends AbstractController {
 
 	private ModelAndView createEditModelAndView(final Gather gather, final String message) {
 		ModelAndView result;
-		Collection<Character> elegibleCharacters;
+		final Collection<Character> elegibleCharacters;
 
 		elegibleCharacters = this.gatherService.findCharactersElegible();
 		result = new ModelAndView("gather/edit");

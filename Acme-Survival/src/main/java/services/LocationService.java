@@ -92,4 +92,31 @@ public class LocationService {
 	}
 	//Business methods --------------------
 
+	/**
+	 * This method calculates the center of the given location
+	 * 
+	 * @param location
+	 * @return the center of the given location
+	 * 
+	 * @author Juanmi
+	 */
+	public Location getLocationCenter(final Location location) {
+		Location result;
+		final Double center_x, center_y;
+		String center;
+
+		center_x = (new Double(location.getPoint_a().split(",")[0].trim()) + new Double(location.getPoint_b().split(",")[0].trim()) + new Double(location.getPoint_c().split(",")[0].trim()) + new Double(location.getPoint_d().split(",")[0].trim())) / 4;
+		center_y = (new Double(location.getPoint_a().split(",")[1].trim()) + new Double(location.getPoint_b().split(",")[1].trim()) + new Double(location.getPoint_c().split(",")[1].trim()) + new Double(location.getPoint_d().split(",")[1].trim())) / 4;
+
+		center = center_x + "," + center_y;
+
+		result = this.create();
+
+		result.setPoint_a(center);
+		result.setPoint_b(center);
+		result.setPoint_c(center);
+		result.setPoint_d(center);
+
+		return result;
+	}
 }

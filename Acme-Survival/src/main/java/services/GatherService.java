@@ -62,14 +62,15 @@ public class GatherService {
 		Long time;
 		Player player;
 		Refuge refuge;
-		Location location;
+		Location location, locationCenter;
 
 		result = new Gather();
 		location = this.locationService.findOne(locationId);
+		locationCenter = this.locationService.getLocationCenter(location);
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 		startMoment = new Date(System.currentTimeMillis() - 10);
-		time = this.moveService.timeBetweenLocations(refuge.getLocation(), location);
+		time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
 		endMoment = new Date(System.currentTimeMillis() + time);
 
 		result.setStartDate(startMoment);
