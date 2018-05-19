@@ -173,7 +173,7 @@ body {
 }
 
 .pagination li.active {
-	background-color: #717273;
+	background-color: #A2A2A2;
 }
 
 /*Nav and footer Materialize color*/
@@ -217,6 +217,13 @@ nav{
 .dropdown-content > li{
    background-color: #717273;
    color: white;
+}
+
+.select-dropdown > li{
+   background-color: #f5f5f5;
+}
+.select-dropdown > li > span{
+   color: #5D5D5D;
 }
 
 .dropdown-content > li > a{
