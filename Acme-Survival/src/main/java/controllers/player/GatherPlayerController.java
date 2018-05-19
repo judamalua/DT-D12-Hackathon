@@ -94,7 +94,7 @@ public class GatherPlayerController extends AbstractController {
 
 			player = (Player) this.actorService.findActorByPrincipal();
 
-			gathers = this.gatherService.findRecolectionsByPlayer(player.getId(), pageable);
+			gathers = this.gatherService.findGathersByPlayer(player.getId(), pageable);
 
 			result.addObject("gathers", gathers.getContent());
 			result.addObject("page", page);
