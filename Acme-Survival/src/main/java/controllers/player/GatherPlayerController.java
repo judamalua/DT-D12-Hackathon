@@ -18,9 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationService;
 import services.GatherService;
-import services.LocationService;
-import services.MoveService;
-import services.RefugeService;
 import controllers.AbstractController;
 import domain.Character;
 import domain.Configuration;
@@ -39,15 +36,6 @@ public class GatherPlayerController extends AbstractController {
 
 	@Autowired
 	private ActorService			actorService;
-
-	@Autowired
-	private RefugeService			refugeService;
-
-	@Autowired
-	private MoveService				moveService;
-
-	@Autowired
-	private LocationService			locationService;
 
 
 	// Constructors -----------------------------------------------------------
