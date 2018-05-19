@@ -126,7 +126,6 @@ public class GatherPlayerController extends AbstractController {
 		result.addObject("gather", gather);
 		result.addObject("message", message);
 		result.addObject("characters", elegibleCharacters);
-		//result.addObject("formatGatherEndMoment", endMoment);
 
 		return result;
 	}
