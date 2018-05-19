@@ -112,9 +112,10 @@ public class GatherService {
 		Collection<Gather> recolectionNotFinishedByCharacter;
 		Player player;
 
-		recolectionNotFinishedByCharacter = this.findRecolectionNotFinishedByCharacter(gather.getCharacter().getId());
+		recolectionNotFinishedByCharacter = this.findGatherNotFinishedByCharacter(gather.getCharacter().getId());
 		player = (Player) this.actorService.findActorByPrincipal();
 
+		// We check that the character that is trying to be sent into a mission is not already doing one
 		Assert.isTrue(recolectionNotFinishedByCharacter.size() == 0);
 		Assert.isTrue(gather.getPlayer().equals(player));
 
@@ -149,7 +150,7 @@ public class GatherService {
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 		result = this.characterService.findCharactersByRefuge(refuge.getId());
-		charactersInMission = this.findCharacterInRecolectionMission();
+		charactersInMission = this.findCharacterInGatheringMission();
 
 		result.removeAll(charactersInMission);
 
@@ -157,38 +158,43 @@ public class GatherService {
 	}
 
 	/**
-	 * This method returns all the characters that are currently involved in a Recolection Mission.
+	 * This method returns all the characters that are currently involved in a Gathering Mission.
 	 * 
 	 * @return Collection<Character>
 	 * @author antrodart
 	 */
-	public Collection<Character> findCharacterInRecolectionMission() {
+	public Collection<Character> findCharacterInGatheringMission() {
 		Collection<Character> result;
 		Date now;
+		Refuge refuge;
+		Player player;
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 
 		now = new Date();
-		result = this.gatherRepository.findCharactersInRecolectionMission(now);
+		result = this.gatherRepository.findCharactersInGatheringMission(now, refuge.getId());
 
 		return result;
 
 	}
 
-	public Collection<Gather> findRecolectionNotFinishedByCharacter(final int characterId) {
+	public Collection<Gather> findGatherNotFinishedByCharacter(final int characterId) {
 		Collection<Gather> result;
 		Date now;
 
 		now = new Date();
-		result = this.gatherRepository.findRecolectionNotFinishedByCharacter(characterId, now);
+		result = this.gatherRepository.findGatherNotFinishedByCharacter(characterId, now);
 
 		return result;
 	}
 
-	public Page<Gather> findRecolectionsByPlayer(final int playerId, final Pageable pageable) {
+	public Page<Gather> findGathersByPlayer(final int playerId, final Pageable pageable) {
 		Page<Gather> result;
 
 		Assert.notNull(pageable);
 
-		result = this.gatherRepository.findRecolectionsByPlayer(playerId, pageable);
+		result = this.gatherRepository.findGathersByPlayer(playerId, pageable);
 
 		return result;
 
@@ -199,14 +205,16 @@ public class GatherService {
 		Long time;
 		Player player;
 		Refuge refuge;
+		Location locationCenter;
 
 		if (gather.getId() == 0) {
 			result = gather;
+			locationCenter = this.locationService.getLocationCenter(gather.getLocation());
 
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			startMoment = new Date(System.currentTimeMillis() - 10);
-			time = this.moveService.timeBetweenLocations(refuge.getLocation(), gather.getLocation());
+			time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
 			endMoment = new Date(System.currentTimeMillis() + time);
 
 			result.setStartDate(startMoment);

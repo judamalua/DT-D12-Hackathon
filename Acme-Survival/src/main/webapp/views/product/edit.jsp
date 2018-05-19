@@ -26,15 +26,14 @@
 			<acme:textbox code="product.pictureUrl" path="pictureUrl"
 				required="true" />
 
-			<acme:textboxMap code="product.name_en" path="name[en]"
-				errorPath="name" required="true" />
-			<acme:textboxMap code="product.name_es" path="name[es]"
-				errorPath="name" required="true" />
+			<jstl:forEach items="${languages}" var="lang">
+				<acme:textboxMap errorPath="name" code="product.name_${lang}"
+					path="name[${lang}]" required="true" />
 
-			<acme:textareaMap code="product.description_en"
-				path="description[en]" errorPath="description" required="true" />
-			<acme:textareaMap code="product.description_es"
-				path="description[es]" errorPath="description" required="true" />
+				<acme:textareaMap errorPath="description"
+					code="product.description_${lang}" path="description[${lang}]"
+					required="true" />
+			</jstl:forEach>
 
 			<acme:textbox code="product.price" path="price" required="true"
 				placeholder="1.50" />

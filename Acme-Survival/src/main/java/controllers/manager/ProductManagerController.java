@@ -211,11 +211,15 @@ public class ProductManagerController {
 
 	protected ModelAndView createEditModelAndView(final Product product, final String messageCode) {
 		ModelAndView result;
+		Configuration configuration;
+
+		configuration = this.configurationService.findConfiguration();
 
 		result = new ModelAndView("product/edit");
 		result.addObject("product", product);
 
 		result.addObject("message", messageCode);
+		result.addObject("languages", configuration.getLanguages());
 
 		return result;
 
