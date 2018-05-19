@@ -503,9 +503,9 @@ public class RefugeService {
 					break;
 			}
 			if (hours > 0)
-				refuge.setLastView(new Date());
+				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 		} else
-			refuge.setLastView(new Date());
+			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 
 	}
 }

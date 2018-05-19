@@ -145,7 +145,7 @@ public class CharacterPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/move")
-	public ModelAndView move(@RequestParam final Integer characterId, @RequestParam final Integer roomId) {
+	public ModelAndView move(@RequestParam final Integer characterId, @RequestParam(required = false) final Integer roomId) {
 		ModelAndView result;
 		Actor player;
 		Character character;
@@ -160,14 +160,18 @@ public class CharacterPlayerController extends AbstractController {
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
-			room = this.roomService.findOne(roomId);
-
-			numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
-
-			Assert.isTrue(numCharacter > room.getRoomDesign().getMaxResistance());
+			if (roomId != null) {
+				room = this.roomService.findOne(roomId);
+				numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
+				Assert.isTrue(numCharacter > room.getRoomDesign().getMaxResistance());
+				character.setRoomEntrance(new Date(System.currentTimeMillis() - 1));
+			} else {
+				room = null;
+				character.setRoomEntrance(null);
+			}
 
 			character.setRoom(room);
-			character.setRoomEntrance(new Date());
+
 			character = this.characterService.save(character);
 
 			result.addObject("character", character);
