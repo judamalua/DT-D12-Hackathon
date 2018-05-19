@@ -187,7 +187,7 @@
 		<property name="movingMetal" value="5" />
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
-		<property name="kmPerSecond" value="5" />
+		<property name="kmPerSecond" value="500" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="10" />

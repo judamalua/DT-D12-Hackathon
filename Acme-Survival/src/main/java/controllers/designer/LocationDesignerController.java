@@ -126,7 +126,7 @@ public class LocationDesignerController extends AbstractController {
 
 	private JSONArray getLocationsNotFinal() {
 		final JSONArray result = new JSONArray();
-		final Collection<Location> locations = this.locationService.findAllLocationsByFinal();
+		final Collection<Location> locations = this.locationService.findAllLocationsByNotFinal();
 		for (final Location location : locations) {
 			final JSONObject jsonLocation = this.makeLocation(location);
 			result.put(jsonLocation);
