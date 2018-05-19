@@ -71,7 +71,7 @@ public class MovePlayerController extends AbstractController {
 		Player player;
 		Refuge ownRefuge;
 		Location location;
-		Move move = null;
+		Move move = null, currentMove;
 		DesignerConfiguration designerConfiguration;
 		Inventory inventory;
 
@@ -88,12 +88,17 @@ public class MovePlayerController extends AbstractController {
 
 			move = this.moveService.create();
 			move.setLocation(location);
+			currentMove = this.moveService.findCurrentMoveByRefuge(ownRefuge.getId());
 
 			if (inventory.getFood() >= designerConfiguration.getMovingFood() && inventory.getMetal() >= designerConfiguration.getMovingMetal() && inventory.getWater() >= designerConfiguration.getMovingWater()
-				&& inventory.getWood() >= designerConfiguration.getMovingWood())
+				&& inventory.getWood() >= designerConfiguration.getMovingWood() && currentMove == null)
 				result = this.createEditModelAndView(move, "move.confirm");
 			else {
-				result = this.createEditModelAndView(move, "move.resources.error");
+				if (currentMove != null)
+					result = this.createEditModelAndView(move, "move.moving.error");
+				else
+					result = this.createEditModelAndView(move, "move.resources.error");
+
 				result.addObject("error", true);
 			}
 

@@ -3,11 +3,13 @@ package services;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -92,7 +94,7 @@ public class MoveService {
 		final Move result;
 		long time;
 		this.actorService.checkActorLogin();
-		Refuge refuge, savedRefuge;
+		Refuge refuge;
 		final Collection<Player> playersKnowsRefuge;
 		Inventory inventory;
 		DesignerConfiguration designerConfiguration;
@@ -101,15 +103,10 @@ public class MoveService {
 		time = this.timeBetweenLocations(move.getRefuge().getLocation(), move.getLocation());
 		move.setEndDate(new Date(System.currentTimeMillis() + time));
 		refuge = move.getRefuge();
-		refuge.setLocation(move.getLocation());
-		refuge.setGpsCoordinates(this.refugeService.generateRandomCoordinates(move.getLocation()));
-
-		savedRefuge = this.refugeService.save(refuge);
 
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-		inventory = this.inventoryService.findInventoryByRefuge(savedRefuge.getId());
-		move.setRefuge(savedRefuge);
+		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
 
 		inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
 		inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
@@ -118,10 +115,10 @@ public class MoveService {
 
 		this.inventoryService.save(inventory);
 
-		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(savedRefuge.getId());
+		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
 
 		for (final Player player : playersKnowsRefuge) {
-			player.getRefuges().remove(savedRefuge);
+			player.getRefuges().remove(refuge);
 			this.actorService.save(player);
 		}
 		result = this.moveRepository.save(move);
@@ -147,6 +144,35 @@ public class MoveService {
 		Collection<Move> result;
 
 		result = this.moveRepository.findMovesByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Move findMostRecentMoveByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		List<Move> resultList;
+		Move result;
+		Pageable pageable;
+
+		pageable = new PageRequest(0, 1);
+
+		resultList = this.moveRepository.findMostRecentMoveByRefuge(refugeId, pageable).getContent();
+
+		if (resultList.size() > 0)
+			result = resultList.get(0);
+		else
+			result = null;
+
+		return result;
+	}
+
+	public Move findCurrentMoveByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Move result;
+
+		result = this.moveRepository.findCurrentMoveByRefuge(refugeId);
 
 		return result;
 	}
