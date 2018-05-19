@@ -173,7 +173,7 @@ body {
 }
 
 .slider .indicators .indicator-item.active {
-    background-color: white;
+    background-color: #797D7F;
 }
 /*Nav and footer Materialize color*/
 nav{
