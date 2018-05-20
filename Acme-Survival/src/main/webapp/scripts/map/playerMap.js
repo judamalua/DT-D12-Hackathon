@@ -419,9 +419,49 @@ function generateMap() {
 				infoWindow.open(map);
 			}
 		});
-	}
 
+	}
+	// ATTACK HANDLING -------------------------------------
+	if (mapElements.onGoingAttack.refuge !== undefined) {
+		var attackCoordinates = [
+				{
+					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+				}, {
+					lat : Number(mapElements.onGoingAttack.refuge.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.onGoingAttack.refuge.gpsCoordinates.split(",")[1])
+				}
+		];
+		var attack = new google.maps.Polyline({
+			path : attackCoordinates,
+			geodesic : true,
+			strokeColor : '#FF0000',
+			strokeOpacity : 1.0,
+			strokeWeight : 5,
+			map : map
+		});
+		attack.addListener('click', function(event) {
+			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+			var language = getLanguageToUse();
+			var contentString = '<b>' + mapTranslations.attack.attack[language] + '</b><br/><b>' + mapTranslations.attack.refuge[language] + ": </b>"
+					+ mapElements.onGoingAttack.refuge.name + '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>" + mapElements.onGoingAttack.refuge.playerName
+					+ '<br/>' + '<b>' + mapTranslations.attack.time[language] + ': </b>' + getRemainingTime(mapElements.onGoingAttack.endMoment);
+			infoWindow.setContent(contentString);
+			infoWindow.setPosition(event.latLng);
+
+			infoWindow.open(map);
+		});
+	}
 }
+
+function getRemainingTime(time) {
+	var language = getLanguageToUse();
+	if (time > 0) {
+		return Math.floor((time / 1000) / 60) + ' ' + mapTranslations.attack.minutes[language];
+	} else {
+		return mapTranslations.attack.done[language];
+	}
+};
 function createElementsMain() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {

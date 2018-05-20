@@ -195,6 +195,8 @@
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
 		<property name="woodFactorSteal" value="0.25" />
+		<property name="foodLostGatherFactor" value="2" />
+		<property name="waterLostGatherFactor" value="1" />
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
@@ -676,14 +678,14 @@
 					<key>
 						<value>es</value>
 					</key>
-					<value>Descripcion sobre el evento ded la villa</value>
+					<value>Descripcion sobre el evento de la villa</value>
 				</entry>
 			</map>
 		</property>
 		<property name="health" value="0.40" />
 		<property name="water" value="0.40" />
 		<property name="food" value="0.40" />
-		<property name="finalMode" value="false" />
+		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
 

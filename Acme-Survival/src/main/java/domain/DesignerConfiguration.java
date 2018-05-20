@@ -4,6 +4,8 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -24,6 +26,8 @@ public class DesignerConfiguration extends DomainEntity {
 	private double	foodFactorSteal;
 	private double	metalFactorSteal;
 	private double	woodFactorSteal;
+	private Integer	foodLostGatherFactor;
+	private Integer	waterLostGatherFactor;
 
 
 	public double getMovingWood() {
@@ -120,6 +124,26 @@ public class DesignerConfiguration extends DomainEntity {
 
 	public void setWoodFactorSteal(final double woodFactorSteal) {
 		this.woodFactorSteal = woodFactorSteal;
+	}
+
+	@Min(0)
+	@NotNull
+	public Integer getFoodLostGatherFactor() {
+		return this.foodLostGatherFactor;
+	}
+
+	public void setFoodLostGatherFactor(final Integer foodLostGatherFactor) {
+		this.foodLostGatherFactor = foodLostGatherFactor;
+	}
+
+	@Min(0)
+	@NotNull
+	public Integer getWaterLostGatherFactor() {
+		return this.waterLostGatherFactor;
+	}
+
+	public void setWaterLostGatherFactor(final Integer waterLostGatherFactor) {
+		this.waterLostGatherFactor = waterLostGatherFactor;
 	}
 
 	// Relationships ----------------------------------------------------------
