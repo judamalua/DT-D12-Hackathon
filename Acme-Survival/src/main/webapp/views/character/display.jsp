@@ -138,28 +138,28 @@
 	<img style="height: 200px; width: 200px;" src="https://trcs.wikispaces.com/file/view/barracks_large.jpg/74113875/barracks_large.jpg"/>
 	
 </div>
-<spring:message code="room.mainRoom"></spring:message>
+<spring:message code="room.barrack"></spring:message>
 </jstl:if>
 <jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
 <div>
 	<img style="height: 200px; width: 200px;" src="https://thefederalistpapers.org/wp-content/uploads/2016/10/gunssales.jpg"/>
 	
 </div>
-<spring:message code="room.mainRoom"></spring:message>
+<spring:message code="room.warehouse"></spring:message>
 </jstl:if>
 <jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"RestorationRoom\"}">
 <div>
 	<img style="height: 200px; width: 200px;" src="https://unificacionistas.files.wordpress.com/2009/08/bioenergia.jpg"/>
 	
 </div>
-<spring:message code="room.mainRoom"></spring:message>
+<spring:message code="room.restorationRoom"></spring:message>
 </jstl:if>
 <jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
 <div>
 	<img style="height: 200px; width: 200px;" src="http://www.sheffield-pottery.com/v/vspfiles/assets/images/wharehouse-int.jpg"/>
 	
 </div>
-<spring:message code="room.mainRoom"></spring:message>
+<spring:message code="room.resourceRoom"></spring:message>
 </jstl:if>
 
 

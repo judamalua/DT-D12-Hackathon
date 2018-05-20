@@ -33,7 +33,7 @@
 		<security:authorize access="hasRole('PLAYER')">
 			
 				<acme:button
-					url="character/player/move.do?itemId=${room.id}&characterId=${characterId}"
+					url="character/player/move.do?roomId=${room.id}&characterId=${characterId}"
 					code="room.move" />
 		
 		</security:authorize>
