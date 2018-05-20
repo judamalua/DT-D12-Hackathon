@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,6 +15,8 @@ import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.DesignerConfiguration;
+import domain.Inventory;
 import domain.Notification;
 import domain.Player;
 import domain.Refuge;
@@ -25,24 +28,30 @@ public class AttackService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private AttackRepository	attackRepository;
+	private AttackRepository				attackRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private MoveService			moveService;
+	private MoveService						moveService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private RefugeService					refugeService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator						validator;
 
 	@Autowired
-	private NotificationService	notificationService;
+	private NotificationService				notificationService;
+
+	@Autowired
+	private DesignerConfigurationService	designerConfigurationService;
+
+	@Autowired
+	private InventoryService				inventoryService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -143,6 +152,7 @@ public class AttackService {
 		Notification notification;
 
 		notification = this.notificationService.findNotificationByMission(attack.getId());
+		this.stealResources(attack);
 
 		if (notification != null) {
 			notification.setMission(null);
@@ -153,6 +163,93 @@ public class AttackService {
 
 	}
 
+	private void stealResources(final Attack attack) {
+		Integer resources;
+		Double waterStolen, foodStolen, metalStolen, woodStolen;
+		ArrayList<Integer> resourcesStolen;
+		Inventory attackerInventory, defendantInventory;
+		Double attackerCapacity, totalCapacity;
+
+		resources = this.getResourcesOfAttack(attack);
+		resourcesStolen = this.getCollectionResourcesOfAttack(resources);
+		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
+		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
+		attackerCapacity = attackerInventory.getCapacity();
+		totalCapacity = attackerCapacity;
+
+		waterStolen = 1.0 * resourcesStolen.get(0);
+		foodStolen = 1.0 * resourcesStolen.get(1);
+		metalStolen = 1.0 * resourcesStolen.get(2);
+		woodStolen = 1.0 * resourcesStolen.get(3);
+
+		if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + waterStolen <= attackerCapacity) && (defendantInventory.getWater() - waterStolen >= 0)) {
+			attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
+			defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
+
+		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + waterStolen <= attackerCapacity) && (defendantInventory.getWater() - waterStolen < 0)) {
+			waterStolen = defendantInventory.getWater();
+			attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
+			defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
+
+		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + waterStolen > attackerCapacity) && (defendantInventory.getWater() - waterStolen >= 0)) {
+			waterStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
+			attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
+			defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
+
+		}
+
+		if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + foodStolen <= attackerCapacity && (defendantInventory.getFood() - foodStolen >= 0)) {
+			attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
+			defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
+
+		} else if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + foodStolen <= attackerCapacity && (defendantInventory.getFood() - foodStolen < 0)) {
+			foodStolen = defendantInventory.getFood();
+			attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
+			defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
+
+		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + foodStolen > attackerCapacity) && (defendantInventory.getFood() - foodStolen >= 0)) {
+			foodStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
+			attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
+			defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
+
+		}
+
+		if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + metalStolen <= attackerCapacity && (defendantInventory.getMetal() - metalStolen >= 0)) {
+			attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
+			defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
+			totalCapacity = totalCapacity + metalStolen;
+		} else if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + metalStolen <= attackerCapacity && (defendantInventory.getMetal() - metalStolen < 0)) {
+			metalStolen = defendantInventory.getMetal();
+			attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
+			defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
+			totalCapacity = totalCapacity + metalStolen;
+		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + metalStolen > attackerCapacity) && (defendantInventory.getMetal() - metalStolen >= 0)) {
+			metalStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
+			attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
+			defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
+
+		}
+
+		if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + woodStolen <= attackerCapacity && (defendantInventory.getWood() - woodStolen >= 0)) {
+			attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
+			defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
+			totalCapacity = totalCapacity + woodStolen;
+		} else if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + woodStolen <= attackerCapacity && (defendantInventory.getWood() - woodStolen < 0)) {
+			woodStolen = defendantInventory.getWood();
+			attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
+			defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
+			totalCapacity = totalCapacity + woodStolen;
+		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + woodStolen > attackerCapacity) && (defendantInventory.getWood() - woodStolen >= 0)) {
+			woodStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
+			attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
+			defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
+
+		}
+
+		this.inventoryService.save(attackerInventory);
+		this.inventoryService.save(defendantInventory);
+
+	}
 	/**
 	 * This method checks that the player who is connected (the principal)
 	 * knows the refuge passed as a param
@@ -206,10 +303,43 @@ public class AttackService {
 		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
 		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
 
+		if (strengthSumDefendant == null)
+			strengthSumDefendant = 1;
+
 		result = strengthSumAttacker - strengthSumDefendant;
 
 		return result;
 
+	}
+
+	/**
+	 * This method receives the number of resources that the attacker can steal in an attack;
+	 * and returns an Array<Integer> where the first Integer is the water the attacker stole,
+	 * the second the food, the third the metal and the fourth the wood.
+	 * 
+	 * @param attack
+	 * @param resources
+	 * @return
+	 */
+	public ArrayList<Integer> getCollectionResourcesOfAttack(final Integer resources) {
+		ArrayList<Integer> result;
+		Integer waterStole, foodStole, metalStole, woodStole;
+		DesignerConfiguration dc;
+
+		dc = this.designerConfigurationService.findDesignerConfiguration();
+
+		result = new ArrayList<Integer>();
+		waterStole = (int) Math.round(resources * dc.getWaterFactorSteal());
+		foodStole = (int) Math.round(resources * dc.getFoodFactorSteal());
+		metalStole = (int) Math.round(resources * dc.getMetalFactorSteal());
+		woodStole = (int) Math.round(resources * dc.getWoodFactorSteal());
+
+		result.add(waterStole);
+		result.add(foodStole);
+		result.add(metalStole);
+		result.add(woodStole);
+
+		return result;
 	}
 	public Attack findAttacksByAttacker(final int refugeId) {
 		Assert.isTrue(refugeId != 0);

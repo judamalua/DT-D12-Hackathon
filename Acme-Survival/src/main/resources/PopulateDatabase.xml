@@ -187,14 +187,14 @@
 		<property name="movingMetal" value="5" />
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
-		<property name="kmPerSecond" value="5" />
+		<property name="kmPerSecond" value="5000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="10" />
-		<property name="waterFactorSteal" value="0.5" />
-		<property name="foodFactorSteal" value="0.5" />
-		<property name="metalFactorSteal" value="0.5" />
-		<property name="woodFactorSteal" value="0.5" />
+		<property name="waterFactorSteal" value="0.25" />
+		<property name="foodFactorSteal" value="0.25" />
+		<property name="metalFactorSteal" value="0.25" />
+		<property name="woodFactorSteal" value="0.25" />
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
@@ -412,8 +412,9 @@
 		<property name="fullName" value="Rob Stark" />
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
-		<property name="male" value="true" />	
+		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
+		<property name="currentlyInGatheringMission" value = "true" />
 
 	</bean>
 
@@ -453,12 +454,21 @@
 
 	<!-- %%%%%% domain.Inventory %%%%%% -->
 	<bean id="Inventory1" class="domain.Inventory">
-		<property name="water" value="3" />
-		<property name="food" value="3" />
-		<property name="wood" value="3" />
-		<property name="metal" value="3" />
-		<property name="capacity" value="20" />
+		<property name="water" value="20" />
+		<property name="food" value="20" />
+		<property name="wood" value="20" />
+		<property name="metal" value="20" />
+		<property name="capacity" value="100" />
 		<property name="refuge" ref="Refuge1" />
+	</bean>
+	
+	<bean id="Inventory2" class="domain.Inventory">
+		<property name="water" value="20" />
+		<property name="food" value="20" />
+		<property name="wood" value="20" />
+		<property name="metal" value="20" />
+		<property name="capacity" value="100" />
+		<property name="refuge" ref="Refuge2" />
 	</bean>
 
 	<!-- %%%%%% domain.Location %%%%%% -->
@@ -483,6 +493,7 @@
 		<property name="point_b" value="42.432987253576734,3.4635955854628264" />
 		<property name="point_c" value="36.46702062395571,-1.4582794145371736" />
 		<property name="point_d" value="36.819621891697544,-9.719998164537174" />
+		<property name="lootTable" ref="LootTable1" />
 		<property name="finalMode" value="true" />
 	</bean>
 
@@ -507,6 +518,7 @@
 		<property name="point_b" value="42.55695649032093,6.19349487778743" />
 		<property name="point_c" value="44.90630505359299,21.83802612778743" />
 		<property name="point_d" value="54.72765897192587,18.32240112778743" />
+		<property name="lootTable" ref="LootTable1" />
 		<property name="finalMode" value="true" />
 	</bean>
 
@@ -618,6 +630,7 @@
 
 	<bean id="LootTable1" class="domain.LootTable">
 		<property name="name" value="Bosque" />
+		<property name="finalMode" value="true" />
 		<property name="probabilityEvents">
 			<list>
 				<ref bean="ProbabilityEvent1" />
@@ -627,14 +640,10 @@
 			<list>
 			</list>
 		</property>
-		<property name="locations">
-			<list>
-			</list>
-		</property>
 	</bean>
 
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
-		<property name="value" value="0.40" />
+		<property name="value" value="0.4" />
 		<property name="event" ref="Event1" />
 	</bean>
 
@@ -1842,7 +1851,7 @@
 		</property>
 		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
-		<property name="costMetal" value="4" />
+		<property name="costMetal" value="3" />
 		<property name="finalMode" value="true" />
 		<property name="maxCapacityCharacters" value="1" />
 		<property name="water" value="1" />
@@ -2012,6 +2021,131 @@
 		<property name="finalMode" value="false" />
 		<property name="maxCapacityCharacters" value="4" />
 		<property name="characterCapacity" value="1" />
+	</bean>
+	<bean id="RoomDesign8" class="domain.Warehouse">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Warehouse in proccess</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Almacén en proceso</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Future implementation.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Futura implementación.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="0" />
+		<property name="costMetal" value="0" />
+		<property name="finalMode" value="false" />
+		<property name="maxCapacityCharacters" value="4" />
+		<property name="itemCapacity" value="1" />
+	</bean>
+	<bean id="RoomDesign9" class="domain.RestorationRoom">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Restoration room in proccess</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Habitación de restauración en proceso</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Future implementation.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Futura implementación.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="0" />
+		<property name="costMetal" value="0" />
+		<property name="finalMode" value="false" />
+		<property name="maxCapacityCharacters" value="4" />
+		<property name="health" value="1" />
+		<property name="food" value="1" />
+		<property name="water" value="1" />
+	</bean>
+	<bean id="RoomDesign10" class="domain.ResourceRoom">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Resource room in proccess</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Habitación de recursos en proceso</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Future implementation.</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Futura implementación.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="maxResistance" value="10" />
+		<property name="costWood" value="0" />
+		<property name="costMetal" value="0" />
+		<property name="finalMode" value="false" />
+		<property name="maxCapacityCharacters" value="4" />
+		<property name="water" value="1" />
+		<property name="food" value="1" />
+		<property name="metal" value="1" />
+		<property name="wood" value="1" />
 	</bean>
 
 	<!-- %%%% Configuration %%%% -->

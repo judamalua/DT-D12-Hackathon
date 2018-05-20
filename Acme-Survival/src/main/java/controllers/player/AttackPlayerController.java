@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
 import services.AttackService;
-import services.ConfigurationService;
-import services.RefugeService;
 import controllers.AbstractController;
 import domain.Attack;
 
@@ -21,16 +18,7 @@ import domain.Attack;
 public class AttackPlayerController extends AbstractController {
 
 	@Autowired
-	private AttackService			attackService;
-
-	@Autowired
-	private ConfigurationService	configurationService;
-
-	@Autowired
-	private ActorService			actorService;
-
-	@Autowired
-	private RefugeService			refugeService;
+	private AttackService	attackService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -66,7 +54,7 @@ public class AttackPlayerController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403");
 		else
 			try {
-				this.attackService.save(attack);
+				this.attackService.saveToAttack(attack);
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");

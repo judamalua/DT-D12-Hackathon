@@ -29,7 +29,7 @@ import domain.Player;
 public class GatherPlayerController extends AbstractController {
 
 	@Autowired
-	private GatherService		gatherService;
+	private GatherService			gatherService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -94,7 +94,7 @@ public class GatherPlayerController extends AbstractController {
 
 			player = (Player) this.actorService.findActorByPrincipal();
 
-			gathers = this.gatherService.findRecolectionsByPlayer(player.getId(), pageable);
+			gathers = this.gatherService.findGathersByPlayer(player.getId(), pageable);
 
 			result.addObject("gathers", gathers.getContent());
 			result.addObject("page", page);
@@ -118,7 +118,10 @@ public class GatherPlayerController extends AbstractController {
 
 	private ModelAndView createEditModelAndView(final Gather gather, final String message) {
 		ModelAndView result;
-		Collection<Character> elegibleCharacters;
+		final Collection<Character> elegibleCharacters;
+
+		// Here we update gathering missions
+		this.gatherService.updateGatheringMissions();
 
 		elegibleCharacters = this.gatherService.findCharactersElegible();
 		result = new ModelAndView("gather/edit");

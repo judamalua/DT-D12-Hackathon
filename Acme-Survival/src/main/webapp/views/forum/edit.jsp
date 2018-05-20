@@ -20,39 +20,44 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<div class="form-group">
+	<div class="row">
+		<form:form action="forum/actor/edit.do" modelAttribute="forumForm">
 
-<form:form action="forum/actor/edit.do" modelAttribute="forumForm">
+			<form:hidden path="id" />
+			<form:hidden path="version" />
 
-	<form:hidden path="id" />
-	<form:hidden path="version" />
+			<p>
+				<em><spring:message code="form.required.params" /></em>
+			</p>
 
-	<p>
-		<em><spring:message code="form.required.params" /></em>
-	</p>
+			<acme:textbox code="forum.name" path="name" required="true" />
 
-	<acme:textbox code="forum.name" path="name" required="true" />
+			<acme:textarea code="forum.description" path="description"
+				required="true" />
 
-	<acme:textarea code="forum.description" path="description"
-		required="true" />
+			<acme:textbox code="forum.image" path="image" />
 
-	<acme:textbox code="forum.image" path="image" />
+			<security:authorize
+				access="hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('MANAGER') or hasRole('DESIGNER')">
+				<acme:checkbox code="forum.staff" path="staff" id="staff" />
 
-	<security:authorize
-		access="hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('MANAGER') or hasRole('DESIGNER')">
-		<acme:checkbox code="forum.staff" path="staff" id="staff" />
+				<acme:checkbox code="forum.support" path="support" id="support" />
+			</security:authorize>
 
-		<acme:checkbox code="forum.support" path="support" id="support" />
-	</security:authorize>
+			<acme:select items="${forums}" itemLabel="name"
+				code="forum.fatherForum" path="forum" />
+			<br/>
+			<br/>
+			<div class="cleared-div">
+				<acme:submit name="save" code="forum.save" />
 
-	<acme:select items="${forums}" itemLabel="name"
-		code="forum.fatherForum"  path="forum" />
-
-	<acme:submit name="save" code="forum.save" />
-
-	<jstl:if test="${forumForm.id!=0}">
-		<acme:delete clickCode="forum.delete.message" name="delete"
-			code="forum.delete" />
-	</jstl:if>
-	<acme:cancel url="forum/list.do" code="forum.cancel" />
-
-</form:form>
+				<jstl:if test="${forumForm.id!=0}">
+					<acme:delete clickCode="forum.delete.message" name="delete"
+						code="forum.delete" />
+				</jstl:if>
+				<acme:cancel url="forum/list.do" code="forum.cancel" />
+			</div>
+		</form:form>
+	</div>
+</div>

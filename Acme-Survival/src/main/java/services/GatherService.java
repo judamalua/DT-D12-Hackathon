@@ -3,6 +3,9 @@ package services;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -16,9 +19,11 @@ import org.springframework.validation.Validator;
 
 import repositories.GatherRepository;
 import domain.Character;
-import domain.Location;
-import domain.Player;
+import domain.Event;
 import domain.Gather;
+import domain.Location;
+import domain.Notification;
+import domain.Player;
 import domain.Refuge;
 
 @Service
@@ -33,22 +38,27 @@ public class GatherService {
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private RefugeService			refugeService;
+	private RefugeService		refugeService;
 
 	@Autowired
-	private CharacterService		characterService;
+	private CharacterService	characterService;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private MoveService				moveService;
+	private MoveService			moveService;
 
 	@Autowired
-	private LocationService			locationService;
+	private LocationService		locationService;
 
 	@Autowired
-	private Validator				validator;
+	private NotificationService	notificationService;
+
+	@Autowired
+	private Validator			validator;
+
+	public static final int		HASH_SIZE	= 4096;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -62,14 +72,15 @@ public class GatherService {
 		Long time;
 		Player player;
 		Refuge refuge;
-		Location location;
+		Location location, locationCenter;
 
 		result = new Gather();
 		location = this.locationService.findOne(locationId);
+		locationCenter = this.locationService.getLocationCenter(location);
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 		startMoment = new Date(System.currentTimeMillis() - 10);
-		time = this.moveService.timeBetweenLocations(refuge.getLocation(), location);
+		time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
 		endMoment = new Date(System.currentTimeMillis() + time);
 
 		result.setStartDate(startMoment);
@@ -108,14 +119,23 @@ public class GatherService {
 		Assert.notNull(gather.getCharacter());
 
 		Gather result;
-		Collection<Gather> recolectionNotFinishedByCharacter;
-		Player player;
+		Character character;
 
-		recolectionNotFinishedByCharacter = this.findRecolectionNotFinishedByCharacter(gather.getCharacter().getId());
-		player = (Player) this.actorService.findActorByPrincipal();
+		// We check that there is someone logged in
+		this.actorService.checkActorLogin();
 
-		Assert.isTrue(recolectionNotFinishedByCharacter.size() == 0);
-		Assert.isTrue(gather.getPlayer().equals(player));
+		character = gather.getCharacter();
+
+		// We check that the character that is trying to be sent into a mission is not already doing one
+		Assert.isTrue(!character.getCurrentlyInGatheringMission());
+		// We check that the player trying to make the mission is the same as the owner of the refuge of the character
+		Assert.isTrue(gather.getPlayer().equals(character.getRefuge().getPlayer()));
+
+		// We set to true this property, indicating that the character is now on a gathering mission
+		character.setCurrentlyInGatheringMission(true);
+
+		// And we save the character
+		this.characterService.save(character);
 
 		result = this.gatherRepository.save(gather);
 
@@ -134,6 +154,8 @@ public class GatherService {
 
 	}
 
+	// Other business methods ----------------------------------------------------------------------------------------------------------
+
 	/**
 	 * This method returns all characters that are elegible for a Recolection Mission for the Player logged (the principal).
 	 * 
@@ -148,7 +170,7 @@ public class GatherService {
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 		result = this.characterService.findCharactersByRefuge(refuge.getId());
-		charactersInMission = this.findCharacterInRecolectionMission();
+		charactersInMission = this.findCharacterInGatheringMission();
 
 		result.removeAll(charactersInMission);
 
@@ -156,38 +178,69 @@ public class GatherService {
 	}
 
 	/**
-	 * This method returns all the characters that are currently involved in a Recolection Mission.
+	 * This method returns all the characters that are currently involved in a Gathering Mission.
 	 * 
 	 * @return Collection<Character>
 	 * @author antrodart
 	 */
-	public Collection<Character> findCharacterInRecolectionMission() {
+	public Collection<Character> findCharacterInGatheringMission() {
 		Collection<Character> result;
 		Date now;
+		Refuge refuge;
+		Player player;
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 
 		now = new Date();
-		result = this.gatherRepository.findCharactersInRecolectionMission(now);
+		result = this.gatherRepository.findCharactersInGatheringMission(now, refuge.getId());
 
 		return result;
 
 	}
 
-	public Collection<Gather> findRecolectionNotFinishedByCharacter(final int characterId) {
+	public Gather findGatherNotFinishedByCharacter(final int characterId) {
+		Gather result;
+		Date now;
+
+		now = new Date();
+		result = this.gatherRepository.findGatherNotFinishedByCharacter(characterId, now);
+
+		return result;
+	}
+
+	public Collection<Gather> findGatherCollectionNotFinishedByCharacter(final int characterId) {
 		Collection<Gather> result;
 		Date now;
 
 		now = new Date();
-		result = this.gatherRepository.findRecolectionNotFinishedByCharacter(characterId, now);
+		result = this.gatherRepository.findGatherCollectionNotFinishedByCharacter(characterId, now);
 
 		return result;
 	}
 
-	public Page<Gather> findRecolectionsByPlayer(final int playerId, final Pageable pageable) {
+	/**
+	 * This query returns a non finished gathering mission of a character
+	 * 
+	 * @param characterId
+	 * @return
+	 * 
+	 * @author Juanmi
+	 */
+	public Gather findGatherFinishedByCharacter(final int characterId) {
+		Gather result;
+
+		result = this.gatherRepository.findGatherFinishedByCharacter(characterId);
+
+		return result;
+	}
+
+	public Page<Gather> findGathersByPlayer(final int playerId, final Pageable pageable) {
 		Page<Gather> result;
 
 		Assert.notNull(pageable);
 
-		result = this.gatherRepository.findRecolectionsByPlayer(playerId, pageable);
+		result = this.gatherRepository.findGathersByPlayer(playerId, pageable);
 
 		return result;
 
@@ -198,14 +251,16 @@ public class GatherService {
 		Long time;
 		Player player;
 		Refuge refuge;
+		Location locationCenter;
 
 		if (gather.getId() == 0) {
 			result = gather;
+			locationCenter = this.locationService.getLocationCenter(gather.getLocation());
 
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			startMoment = new Date(System.currentTimeMillis() - 10);
-			time = this.moveService.timeBetweenLocations(refuge.getLocation(), gather.getLocation());
+			time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
 			endMoment = new Date(System.currentTimeMillis() + time);
 
 			result.setStartDate(startMoment);
@@ -216,5 +271,86 @@ public class GatherService {
 		this.validator.validate(result, binding);
 
 		return result;
+	}
+
+	public Collection<Gather> findGathersFinishedByPlayer(final int playerId) {
+		Collection<Gather> result;
+		Date now;
+
+		now = new Date();
+		result = this.gatherRepository.findGathersFinishedByPlayer(playerId, now);
+
+		return result;
+	}
+
+	public void updateGatheringMissions() {
+		Player player;
+		Gather gatherMission;
+		Collection<Character> currentlyInGatheringMissionCharacters;
+		String eventsStringEn, eventsStringEs;
+		Refuge refuge;
+		Notification notification;
+		List<Event> eventsDuringMission;
+		int currentHealth, currentWater, currentFood;
+		final Map<String, String> titleNotification = new HashMap<String, String>();
+		titleNotification.put("en", "Gathering mission finished!");
+		titleNotification.put("es", "¡Misión de recolección finalizada!");
+		final Map<String, String> bodyNotification = new HashMap<String, String>();
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+
+		Assert.notNull(player);
+
+		currentlyInGatheringMissionCharacters = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+
+		for (final Character character : currentlyInGatheringMissionCharacters) {
+			// We check if the current character has a gathering mission that has already finished
+			gatherMission = this.findGatherFinishedByCharacter(character.getId());
+
+			if (gatherMission != null) {
+				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
+				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity());
+
+				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
+				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
+
+				//this.delete(gatherMission);
+
+				character.setCurrentlyInGatheringMission(false);
+
+				if (eventsDuringMission.size() != 0) {
+					eventsStringEn = "During the mission \"" + character.getFullName() + "\" came across with the following situations:";
+					eventsStringEs = "Durante su misión \"" + character.getFullName() + "\" se encontró con las siguientes situaciones:";
+
+					currentHealth = character.getCurrentHealth();
+					currentWater = character.getCurrentWater();
+					currentFood = character.getCurrentFood();
+
+					for (final Event event : eventsDuringMission) {
+						eventsStringEn += "Name: " + event.getName().get("en") + "Description: " + event.getDescription().get("en");
+						eventsStringEs += "Nombre: " + event.getName().get("es") + "Descripción: " + event.getDescription().get("es");
+
+						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));
+						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
+						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
+
+					}
+					bodyNotification.put("en", bodyNotification.get("en") + eventsStringEn);
+					bodyNotification.put("es", bodyNotification.get("es") + eventsStringEs);
+				}
+
+				this.characterService.save(character);
+
+				notification = this.notificationService.create();
+				notification.setTitle(titleNotification);
+				notification.setBody(bodyNotification);
+				notification.setMoment(new Date(System.currentTimeMillis() - 1));
+				notification.setPlayer(player);
+				notification.setMission(gatherMission);
+				this.notificationService.save(notification);
+			}
+
+		}
 	}
 }

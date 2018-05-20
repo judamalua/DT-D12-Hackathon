@@ -29,7 +29,7 @@
 }
 
 .dropdown-menu > li > a:hover {
-    background-color: #525864;//FF9F33
+    background-color: #797D7F;//FF9F33
     background-image: none;
 }
 
@@ -48,7 +48,6 @@
 
 .paginacion{
 	margin-left: 1%;
-	background-color: 
 }
 
 .body{
@@ -68,7 +67,7 @@ summary{
 }
 
 .progress .bar{
-	color: #2F0F0F;
+	color: #797D7F;
 }
 
 .footer {
@@ -110,11 +109,11 @@ summary{
 
 .btn{
 	/* font-family:'Raleway'; */
-	background-color: #c62828;
+	background-color: #797D7F;
 }
 
 .btn:hover{
-	background-color: #e53935;
+	background-color: #4A4B4C;
 }
 
 textarea{
@@ -122,7 +121,7 @@ textarea{
 }
 
 .navbar .brand{
-	color: #CECECE;
+	color: #797D7F;
 	padding-top: 10px;
     padding-right: 20px;
     padding-bottom: 10px;
@@ -134,13 +133,13 @@ textarea{
 }
 
 .progress-striped .bar{
-	background-color: #FF9F33;
+	background-color: #797D7F;
 	font-family: helvetica;
 	font-weight: bold;
 }
 
 .navbar .nav>li>a{
-	color: #CECECE;
+	color: #797D7F;
 	font-size: 14px;
 }
 
@@ -173,30 +172,25 @@ body {
 	background-color: #fff;
 }
 
-.pagination li.active {
-	background-color: #b71c1c;
+.slider .indicators .indicator-item.active {
+    background-color: #797D7F;
 }
-
 /*Nav and footer Materialize color*/
 nav{
-	background-color: #b71c1c;
+	background-color: #797D7F;
 }
 
 .page-footer{
-	background-color: #b71c1c;
+	padding-top:0%;
+	background-color: #797D7F;
 }
 
 .cleared-div{
 	clear: both;
 }
 
-.slider .indicators .indicator-item.active{
-	background-color: #c62828;
-}
-
-
 .slider .indicators .indicator-item{
-	background-color: #f5f5f5;
+	background-color: none;
 }
    
 .slider-image{
@@ -210,8 +204,28 @@ nav{
 	color: #f5f5f5;
 }
 
+.red.darken-4 {
+    background-color: #797D7F !important;
+}
+
 .dropdown-content {
     overflow-y:auto !important;
+}
+
+.dropdown-content > li{
+   background-color: #717273;
+   color: white;
+}
+
+.select-dropdown > li{
+   background-color: #f5f5f5;
+}
+.select-dropdown > li > span{
+   color: #5D5D5D;
+}
+
+.dropdown-content > li > a{
+   color: white;
 }
 
 .serviceImg{

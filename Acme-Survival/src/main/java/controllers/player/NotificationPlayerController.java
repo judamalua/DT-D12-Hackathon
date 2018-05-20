@@ -40,24 +40,6 @@ public class NotificationPlayerController extends AbstractController {
 		super();
 	}
 
-	//Generate notifications ---------------------------------------------------------------
-	/*
-	 * @RequestMapping(value="/generate", method = RequestMethod.GET){
-	 * public ModelAndView generate(){
-	 * ModelAndView result;
-	 * 
-	 * try{
-	 * this.notificationService.generateNotifications();
-	 * result = new ModelAndView("redirect:/notification/player/list.do");
-	 * }catch(final Throwable oops){
-	 * result = new ModelAndView("redirect:/misc/403");
-	 * }
-	 * 
-	 * return result;
-	 * }
-	 * }
-	 */
-
 	//List --------------------------------------------------------------------
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {

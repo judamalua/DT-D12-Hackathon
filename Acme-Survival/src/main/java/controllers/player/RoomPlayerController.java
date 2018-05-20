@@ -143,6 +143,7 @@ public class RoomPlayerController extends AbstractController {
 			result = this.createEditModelAndView(sendedRoom, "room.params.error");
 		else
 			try {
+				Assert.notNull(room.getRoomDesign());
 				this.roomService.save(room);
 				result = new ModelAndView("redirect:/refuge/player/display.do");
 

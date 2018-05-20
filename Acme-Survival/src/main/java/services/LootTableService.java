@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -11,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.LootTableRepository;
-import domain.Event;
 import domain.LootTable;
 
 @Service
@@ -23,7 +23,7 @@ public class LootTableService {
 	@Autowired
 	private LootTableRepository	lootTableRepository;
 	@Autowired
-	private Validator				validator;
+	private Validator			validator;
 
 
 	// Supporting services --------------------------------------------------
@@ -82,26 +82,27 @@ public class LootTableService {
 		this.lootTableRepository.delete(lootTable);
 
 	}
-	
+
 	public LootTable reconstruct(final LootTable lootTable, final BindingResult binding) {
 		LootTable result;
 
-		if (lootTable.getId() == 0) {
+		if (lootTable.getId() == 0)
 			result = lootTable;
-		} else {
+		else {
 			result = this.lootTableRepository.findOne(lootTable.getId());
 			result.setName(lootTable.getName());
 			result.setFinalMode(lootTable.getFinalMode());
-			result.setLocations(lootTable.getLocations());
 			result.setProbabilityEvents(lootTable.getProbabilityEvents());
 			result.setProbabilityItems(lootTable.getProbabilityItems());
 		}
 		this.validator.validate(result, binding);
 		return result;
 	}
-		
-	
-	
-	
-}
 
+	public Collection<LootTable> findAllFinal() {
+		Collection<LootTable> result;
+		result = this.lootTableRepository.findAllFinal();
+		return result;
+	}
+
+}

@@ -159,6 +159,7 @@ public class MapPlayerController {
 			json.put("onGoingAttack", onGoingAttack);
 			result = json.toString();
 		} catch (final Throwable e) {
+			result = e.getMessage();
 		}
 		return result;
 	}

@@ -128,12 +128,6 @@
 						<li><a href="actor/display.do"><spring:message
 									code="master.page.actorProfile" /></a></li>
 						<li class="divider"></li>
-						<li><a href="event/designer/list.do"><spring:message
-									code="master.page.events" /> </a></li>
-						<li class="divider"></li>
-						<li><a href="lootTable/designer/list.do"><spring:message
-									code="master.page.lootTables" /> </a></li>
-						<li class="divider"></li>
 						<li><a href="j_spring_security_logout"><spring:message
 									code="master.page.logout" /> </a></li>
 						
@@ -215,6 +209,9 @@
 			<security:authorize access="hasRole('DESIGNER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownDesignerFunctions" class="dropdown-content">
+					<li><a href="location/designer/display.do"><spring:message
+								code="master.page.displayLocation" /></a></li>
+					<li class="divider"></li>
 					<li><a href="roomDesign/list.do"><spring:message
 								code="master.page.room.design.list.final" /></a></li>
 					<li class="divider"></li>
@@ -232,6 +229,12 @@
 					<li class="divider"></li>
 					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
 								code="master.page.designer.resources.notFinal" /></a></li>
+					<li class="divider"></li>
+					<li><a href="event/designer/list.do"><spring:message
+								code="master.page.events" /> </a></li>
+					<li class="divider"></li>
+					<li><a href="lootTable/designer/list.do"><spring:message
+								code="master.page.lootTables" /> </a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->
