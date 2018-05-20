@@ -14,41 +14,41 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import repositories.RecolectionRepository;
+import repositories.GatherRepository;
 import domain.Character;
+import domain.Gather;
 import domain.Location;
 import domain.Player;
-import domain.Recolection;
 import domain.Refuge;
 
 @Service
 @Transactional
-public class RecolectionService {
+public class GatherService {
 
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private RecolectionRepository	recolectionRepository;
+	private GatherRepository	gatherRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private RefugeService			refugeService;
+	private RefugeService		refugeService;
 
 	@Autowired
-	private CharacterService		characterService;
+	private CharacterService	characterService;
 
 	@Autowired
-	private ActorService			actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private MoveService				moveService;
+	private MoveService			moveService;
 
 	@Autowired
-	private LocationService			locationService;
+	private LocationService		locationService;
 
 	@Autowired
-	private Validator				validator;
+	private Validator			validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -56,20 +56,21 @@ public class RecolectionService {
 	//Recoleccion: controlador que reciba una location y redirigir a una vista que seleccione el personaje con un select (este no debe estar en una mision de recoleccion ya).
 	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado más de lo que puede llevar en la capacidad, tiene que decidir qué materias tirar y cuales quedarse.
 
-	public Recolection create(final int locationId) {
-		Recolection result;
+	public Gather create(final int locationId) {
+		Gather result;
 		Date startMoment, endMoment;
 		Long time;
 		Player player;
 		Refuge refuge;
-		Location location;
+		Location location, locationCenter;
 
-		result = new Recolection();
+		result = new Gather();
 		location = this.locationService.findOne(locationId);
+		locationCenter = this.locationService.getLocationCenter(location);
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 		startMoment = new Date(System.currentTimeMillis() - 10);
-		time = this.moveService.timeBetweenLocations(refuge.getLocation(), location);
+		time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
 		endMoment = new Date(System.currentTimeMillis() + time);
 
 		result.setStartDate(startMoment);
@@ -80,57 +81,58 @@ public class RecolectionService {
 		return result;
 	}
 
-	public Collection<Recolection> findAll() {
+	public Collection<Gather> findAll() {
 
-		Collection<Recolection> result;
+		Collection<Gather> result;
 
-		Assert.notNull(this.recolectionRepository);
-		result = this.recolectionRepository.findAll();
+		Assert.notNull(this.gatherRepository);
+		result = this.gatherRepository.findAll();
 		Assert.notNull(result);
 
 		return result;
 
 	}
 
-	public Recolection findOne(final int recolectionId) {
+	public Gather findOne(final int recolectionId) {
 
-		Recolection result;
+		Gather result;
 
-		result = this.recolectionRepository.findOne(recolectionId);
+		result = this.gatherRepository.findOne(recolectionId);
 
 		return result;
 
 	}
 
-	public Recolection save(final Recolection recolection) {
-		Assert.notNull(recolection);
-		Assert.notNull(recolection.getLocation());
-		Assert.notNull(recolection.getCharacter());
+	public Gather save(final Gather gather) {
+		Assert.notNull(gather);
+		Assert.notNull(gather.getLocation());
+		Assert.notNull(gather.getCharacter());
 
-		Recolection result;
-		Collection<Recolection> recolectionNotFinishedByCharacter;
+		Gather result;
+		Collection<Gather> recolectionNotFinishedByCharacter;
 		Player player;
 
-		recolectionNotFinishedByCharacter = this.findRecolectionNotFinishedByCharacter(recolection.getCharacter().getId());
+		recolectionNotFinishedByCharacter = this.findGatherNotFinishedByCharacter(gather.getCharacter().getId());
 		player = (Player) this.actorService.findActorByPrincipal();
 
+		// We check that the character that is trying to be sent into a mission is not already doing one
 		Assert.isTrue(recolectionNotFinishedByCharacter.size() == 0);
-		Assert.isTrue(recolection.getPlayer().equals(player));
+		Assert.isTrue(gather.getPlayer().equals(player));
 
-		result = this.recolectionRepository.save(recolection);
+		result = this.gatherRepository.save(gather);
 
 		return result;
 
 	}
 
-	public void delete(final Recolection recolection) {
+	public void delete(final Gather gather) {
 
-		assert recolection != null;
-		assert recolection.getId() != 0;
+		assert gather != null;
+		assert gather.getId() != 0;
 
-		Assert.isTrue(this.recolectionRepository.exists(recolection.getId()));
+		Assert.isTrue(this.gatherRepository.exists(gather.getId()));
 
-		this.recolectionRepository.delete(recolection);
+		this.gatherRepository.delete(gather);
 
 	}
 
@@ -148,7 +150,7 @@ public class RecolectionService {
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 		result = this.characterService.findCharactersByRefuge(refuge.getId());
-		charactersInMission = this.findCharacterInRecolectionMission();
+		charactersInMission = this.findCharacterInGatheringMission();
 
 		result.removeAll(charactersInMission);
 
@@ -156,56 +158,63 @@ public class RecolectionService {
 	}
 
 	/**
-	 * This method returns all the characters that are currently involved in a Recolection Mission.
+	 * This method returns all the characters that are currently involved in a Gathering Mission.
 	 * 
 	 * @return Collection<Character>
 	 * @author antrodart
 	 */
-	public Collection<Character> findCharacterInRecolectionMission() {
+	public Collection<Character> findCharacterInGatheringMission() {
 		Collection<Character> result;
 		Date now;
+		Refuge refuge;
+		Player player;
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 
 		now = new Date();
-		result = this.recolectionRepository.findCharactersInRecolectionMission(now);
+		result = this.gatherRepository.findCharactersInGatheringMission(now, refuge.getId());
 
 		return result;
 
 	}
 
-	public Collection<Recolection> findRecolectionNotFinishedByCharacter(final int characterId) {
-		Collection<Recolection> result;
+	public Collection<Gather> findGatherNotFinishedByCharacter(final int characterId) {
+		Collection<Gather> result;
 		Date now;
 
 		now = new Date();
-		result = this.recolectionRepository.findRecolectionNotFinishedByCharacter(characterId, now);
+		result = this.gatherRepository.findGatherNotFinishedByCharacter(characterId, now);
 
 		return result;
 	}
 
-	public Page<Recolection> findRecolectionsByPlayer(final int playerId, final Pageable pageable) {
-		Page<Recolection> result;
+	public Page<Gather> findGathersByPlayer(final int playerId, final Pageable pageable) {
+		Page<Gather> result;
 
 		Assert.notNull(pageable);
 
-		result = this.recolectionRepository.findRecolectionsByPlayer(playerId, pageable);
+		result = this.gatherRepository.findGathersByPlayer(playerId, pageable);
 
 		return result;
 
 	}
-	public Recolection reconstruct(final Recolection recolection, final BindingResult binding) {
-		Recolection result = null;
+	public Gather reconstruct(final Gather gather, final BindingResult binding) {
+		Gather result = null;
 		Date startMoment, endMoment;
 		Long time;
 		Player player;
 		Refuge refuge;
+		Location locationCenter;
 
-		if (recolection.getId() == 0) {
-			result = recolection;
+		if (gather.getId() == 0) {
+			result = gather;
+			locationCenter = this.locationService.getLocationCenter(gather.getLocation());
 
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			startMoment = new Date(System.currentTimeMillis() - 10);
-			time = this.moveService.timeBetweenLocations(refuge.getLocation(), recolection.getLocation());
+			time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
 			endMoment = new Date(System.currentTimeMillis() + time);
 
 			result.setStartDate(startMoment);
@@ -214,6 +223,16 @@ public class RecolectionService {
 
 		}
 		this.validator.validate(result, binding);
+
+		return result;
+	}
+
+	public Collection<Gather> findGathersFinishedByPlayer(final int playerId) {
+		Collection<Gather> result;
+		Date now;
+
+		now = new Date();
+		result = this.gatherRepository.findGathersFinishedByPlayer(playerId, now);
 
 		return result;
 	}

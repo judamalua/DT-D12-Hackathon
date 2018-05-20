@@ -1,14 +1,13 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -16,6 +15,8 @@ import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.DesignerConfiguration;
+import domain.Notification;
 import domain.Player;
 import domain.Refuge;
 
@@ -26,21 +27,27 @@ public class AttackService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private AttackRepository	attackRepository;
+	private AttackRepository				attackRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private MoveService			moveService;
+	private MoveService						moveService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private RefugeService					refugeService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator						validator;
+
+	@Autowired
+	private NotificationService				notificationService;
+
+	@Autowired
+	private DesignerConfigurationService	designerConfigurationService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -55,9 +62,10 @@ public class AttackService {
 		defendant = this.refugeService.findOne(refugeId);
 
 		Assert.isTrue(this.playerKnowsRefugee(defendant));
-		Assert.isTrue(!this.playerAlreadyAttacking());
 
 		player = (Player) this.actorService.findActorByPrincipal();
+
+		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()));
 
 		attacker = this.refugeService.findRefugeByPlayer(player.getId());
 
@@ -105,14 +113,26 @@ public class AttackService {
 	public Attack save(final Attack attack) {
 
 		Assert.notNull(attack);
+
+		Attack result;
+
+		result = this.attackRepository.save(attack);
+
+		return result;
+
+	}
+
+	public Attack saveToAttack(final Attack attack) {
+
+		Assert.notNull(attack);
 		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()), "Player doesn't know the Refuge");
-		Assert.isTrue(!this.playerAlreadyAttacking(), "Player is already attacking");
 
 		Attack result;
 		Player player;
 
 		player = (Player) this.actorService.findActorByPrincipal();
 
+		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()), "Player is already attacking");
 		Assert.isTrue(attack.getPlayer().equals(player));
 
 		result = this.attackRepository.save(attack);
@@ -121,11 +141,18 @@ public class AttackService {
 
 	}
 	public void delete(final Attack attack) {
-
-		assert attack != null;
-		assert attack.getId() != 0;
-
+		Assert.notNull(attack);
+		Assert.isTrue(attack.getId() != 0);
 		Assert.isTrue(this.attackRepository.exists(attack.getId()));
+
+		Notification notification;
+
+		notification = this.notificationService.findNotificationByMission(attack.getId());
+
+		if (notification != null) {
+			notification.setMission(null);
+			this.notificationService.save(notification);
+		}
 
 		this.attackRepository.delete(attack);
 
@@ -157,20 +184,15 @@ public class AttackService {
 	 * 
 	 * @return true if the player is already involved in an attack mission
 	 */
-	public boolean playerAlreadyAttacking() {
+	public boolean playerAlreadyAttacking(final int playerId) {
 		Boolean result;
-		Player player;
-		Refuge refuge;
-		Date now;
-		Collection<Attack> attacks;
+		Attack attack;
 
 		result = false;
-		player = (Player) this.actorService.findActorByPrincipal();
-		now = new Date();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
-		attacks = this.attackRepository.findAttacksThatEndsAfterDate(now, refuge.getId());
 
-		if (attacks.size() != 0)
+		attack = this.attackRepository.findAttackByPlayer(playerId);
+
+		if (attack != null)
 			result = true;
 
 		return result;
@@ -189,17 +211,60 @@ public class AttackService {
 		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
 		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
 
+		if (strengthSumDefendant == null)
+			strengthSumDefendant = 1;
+
 		result = strengthSumAttacker - strengthSumDefendant;
 
 		return result;
 
 	}
-	public Collection<Attack> findAttacksByAttacker(final int refugeId) {
+
+	/**
+	 * This method receives the number of resources that the attacker can steal in an attack;
+	 * and returns an Array<Integer> where the first Integer is the water the attacker stole,
+	 * the second the food, the third the metal and the fourth the wood.
+	 * 
+	 * @param attack
+	 * @param resources
+	 * @return
+	 */
+	public ArrayList<Integer> getCollectionResourcesOfAttack(final Integer resources) {
+		ArrayList<Integer> result;
+		Integer waterStole, foodStole, metalStole, woodStole;
+		DesignerConfiguration dc;
+
+		dc = this.designerConfigurationService.findDesignerConfiguration();
+
+		result = new ArrayList<Integer>();
+		waterStole = (int) Math.round(resources * dc.getWaterFactorSteal());
+		foodStole = (int) Math.round(resources * dc.getFoodFactorSteal());
+		metalStole = (int) Math.round(resources * dc.getMetalFactorSteal());
+		woodStole = (int) Math.round(resources * dc.getWoodFactorSteal());
+
+		result.add(waterStole);
+		result.add(foodStole);
+		result.add(metalStole);
+		result.add(woodStole);
+
+		return result;
+	}
+	public Attack findAttacksByAttacker(final int refugeId) {
 		Assert.isTrue(refugeId != 0);
 
-		Collection<Attack> result;
+		Attack result;
 
 		result = this.attackRepository.findAttacksByAttacker(refugeId);
+
+		return result;
+	}
+
+	public Attack findAttackByPlayer(final int playerId) {
+		Assert.isTrue(playerId != 0);
+
+		Attack result;
+
+		result = this.attackRepository.findAttackByPlayer(playerId);
 
 		return result;
 	}
@@ -254,15 +319,17 @@ public class AttackService {
 		this.attackRepository.flush();
 	}
 
-	public Page<Attack> findAllAttacksByPlayer(final int refugeId, final Pageable pageable) {
-		Page<Attack> result;
-
-		Assert.notNull(pageable);
-
-		result = this.attackRepository.findAllAttacksByPlayer(refugeId, pageable);
-
-		return result;
-	}
+	/*
+	 * public Page<Attack> findAllAttacksByPlayer(final int refugeId, final Pageable pageable) {
+	 * Page<Attack> result;
+	 * 
+	 * Assert.notNull(pageable);
+	 * 
+	 * result = this.attackRepository.findAllAttacksByPlayer(refugeId, pageable);
+	 * 
+	 * return result;
+	 * }
+	 */
 
 	/**
 	 * This method checks if the Attack is finished or not.

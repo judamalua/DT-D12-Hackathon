@@ -106,8 +106,6 @@ public class LocationDesignerController extends AbstractController {
 			json.put("locations", locations);
 			final JSONArray locationsNotFinal = this.getLocationsNotFinal();
 			json.put("locationsNotFinal", locationsNotFinal);
-			final JSONArray languages = this.getLanguages();
-			json.put("languages", languages);
 			result = json.toString();
 		} catch (final Throwable e) {
 		}
@@ -115,10 +113,6 @@ public class LocationDesignerController extends AbstractController {
 	}
 
 	//get Methods ----------------------------------
-	private JSONArray getLanguages() {
-		final JSONArray result = new JSONArray(this.configurationService.findConfiguration().getLanguages());
-		return result;
-	}
 
 	private JSONArray getLocations() {
 		final JSONArray result = new JSONArray();
@@ -132,7 +126,7 @@ public class LocationDesignerController extends AbstractController {
 
 	private JSONArray getLocationsNotFinal() {
 		final JSONArray result = new JSONArray();
-		final Collection<Location> locations = this.locationService.findAllLocationsByFinal();
+		final Collection<Location> locations = this.locationService.findAllLocationsByNotFinal();
 		for (final Location location : locations) {
 			final JSONObject jsonLocation = this.makeLocation(location);
 			result.put(jsonLocation);

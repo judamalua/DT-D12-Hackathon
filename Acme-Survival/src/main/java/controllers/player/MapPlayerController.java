@@ -15,8 +15,8 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.AttackService;
 import services.ConfigurationService;
+import services.GatherService;
 import services.LocationService;
-import services.RecolectionService;
 import services.RefugeService;
 import domain.Actor;
 import domain.Location;
@@ -44,7 +44,7 @@ public class MapPlayerController {
 	private AttackService			attackService;
 
 	@Autowired
-	private RecolectionService		recolectionService;
+	private GatherService			gatherService;
 
 
 	// Map display -----------------------------------------------------------
@@ -109,7 +109,7 @@ public class MapPlayerController {
 	//		      "id": "1234"
 	//		    }
 	//		  ],
-	//		  "onGoingRecolections": [
+	//		  "onGoingGathers": [
 	//		    {
 	//		      "location": {
 	//		        "point_a": "37.3891,-5.9845",
@@ -138,11 +138,7 @@ public class MapPlayerController {
 	//		      "id": "12345"
 	//		    },
 	//		    "endMoment": 123424323423
-	//		  },
-	//		  "languages": [
-	//		    "en",
-	//		    "es"
-	//		  ]
+	//		  }
 	//		}
 
 	@RequestMapping(value = "/info", method = RequestMethod.GET)
@@ -157,23 +153,18 @@ public class MapPlayerController {
 			json.put("knownRefuges", knownRefuges);
 			final JSONArray locations = this.getLocations();
 			json.put("locations", locations);
-			final JSONArray onGoingRecolections = this.getOnGoingRecolections();
-			json.put("onGoingRecolections", onGoingRecolections);
+			final JSONArray onGoingGathers = this.getOnGoingGathers();
+			json.put("onGoingGathers", onGoingGathers);
 			final JSONObject onGoingAttack = this.getOnGoingAttack();
 			json.put("onGoingAttack", onGoingAttack);
-			final JSONArray languages = this.getLanguages();
-			json.put("languages", languages);
 			result = json.toString();
 		} catch (final Throwable e) {
+			result = e.getMessage();
 		}
 		return result;
 	}
 
 	// get Methods ----------------------------------
-	private JSONArray getLanguages() {
-		final JSONArray result = new JSONArray(this.configurationService.findConfiguration().getLanguages());
-		return result;
-	}
 
 	private JSONObject getOnGoingAttack() {
 		final JSONObject result = new JSONObject();
@@ -182,7 +173,7 @@ public class MapPlayerController {
 		return result;
 	}
 
-	private JSONArray getOnGoingRecolections() {
+	private JSONArray getOnGoingGathers() {
 		final JSONArray result = new JSONArray();
 		// TODO Finish this too
 		return result;

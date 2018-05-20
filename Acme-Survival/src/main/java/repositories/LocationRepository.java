@@ -12,10 +12,10 @@ import domain.Location;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Integer> {
 
-	@Query("select l from Location l where l.finalMode=1")
+	@Query("select l from Location l where l.finalMode=true")
 	Collection<Location> findAllLocationsByFinal();
 
-	@Query("select l from Location l where l.finalMode=0")
+	@Query("select l from Location l where l.finalMode=false")
 	Collection<Location> findAllLocationsByNotFinal();
 
 }

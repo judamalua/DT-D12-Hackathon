@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -26,7 +27,9 @@ import domain.Location;
 import domain.Move;
 import domain.Player;
 import domain.Refuge;
+import domain.ResourceRoom;
 import domain.Room;
+import domain.Warehouse;
 
 @Service
 @Transactional
@@ -114,6 +117,11 @@ public class RefugeService {
 
 		result = this.refugeRepository.findOne(refugeId);
 
+		if (result != null) {
+			this.updateInventory(result);
+			this.updateLocation(result);
+		}
+
 		return result;
 
 	}
@@ -124,9 +132,9 @@ public class RefugeService {
 
 		Refuge result;
 		Collection<Player> playersKnowsRefuge;
-		Collection<Attack> attacksWhereAttacked, attacksWhereDefend;
+		Attack attackWhereAttacked;
+		Collection<Attack> attacksWhereDefend;
 		Collection<Item> items;
-		Collection<Move> moves;
 		Collection<domain.Character> characters;
 		Collection<Room> rooms;
 		Actor actor;
@@ -139,11 +147,10 @@ public class RefugeService {
 
 		if (refuge.getId() != 0) {
 			playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
-			attacksWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
+			attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
 			attacksWhereDefend = this.attackService.findAttacksByDefendant(refuge.getId());
 			characters = this.characterService.findCharactersByRefuge(refuge.getId());
 			items = this.itemService.findItemsByRefuge(refuge.getId());
-			moves = this.moveService.findMovesByRefuge(refuge.getId());
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId());
 			inventory = this.inventoryService.findInventoryByRefuge(result.getId());
 
@@ -153,9 +160,16 @@ public class RefugeService {
 				this.playerService.save(player);
 			}
 
-			for (final Attack attack : attacksWhereAttacked) {
-				attack.setAttacker(result);
-				this.attackService.save(attack);
+			/*
+			 * for (final Attack attack : attacksWhereAttacked) {
+			 * attack.setAttacker(result);
+			 * this.attackService.save(attack);
+			 * }
+			 */
+
+			if (attackWhereAttacked != null) {
+				attackWhereAttacked.setAttacker(result);
+				this.attackService.save(attackWhereAttacked);
 			}
 
 			for (final Attack attack : attacksWhereDefend) {
@@ -172,10 +186,10 @@ public class RefugeService {
 				this.itemService.save(item);
 			}
 
-			for (final Move move : moves) {
-				move.setRefuge(result);
-				this.moveService.save(move);
-			}
+			//			for (final Move move : moves) {
+			//				move.setRefuge(result);
+			//				this.moveService.save(move);
+			//			}
 
 			for (final Room room : rooms) {
 				room.setRefuge(result);
@@ -221,6 +235,7 @@ public class RefugeService {
 		Assert.isTrue(this.refugeRepository.exists(refuge.getId()));
 
 		Collection<Player> playersKnowsRefuge;
+		Attack attackWhereAttacked;
 		Collection<Attack> attacks;
 		Collection<Item> items;
 		Collection<Move> moves;
@@ -233,8 +248,9 @@ public class RefugeService {
 		Assert.isTrue(actor.equals(refuge.getPlayer()));
 
 		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
-		attacks = this.attackService.findAttacksByAttacker(refuge.getId());
-		attacks.addAll(this.attackService.findAttacksByDefendant(refuge.getId()));
+		attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
+		attacks = this.attackService.findAttacksByDefendant(refuge.getId());
+		attacks.add(attackWhereAttacked);
 		characters = this.characterService.findCharactersByRefuge(refuge.getId());
 		items = this.itemService.findItemsByRefuge(refuge.getId());
 		moves = this.moveService.findMovesByRefuge(refuge.getId());
@@ -270,14 +286,12 @@ public class RefugeService {
 		Refuge result;
 		Actor actor;
 		Location location;
-		Collection<Item> items;
 		String gpsCoordinates;
 
 		if (refuge.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
 			location = this.getRandomLocation();
-			items = new HashSet<Item>();
 			gpsCoordinates = this.generateRandomCoordinates(location);
 			result = refuge;
 
@@ -285,7 +299,6 @@ public class RefugeService {
 			result.setPlayer((Player) actor);
 			result.setMomentOfCreation(new Date(System.currentTimeMillis() - 1));
 			result.setLocation(location);
-			result.setItems(items);
 			result.setGpsCoordinates(gpsCoordinates);
 
 		} else {
@@ -336,6 +349,8 @@ public class RefugeService {
 		Refuge result;
 
 		result = this.refugeRepository.findRefugeByPlayer(playerId);
+		if (result != null)
+			this.updateLocation(result);
 
 		return result;
 	}
@@ -407,4 +422,112 @@ public class RefugeService {
 		return result;
 	}
 
+	/**
+	 * That methods get total capacity of items of a refuge
+	 * 
+	 * @author Luis
+	 */
+	public int getCurrentCapacity(final Refuge refuge) {
+		Collection<Room> rooms;
+		Collection<Item> items;
+		int capacity = 0;
+
+		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
+		items = this.itemService.findItemsByRefuge(refuge.getId());
+
+		for (final Room r : rooms)
+			if (r.getRoomDesign() instanceof Warehouse) {
+				final Warehouse warehouse = (Warehouse) r.getRoomDesign();
+				capacity += warehouse.getItemCapacity();
+			}
+		capacity -= items.size();
+
+		return capacity;
+
+	}
+
+	private Double getInventoryCapacity(final Inventory inventory) {
+		Double result;
+		Double currentSize;
+
+		currentSize = inventory.getMetal() + inventory.getWater() + inventory.getWood() + inventory.getFood();
+
+		result = inventory.getCapacity() - currentSize;
+
+		return result;
+	}
+
+	public void updateInventory(final Refuge refuge) {
+
+		Inventory inventory;
+		Collection<Room> resourceRooms;
+		Double inventoryCapacity;
+		Integer hours;
+		long difference;
+		Date currentDate;
+
+		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+
+		resourceRooms = this.roomService.findResourceRoomsByRefuge(refuge.getId());
+
+		if (resourceRooms.size() > 0 && refuge.getLastView() != null) {
+			inventoryCapacity = this.getInventoryCapacity(inventory);
+
+			currentDate = new Date();
+
+			difference = currentDate.getTime() - refuge.getLastView().getTime();
+
+			hours = (int) TimeUnit.MILLISECONDS.toHours(difference);
+
+			for (final Room room : resourceRooms) {
+				if ((inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getFood()) < inventory.getCapacity()) {
+					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWater() < inventory.getCapacity()) {
+					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWood() < inventory.getCapacity()) {
+					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getMetal() < inventory.getCapacity()) {
+					inventory.setWood(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * hours);
+					inventoryCapacity = this.getInventoryCapacity(inventory);
+				} else
+					break;
+			}
+			if (hours > 0)
+				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
+		} else
+			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
+
+	}
+
+	private Refuge updateLocation(final Refuge refuge) {
+
+		Move move;
+		Refuge result;
+		result = refuge;
+		Date currentDate;
+
+		move = this.moveService.findMostRecentMoveByRefuge(refuge.getId());
+		currentDate = new Date();
+
+		if (move != null && move.getEndDate().before(currentDate) && !move.getLocation().equals(refuge.getLocation())) {
+			refuge.setLocation(move.getLocation());
+			refuge.setGpsCoordinates(this.generateRandomCoordinates(move.getLocation()));
+
+			result = this.save(refuge);
+		}
+
+		return result;
+	}
 }

@@ -15,6 +15,17 @@ public class Item extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
+	private boolean	equipped;
+
+
+	public boolean getEquipped() {
+		return this.equipped;
+	}
+
+	public void setEquipped(final boolean equipped) {
+		this.equipped = equipped;
+	}
+
 
 	// Relationships ----------------------------------------------------------
 	private Tool	tool;
@@ -34,7 +45,7 @@ public class Item extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = false)
 	public Refuge getRefuge() {
 		return this.refuge;
 	}

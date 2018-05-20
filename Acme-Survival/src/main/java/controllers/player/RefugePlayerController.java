@@ -140,6 +140,8 @@ public class RefugePlayerController extends AbstractController {
 			} else
 				refuge = this.refugeService.findOne(refugeId);
 
+			this.refugeService.updateInventory(refuge);
+
 			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
 			owner = ownRefuge != null && ownRefuge.equals(refuge);
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
@@ -211,11 +213,13 @@ public class RefugePlayerController extends AbstractController {
 		Refuge sendedRefuge = null;
 		Player player;
 		Refuge ownRefuge;
+
 		try {
 			sendedRefuge = refuge;
 			refuge = this.refugeService.reconstruct(refuge, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
+
 		if (binding.hasErrors())
 			result = this.createEditModelAndView(sendedRefuge, "refuge.params.error");
 		else
@@ -235,27 +239,6 @@ public class RefugePlayerController extends AbstractController {
 				else
 					result = this.createEditModelAndView(refuge, "refuge.commit.error");
 			}
-
-		return result;
-	}
-
-	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(final Refuge refuge, final BindingResult binding) {
-		ModelAndView result;
-		Player player;
-		Refuge ownRefuge;
-
-		try {
-			player = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
-			Assert.notNull(ownRefuge);
-			Assert.isTrue(ownRefuge.equals(refuge));
-			this.refugeService.delete(ownRefuge);
-
-			result = new ModelAndView("redirect:/refuge/list.do");
-		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(refuge, "refuge.commit.error");
-		}
 
 		return result;
 	}

@@ -3,15 +3,23 @@ package services;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.MoveRepository;
+import domain.Actor;
 import domain.DesignerConfiguration;
+import domain.Inventory;
 import domain.Location;
 import domain.Move;
 import domain.Player;
@@ -39,6 +47,12 @@ public class MoveService {
 
 	@Autowired
 	private PlayerService					playerService;
+
+	@Autowired
+	private InventoryService				inventoryService;
+
+	@Autowired
+	private Validator						validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -80,22 +94,31 @@ public class MoveService {
 		final Move result;
 		long time;
 		this.actorService.checkActorLogin();
-		Refuge refuge, savedRefuge;
+		Refuge refuge;
 		final Collection<Player> playersKnowsRefuge;
+		Inventory inventory;
+		DesignerConfiguration designerConfiguration;
 
 		move.setStartDate(new Date(System.currentTimeMillis() - 1));
 		time = this.timeBetweenLocations(move.getRefuge().getLocation(), move.getLocation());
 		move.setEndDate(new Date(System.currentTimeMillis() + time));
 		refuge = move.getRefuge();
-		refuge.setLocation(move.getLocation());
-		refuge.setGpsCoordinates(this.refugeService.generateRandomCoordinates(move.getLocation()));
 
-		savedRefuge = this.refugeService.save(refuge);
-		move.setRefuge(savedRefuge);
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(savedRefuge.getId());
+		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+
+		inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
+		inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
+		inventory.setWood(inventory.getMetal() - designerConfiguration.getMovingMetal());
+		inventory.setWood(inventory.getFood() - designerConfiguration.getMovingFood());
+
+		this.inventoryService.save(inventory);
+
+		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
+
 		for (final Player player : playersKnowsRefuge) {
-			player.getRefuges().remove(savedRefuge);
+			player.getRefuges().remove(refuge);
 			this.actorService.save(player);
 		}
 		result = this.moveRepository.save(move);
@@ -121,6 +144,45 @@ public class MoveService {
 		Collection<Move> result;
 
 		result = this.moveRepository.findMovesByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Move findMostRecentMoveByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		List<Move> resultList;
+		Move result;
+		Pageable pageable;
+
+		pageable = new PageRequest(0, 1);
+
+		resultList = this.moveRepository.findMostRecentMoveByRefuge(refugeId, pageable).getContent();
+
+		if (resultList.size() > 0)
+			result = resultList.get(0);
+		else
+			result = null;
+
+		return result;
+	}
+
+	public Move findCurrentMoveByRefuge(final int refugeId) {
+		Assert.isTrue(refugeId != 0);
+
+		Move result;
+
+		result = this.moveRepository.findCurrentMoveByRefuge(refugeId);
+
+		return result;
+	}
+
+	public Page<Move> findMovesByRefuge(final int refugeId, final Pageable pageable) {
+		Assert.isTrue(refugeId != 0);
+
+		Page<Move> result;
+
+		result = this.moveRepository.findMovesByRefuge(refugeId, pageable);
 
 		return result;
 	}
@@ -155,6 +217,24 @@ public class MoveService {
 		kmPerSecond = designerConfiguration.getKmPerSecond();
 
 		result = (long) ((distance * 1000) / kmPerSecond);
+
+		return result;
+	}
+
+	public Move reconstruct(final Move move, final BindingResult binding) {
+		Move result;
+		Actor actor;
+		Refuge refuge;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+		result = move;
+
+		result.setRefuge(refuge);
+
+		this.validator.validate(result, binding);
+		this.moveRepository.flush();
 
 		return result;
 	}

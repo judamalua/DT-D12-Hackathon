@@ -1,5 +1,5 @@
 var map;
-function initMapDesigner() {
+function initMap() {
 	document.getElementsByTagName("h1")[0].innerHTML = "";
 	map = new google.maps.Map(document.getElementById('map'), {
 		center : {
@@ -262,11 +262,48 @@ function initMapDesigner() {
 		]
 	});
 	infoWindow = new google.maps.InfoWindow;
-	createElementsMainDesigner();
+	createElementsMain();
 }
 
-function generateMapDesigner() {
+function generateMap() {
 	var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+	// IMAGE HANDLING ------------------------------------
+	var imageRefuge = {
+		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAPBQTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////ZvvSvwAAAE50Uk5TAAEJDGF6BAI2qvqnGX/kDwsGCghSx/zovsCKDlGwkS6g8/ZlFnljFHPev7qWyeNCDaP9HMtBFcpKV4gH/sgTmF6XLyAD+1nwu/hYR1off06j1gAAAAFiS0dET25mQUkAAADjSURBVDjL3ZPHEoIwFEUBOzYsYC8g9t6wgF1QUd//f446iXUUNo4Lzyrv3jOTl0UI4peQFGnYW6w2u0HtcLpot4Hg8foAXH4mgG8Lhp7qUJjlACASjcWZy5xIptLMw3KZLA8YIUdRDjHPA1+49cVSGe5EKtVanT4fGk3ct9odeEu9iwSx974HoY8EafBBoIcmAjcyEWAsmwhCnnwVFAweJ9MXoTObW8/MZ/jhwmK5Wj8KqobW0tRrsNkWDQWAgWgmSP8isIqK4HY6EvQdhyOFlQh5f9Aw+hEJR/2aHPbyN7/mB05qA5w56QRThQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wNS0xM1QyMDozMzo1NSswMjowMHC0eyMAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDUtMTNUMjA6MzM6NTUrMDI6MDAB6cOfAAAAAElFTkSuQmCC',
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 16)
+	};
+	var imageCharacter = {
+		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAAYagMeiWXwAAAAJiS0dEAP+Hj8y/AAAB6ElEQVRIx73Uy0uUURjH8c+MOmaI4tgFFeliGkW2CGrTWloULYLathGiRbuKFi0K/4LQXasEW1TUNoLCVdEFKUIiNNJKMfNW2cxINW+L3iYv70wzs+h3Fu/hcJ7vc31PhcKK2WSfdovSylBMq35pKddtLwdQ4aK0QCBwQSzqSvwfEWxREe6TqksHZD2wCGa9lIkOspACY6bUeKfP7WhALK9xTNxGB301KWVKqpTixa3X6bIXZkwa0FqKcUKTQ/pNWJIVCCzplSjevNt9qdD0zxpzvFhA0qzAD288NLcMMaizFMBzXU4aWxHFHXsKlHwV4AbO5mbwk0eyAoNO26W2WEBvzvcT+12TFpjx2E1dKxsWpawGLbn9W0+dc95rDQ7o0rb8auUq08C8hC9aNIcnGa8w7aq7jjqsNhzuPIpp0KjaEe/DBBZdyk1BQp366J9qtU75nqvBuBOqimvi38R6BAIjMuH32JpkC6rJgMBP3a6EzbxnRz5fUdpgGyY9c8s3Z9RKSkYD4nkAWzFs3oI+gwgEpQA2a8KwBaRMFMo2CrAuHJVhnws4KQCo04E5H4qpdxSgXgdGfSwXUKcdI+UDmjVi1HR5gBqdyBiXxe/XmVi+x2TtcaXddsoYCttXZa82s4bMFxPR/9cvP1KtOorzWGYAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDUtMTNUMjA6Mzc6NDArMDI6MDDnzfRgAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA1LTEzVDIwOjM3OjQwKzAyOjAwlpBM3AAAAABJRU5ErkJggg==',
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 16)
+	};
+	var imageEnemyRefuge = {
+		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAPNQTFRFAAAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA////Thsz2AAAAE90Uk5TAAABCQxhegQCNqr6pxl/5A8LBgoIUsf86L7Aig5RsJEuoPP2ZRZ5YxRz3r+6lsnjQg2j/RzLQRXKSleIB/7IE5hely8gA/tZ8Lv4WEdaH4OcN4cAAAABYktHRFDjbky8AAAA+ElEQVQ4y93TXVeCQBAGYAY0P9AUNTDLUhC1TEutsAQ/UkFFnf//b0R2KS4E7rzovdqdfc7OmbNnGeaCAZZjIeQYYvGrRDCAZCrNZwIBQPY6h5jOCwUAt1uxBD4MpRtRQsTybeVOcOpwX314FH4BsLW6jDRKg+OSalNGueVdAe2nZ/xLufPS7fHO4vWNiv5giGfTeydA/Th/jsonAdooAPBfEUD6jgA41iEcKE33bfzAoKHbyfQ0qQ8MZ/O4k/mMDq78LJYrPzAttylYpldYb9qhAHGkRgHtvwDRMEmkrU2AvZVoyRA1Rt/tLRr7QMDB9ir7nX6BL3sEQRyeyWFn/PIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDUtMTNUMjA6MzQ6NDArMDI6MDAM+k9jAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA1LTEzVDIwOjM0OjQwKzAyOjAwfaf33wAAAABJRU5ErkJggg==',
+		size : new google.maps.Size(32, 32),
+		origin : new google.maps.Point(0, 0),
+		anchor : new google.maps.Point(16, 16)
+	};
+	// REFUGE HANDLING -------------------------------------
+	refuge = new google.maps.Marker({
+		position : {
+			lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
+			lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+		},
+		map : map,
+		icon : imageRefuge
+	});
+	refuge.addListener('click', function(event) {
+		var language = getLanguageToUse();
+		var contentString = '<b>' + mapTranslations.refuge.refugeMine[language] + '</b><br/><b>' + mapTranslations.refuge.name[language] + ": </b>" + mapElements.refuge.name
+				+ '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>" + mapElements.refuge.playerName + '<br/><br/><a href="' + getMainDomain()
+				+ 'refuge/player/display.do">' + mapTranslations.refuge.enterInRefuge[language] + '</a>';
+		infoWindow.setContent(contentString);
+		infoWindow.setPosition(event.latLng);
+		infoWindow.open(map);
+	});
 	// LOCATION HANDLING -----------------------------------
 	var zone = [];
 	for ( var int = 0; int < mapElements.locations.length; int++) {
@@ -319,28 +356,17 @@ function generateMapDesigner() {
 						y : Number(mapElements.locations[int2].point_d.split(",")[1])
 					}
 				};
-				if (pointInZone(m, r)) {
+				if (pointInZone2(m, r)) {
 					currentInt = int2;
 				}
 			}
 			if (currentInt != -1) {
-				var contentString;
-				var usedLanguage = false;
-				for ( var int3 = 0; int3 < mapElements.languages.length; int3++) {
-					if (mapElements.languages[int3] === getCookie("language")) {
-						contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>'
-								+ mapTranslations.location.name[mapElements.languages[int3]] + ": </b>" + mapElements.locations[currentInt].name[mapElements.languages[int3]]
-								+ '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">'
-								+ mapTranslations.location.recolectionMissionStartLink[mapElements.languages[int3]] + '</a>';
-						usedLanguage = true;
-						break;
-					}
-				}
-				if (usedLanguage == false) {
-					contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>' + mapTranslations.location.name["en"] + ": </b>"
-							+ mapElements.locations[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId='
-							+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.recolectionMissionStartLink["en"] + '</a>';
-				}
+				var language = getLanguageToUse();
+				var contentString = '<b>' + mapTranslations.location.location[language] + '</b><br/><b>' + mapTranslations.location.name[language] + ": </b>"
+						+ mapElements.locations[currentInt].name[language] + '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId='
+						+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.gatherMissionStartLink[language] + '</a><br/><a href="' + getMainDomain()
+						+ 'move/player/create.do?locationId=' + mapElements.locations[currentInt].id + '">' + mapTranslations.location.moveStartLink[language] + '</a>';
+
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
 
@@ -348,81 +374,45 @@ function generateMapDesigner() {
 			}
 		});
 	}
-	// LOCATION HANDLING NOT FINAL -----------------------------------
-	var zone = [];
-	for ( var int = 0; int < mapElements.locationsNotFinal.length; int++) {
-		zone[int] = new google.maps.Polygon({
-			paths : [
-					{
-						lat : Number(mapElements.locationsNotFinal[int].point_a.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_a.split(",")[1])
-					}, {
-						lat : Number(mapElements.locationsNotFinal[int].point_b.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_b.split(",")[1])
-					}, {
-						lat : Number(mapElements.locationsNotFinal[int].point_c.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_c.split(",")[1])
-					}, {
-						lat : Number(mapElements.locationsNotFinal[int].point_d.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_d.split(",")[1])
-					}
-			],
-			strokeColor : '#0000FF',
-			strokeOpacity : 0.8,
-			strokeWeight : 2,
-			fillColor : '#0000FF',
-			fillOpacity : 0.35,
-			map : map
+	// KNOWN REFUGE HANDLING -------------------------------------
+	var refugeEnemy = [];
+	for ( var int5 = 0; int5 < mapElements.knownRefuges.length; int5++) {
+		refugeEnemy[int5] = new google.maps.Marker({
+			position : {
+				lat : Number(mapElements.knownRefuges[int5].gpsCoordinates.split(",")[0]),
+				lng : Number(mapElements.knownRefuges[int5].gpsCoordinates.split(",")[1])
+			},
+			map : map,
+			icon : imageEnemyRefuge
 		});
-		zone[int].addListener('click', function(event) {
-			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+		refugeEnemy[int5].addListener('click', function(event) {
 			var currentInt = -1;
-			for ( var int2 = 0; int2 < mapElements.locationsNotFinal.length; int2++) {
+			var currentLow = null;
+			for ( var int2 = 0; int2 < mapElements.knownRefuges.length; int2++) {
 				var m = {
 					x : event.latLng.lat(),
 					y : event.latLng.lng()
 				};
 				var r = {
-					A : {
-						x : Number(mapElements.locationsNotFinal[int2].point_a.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_a.split(",")[1])
-					},
-					B : {
-						x : Number(mapElements.locationsNotFinal[int2].point_b.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_b.split(",")[1])
-					},
-					C : {
-						x : Number(mapElements.locationsNotFinal[int2].point_c.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_c.split(",")[1])
-					},
-					D : {
-						x : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[1])
-					}
+					x : Number(mapElements.knownRefuges[int2].gpsCoordinates.split(",")[0]),
+					y : Number(mapElements.knownRefuges[int2].gpsCoordinates.split(",")[1])
 				};
-				if (pointInZone(m, r)) {
+				if (currentLow == null) {
+					currentLow = distanceBetweenPoints(m, r);
 					currentInt = int2;
+				} else {
+					if (distanceBetweenPoints(m, r) < currentLow) {
+						currentLow = distanceBetweenPoints(m, r);
+						currentInt = int2;
+					}
 				}
 			}
-			if (currentInt != -1) {
-				var contentString;
-				var usedLanguage = false;
-				for ( var int3 = 0; int3 < mapElements.languages.length; int3++) {
-					if (mapElements.languages[int3] === getCookie("language")) {
-						contentString = '<b>' + mapTranslations.locationsNotFinal.location[mapElements.languages[int3]] + '</b><br/><b>'
-								+ mapTranslations.locations.name[mapElements.languages[int3]] + ": </b>"
-								+ mapElements.locationsNotFinal[currentInt].name[mapElements.languages[int3]] + '<br/><br/><a href="' + getMainDomain()
-								+ 'recolection/player/create.do?locationId=' + mapElements.locationsNotFinal[currentInt].id + '">'
-								+ mapTranslations.location.recolectionMissionStartLink[mapElements.languages[int3]] + '</a>';
-						usedLanguage = true;
-						break;
-					}
-				}
-				if (usedLanguage == false) {
-					contentString = '<b>' + mapTranslations.location.location[mapElements.languages[int3]] + '</b><br/><b>' + mapTranslations.location.name["en"] + ": </b>"
-							+ mapElements.locationsNotFinal[currentInt].name["en"] + '<br/><br/><a href="' + getMainDomain() + 'recolection/player/create.do?locationId='
-							+ mapElements.locationsNotFinal[currentInt].id + '">' + mapTranslations.location.recolectionMissionStartLink["en"] + '</a>';
-				}
+			if (currentInt !== -1) {
+				var language = getLanguageToUse();
+				var contentString = '<b>' + mapTranslations.refuge.refugeEnemy[language] + '</b><br/><b>' + mapTranslations.refuge.name[language] + ": </b>"
+						+ mapElements.knownRefuges[currentInt].name + '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>"
+						+ mapElements.knownRefuges[currentInt].playerName + '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?refugeId='
+						+ mapElements.knownRefuges[currentInt].id + '">' + mapTranslations.refuge.attackRefuge[language] + '</a>';
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
 
@@ -430,21 +420,21 @@ function generateMapDesigner() {
 			}
 		});
 	}
-}
 
-function createElementsMainDesigner() {
-	// getElementsByClassName("currentEditLocation");
+}
+function createElementsMain() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (this.responseText != "null") {
+				console.log(this.responseText);
 				document.getElementById("mapElements").innerHTML = this.responseText;
-				generateMapDesigner();
+				generateMap();
 			}
 
 		}
 	};
-	xhttp.open("GET", getMainDomain() + "location/designer/info.do", true);
+	xhttp.open("GET", getMainDomain() + "map/player/info.do", true);
 	xhttp.send();
 
 }

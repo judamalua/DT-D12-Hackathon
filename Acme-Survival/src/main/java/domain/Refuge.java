@@ -1,7 +1,6 @@
 
 package domain;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -9,7 +8,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,6 +31,7 @@ public class Refuge extends DomainEntity {
 	private String	name;
 	private Date	momentOfCreation;
 	private String	gpsCoordinates;
+	private Date	lastView;
 
 
 	@Pattern(regexp = "^\\w{10}$")
@@ -79,11 +78,21 @@ public class Refuge extends DomainEntity {
 		this.gpsCoordinates = gpsCoordinates;
 	}
 
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+	public Date getLastView() {
+		return this.lastView;
+	}
+
+	public void setLastView(final Date lastView) {
+		this.lastView = lastView;
+	}
+
 
 	// Relationships ----------------------------------------------------------
-	private Player				player;
-	private Collection<Item>	items;
-	private Location			location;
+	private Player		player;
+	private Location	location;
 
 
 	@Valid
@@ -97,16 +106,7 @@ public class Refuge extends DomainEntity {
 		this.player = player;
 
 	}
-	@Valid
-	@OneToMany
-	public Collection<Item> getItems() {
-		return this.items;
-	}
 
-	public void setItems(final Collection<Item> items) {
-		this.items = items;
-
-	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)

@@ -13,35 +13,35 @@ public class Tool extends ItemDesign {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private double	strength;
-	private double	luck;
-	private double	capacity;
+	private int	strength;
+	private int	luck;
+	private int	capacity;
 
 
 	@Min(0)
-	public double getStrength() {
+	public int getStrength() {
 		return this.strength;
 	}
 
-	public void setStrength(final double strength) {
+	public void setStrength(final int strength) {
 		this.strength = strength;
 	}
 
 	@Min(0)
-	public double getLuck() {
+	public int getLuck() {
 		return this.luck;
 	}
 
-	public void setLuck(final double luck) {
+	public void setLuck(final int luck) {
 		this.luck = luck;
 	}
 
 	@Min(0)
-	public double getCapacity() {
+	public int getCapacity() {
 		return this.capacity;
 	}
 
-	public void setCapacity(final double capacity) {
+	public void setCapacity(final int capacity) {
 		this.capacity = capacity;
 	}
 

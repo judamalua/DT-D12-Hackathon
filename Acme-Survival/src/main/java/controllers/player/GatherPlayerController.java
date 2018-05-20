@@ -17,19 +17,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.RecolectionService;
+import services.GatherService;
 import controllers.AbstractController;
 import domain.Character;
 import domain.Configuration;
+import domain.Gather;
 import domain.Player;
-import domain.Recolection;
 
 @Controller
-@RequestMapping("/recolection/player")
-public class RecolectionPlayerController extends AbstractController {
+@RequestMapping("/gather/player")
+public class GatherPlayerController extends AbstractController {
 
 	@Autowired
-	private RecolectionService		recolectionService;
+	private GatherService			gatherService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -40,7 +40,7 @@ public class RecolectionPlayerController extends AbstractController {
 
 	// Constructors -----------------------------------------------------------
 
-	public RecolectionPlayerController() {
+	public GatherPlayerController() {
 		super();
 	}
 
@@ -48,10 +48,10 @@ public class RecolectionPlayerController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(final int locationId) {
 		ModelAndView result;
-		Recolection recolection;
+		Gather gather;
 		try {
-			recolection = this.recolectionService.create(locationId);
-			result = this.createEditModelAndView(recolection);
+			gather = this.gatherService.create(locationId);
+			result = this.createEditModelAndView(gather);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
@@ -59,18 +59,18 @@ public class RecolectionPlayerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@ModelAttribute("recolection") Recolection recolection, final BindingResult binding) {
+	public ModelAndView save(@ModelAttribute("gather") Gather gather, final BindingResult binding) {
 		ModelAndView result;
 
 		try {
-			recolection = this.recolectionService.reconstruct(recolection, binding);
+			gather = this.gatherService.reconstruct(gather, binding);
 		} catch (final Throwable oops) {
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(recolection, "recolection.params.error");
+			result = this.createEditModelAndView(gather, "gather.params.error");
 		else
 			try {
-				recolection = this.recolectionService.save(recolection);
+				gather = this.gatherService.save(gather);
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");
@@ -81,7 +81,7 @@ public class RecolectionPlayerController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
-		Page<Recolection> recolections;
+		Page<Gather> gathers;
 		Configuration configuration;
 		Pageable pageable;
 		Player player;
@@ -90,16 +90,16 @@ public class RecolectionPlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 
-			result = new ModelAndView("recolection/list");
+			result = new ModelAndView("gather/list");
 
 			player = (Player) this.actorService.findActorByPrincipal();
 
-			recolections = this.recolectionService.findRecolectionsByPlayer(player.getId(), pageable);
+			gathers = this.gatherService.findGathersByPlayer(player.getId(), pageable);
 
-			result.addObject("recolections", recolections.getContent());
+			result.addObject("gathers", gathers.getContent());
 			result.addObject("page", page);
-			result.addObject("pageNum", recolections.getTotalPages());
-			result.addObject("requestUri", "recolection/player/list.do?");
+			result.addObject("pageNum", gathers.getTotalPages());
+			result.addObject("requestUri", "gather/player/list.do?");
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
@@ -108,22 +108,22 @@ public class RecolectionPlayerController extends AbstractController {
 	}
 
 	// Ancilliary methods  -----------------------------------------------------------------
-	private ModelAndView createEditModelAndView(final Recolection recolection) {
+	private ModelAndView createEditModelAndView(final Gather gather) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(recolection, null);
+		result = this.createEditModelAndView(gather, null);
 
 		return result;
 	}
 
-	private ModelAndView createEditModelAndView(final Recolection recolection, final String message) {
+	private ModelAndView createEditModelAndView(final Gather gather, final String message) {
 		ModelAndView result;
-		Collection<Character> elegibleCharacters;
+		final Collection<Character> elegibleCharacters;
 
-		elegibleCharacters = this.recolectionService.findCharactersElegible();
-		result = new ModelAndView("recolection/edit");
+		elegibleCharacters = this.gatherService.findCharactersElegible();
+		result = new ModelAndView("gather/edit");
 
-		result.addObject("recolection", recolection);
+		result.addObject("gather", gather);
 		result.addObject("message", message);
 		result.addObject("characters", elegibleCharacters);
 
