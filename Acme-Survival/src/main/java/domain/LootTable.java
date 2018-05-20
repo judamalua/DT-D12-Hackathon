@@ -45,7 +45,6 @@ public class LootTable extends DomainEntity {
 	// Relationships ----------------------------------------------------------
 	private Collection<ProbabilityEvent>	probabilityEvents;
 	private Collection<ProbabilityItem>		probabilityItems;
-	private Collection<Location>			locations;
 
 
 	@Valid
@@ -66,16 +65,6 @@ public class LootTable extends DomainEntity {
 
 	public void setProbabilityItems(final Collection<ProbabilityItem> probabilityItems) {
 		this.probabilityItems = probabilityItems;
-
-	}
-	@Valid
-	@OneToMany
-	public Collection<Location> getLocations() {
-		return this.locations;
-	}
-
-	public void setLocations(final Collection<Location> locations) {
-		this.locations = locations;
 
 	}
 }

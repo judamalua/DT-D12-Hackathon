@@ -92,7 +92,6 @@ public class LootTableService {
 			result = this.lootTableRepository.findOne(lootTable.getId());
 			result.setName(lootTable.getName());
 			result.setFinalMode(lootTable.getFinalMode());
-			result.setLocations(lootTable.getLocations());
 			result.setProbabilityEvents(lootTable.getProbabilityEvents());
 			result.setProbabilityItems(lootTable.getProbabilityItems());
 		}

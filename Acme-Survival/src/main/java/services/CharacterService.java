@@ -223,6 +223,7 @@ public class CharacterService {
 		character.setLevel(1);
 		character.setRefuge(refuge);
 		character.setRoom(null);
+		character.setCurrentlyInGatheringMission(false);
 
 		this.generateCharacterAbilities(character);
 
@@ -412,6 +413,21 @@ public class CharacterService {
 
 	public void flush() {
 		this.characterRepository.flush();
+	}
+
+	/**
+	 * This query returns the character of a refuge that are currently doing a gathering mission
+	 * 
+	 * @param refugeId
+	 * @return
+	 * @author Juanmi
+	 */
+	public Collection<Character> findCharactersCurrentlyInMission(final int refugeId) {
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersCurrentlyInMission(refugeId);
+
+		return result;
 	}
 
 	private Character updateStats(final Character character) {
