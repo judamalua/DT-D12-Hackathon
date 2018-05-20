@@ -158,6 +158,21 @@ public class CharacterService {
 		this.characterRepository.delete(character);
 
 	}
+
+	/**
+	 * Delete(CRUD Methods)
+	 * 
+	 * @author Luis
+	 */
+	public void delete(final Character character) {
+		assert character != null;
+		assert character.getId() != 0;
+		Assert.isTrue(this.characterRepository.exists(character.getId()));
+
+		this.characterRepository.delete(character);
+
+	}
+
 	//	/**
 	//	 * Reconstruct of a Character
 	//	 * 
