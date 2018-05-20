@@ -51,3 +51,27 @@
 	<acme:button url="gather/player/delete.do?attackId=${gatherId}" code="notification.finish.result"/>
 </jstl:if>
 
+<br/>
+
+<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
+
+<!-- Modal Trigger -->
+  <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a>
+
+  <!-- Modal Structure -->
+  <div id="modalEvents" class="modal">
+    <div class="modal-content">
+      <h4><spring:message code = "notification.modal.title"/></h4>
+      <p><spring:message code = "notification.modal.description"/></p>
+      <jstl:forEach items="${notification.events}" var = "event">
+      	<b><spring:message code = "notification.modal.event.title"/></b>
+      	<jstl:out value="${event.name[currentLang]}"></jstl:out>
+      	<b><spring:message code = "notification.modal.event.desc"/></b>
+      	<jstl:out value="${event.description[currentLang]}"></jstl:out>
+      </jstl:forEach>
+    </div>
+    <div class="modal-footer">
+      <a href="notification/player/display.do?notificationId=${notification.id}" class="modal-close waves-effect waves-green btn-flat"><spring:message code = "notification.modal.accept"/></a>
+    </div>
+  </div>
+</jstl:if>

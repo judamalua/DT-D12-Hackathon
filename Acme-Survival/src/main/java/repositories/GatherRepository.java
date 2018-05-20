@@ -34,4 +34,7 @@ public interface GatherRepository extends JpaRepository<Gather, Integer> {
 	@Query("select g from Gather g where g.player.id = ?1 and g.endMoment < ?2")
 	Collection<Gather> findGathersFinishedByPlayer(int playerId, Date date);
 
+	@Query("select g from Gather g where g.player.id = ?1")
+	Collection<Gather> findAllGathersOfPlayer(int playerId);
+
 }

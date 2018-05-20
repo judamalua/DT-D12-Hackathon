@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +20,7 @@ import org.springframework.validation.Validator;
 
 import repositories.GatherRepository;
 import domain.Character;
+import domain.DesignerConfiguration;
 import domain.Event;
 import domain.Gather;
 import domain.Location;
@@ -33,32 +35,33 @@ public class GatherService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private GatherRepository	gatherRepository;
+	private GatherRepository				gatherRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private RefugeService		refugeService;
+	private RefugeService					refugeService;
 
 	@Autowired
-	private CharacterService	characterService;
+	private CharacterService				characterService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private MoveService			moveService;
+	private MoveService						moveService;
 
 	@Autowired
-	private LocationService		locationService;
+	private LocationService					locationService;
 
 	@Autowired
-	private NotificationService	notificationService;
+	private NotificationService				notificationService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator						validator;
 
-	public static final int		HASH_SIZE	= 4096;
+	@Autowired
+	private DesignerConfigurationService	designerConfigurationService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -283,19 +286,30 @@ public class GatherService {
 		return result;
 	}
 
+	public Collection<Gather> findAllGathersOfPlayer(final int playerId) {
+		Collection<Gather> result;
+
+		result = this.gatherRepository.findAllGathersOfPlayer(playerId);
+
+		return result;
+	}
+
 	public void updateGatheringMissions() {
 		Player player;
 		Gather gatherMission;
 		Collection<Character> currentlyInGatheringMissionCharacters;
-		String eventsStringEn, eventsStringEs;
 		Refuge refuge;
 		Notification notification;
 		List<Event> eventsDuringMission;
+		Long missionMillis;
+		Integer missionMinutes;
+		DesignerConfiguration designerConfiguration;
 		int currentHealth, currentWater, currentFood;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
 		titleNotification.put("es", "¡Misión de recolección finalizada!");
 		final Map<String, String> bodyNotification = new HashMap<String, String>();
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
@@ -320,24 +334,33 @@ public class GatherService {
 				character.setCurrentlyInGatheringMission(false);
 
 				if (eventsDuringMission.size() != 0) {
-					eventsStringEn = "During the mission \"" + character.getFullName() + "\" came across with the following situations:";
-					eventsStringEs = "Durante su misión \"" + character.getFullName() + "\" se encontró con las siguientes situaciones:";
-
 					currentHealth = character.getCurrentHealth();
 					currentWater = character.getCurrentWater();
 					currentFood = character.getCurrentFood();
 
 					for (final Event event : eventsDuringMission) {
-						eventsStringEn += "Name: " + event.getName().get("en") + "Description: " + event.getDescription().get("en");
-						eventsStringEs += "Nombre: " + event.getName().get("es") + "Descripción: " + event.getDescription().get("es");
-
-						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));
+						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));//TODO
 						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
 						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
 
 					}
-					bodyNotification.put("en", bodyNotification.get("en") + eventsStringEn);
-					bodyNotification.put("es", bodyNotification.get("es") + eventsStringEs);
+				}
+				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
+				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
+
+				if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) > character.getCurrentFood()) {
+					character.setCurrentFood(0);
+					character.setCurrentWater(0);
+
+					character.setCurrentHealth((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) - character.getCurrentFood() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) > character.getCurrentWater()) {
+					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
+					character.setCurrentWater(0);
+
+					character.setCurrentHealth((missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) < character.getCurrentWater()) {
+					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
+					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
 				}
 
 				this.characterService.save(character);
@@ -348,6 +371,8 @@ public class GatherService {
 				notification.setMoment(new Date(System.currentTimeMillis() - 1));
 				notification.setPlayer(player);
 				notification.setMission(gatherMission);
+				if (eventsDuringMission.size() != 0)
+					notification.setEvents(eventsDuringMission);
 				this.notificationService.save(notification);
 			}
 
