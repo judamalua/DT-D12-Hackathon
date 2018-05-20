@@ -187,7 +187,7 @@
 		<property name="movingMetal" value="5" />
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
-		<property name="kmPerSecond" value="500" />
+		<property name="kmPerSecond" value="5000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="10" />
@@ -412,8 +412,9 @@
 		<property name="fullName" value="Rob Stark" />
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
-		<property name="male" value="true" />	
+		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
+		<property name="currentlyInGatheringMission" value = "true" />
 
 	</bean>
 
@@ -492,6 +493,7 @@
 		<property name="point_b" value="42.432987253576734,3.4635955854628264" />
 		<property name="point_c" value="36.46702062395571,-1.4582794145371736" />
 		<property name="point_d" value="36.819621891697544,-9.719998164537174" />
+		<property name="lootTable" ref="LootTable1" />
 		<property name="finalMode" value="true" />
 	</bean>
 
@@ -516,6 +518,7 @@
 		<property name="point_b" value="42.55695649032093,6.19349487778743" />
 		<property name="point_c" value="44.90630505359299,21.83802612778743" />
 		<property name="point_d" value="54.72765897192587,18.32240112778743" />
+		<property name="lootTable" ref="LootTable1" />
 		<property name="finalMode" value="true" />
 	</bean>
 
@@ -627,6 +630,7 @@
 
 	<bean id="LootTable1" class="domain.LootTable">
 		<property name="name" value="Bosque" />
+		<property name="finalMode" value="true" />
 		<property name="probabilityEvents">
 			<list>
 				<ref bean="ProbabilityEvent1" />
@@ -636,14 +640,10 @@
 			<list>
 			</list>
 		</property>
-		<property name="locations">
-			<list>
-			</list>
-		</property>
 	</bean>
 
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
-		<property name="value" value="0.40" />
+		<property name="value" value="0.4" />
 		<property name="event" ref="Event1" />
 	</bean>
 

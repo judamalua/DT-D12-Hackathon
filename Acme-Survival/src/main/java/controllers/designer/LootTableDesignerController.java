@@ -11,13 +11,17 @@
 package controllers.designer;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -32,12 +36,18 @@ import services.DesignerService;
 import services.EventService;
 import services.ItemDesignService;
 import services.LootTableService;
+import services.ProbabilityEventService;
+import services.ProbabilityItemService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Configuration;
 import domain.Designer;
+import domain.Event;
+import domain.ItemDesign;
 import domain.LootTable;
 import domain.Manager;
+import domain.ProbabilityEvent;
+import domain.ProbabilityItem;
 import domain.Product;
 import forms.ActorForm;
 
@@ -55,6 +65,11 @@ public class LootTableDesignerController extends AbstractController {
 	private EventService eventService;
 	@Autowired
 	private ItemDesignService itemDesignService;
+	
+	@Autowired
+	private ProbabilityEventService probabilityEventService;
+	@Autowired
+	private ProbabilityItemService probabilityItemService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -160,13 +175,48 @@ public class LootTableDesignerController extends AbstractController {
 	 * @author Alejandro
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView updateLootTable(@ModelAttribute("lootTable") LootTable lootTable, final BindingResult binding) {
+	public ModelAndView updateLootTable(@RequestParam Integer tableId, @RequestParam Map<String,String> allRequestParams, ModelMap model) {
+		
+		LootTable lootTable = lootTableService.findOne(tableId);
+		
+		BindingResult binding = null;
 		ModelAndView result;
+		if (lootTable != null){
 		lootTable = this.lootTableService.reconstruct(lootTable, binding);
-	
-		if (binding.hasErrors())
+		allRequestParams.remove("save");
+		Collection<ProbabilityItem> probItems = new HashSet<ProbabilityItem>();
+		Collection<ProbabilityEvent> probEvents = new HashSet<ProbabilityEvent>();
+		for (Entry<String, String> entry : allRequestParams.entrySet()){
+			if (entry.getKey().contains("item")){
+				ItemDesign item = itemDesignService.findOne(Integer.parseInt(entry.getKey().replaceFirst("item", "")));
+				ProbabilityItem pItem = new ProbabilityItem();
+				pItem.setItemDesign(item);
+				pItem.setValue(Double.parseDouble(entry.getValue()));
+				probItems.add(pItem);
+			}
+			else if (entry.getKey().contains("event"))
+			{
+				Event event = eventService.findOne(Integer.parseInt(entry.getKey().replaceFirst("event", "")));
+				ProbabilityEvent pEvent = new ProbabilityEvent();
+				pEvent.setEvent(event);
+				pEvent.setValue(Double.parseDouble(entry.getValue()));
+				probEvents.add(pEvent);
+			}
+		}
+		probabilityItemService.deleteAll(lootTable.getProbabilityItems());
+		probabilityEventService.deleteAll(lootTable.getProbabilityEvents());
+		probabilityEventService.saveAll(probEvents);
+		probabilityItemService.saveAll(probItems);
+		lootTable.setProbabilityEvents(probEvents);
+		lootTable.setProbabilityItems(probItems);
+		
+		}
+		else{
 			result = this.createEditModelAndView(lootTable, "lootTable.params.error");
-		else
+		}
+//		if (binding.hasErrors())
+//			result = this.createEditModelAndView(lootTable, "lootTable.params.error");
+//		else
 			try {
 				this.lootTableService.save(lootTable);
 				result = new ModelAndView("redirect:/lootTable/designer/list.do");

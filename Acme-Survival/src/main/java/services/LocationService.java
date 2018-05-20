@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.LocationRepository;
 import domain.Location;
@@ -20,6 +22,9 @@ public class LocationService {
 
 	@Autowired
 	private LocationRepository	locationRepository;
+
+	@Autowired
+	private Validator			validator;
 
 
 	// Supporting services --------------------------------------------------
@@ -62,6 +67,8 @@ public class LocationService {
 
 		Location result;
 
+		Assert.isTrue(location.getLootTable().getFinalMode());
+
 		result = this.locationRepository.save(location);
 
 		return result;
@@ -72,6 +79,8 @@ public class LocationService {
 
 		assert location != null;
 		assert location.getId() != 0;
+
+		Assert.isTrue(!location.getFinalMode());
 
 		Assert.isTrue(this.locationRepository.exists(location.getId()));
 
@@ -117,6 +126,27 @@ public class LocationService {
 		result.setPoint_c(center);
 		result.setPoint_d(center);
 
+		return result;
+	}
+
+	public Location reconstruct(final Location location, final BindingResult binding) {
+		Location result;
+
+		if (location.getId() == 0)
+			result = location;
+		else {
+			result = this.locationRepository.findOne(location.getId());
+			if (result.getFinalMode() != true) {
+				result.setFinalMode(location.getFinalMode());
+				result.setPoint_a(location.getPoint_a());
+				result.setPoint_b(location.getPoint_b());
+				result.setPoint_c(location.getPoint_c());
+				result.setPoint_d(location.getPoint_d());
+			}
+			result.setName(location.getName());
+			result.setLootTable(result.getLootTable());
+		}
+		this.validator.validate(result, binding);
 		return result;
 	}
 }

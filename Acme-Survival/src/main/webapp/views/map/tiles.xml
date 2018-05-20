@@ -20,4 +20,9 @@
 		<put-attribute name="title" value="Map view" />
 		<put-attribute name="body" value="/views/map/display.jsp" />
 	</definition>
+	
+		<definition name="location/edit" extends="master.page">
+		<put-attribute name="title" value="Edit a location" />
+		<put-attribute name="body" value="/views/map/edit.jsp" />
+	</definition>
 </tiles-definitions>

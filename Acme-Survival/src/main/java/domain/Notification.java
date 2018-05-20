@@ -6,8 +6,10 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -47,6 +49,8 @@ public class Notification extends DomainEntity {
 	@MapNotBlank
 	@MapSafeHtml
 	@ElementCollection
+	@Lob
+	@Column(length = 100000)
 	public Map<String, String> getBody() {
 		return this.body;
 	}

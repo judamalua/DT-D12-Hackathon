@@ -1,7 +1,13 @@
 
 package domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -45,7 +51,6 @@ public class LootTable extends DomainEntity {
 	// Relationships ----------------------------------------------------------
 	private Collection<ProbabilityEvent>	probabilityEvents;
 	private Collection<ProbabilityItem>		probabilityItems;
-	private Collection<Location>			locations;
 
 
 	@Valid
@@ -66,16 +71,53 @@ public class LootTable extends DomainEntity {
 
 	public void setProbabilityItems(final Collection<ProbabilityItem> probabilityItems) {
 		this.probabilityItems = probabilityItems;
-
 	}
-	@Valid
-	@OneToMany
-	public Collection<Location> getLocations() {
-		return this.locations;
+	
+	
+
+	public List<ItemDesign> getResultItems(Integer luck, Integer capacity){
+		Random randomGenerator = new Random();
+		
+		List<ItemDesign> items = new ArrayList<ItemDesign>();
+		
+		Comparator<ProbabilityItem> comparator = new Comparator<ProbabilityItem>() {
+		    @Override
+		    public int compare(ProbabilityItem left, ProbabilityItem right) {
+		        return (left.getValue() > right.getValue()) ? 1 : -1; // use your logic
+		    }
+		};
+
+		
+		
+		List<ProbabilityItem> probItems = new ArrayList<ProbabilityItem>(this.probabilityItems);
+		
+		Collections.sort(probItems, comparator);
+		
+		for (ProbabilityItem probItem : probItems){
+			
+			if (probItem.getValue()*(1+(luck/100.0)) > randomGenerator.nextDouble()){
+				items.add(probItem.getItemDesign());
+			}
+			if (items.size() >= capacity){
+				break;
+			}
+		}
+		
+		return items;
 	}
+	
+	public List<Event> getResultEvents(Integer luck){
+		Random randomGenerator = new Random();	
 
-	public void setLocations(final Collection<Location> locations) {
-		this.locations = locations;
-
+		List<Event> events = new ArrayList<Event>();
+		for (ProbabilityEvent probevent : this.probabilityEvents){
+			
+			if (probevent.getValue() > randomGenerator.nextDouble()){
+				events.add(probevent.getEvent());
+			}
+			
+		}
+		
+		return events;
 	}
 }
