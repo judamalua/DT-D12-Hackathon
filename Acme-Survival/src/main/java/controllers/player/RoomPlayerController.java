@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.CharacterService;
 import services.ConfigurationService;
 import services.InventoryService;
 import services.RefugeService;
@@ -62,6 +63,9 @@ public class RoomPlayerController extends AbstractController {
 
 	@Autowired
 	private InventoryService		inventoryService;
+
+	@Autowired
+	private CharacterService		characterService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -163,6 +167,10 @@ public class RoomPlayerController extends AbstractController {
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
+
+			for (final Room r : rooms.getContent())
+				if (this.characterService.findCharactersByRoom(r.getId()).size() > r.getRoomDesign().getMaxCapacityCharacters())
+					rooms.getContent().remove(r);
 
 			result.addObject("rooms", rooms.getContent());
 			result.addObject("page", page);
