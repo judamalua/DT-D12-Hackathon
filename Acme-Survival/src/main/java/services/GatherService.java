@@ -4,6 +4,7 @@ package services;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
@@ -18,6 +19,7 @@ import org.springframework.validation.Validator;
 
 import repositories.GatherRepository;
 import domain.Character;
+import domain.Event;
 import domain.Gather;
 import domain.Location;
 import domain.Notification;
@@ -55,6 +57,8 @@ public class GatherService {
 
 	@Autowired
 	private Validator			validator;
+
+	public static final int		HASH_SIZE	= 4096;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -283,8 +287,11 @@ public class GatherService {
 		Player player;
 		Gather gatherMission;
 		Collection<Character> currentlyInGatheringMissionCharacters;
+		String eventsStringEn, eventsStringEs;
 		Refuge refuge;
 		Notification notification;
+		List<Event> eventsDuringMission;
+		int currentHealth, currentWater, currentFood;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
 		titleNotification.put("es", "¡Misión de recolección finalizada!");
@@ -302,17 +309,46 @@ public class GatherService {
 			gatherMission = this.findGatherFinishedByCharacter(character.getId());
 
 			if (gatherMission != null) {
-				// metodo para recoger cosas de la mision
-				this.delete(gatherMission);
+				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
+				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity());
+
+				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
+				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
+
+				//this.delete(gatherMission);
+
 				character.setCurrentlyInGatheringMission(false);
+
+				if (eventsDuringMission.size() != 0) {
+					eventsStringEn = "During the mission \"" + character.getFullName() + "\" came across with the following situations:";
+					eventsStringEs = "Durante su misión \"" + character.getFullName() + "\" se encontró con las siguientes situaciones:";
+
+					currentHealth = character.getCurrentHealth();
+					currentWater = character.getCurrentWater();
+					currentFood = character.getCurrentFood();
+
+					for (final Event event : eventsDuringMission) {
+						eventsStringEn += "Name: " + event.getName().get("en") + "Description: " + event.getDescription().get("en");
+						eventsStringEs += "Nombre: " + event.getName().get("es") + "Descripción: " + event.getDescription().get("es");
+
+						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));
+						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
+						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
+
+					}
+					bodyNotification.put("en", bodyNotification.get("en") + eventsStringEn);
+					bodyNotification.put("es", bodyNotification.get("es") + eventsStringEs);
+				}
+
 				this.characterService.save(character);
 
 				notification = this.notificationService.create();
 				notification.setTitle(titleNotification);
+				notification.setBody(bodyNotification);
 				notification.setMoment(new Date(System.currentTimeMillis() - 1));
 				notification.setPlayer(player);
 				notification.setMission(gatherMission);
-
+				this.notificationService.save(notification);
 			}
 
 		}

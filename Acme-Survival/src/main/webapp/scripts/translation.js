@@ -26,6 +26,10 @@ var mapTranslations = {
 		moveStartLink : {
 			es : "Mover tu refugio a esta zona",
 			en : "Move your refuge to this location"
+		},
+		editLocation : {
+			es : "Editar esta zona",
+			en : "Edit this location"
 		}
 	},
 	refuge : {

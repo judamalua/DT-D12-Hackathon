@@ -621,6 +621,7 @@
 
 	<bean id="LootTable1" class="domain.LootTable">
 		<property name="name" value="Bosque" />
+		<property name="finalMode" value="true" />
 		<property name="probabilityEvents">
 			<list>
 				<ref bean="ProbabilityEvent1" />
@@ -633,7 +634,7 @@
 	</bean>
 
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
-		<property name="value" value="0.40" />
+		<property name="value" value="0.4" />
 		<property name="event" ref="Event1" />
 	</bean>
 
