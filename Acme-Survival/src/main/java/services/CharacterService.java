@@ -131,14 +131,7 @@ public class CharacterService {
 			this.calculateLevel(character);
 
 		}
-
-		if (character.getCurrentHealth() < 1) {
-			this.characterRIP(character);
-
-			result = null;
-
-		} else
-			result = this.characterRepository.save(character);
+		result = this.characterRepository.save(character);
 
 		return result;
 
