@@ -412,7 +412,7 @@
 		<property name="fullName" value="Rob Stark" />
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
-		<property name="male" value="true" />	
+		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
 
 	</bean>
@@ -483,6 +483,7 @@
 		<property name="point_b" value="42.432987253576734,3.4635955854628264" />
 		<property name="point_c" value="36.46702062395571,-1.4582794145371736" />
 		<property name="point_d" value="36.819621891697544,-9.719998164537174" />
+		<property name="lootTable" ref="LootTable1" />
 		<property name="finalMode" value="true" />
 	</bean>
 
@@ -507,6 +508,7 @@
 		<property name="point_b" value="42.55695649032093,6.19349487778743" />
 		<property name="point_c" value="44.90630505359299,21.83802612778743" />
 		<property name="point_d" value="54.72765897192587,18.32240112778743" />
+		<property name="lootTable" ref="LootTable1" />
 		<property name="finalMode" value="true" />
 	</bean>
 
@@ -624,10 +626,6 @@
 			</list>
 		</property>
 		<property name="probabilityItems">
-			<list>
-			</list>
-		</property>
-		<property name="locations">
 			<list>
 			</list>
 		</property>

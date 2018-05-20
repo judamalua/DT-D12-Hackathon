@@ -7,7 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -104,7 +104,7 @@ public class Location extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public LootTable getLootTable() {
 		return this.lootTable;
 	}
