@@ -326,12 +326,12 @@ public class GatherService {
 
 			if (gatherMission != null) {
 				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
-				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity());
+				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
 
 				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
 				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
 
-				//this.delete(gatherMission);
+				//this.delete(gatherMission); //TODO
 
 				character.setCurrentlyInGatheringMission(false);
 
