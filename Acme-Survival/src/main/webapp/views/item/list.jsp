@@ -14,11 +14,11 @@
 
 <spring:message code="master.page.current.lang" var="currentLang" />
 
-<acme:pagination requestURI="item/player/list?page="
+<acme:pagination requestURI="item/player/list.do?characterId=${characterId}&page="
 	pageNum="${pageNum}" page="${page}" />
 
 <display:table name="items" id="item"
-	requestURI="${requestURI}" class="displaytag">
+	requestURI="item/player/list.do?characterId=${characterId}" class="displaytag">
 
 	<display:column>
 		<img class="forumImg" src="${item.tool.imageUrl}" />
@@ -43,7 +43,7 @@
 	<display:column title="${luckTitle}" property="tool.luck" />
 
 	<spring:message code="tool.capacity" var="capacityTitle" />
-	<display:column title="${strengthTitle}" property="tool.capacity" />
+	<display:column title="${capacityTitle}" property="tool.capacity" />
 	
 
 

@@ -89,6 +89,11 @@ public class ItemServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This method test the correct discard of a item
+	 * 
+	 * @author Luis
+	 */
 	@Test
 	public void testDeleteItem() {
 		super.authenticate("Player1");
@@ -104,5 +109,67 @@ public class ItemServiceTest extends AbstractTest {
 	}
 
 	//*****************************Negative Methods*************************************
+
+	/**
+	 * This method test that you can´t delete a equipped item
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testDeleteEquippedItem() {
+		super.authenticate("Player1");
+		int itemId;
+		int characterId;
+		Item item;
+		domain.Character character;
+
+		itemId = super.getEntityId("Item1");
+		characterId = super.getEntityId("Character1");
+		item = this.itemService.findOne(itemId);
+		character = this.characterService.findOne(characterId);
+
+		this.itemService.UpdateEquipped(item, character.getId());
+		this.itemService.delete(item);
+
+	}
+
+	/**
+	 * This method test that you can´t equip a item equipped
+	 * 
+	 * @author Luis
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testEquipItemEquiped() {
+		super.authenticate("Player1");
+		int itemId;
+		int characterId;
+		Item item;
+		domain.Character character;
+
+		itemId = super.getEntityId("Item1");
+		characterId = super.getEntityId("Character1");
+		item = this.itemService.findOne(itemId);
+		character = this.characterService.findOne(characterId);
+
+		this.itemService.UpdateEquipped(item, character.getId());
+		this.itemService.UpdateEquipped(item, character.getId());
+
+	}
+
+	/**
+	 * This method test that you can´t discard a not equipped item
+	 * 
+	 * @author Luis
+	 */
+	@Test
+	public void testDiscardItemDiscarted() {
+		super.authenticate("Player1");
+		int characterId;
+		domain.Character character;
+		characterId = super.getEntityId("Character1");
+		character = this.characterService.findOne(characterId);
+		this.itemService.UpdateDiscard(character);
+
+	}
 
 }

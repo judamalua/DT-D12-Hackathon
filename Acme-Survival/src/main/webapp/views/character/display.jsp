@@ -74,7 +74,7 @@
 <div style="border-style: solid; border-width: 5px;">
 
 	<strong><spring:message code="character.currentHealth" />:</strong>
-	<div class="3-progress-container w3-light-green">
+	<div class="3-progress-container w3-light-red">
 		<i class="material-icons right">local_hospital</i>
 		<div class="w3-progressbar w3-green w3-center"
 			style="width:${character.currentHealth}%">
@@ -93,7 +93,7 @@
 	</div>
 	<br> <strong><spring:message
 			code="character.currentWater" />:</strong>
-	<div class="w3-progress-container w3-light-blue">
+	<div class="3-progress-container w3-light-red">
 		<i class="material-icons right">free_breakfast</i>
 		<div class="w3-progressbar w3-blue w3-center"
 			style="width:${character.currentWater}%">

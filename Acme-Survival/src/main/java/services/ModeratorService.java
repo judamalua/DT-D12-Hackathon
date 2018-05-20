@@ -143,4 +143,9 @@ public class ModeratorService {
 
 		return result;
 	}
+
+	public void flush() {
+		this.moderatorRepository.flush();
+
+	}
 }

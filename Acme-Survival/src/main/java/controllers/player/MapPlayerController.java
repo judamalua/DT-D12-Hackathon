@@ -2,6 +2,7 @@
 package controllers.player;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import services.GatherService;
 import services.LocationService;
 import services.RefugeService;
 import domain.Actor;
+import domain.Attack;
 import domain.Location;
 import domain.Player;
 import domain.Refuge;
@@ -157,22 +159,31 @@ public class MapPlayerController {
 			json.put("onGoingGathers", onGoingGathers);
 			final JSONObject onGoingAttack = this.getOnGoingAttack();
 			json.put("onGoingAttack", onGoingAttack);
+			final JSONObject onGoingMove = this.getOnGoingMove();
+			json.put("onGoingMove", onGoingMove);
 			result = json.toString();
 		} catch (final Throwable e) {
 			result = e.getMessage();
 		}
 		return result;
 	}
-
 	// get Methods ----------------------------------
 
-	private JSONObject getOnGoingAttack() {
+	private JSONObject getOnGoingMove() {
 		final JSONObject result = new JSONObject();
-		//Attack attack = this.attackService.findAllAttacksByPlayer(refugeId, pageable)
-		// TODO Finish this
+		// TODO Auto-generated method stub
 		return result;
 	}
 
+	private JSONObject getOnGoingAttack() {
+		final JSONObject result = new JSONObject();
+		final Attack attack = this.attackService.findAttackByPlayer(this.actorService.findActorByPrincipal().getId());
+		if (attack != null) {
+			result.put("endMoment", attack.getEndMoment().getTime() - new Date().getTime());
+			result.put("refuge", this.makeRefuge(attack.getDefendant()));
+		}
+		return result;
+	}
 	private JSONArray getOnGoingGathers() {
 		final JSONArray result = new JSONArray();
 		// TODO Finish this too

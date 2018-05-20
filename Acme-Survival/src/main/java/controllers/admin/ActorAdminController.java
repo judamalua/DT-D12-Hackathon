@@ -84,7 +84,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/register.do");
+		result.addObject("actionURL", "actor/admin/register.do");
 
 		return result;
 	}
@@ -120,7 +120,7 @@ public class ActorAdminController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
-	public ModelAndView registerAdministrator(@ModelAttribute("admin") final ActorForm actor, final BindingResult binding) {
+	public ModelAndView registerAdministrator(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
 		Admin admin = null;
@@ -200,7 +200,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/registerManager.do");
+		result.addObject("actionURL", "actor/admin/registerManager.do");
 
 		return result;
 	}
@@ -214,7 +214,7 @@ public class ActorAdminController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping(value = "/registerManager", method = RequestMethod.POST, params = "save")
-	public ModelAndView registerManager(@ModelAttribute("manager") final ActorForm actor, final BindingResult binding) {
+	public ModelAndView registerManager(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
 		Manager manager = null;
@@ -261,7 +261,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/registerModerator.do");
+		result.addObject("actionURL", "actor/admin/registerModerator.do");
 
 		return result;
 	}
@@ -275,7 +275,7 @@ public class ActorAdminController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping(value = "/registerModerator", method = RequestMethod.POST, params = "save")
-	public ModelAndView registerModerator(@ModelAttribute("moderator") final ActorForm actor, final BindingResult binding) {
+	public ModelAndView registerModerator(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
 		Moderator moderator = null;
@@ -323,7 +323,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/registerDesigner.do");
+		result.addObject("actionURL", "actor/admin/registerDesigner.do");
 
 		return result;
 	}
@@ -337,7 +337,7 @@ public class ActorAdminController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping(value = "/registerDesigner", method = RequestMethod.POST, params = "save")
-	public ModelAndView registerDesginer(@ModelAttribute("designer") final ActorForm actor, final BindingResult binding) {
+	public ModelAndView registerDesginer(@ModelAttribute("actor") final ActorForm actor, final BindingResult binding) {
 		ModelAndView result;
 		Authority auth;
 		Designer designer = null;

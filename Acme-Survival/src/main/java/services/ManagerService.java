@@ -143,4 +143,9 @@ public class ManagerService {
 
 		return result;
 	}
+
+	public void flush() {
+		this.managerRepository.flush();
+
+	}
 }

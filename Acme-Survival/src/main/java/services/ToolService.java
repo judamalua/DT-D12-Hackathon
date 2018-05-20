@@ -85,13 +85,11 @@ public class ToolService {
 		Tool result;
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
-		final Collection<Item> items;
 
 		result = this.toolRepository.save(tool);
 
 		events = this.itemDesignService.findEventsByItemDesign(tool.getId());
 		propabilityItems = this.itemDesignService.findProbabilityItemsByItemDesign(tool.getId());
-		items = this.findItemsByTool(tool.getId());
 
 		for (final Event event : events) {
 			event.setItemDesign(result);
@@ -101,11 +99,6 @@ public class ToolService {
 		for (final ProbabilityItem probabilityItem : propabilityItems) {
 			probabilityItem.setItemDesign(result);
 			this.probabilityItemService.save(probabilityItem);
-		}
-
-		for (final Item item : items) {
-			item.setTool(result);
-			this.itemService.save(item);
 		}
 
 		return result;
