@@ -62,10 +62,12 @@
   <div id="modalEvents" class="modal">
     <div class="modal-content">
       <h4><spring:message code = "notification.modal.title"/></h4>
+      <jstl:if test="${fn:length(notification.events) gt 0}">
       <p><spring:message code = "notification.modal.description"/></p>
       <jstl:forEach items="${notification.events}" var = "event">
       	<b><spring:message code = "notification.modal.event.title"/></b>
       	<jstl:out value="${event.name[currentLang]}"></jstl:out>
+      	<br/>
       	<b><spring:message code = "notification.modal.event.desc"/></b>
       	<jstl:out value="${event.description[currentLang]}"></jstl:out>
       	<br/>
@@ -74,6 +76,10 @@
       		<spring:message code = "notification.modal.event.findChar"/>
       	</jstl:if>
       </jstl:forEach>
+      </jstl:if>
+       <jstl:if test="${fn:length(notification.events) eq 0}">
+       	<spring:message code = "notification.modal.event.noEvent"/>
+       </jstl:if>
     </div>
     <div class="modal-footer">
       <a href="notification/player/display.do?notificationId=${notification.id}" class="modal-close waves-effect waves-green btn-flat"><spring:message code = "notification.modal.accept"/></a>

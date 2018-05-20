@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class DesignerConfiguration extends DomainEntity {
@@ -28,6 +30,7 @@ public class DesignerConfiguration extends DomainEntity {
 	private double	woodFactorSteal;
 	private Integer	foodLostGatherFactor;
 	private Integer	waterLostGatherFactor;
+	private Integer	experiencePerMinute;
 
 
 	public double getMovingWood() {
@@ -144,6 +147,16 @@ public class DesignerConfiguration extends DomainEntity {
 
 	public void setWaterLostGatherFactor(final Integer waterLostGatherFactor) {
 		this.waterLostGatherFactor = waterLostGatherFactor;
+	}
+
+	@Range(min = 1, max = 100)
+	@NotNull
+	public Integer getExperiencePerMinute() {
+		return this.experiencePerMinute;
+	}
+
+	public void setExperiencePerMinute(final Integer experiencePerMinute) {
+		this.experiencePerMinute = experiencePerMinute;
 	}
 
 	// Relationships ----------------------------------------------------------
