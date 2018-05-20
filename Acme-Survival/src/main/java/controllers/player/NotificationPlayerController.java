@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
+import services.GatherService;
 import services.NotificationService;
 import controllers.AbstractController;
 import domain.Attack;
@@ -32,6 +33,9 @@ public class NotificationPlayerController extends AbstractController {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private GatherService			gatherService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -58,6 +62,8 @@ public class NotificationPlayerController extends AbstractController {
 			player = (Player) this.actorService.findActorByPrincipal();
 			this.notificationService.generateNotifications();
 			notifications = this.notificationService.findNotificationsByPlayer(player.getId(), pageable);
+
+			this.gatherService.updateGatheringMissions();
 
 			result.addObject("notifications", notifications.getContent());
 			result.addObject("page", page);

@@ -302,6 +302,7 @@ public class GatherService {
 		Notification notification;
 		List<Event> eventsDuringMission;
 		Long missionMillis;
+		Integer experience;
 		Integer missionMinutes;
 		DesignerConfiguration designerConfiguration;
 		int currentHealth, currentWater, currentFood;
@@ -319,7 +320,7 @@ public class GatherService {
 
 		currentlyInGatheringMissionCharacters = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
 
-		for (final Character character : currentlyInGatheringMissionCharacters) {
+		for (Character character : currentlyInGatheringMissionCharacters) {
 			// We check if the current character has a gathering mission that has already finished
 			gatherMission = this.findGatherFinishedByCharacter(character.getId());
 
@@ -369,7 +370,13 @@ public class GatherService {
 					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
 				}
 
-				this.characterService.save(character);
+				experience = character.getExperience() + (missionMinutes * designerConfiguration.getExperiencePerMinute());
+				character.setExperience(experience);
+
+				character = this.characterService.save(character);
+
+				if (character.getCurrentHealth() < 0)
+					this.characterService.characterRIP(character);
 
 				notification = this.notificationService.create();
 				notification.setTitle(titleNotification);

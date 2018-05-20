@@ -197,6 +197,7 @@
 		<property name="woodFactorSteal" value="0.25" />
 		<property name="foodLostGatherFactor" value="2" />
 		<property name="waterLostGatherFactor" value="1" />
+		<property name="experiencePerMinute" value="20" />
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
