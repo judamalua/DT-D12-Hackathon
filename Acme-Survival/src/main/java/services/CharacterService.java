@@ -48,6 +48,9 @@ public class CharacterService {
 	@Autowired
 	private RefugeService		refugeService;
 
+	@Autowired
+	private ItemService			itemService;
+
 
 	// Simple CRUD methods --------------------------------------------------
 
@@ -105,6 +108,8 @@ public class CharacterService {
 	public Character save(final Character character) {
 		assert character != null;
 		Actor actor;
+		Character result;
+
 		actor = this.actorService.findActorByPrincipal();
 		Assert.isTrue(actor instanceof Player);
 
@@ -127,11 +132,30 @@ public class CharacterService {
 
 		}
 
-		Character result;
+		if (character.getCurrentHealth() != 0) {
+			this.characterRIP(character);
 
-		result = this.characterRepository.save(character);
+			result = this.characterRepository.save(character);
+		} else
+			result = null;
 
 		return result;
+
+	}
+
+	/**
+	 * That method delete a character from database cause his or her life has arrive to 0
+	 * 
+	 * @author Luis
+	 */
+	public void characterRIP(final Character character) {
+		Assert.isTrue(this.characterRepository.exists(character.getId()));
+		Assert.isTrue(character.getCurrentHealth() == 0);
+
+		if (character.getItem() != null)
+			this.itemService.delete(character.getItem());
+
+		this.characterRepository.delete(character);
 
 	}
 
