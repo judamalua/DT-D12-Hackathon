@@ -21,6 +21,8 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<spring:message code = "master.page.current.lang" var = "currentLang" />
+
 
 <security:authorize access="hasRole('DESIGNER')">
 	<script src="scripts/map/designerMap.js"></script>
@@ -31,7 +33,7 @@
 	<div id="map" style="height: 400px;"></div>
 </div>
 <script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMap">
+	src="https://maps.googleapis.com/maps/api/js?language=${currentLang}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMap">
 	
 </script>
 
