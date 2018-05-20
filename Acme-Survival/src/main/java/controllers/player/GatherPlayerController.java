@@ -120,6 +120,9 @@ public class GatherPlayerController extends AbstractController {
 		ModelAndView result;
 		final Collection<Character> elegibleCharacters;
 
+		// Here we update gathering missions
+		this.gatherService.updateGatheringMissions();
+
 		elegibleCharacters = this.gatherService.findCharactersElegible();
 		result = new ModelAndView("gather/edit");
 

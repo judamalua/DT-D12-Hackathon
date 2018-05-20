@@ -38,6 +38,7 @@ public class Character extends DomainEntity {
 	private int		level;
 	private int		experience;
 	private boolean	male;
+	private boolean	currentlyInGatheringMission;
 	private Date	roomEntrance;
 
 
@@ -150,6 +151,14 @@ public class Character extends DomainEntity {
 
 	public void setRoomEntrance(final Date roomEntrance) {
 		this.roomEntrance = roomEntrance;
+	}
+
+	public boolean getCurrentlyInGatheringMission() {
+		return this.currentlyInGatheringMission;
+	}
+
+	public void setCurrentlyInGatheringMission(final boolean currentlyInGatheringMission) {
+		this.currentlyInGatheringMission = currentlyInGatheringMission;
 	}
 
 

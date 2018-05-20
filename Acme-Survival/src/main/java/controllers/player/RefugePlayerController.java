@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
+import services.GatherService;
 import services.PlayerService;
 import services.RefugeService;
 import services.RoomService;
@@ -50,6 +51,9 @@ public class RefugePlayerController extends AbstractController {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private GatherService			gatherService;
 
 	@Autowired
 	private ConfigurationService	configurationService;
@@ -120,7 +124,8 @@ public class RefugePlayerController extends AbstractController {
 		Actor actor;
 		Pageable pageable;
 		Page<Room> rooms;
-		boolean owner = false, knowRefuge = false;
+		boolean owner = false;
+		boolean knowRefuge = false;
 
 		try {
 			configuration = this.configurationService.findConfiguration();
@@ -141,6 +146,7 @@ public class RefugePlayerController extends AbstractController {
 				refuge = this.refugeService.findOne(refugeId);
 
 			this.refugeService.updateInventory(refuge);
+			this.gatherService.updateGatheringMissions();
 
 			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
 			owner = ownRefuge != null && ownRefuge.equals(refuge);

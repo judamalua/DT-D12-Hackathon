@@ -22,4 +22,7 @@ public interface CharacterRepository extends JpaRepository<Character, Integer> {
 
 	@Query("select c from Character c where c.room.id=?1")
 	Collection<Character> findCharactersByRoom(int roomId);
+
+	@Query("select c from Character c where c.refuge.id=?1 and c.currentlyInGatheringMission = true")
+	Collection<Character> findCharactersCurrentlyInMission(int refugeId);
 }

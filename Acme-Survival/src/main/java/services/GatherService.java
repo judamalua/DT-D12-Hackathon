@@ -3,6 +3,8 @@ package services;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -18,6 +20,7 @@ import repositories.GatherRepository;
 import domain.Character;
 import domain.Gather;
 import domain.Location;
+import domain.Notification;
 import domain.Player;
 import domain.Refuge;
 
@@ -46,6 +49,9 @@ public class GatherService {
 
 	@Autowired
 	private LocationService		locationService;
+
+	@Autowired
+	private NotificationService	notificationService;
 
 	@Autowired
 	private Validator			validator;
@@ -109,15 +115,23 @@ public class GatherService {
 		Assert.notNull(gather.getCharacter());
 
 		Gather result;
-		Collection<Gather> recolectionNotFinishedByCharacter;
-		Player player;
+		Character character;
 
-		recolectionNotFinishedByCharacter = this.findGatherNotFinishedByCharacter(gather.getCharacter().getId());
-		player = (Player) this.actorService.findActorByPrincipal();
+		// We check that there is someone logged in
+		this.actorService.checkActorLogin();
+
+		character = gather.getCharacter();
 
 		// We check that the character that is trying to be sent into a mission is not already doing one
-		Assert.isTrue(recolectionNotFinishedByCharacter.size() == 0);
-		Assert.isTrue(gather.getPlayer().equals(player));
+		Assert.isTrue(!character.getCurrentlyInGatheringMission());
+		// We check that the player trying to make the mission is the same as the owner of the refuge of the character
+		Assert.isTrue(gather.getPlayer().equals(character.getRefuge().getPlayer()));
+
+		// We set to true this property, indicating that the character is now on a gathering mission
+		character.setCurrentlyInGatheringMission(true);
+
+		// And we save the character
+		this.characterService.save(character);
 
 		result = this.gatherRepository.save(gather);
 
@@ -135,6 +149,8 @@ public class GatherService {
 		this.gatherRepository.delete(gather);
 
 	}
+
+	// Other business methods ----------------------------------------------------------------------------------------------------------
 
 	/**
 	 * This method returns all characters that are elegible for a Recolection Mission for the Player logged (the principal).
@@ -179,12 +195,38 @@ public class GatherService {
 
 	}
 
-	public Collection<Gather> findGatherNotFinishedByCharacter(final int characterId) {
-		Collection<Gather> result;
+	public Gather findGatherNotFinishedByCharacter(final int characterId) {
+		Gather result;
 		Date now;
 
 		now = new Date();
 		result = this.gatherRepository.findGatherNotFinishedByCharacter(characterId, now);
+
+		return result;
+	}
+
+	public Collection<Gather> findGatherCollectionNotFinishedByCharacter(final int characterId) {
+		Collection<Gather> result;
+		Date now;
+
+		now = new Date();
+		result = this.gatherRepository.findGatherCollectionNotFinishedByCharacter(characterId, now);
+
+		return result;
+	}
+
+	/**
+	 * This query returns a non finished gathering mission of a character
+	 * 
+	 * @param characterId
+	 * @return
+	 * 
+	 * @author Juanmi
+	 */
+	public Gather findGatherFinishedByCharacter(final int characterId) {
+		Gather result;
+
+		result = this.gatherRepository.findGatherFinishedByCharacter(characterId);
 
 		return result;
 	}
@@ -235,5 +277,44 @@ public class GatherService {
 		result = this.gatherRepository.findGathersFinishedByPlayer(playerId, now);
 
 		return result;
+	}
+
+	public void updateGatheringMissions() {
+		Player player;
+		Gather gatherMission;
+		Collection<Character> currentlyInGatheringMissionCharacters;
+		Refuge refuge;
+		Notification notification;
+		final Map<String, String> titleNotification = new HashMap<String, String>();
+		titleNotification.put("en", "Gathering mission finished!");
+		titleNotification.put("es", "¡Misión de recolección finalizada!");
+		final Map<String, String> bodyNotification = new HashMap<String, String>();
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+
+		Assert.notNull(player);
+
+		currentlyInGatheringMissionCharacters = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+
+		for (final Character character : currentlyInGatheringMissionCharacters) {
+			// We check if the current character has a gathering mission that has already finished
+			gatherMission = this.findGatherFinishedByCharacter(character.getId());
+
+			if (gatherMission != null) {
+				// metodo para recoger cosas de la mision
+				this.delete(gatherMission);
+				character.setCurrentlyInGatheringMission(false);
+				this.characterService.save(character);
+
+				notification = this.notificationService.create();
+				notification.setTitle(titleNotification);
+				notification.setMoment(new Date(System.currentTimeMillis() - 1));
+				notification.setPlayer(player);
+				notification.setMission(gatherMission);
+
+			}
+
+		}
 	}
 }
