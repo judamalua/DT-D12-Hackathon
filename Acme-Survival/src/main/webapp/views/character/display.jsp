@@ -126,6 +126,49 @@
 </div>
 <br>
 
+<jstl:if test="${character.room ==null}">
+<div>
+	<img style="height: 200px; width: 200px;" src="http://latvianhall.com.au/assets/large_hall/dsc_9141.jpg"/>
+	
+</div>
+<spring:message code="room.mainRoom"></spring:message>
+</jstl:if>
+<jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"Barrack\"}">
+<div>
+	<img style="height: 200px; width: 200px;" src="https://trcs.wikispaces.com/file/view/barracks_large.jpg/74113875/barracks_large.jpg"/>
+	
+</div>
+<spring:message code="room.mainRoom"></spring:message>
+</jstl:if>
+<jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
+<div>
+	<img style="height: 200px; width: 200px;" src="https://thefederalistpapers.org/wp-content/uploads/2016/10/gunssales.jpg"/>
+	
+</div>
+<spring:message code="room.mainRoom"></spring:message>
+</jstl:if>
+<jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"RestorationRoom\"}">
+<div>
+	<img style="height: 200px; width: 200px;" src="https://unificacionistas.files.wordpress.com/2009/08/bioenergia.jpg"/>
+	
+</div>
+<spring:message code="room.mainRoom"></spring:message>
+</jstl:if>
+<jstl:if test="${character.room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
+<div>
+	<img style="height: 200px; width: 200px;" src="http://www.sheffield-pottery.com/v/vspfiles/assets/images/wharehouse-int.jpg"/>
+	
+</div>
+<spring:message code="room.mainRoom"></spring:message>
+</jstl:if>
+
+
+<acme:button url="room/player/list.do?characterId=${character.id}"
+			code="character.changeRoom" />
+
+<br>
+
+
 
 
 <jstl:if test="${character.item !=null}">
