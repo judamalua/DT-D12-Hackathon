@@ -1,4 +1,8 @@
 var map;
+var map;
+var marker0, marker1, marker2, marker3;
+var currentMarker = 0;
+var currentZone;
 function initMap() {
 	document.getElementsByTagName("h1")[0].innerHTML = "";
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -262,10 +266,26 @@ function initMap() {
 		]
 	});
 	infoWindow = new google.maps.InfoWindow;
-	createElementsMain();
+	var locationId;
+	if (document.getElementById("id") !== null) {
+		if (document.getElementById("finalMode").value == "false") {
+			locationId = document.getElementById("id").value;
+			google.maps.event.addListener(map, 'click', function(event) {
+				placeMarker(event.latLng);
+			});
+			if (locationId !== "0") {
+				reloadMarkers();
+			}
+		} else {
+			locationId = null;
+		}
+	} else {
+		locationId = null;
+	}
+	createElementsMain(locationId);
 }
 
-function generateMap() {
+function generateMap(locationId) {
 	var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
 	// LOCATION HANDLING -----------------------------------
 	var zone = [];
@@ -326,7 +346,8 @@ function generateMap() {
 			if (currentInt != -1) {
 				var language = getLanguageToUse();
 				var contentString = '<b>' + mapTranslations.location.location[language] + '</b><br/><b>' + mapTranslations.location.name[language] + ": </b>"
-						+ mapElements.locations[currentInt].name[language];
+						+ mapElements.locations[currentInt].name[language] + '<br/><br/><a href="' + getMainDomain() + 'location/designer/edit.do?locationId='
+						+ mapElements.locations[currentInt].id + '">' + mapTranslations.location.editLocation[language] + '</a>';
 
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
@@ -338,82 +359,83 @@ function generateMap() {
 	// LOCATION NOT FINAL HANDLING -----------------------------------
 	var zoneNotFinal = [];
 	for ( var int = 0; int < mapElements.locationsNotFinal.length; int++) {
-		zoneNotFinal[int] = new google.maps.Polygon({
-			paths : [
-					{
-						lat : Number(mapElements.locationsNotFinal[int].point_a.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_a.split(",")[1])
-					}, {
-						lat : Number(mapElements.locationsNotFinal[int].point_b.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_b.split(",")[1])
-					}, {
-						lat : Number(mapElements.locationsNotFinal[int].point_c.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_c.split(",")[1])
-					}, {
-						lat : Number(mapElements.locationsNotFinal[int].point_d.split(",")[0]),
-						lng : Number(mapElements.locationsNotFinal[int].point_d.split(",")[1])
+		if (locationId != mapElements.locationsNotFinal[int].id) {
+			zoneNotFinal[int] = new google.maps.Polygon({
+				paths : [
+						{
+							lat : Number(mapElements.locationsNotFinal[int].point_a.split(",")[0]),
+							lng : Number(mapElements.locationsNotFinal[int].point_a.split(",")[1])
+						}, {
+							lat : Number(mapElements.locationsNotFinal[int].point_b.split(",")[0]),
+							lng : Number(mapElements.locationsNotFinal[int].point_b.split(",")[1])
+						}, {
+							lat : Number(mapElements.locationsNotFinal[int].point_c.split(",")[0]),
+							lng : Number(mapElements.locationsNotFinal[int].point_c.split(",")[1])
+						}, {
+							lat : Number(mapElements.locationsNotFinal[int].point_d.split(",")[0]),
+							lng : Number(mapElements.locationsNotFinal[int].point_d.split(",")[1])
+						}
+				],
+				strokeColor : '#0000FF',
+				strokeOpacity : 0.8,
+				strokeWeight : 2,
+				fillColor : '#0000FF',
+				fillOpacity : 0.35,
+				map : map
+			});
+			zoneNotFinal[int].addListener('click', function(event) {
+				var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+				var currentInt = -1;
+				for ( var int2 = 0; int2 < mapElements.locationsNotFinal.length; int2++) {
+					var m = {
+						x : event.latLng.lat(),
+						y : event.latLng.lng()
+					};
+					var r = {
+						A : {
+							x : Number(mapElements.locationsNotFinal[int2].point_a.split(",")[0]),
+							y : Number(mapElements.locationsNotFinal[int2].point_a.split(",")[1])
+						},
+						B : {
+							x : Number(mapElements.locationsNotFinal[int2].point_b.split(",")[0]),
+							y : Number(mapElements.locationsNotFinal[int2].point_b.split(",")[1])
+						},
+						C : {
+							x : Number(mapElements.locationsNotFinal[int2].point_c.split(",")[0]),
+							y : Number(mapElements.locationsNotFinal[int2].point_c.split(",")[1])
+						},
+						D : {
+							x : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[0]),
+							y : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[1])
+						}
+					};
+					if (pointInZone2(m, r)) {
+						currentInt = int2;
 					}
-			],
-			strokeColor : '#0000FF',
-			strokeOpacity : 0.8,
-			strokeWeight : 2,
-			fillColor : '#0000FF',
-			fillOpacity : 0.35,
-			map : map
-		});
-		zone[int].addListener('click', function(event) {
-			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
-			var currentInt = -1;
-			for ( var int2 = 0; int2 < mapElements.locationsNotFinal.length; int2++) {
-				var m = {
-					x : event.latLng.lat(),
-					y : event.latLng.lng()
-				};
-				var r = {
-					A : {
-						x : Number(mapElements.locationsNotFinal[int2].point_a.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_a.split(",")[1])
-					},
-					B : {
-						x : Number(mapElements.locationsNotFinal[int2].point_b.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_b.split(",")[1])
-					},
-					C : {
-						x : Number(mapElements.locationsNotFinal[int2].point_c.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_c.split(",")[1])
-					},
-					D : {
-						x : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[0]),
-						y : Number(mapElements.locationsNotFinal[int2].point_d.split(",")[1])
-					}
-				};
-				if (pointInZone2(m, r)) {
-					currentInt = int2;
 				}
-			}
-			if (currentInt != -1) {
-				var language = getLanguageToUse();
-				var contentString = '<b>' + mapTranslations.location.location[language] + '</b><br/><b>' + mapTranslations.location.name[language] + ": </b>"
-						+ mapElements.locationsNotFinal[currentInt].name[language] + '<br/><br/><a href="' + getMainDomain() + 'gather/player/create.do?locationId='
-						+ mapElements.locationsNotFinal[currentInt].id + '">' + mapTranslations.location.gatherMissionStartLink[language] + '</a><br/><a href="' + getMainDomain()
-						+ 'move/player/create.do?locationId=' + mapElements.locationsNotFinal[currentInt].id + '">' + mapTranslations.location.moveStartLink[language] + '</a>';
+				if (currentInt != -1) {
+					var language = getLanguageToUse();
+					var contentString = '<b>' + mapTranslations.location.location[language] + '</b><br/><b>' + mapTranslations.location.name[language] + ": </b>"
+							+ mapElements.locationsNotFinal[currentInt].name[language] + '<br/><br/><a href="' + getMainDomain() + 'location/designer/edit.do?locationId='
+							+ mapElements.locationsNotFinal[currentInt].id + '">' + mapTranslations.location.editLocation[language] + '</a>';
 
-				infoWindow.setContent(contentString);
-				infoWindow.setPosition(event.latLng);
+					infoWindow.setContent(contentString);
+					infoWindow.setPosition(event.latLng);
 
-				infoWindow.open(map);
-			}
-		});
+					infoWindow.open(map);
+				}
+			});
+		}
 	}
 
 }
-function createElementsMain() {
+function createElementsMain(locationId) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (this.responseText != "null") {
 				document.getElementById("mapElements").innerHTML = this.responseText;
-				generateMap();
+				generateMap(locationId);
 			}
 
 		}
@@ -421,4 +443,91 @@ function createElementsMain() {
 	xhttp.open("GET", getMainDomain() + "location/designer/info.do", true);
 	xhttp.send();
 
+}
+
+function placeMarker(location) {
+	switch (currentMarker) {
+		case 0:
+			if (marker0) {
+				marker0.setPosition(location);
+			} else {
+				marker0 = new google.maps.Marker({
+					position : location,
+					map : map,
+					icon : 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=A|00FF00|000000'
+				});
+			}
+			currentMarker = 1;
+			document.getElementById("point_a").value = location.lat() + "," + location.lng();
+			break;
+		case 1:
+			if (marker1) {
+				marker1.setPosition(location);
+			} else {
+				marker1 = new google.maps.Marker({
+					position : location,
+					map : map,
+					icon : 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=B|00FF00|000000'
+				});
+			}
+			currentMarker = 2;
+			document.getElementById("point_b").value = location.lat() + "," + location.lng();
+			break;
+		case 2:
+			if (marker2) {
+				marker2.setPosition(location);
+			} else {
+				marker2 = new google.maps.Marker({
+					position : location,
+					map : map,
+					icon : 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=C|00FF00|000000'
+				});
+			}
+			currentMarker = 3;
+			document.getElementById("point_c").value = location.lat() + "," + location.lng();
+			break;
+		case 3:
+			if (marker3) {
+				marker3.setPosition(location);
+			} else {
+				marker3 = new google.maps.Marker({
+					position : location,
+					map : map,
+					icon : 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=D|00FF00|000000'
+				});
+			}
+			currentMarker = 0;
+			document.getElementById("point_d").value = location.lat() + "," + location.lng();
+			break;
+
+	}
+	if (marker0 && marker1 && marker2 && marker3) {
+		var zoneCoords = [
+				marker0.getPosition().toJSON(), marker1.getPosition().toJSON(), marker2.getPosition().toJSON(), marker3.getPosition().toJSON()
+		];
+		if (currentZone) {
+			currentZone.setPaths(zoneCoords);
+		} else {
+			currentZone = new google.maps.Polygon({
+				paths : zoneCoords,
+				strokeColor : '#00FF00',
+				strokeOpacity : 0.8,
+				strokeWeight : 2,
+				fillColor : '#00FF00',
+				fillOpacity : 0.35
+			});
+			currentZone.setMap(map);
+		}
+	}
+}
+
+function reloadMarkers() {
+	var markers = [
+			"a", "b", "c", "d"
+	];
+	for ( var int = 0; int < markers.length; int++) {
+		var location = new google.maps.LatLng(Number(document.getElementById("point_" + markers[int]).value.split(",")[0]),
+				Number(document.getElementById("point_" + markers[int]).value.split(",")[1]));
+		placeMarker(location);
+	}
 }

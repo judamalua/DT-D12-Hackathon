@@ -37,3 +37,7 @@
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMap">
 	
 </script>
+
+<security:authorize access="hasRole('DESIGNER')">
+	<acme:button url="location/designer/create.do" code="location.create"/>
+</security:authorize>
