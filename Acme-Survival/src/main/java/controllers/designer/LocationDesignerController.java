@@ -7,15 +7,23 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.ConfigurationService;
 import services.LocationService;
+import services.LootTableService;
 import controllers.AbstractController;
+import domain.Configuration;
 import domain.Location;
+import domain.LootTable;
 
 @Controller
 @RequestMapping("/location/designer")
@@ -26,6 +34,12 @@ public class LocationDesignerController extends AbstractController {
 
 	@Autowired
 	private ConfigurationService	configurationService;
+
+	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
+	private LootTableService		lootTableService;
 
 
 	// Map display -----------------------------------------------------------
@@ -42,6 +56,125 @@ public class LocationDesignerController extends AbstractController {
 		return result;
 	}
 
+	// Creating ---------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView result;
+
+		try {
+			final Location location = this.locationService.create();
+			result = this.createEditModelAndView(location);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
+	// Editing ---------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int locationId) {
+		ModelAndView result;
+		final Location location;
+
+		try {
+			location = this.locationService.findOne(locationId);
+			Assert.notNull(location);
+			result = this.createEditModelAndView(location);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+	// Saving -------------------------------------------------------
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@ModelAttribute("location") Location location, final BindingResult binding) {
+		ModelAndView result;
+		location = this.locationService.reconstruct(location, binding);
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(location, "location.params.error");
+		else
+			try {
+				this.locationService.save(location);
+				result = new ModelAndView("redirect:/location/designer/display.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(location, "location.commit.error");
+			}
+
+		return result;
+	}
+
+	// Saving Final-------------------------------------------------------
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
+	public ModelAndView saveFinal(@ModelAttribute("location") Location location, final BindingResult binding) {
+		ModelAndView result;
+		location.setFinalMode(true);
+		location = this.locationService.reconstruct(location, binding);
+
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(location, "location.params.error");
+		else
+			try {
+				this.locationService.save(location);
+				result = new ModelAndView("redirect:/location/designer/display.do");
+			} catch (final Throwable oops) {
+				result = this.createEditModelAndView(location, "location.commit.error");
+			}
+
+		return result;
+	}
+
+	// Delete -------------------------------------------------------
+
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(@ModelAttribute("location") final Location location, final BindingResult binding) {
+		ModelAndView result;
+		final Location locationFinal;
+
+		try {
+			Assert.notNull(location);
+			Assert.isTrue(location.getId() != 0);
+			locationFinal = this.locationService.findOne(location.getId());
+			this.locationService.delete(locationFinal);
+			result = new ModelAndView("redirect:/location/designer/display.do");
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
+	// Ancillary methods --------------------------------------------------
+
+	protected ModelAndView createEditModelAndView(final Location location) {
+		ModelAndView result;
+
+		result = this.createEditModelAndView(location, null);
+
+		return result;
+	}
+
+	protected ModelAndView createEditModelAndView(final Location location, final String message) {
+		ModelAndView result;
+		Configuration configuration;
+		Collection<LootTable> lootTables;
+
+		configuration = this.configurationService.findConfiguration();
+		lootTables = this.lootTableService.findAllFinal();
+
+		result = new ModelAndView("location/edit");
+		result.addObject("location", location);
+		result.addObject("message", message);
+		result.addObject("languages", configuration.getLanguages());
+		result.addObject("lootTables", lootTables);
+
+		return result;
+
+	}
 	//Information retrival---------------------------------------
 	//JSON example:
 
@@ -148,4 +281,5 @@ public class LocationDesignerController extends AbstractController {
 		jsonLocation.put("name", name);
 		return jsonLocation;
 	}
+
 }
