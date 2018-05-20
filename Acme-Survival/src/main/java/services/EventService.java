@@ -71,7 +71,16 @@ public class EventService {
 		return result;
 
 	}
+	public Collection<Event> saveAll(final Collection<Event> event) {
 
+		assert event != null;
+
+		Collection<Event> result;
+		result = this.eventRepository.save(event);
+
+		return result;
+
+	}
 	public void delete(final Event event) {
 
 		assert event != null;

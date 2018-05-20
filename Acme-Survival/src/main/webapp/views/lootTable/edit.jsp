@@ -9,7 +9,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 <link rel="stylesheet" href="styles/lootTable.css" type="text/css">
-<script src="scripts/lootTable.jsp"></script>
+<jsp:include page="../../scripts/lootTable.jsp"/>
 
 <spring:message code = "master.page.current.lang" var = "currentLang" />
 <spring:message code="lootTable.save" var="save" />

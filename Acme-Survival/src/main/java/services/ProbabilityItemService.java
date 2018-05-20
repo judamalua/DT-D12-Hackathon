@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ProbabilityItemRepository;
+import domain.Event;
+import domain.ProbabilityEvent;
 import domain.ProbabilityItem;
 
 @Service
@@ -66,6 +68,17 @@ public class ProbabilityItemService {
 		return result;
 
 	}
+	
+	public Collection<ProbabilityItem> saveAll(final Collection<ProbabilityItem> probabilityItems) {
+		
+		assert probabilityItems != null;
+
+		Collection<ProbabilityItem> result;
+		result = this.probabilityItemRepository.save(probabilityItems);
+
+		return result;
+
+	}
 
 	public void delete(final ProbabilityItem probabilityItem) {
 
@@ -75,6 +88,14 @@ public class ProbabilityItemService {
 		Assert.isTrue(this.probabilityItemRepository.exists(probabilityItem.getId()));
 
 		this.probabilityItemRepository.delete(probabilityItem);
+
+	}
+	
+	public void deleteAll(final Collection<ProbabilityItem> probabilityItems) {
+
+		assert probabilityItems != null;
+
+		this.probabilityItemRepository.delete(probabilityItems);
 
 	}
 }

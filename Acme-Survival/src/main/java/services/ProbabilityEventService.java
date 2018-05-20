@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import repositories.ProbabilityEventRepository;
 import domain.ProbabilityEvent;
+import domain.ProbabilityItem;
 
 @Service
 @Transactional
@@ -66,6 +67,17 @@ public class ProbabilityEventService {
 		return result;
 
 	}
+	
+	public Collection<ProbabilityEvent> saveAll(final Collection<ProbabilityEvent> probabilityEvents) {
+		
+		assert probabilityEvents != null;
+
+		Collection<ProbabilityEvent> result;
+		result = this.probabilityEventRepository.save(probabilityEvents);
+
+		return result;
+
+	}
 
 	public void delete(final ProbabilityEvent probabilityEvent) {
 
@@ -75,6 +87,14 @@ public class ProbabilityEventService {
 		Assert.isTrue(this.probabilityEventRepository.exists(probabilityEvent.getId()));
 
 		this.probabilityEventRepository.delete(probabilityEvent);
+
+	}
+	
+	public void deleteAll(final Collection<ProbabilityEvent> probabilityEvents) {
+
+		assert probabilityEvents != null;
+
+		this.probabilityEventRepository.delete(probabilityEvents);
 
 	}
 }

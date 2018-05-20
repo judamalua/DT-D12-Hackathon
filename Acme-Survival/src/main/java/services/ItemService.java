@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ItemRepository;
+import domain.Event;
 import domain.Item;
 
 @Service
@@ -41,6 +42,17 @@ public class ItemService {
 		Assert.notNull(this.itemRepository);
 		result = this.itemRepository.findAll();
 		Assert.notNull(result);
+
+		return result;
+
+	}
+	
+	public Collection<Item> saveAll(final Collection<Item> item) {
+
+		assert item != null;
+
+		Collection<Item> result;
+		result = this.itemRepository.save(item);
 
 		return result;
 
