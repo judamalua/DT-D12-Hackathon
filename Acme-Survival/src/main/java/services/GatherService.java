@@ -310,6 +310,7 @@ public class GatherService {
 		titleNotification.put("es", "¡Misión de recolección finalizada!");
 		final Map<String, String> bodyNotification = new HashMap<String, String>();
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+		Character newCharacter;
 
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
@@ -342,6 +343,11 @@ public class GatherService {
 						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));//TODO
 						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
 						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
+
+						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
+							newCharacter = this.characterService.generateCharacter(refuge.getId());
+							this.characterService.save(newCharacter);
+						}
 
 					}
 				}

@@ -68,6 +68,11 @@
       	<jstl:out value="${event.name[currentLang]}"></jstl:out>
       	<b><spring:message code = "notification.modal.event.desc"/></b>
       	<jstl:out value="${event.description[currentLang]}"></jstl:out>
+      	<br/>
+      	<spring:message code = "notification.modal.event.health"/> <jstl:out value="${event.health}"/>, <spring:message code = "notification.modal.event.food"/> <jstl:out value="${event.food}"/> <spring:message code = "notification.modal.event.water"/> <jstl:out value="${event.water}"/>
+      	<jstl:if test="${event.findCharacter}">
+      		<spring:message code = "notification.modal.event.findChar"/>
+      	</jstl:if>
       </jstl:forEach>
     </div>
     <div class="modal-footer">

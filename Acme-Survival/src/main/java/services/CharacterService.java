@@ -132,12 +132,13 @@ public class CharacterService {
 
 		}
 
-		if (character.getCurrentHealth() != 0) {
+		if (character.getCurrentHealth() < 1) {
 			this.characterRIP(character);
 
-			result = this.characterRepository.save(character);
-		} else
 			result = null;
+
+		} else
+			result = this.characterRepository.save(character);
 
 		return result;
 
