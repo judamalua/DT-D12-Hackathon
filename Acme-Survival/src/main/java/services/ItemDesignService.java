@@ -118,4 +118,10 @@ public class ItemDesignService {
 
 		return result;
 	}
+
+	public void flush() {
+
+		this.itemDesignRepository.flush();
+
+	}
 }
