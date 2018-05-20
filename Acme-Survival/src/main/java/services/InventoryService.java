@@ -88,4 +88,16 @@ public class InventoryService {
 
 		return result;
 	}
+
+	//Other business methods -------------------------
+	public Double findTotalResourcesByInventory(final Inventory inventory) {
+		Double result;
+
+		result = inventory.getWater();
+		result = result + inventory.getFood();
+		result = result + inventory.getMetal();
+		result = result + inventory.getWood();
+
+		return result;
+	}
 }

@@ -460,6 +460,15 @@
 		<property name="capacity" value="100" />
 		<property name="refuge" ref="Refuge1" />
 	</bean>
+	
+	<bean id="Inventory2" class="domain.Inventory">
+		<property name="water" value="20" />
+		<property name="food" value="20" />
+		<property name="wood" value="20" />
+		<property name="metal" value="20" />
+		<property name="capacity" value="100" />
+		<property name="refuge" ref="Refuge2" />
+	</bean>
 
 	<!-- %%%%%% domain.Location %%%%%% -->
 	<bean id="Location1" class="domain.Location">
