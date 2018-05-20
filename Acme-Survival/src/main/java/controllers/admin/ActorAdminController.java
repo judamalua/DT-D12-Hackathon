@@ -84,7 +84,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/register.do");
+		result.addObject("actionURL", "actor/admin/register.do");
 
 		return result;
 	}
@@ -200,7 +200,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/registerManager.do");
+		result.addObject("actionURL", "actor/admin/registerManager.do");
 
 		return result;
 	}
@@ -261,7 +261,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/registerModerator.do");
+		result.addObject("actionURL", "actor/admin/registerModerator.do");
 
 		return result;
 	}
@@ -323,7 +323,7 @@ public class ActorAdminController extends AbstractController {
 
 		result = this.createEditModelAndViewRegister(admin);
 
-		result.addObject("actionURL", "admin/registerDesigner.do");
+		result.addObject("actionURL", "actor/admin/registerDesigner.do");
 
 		return result;
 	}
