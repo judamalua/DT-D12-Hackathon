@@ -9,14 +9,22 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
-
+<script>
 <!-- Load objects in javascript -->
 var events = new Array();
 var probabilitiesEvent = new Array();
+var test = "";
+
+<jstl:if test="${true}">
+<%-- var lootTableId = <jstl:out value="${lootTable.probabilityEvents}"></jstl:out>; --%>
+<!-- console.log("--" + lootTableId); -->
+</jstl:if>
 <jstl:forEach items="${lootTable.probabilityEvents}" var="probEvent" varStatus="status">
+test = "aaa" + ${probEvent.event.name[currentLang]};
 events.push("${probEvent.event.name[currentLang]}");
 probabilitiesEvent.push(${probEvent.value});
 </jstl:forEach> 
+console.log("aa-" + test);
 
 var items = new Array();
 var probabilitiesItem = new Array();
@@ -25,12 +33,6 @@ items.push("${probItem.event.name[currentLang]}");
 probabilitiesItem.push(${probItem.value});
 </jstl:forEach> 
 
-var events = new Array();
-var probabilitiesEvent = new Array();
-<jstl:forEach items="${lootTable.probabilityEvents}" var="probEvent" varStatus="status">
-events.push("${probEvent.event.name[currentLang]}");
-probabilitiesEvent.push(${probEvent.value});
-</jstl:forEach> 
 
  
 <!---------------------------->
@@ -53,17 +55,28 @@ function redirectPost(url, data) {
 }
 
 $(document).ready(function() {
+console.log(events);
  $('#save-loottable').click(()=>{
 
 	var data = {};
-	$("#table tr").each(function(index, element) {
-		if (index+1 < $("#table tr").length ){
+	$("#table-item tr").each(function(index, element) {
+	console.log(index + "-e-" + element);
+		if (!element.className.includes("hide") ){
+	    data[$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
+		}
+	    // compare id to what you want
+	});
+	
+		$("#table-event tr").each(function(index, element) {
+	console.log(index + "-e-" + element);
+		if (!element.className.includes("hide") ){
 	    data[$(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
 		}
 	    // compare id to what you want
 	});
 	data["save"] = ""; //Needed for spring save
-	redirectPost("lootTable/designer/edit.do", data);
+	console.log("${lootTable}");
+	redirectPost("lootTable/designer/edit.do?tableId=${lootTableId}", data);
 
 
   });
@@ -76,6 +89,7 @@ $('#table-add-event').click(function () {
   var $clone = $TABLEEVENT.find('tr.hide').clone(true).removeClass('hide table-line');
   $clone.children('#clone1').attr("id","eventTable" + eventsCount).attr("onclick","eventSelector(" + eventsCount+ ")");
   $TABLEEVENT.find('table').append($clone);
+  eventSelector(eventsCount);
   eventsCount++;
 });
 
@@ -106,6 +120,7 @@ $('#table-add-item').click(function () {
   $clone.children('#clone1').attr("id","itemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
   $clone.children('#clone2').attr("id","imgItemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
   $TABLEITEM.find('table').append($clone);
+  itemSelector(itemsCount);
   itemsCount++;
 });
 
@@ -155,3 +170,4 @@ function selectItem(name,image){
 	$('#imgItemTable' + currentItem)[0].innerHTML = "<img src='"+ image + "' style='width: 32px'>"
 	
 }
+</script>
