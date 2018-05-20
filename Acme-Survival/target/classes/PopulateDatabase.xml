@@ -633,7 +633,7 @@
 	</bean>
 
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
-		<property name="value" value="0.40" />
+		<property name="value" value="0.4" />
 		<property name="event" ref="Event1" />
 	</bean>
 
