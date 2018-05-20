@@ -62,7 +62,7 @@ public class ItemPlayerController extends AbstractController {
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the characters list of a player
+	 * That method returns a model and view with the characters item list of a player
 	 * 
 	 * @param page
 	 * 
