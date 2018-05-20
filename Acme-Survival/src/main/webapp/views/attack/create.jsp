@@ -49,7 +49,9 @@
 	
 	</dl>
 	
-	<acme:submit name="save" code="attack.start" />
+	<jstl:if test="${isMoving and !isAttacking}">
+		<acme:submit name="save" code="attack.start" />
+	</jstl:if>
 	
 	<acme:cancel url="map/player/display.do" code="attack.cancel" />
 	

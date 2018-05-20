@@ -28,13 +28,11 @@
 	<display:column title="${nameTitle}">
 		<jstl:out value="${item.tool.name[currentLang]}" />
 	</display:column>
-	
 
 	<spring:message code="item.description" var="descriptionTitle" />
 	<display:column title="${descriptionTitle}">
 		<jstl:out value="${item.tool.description[currentLang]}" />
 	</display:column>
-
 	
 	<spring:message code="tool.strength" var="strengthTitle" />
 	<display:column title="${strengthTitle}" property="tool.strength" />
@@ -45,8 +43,6 @@
 	<spring:message code="tool.capacity" var="capacityTitle" />
 	<display:column title="${strengthTitle}" property="tool.capacity" />
 	
-
-
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">
 			<jstl:if test="${!(item.equipped)}">

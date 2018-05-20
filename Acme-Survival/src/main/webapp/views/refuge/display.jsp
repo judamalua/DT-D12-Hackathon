@@ -38,58 +38,77 @@
 </jstl:if>
 <!-- Only a player who knows the refugee can display this information -->
 <security:authorize access="hasRole('PLAYER')">
-	<jstl:if test="${knowRefuge or owner}">
-		<strong> <spring:message code="refuge.location" />
-		</strong>
-		<iframe class="map"
-			src="https://www.google.com/maps/embed/v1/search?q=${refuge.gpsCoordinates}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
-		<br />
+	<div class="characterContainer">
+		<jstl:forEach items="${characters}" var="character">
+			<a href="character/player/display.do?characterId=${character.id}">
+				<div class="characterImage"
+					style="height: 200px; width: 200px; float: left;"></div>
+			</a>
+			<br />
+			<div class="characterGenre" hidden="true">
+				<jstl:if test="${character.male}">Male</jstl:if>
+				<jstl:if test="${!character.male}">Female</jstl:if>
+			</div>
+		</jstl:forEach>
+	</div>
+	<br />
 
-		<strong> <spring:message code="refuge.room" />
-		</strong>
-		<br />
-		<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
-			requestURI="refuge/player/display.do?refugeId=${refuge.id}&page=" />
-		<display:table name="${rooms}" id="room"
-			requestURI="refuge/display.do?refugeId=${refuge.id}">
+	<div class="inventory">
+		<div><i class="material-icons">local_pizza</i><spring:message code="inventory.food"/>: <jstl:out value="${inventory.food}"/> </div>
+		<div><i class="material-icons">local_drink</i><spring:message code="inventory.water"/>: <jstl:out value="${inventory.water}"/> </div>
+		<div><i class="material-icons">toys</i><spring:message code="inventory.metal"/>: <jstl:out value="${inventory.metal}"/> </div>
+		<div><i class="material-icons">spa</i><spring:message code="inventory.wood"/>: <jstl:out value="${inventory.wood}"/> </div>
+	</div>
+	<strong> <spring:message code="refuge.location" />
+	</strong>
+	<iframe class="map"
+		src="https://www.google.com/maps/embed/v1/search?q=${refuge.gpsCoordinates}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
+	<br />
 
-			<spring:message code="refuge.room.name" var="nameRoomTitle" />
-			<display:column title="${nameRoomTitle}">
-				<jstl:out value="${room.roomDesign.name[lang]}" />
-				<br />
-				<jstl:out value="${room.roomDesign.description[lang]}" />
-			</display:column>
+	<strong> <spring:message code="refuge.room" />
+	</strong>
+	<br />
+	<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
+		requestURI="refuge/player/display.do?refugeId=${refuge.id}&page=" />
+	<display:table name="${rooms}" id="room"
+		requestURI="refuge/display.do?refugeId=${refuge.id}">
 
-			<spring:message code="refuge.room.resistance"
-				var="resistanceRoomTitle" />
-			<display:column title="${resistanceRoomTitle}">
-				<div class="ratio element">
-					<div class="progress progress-striped active" aria-valuemin="0">
-						<div class="bar"
-							style="width: ${(room.resistance/room.roomDesign.maxResistance)*100}%;">
-							<jstl:out
-								value="${(room.resistance/room.roomDesign.maxResistance)*100}%" />
-						</div>
+		<spring:message code="refuge.room.name" var="nameRoomTitle" />
+		<display:column title="${nameRoomTitle}">
+			<jstl:out value="${room.roomDesign.name[lang]}" />
+			<br />
+			<jstl:out value="${room.roomDesign.description[lang]}" />
+		</display:column>
+
+		<spring:message code="refuge.room.resistance"
+			var="resistanceRoomTitle" />
+		<display:column title="${resistanceRoomTitle}">
+			<div class="ratio element">
+				<div class="progress progress-striped active" aria-valuemin="0">
+					<div class="bar"
+						style="width: ${(room.resistance/room.roomDesign.maxResistance)*100}%;">
+						<jstl:out
+							value="${(room.resistance/room.roomDesign.maxResistance)*100}%" />
 					</div>
 				</div>
-			</display:column>
+			</div>
+		</display:column>
 
-			<display:column>
-				<jstl:if test="${owner}">
-					<a href="room/player/delete.do?roomId=${room.id}">
-						<button class="btn"
-							onclick="return confirm('<spring:message code="refuge.room.delete.confirm"/>')">
-							<spring:message code="refuge.room.delete" />
-						</button>
-					</a>
-				</jstl:if>
-			</display:column>
-		</display:table>
-		<jstl:if test="${owner}">
-			<acme:button url="room/player/create.do" code="refuge.room.create" />
-		</jstl:if>
+		<display:column>
+			<jstl:if test="${owner}">
+				<a href="room/player/delete.do?roomId=${room.id}">
+					<button class="btn"
+						onclick="return confirm('<spring:message code="refuge.room.delete.confirm"/>')">
+						<spring:message code="refuge.room.delete" />
+					</button>
+				</a>
+			</jstl:if>
+		</display:column>
+	</display:table>
+	<jstl:if test="${owner}">
+		<acme:button url="room/player/create.do" code="refuge.room.create" />
 	</jstl:if>
-	
-	<br/>
+
+	<br />
 	<acme:button url="character/player/list.do" code="refuge.characters" />
 </security:authorize>

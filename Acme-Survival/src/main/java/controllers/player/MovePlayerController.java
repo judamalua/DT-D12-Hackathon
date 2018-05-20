@@ -10,6 +10,8 @@
 
 package controllers.player;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.AttackService;
+import services.CharacterService;
 import services.DesignerConfigurationService;
 import services.InventoryService;
 import services.LocationService;
@@ -43,6 +47,12 @@ public class MovePlayerController extends AbstractController {
 
 	@Autowired
 	private MoveService						moveService;
+
+	@Autowired
+	private AttackService					attackService;
+
+	@Autowired
+	private CharacterService				characterService;
 
 	@Autowired
 	private ActorService					actorService;
@@ -74,6 +84,9 @@ public class MovePlayerController extends AbstractController {
 		Move move = null, currentMove;
 		DesignerConfiguration designerConfiguration;
 		Inventory inventory;
+		boolean isAttacking;
+		boolean isInMission = false;
+		Collection<domain.Character> characters;
 
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
@@ -89,13 +102,26 @@ public class MovePlayerController extends AbstractController {
 			move = this.moveService.create();
 			move.setLocation(location);
 			currentMove = this.moveService.findCurrentMoveByRefuge(ownRefuge.getId());
+			isAttacking = this.attackService.playerAlreadyAttacking(player.getId());
+
+			characters = this.characterService.findCharactersByRefuge(ownRefuge.getId());
+
+			for (final domain.Character character : characters) {
+				isInMission = character.getCurrentlyInGatheringMission();
+				if (isInMission)
+					break;
+			}
 
 			if (inventory.getFood() >= designerConfiguration.getMovingFood() && inventory.getMetal() >= designerConfiguration.getMovingMetal() && inventory.getWater() >= designerConfiguration.getMovingWater()
-				&& inventory.getWood() >= designerConfiguration.getMovingWood() && currentMove == null)
+				&& inventory.getWood() >= designerConfiguration.getMovingWood() && currentMove == null && !isAttacking && !isInMission)
 				result = this.createEditModelAndView(move, "move.confirm");
 			else {
 				if (currentMove != null)
 					result = this.createEditModelAndView(move, "move.moving.error");
+				else if (isAttacking)
+					result = this.createEditModelAndView(move, "move.attacking.error");
+				else if (isInMission)
+					result = this.createEditModelAndView(move, "move.mission.error");
 				else
 					result = this.createEditModelAndView(move, "move.resources.error");
 
@@ -137,6 +163,7 @@ public class MovePlayerController extends AbstractController {
 			Assert.notNull(ownRefuge, "Not have refuge");
 			Assert.isTrue(inventory.getFood() >= designerConfiguration.getMovingFood() && inventory.getMetal() >= designerConfiguration.getMovingMetal() && inventory.getWater() >= designerConfiguration.getMovingWater()
 				&& inventory.getWood() >= designerConfiguration.getMovingWood());
+			Assert.isTrue(!this.attackService.playerAlreadyAttacking(player.getId()));
 
 			this.moveService.save(move);
 

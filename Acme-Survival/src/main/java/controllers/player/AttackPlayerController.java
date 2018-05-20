@@ -3,6 +3,7 @@ package controllers.player;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,26 +12,32 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AttackService;
-import services.ConfigurationService;
+import services.MoveService;
 import services.RefugeService;
 import controllers.AbstractController;
 import domain.Attack;
+import domain.Move;
+import domain.Player;
+import domain.Refuge;
 
 @Controller
 @RequestMapping("/attack/player")
 public class AttackPlayerController extends AbstractController {
 
 	@Autowired
-	private AttackService			attackService;
+	private AttackService	attackService;
+
+	//	@Autowired
+	//	private ConfigurationService	configurationService;
 
 	@Autowired
-	private ConfigurationService	configurationService;
+	private ActorService	actorService;
 
 	@Autowired
-	private ActorService			actorService;
+	private MoveService		moveService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private RefugeService	refugeService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -43,10 +50,23 @@ public class AttackPlayerController extends AbstractController {
 	public ModelAndView createAttackToRefuge(final int refugeId) {
 		ModelAndView result;
 		Attack attack;
+		Move move;
+		Player player;
+		Refuge refuge;
+
 		try {
+
+			player = (Player) this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
+
 			attack = this.attackService.create(refugeId);
 			result = new ModelAndView("attack/create");
 			result.addObject("attack", attack);
+			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
+			if (move == null)
+				result.addObject("isMoving", true);
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
@@ -57,6 +77,9 @@ public class AttackPlayerController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveAttackToRefuge(@ModelAttribute("attack") Attack attack, final BindingResult binding) {
 		ModelAndView result;
+		Move move;
+		Player player;
+		Refuge refuge;
 
 		try {
 			attack = this.attackService.reconstruct(attack, binding);
@@ -66,6 +89,11 @@ public class AttackPlayerController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403");
 		else
 			try {
+				player = (Player) this.actorService.findActorByPrincipal();
+				refuge = this.refugeService.findRefugeByPlayer(player.getId());
+				move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
+				Assert.isTrue(move == null);
+
 				this.attackService.save(attack);
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {

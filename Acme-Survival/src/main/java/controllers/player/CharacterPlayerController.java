@@ -10,6 +10,7 @@
 
 package controllers.player;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.AttackService;
 import services.CharacterService;
 import services.ConfigurationService;
 import services.ItemService;
@@ -45,6 +47,9 @@ public class CharacterPlayerController extends AbstractController {
 
 	@Autowired
 	private CharacterService		characterService;
+
+	@Autowired
+	private AttackService			attackService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -124,11 +129,14 @@ public class CharacterPlayerController extends AbstractController {
 			Assert.isTrue((player instanceof Player));
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
+
 			if (discard)
 				this.itemService.UpdateDiscard(character);
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+
 			character = this.characterService.findOne(characterId);
 			result.addObject("character", character);
+			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -152,6 +160,7 @@ public class CharacterPlayerController extends AbstractController {
 		Refuge refuge;
 		Room room;
 		Integer numCharacter;
+		Collection<Character> charactersInMission;
 
 		try {
 			result = new ModelAndView("character/display");
@@ -159,7 +168,11 @@ public class CharacterPlayerController extends AbstractController {
 			Assert.isTrue((player instanceof Player));
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
+			charactersInMission = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+			Assert.isTrue(!charactersInMission.contains(character));
+
 			if (roomId != null) {
 				room = this.roomService.findOne(roomId);
 				numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
@@ -169,7 +182,7 @@ public class CharacterPlayerController extends AbstractController {
 				room = null;
 				character.setRoomEntrance(null);
 			}
-
+			Assert.isTrue(!this.attackService.playerAlreadyAttacking(player.getId()));
 			character.setRoom(room);
 
 			character = this.characterService.save(character);

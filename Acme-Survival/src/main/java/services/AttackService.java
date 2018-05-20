@@ -65,7 +65,7 @@ public class AttackService {
 
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()));
+		//Assert.isTrue(!this.playerAlreadyAttacking(player.getId()));
 
 		attacker = this.refugeService.findRefugeByPlayer(player.getId());
 
