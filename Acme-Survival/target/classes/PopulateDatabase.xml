@@ -202,7 +202,7 @@
 		<property name="initialFood" value="4" />
 		<property name="initialWater" value="4" />
 		<property name="initialWood" value="4" />
-		<property name="initialmetal" value="4" />
+		<property name="initialMetal" value="4" />
 		<property name="maxInventoryFood" value="20" />
 		<property name="maxInventoryWater" value="20" />
 		<property name="maxInventoryWood" value="20" />

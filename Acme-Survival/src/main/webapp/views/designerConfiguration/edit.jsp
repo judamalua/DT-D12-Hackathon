@@ -62,28 +62,28 @@
 		<acme:textbox code="configuration.experiencePerMinute"
 			path="experiencePerMinute" />
 		<acme:textbox code="configuration.initialFood"
-			path="experiencePerMinute" />
+			path="initialFood" />
 		<acme:textbox code="configuration.initialWater"
-			path="experiencePerMinute" />
+			path="initialWater" />
 		<acme:textbox code="configuration.initialWood"
-			path="experiencePerMinute" />
+			path="initialWood" />
 		<acme:textbox code="configuration.initialMetal"
-			path="experiencePerMinute" />
+			path="initialMetal" />
 		<acme:textbox code="configuration.maxInventoryFood"
-			path="experiencePerMinute" />
+			path="maxInventoryFood" />
 		<acme:textbox code="configuration.maxInventoryWater"
-			path="experiencePerMinute" />
+			path="maxInventoryWater" />
 		<acme:textbox code="configuration.maxInventoryWood"
-			path="experiencePerMinute" />
+			path="maxInventoryWood" />
 		<acme:textbox code="configuration.maxInventoryMetal"
-			path="experiencePerMinute" />
+			path="maxInventoryMetal" />
 		<acme:textbox code="configuration.numInitialCharacters"
-			path="experiencePerMinute" />
+			path="numInitialCharacters" />
 	</div>
 
 	<acme:submit name="save" code="configuration.save" />
 
-	<acme:cancel url="/designerConfiguration/designer/list.do"
+	<acme:cancel url="designerConfiguration/designer/list.do"
 		code="configuration.cancel" />
 
 
