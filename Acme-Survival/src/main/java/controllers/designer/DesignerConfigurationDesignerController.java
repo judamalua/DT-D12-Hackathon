@@ -16,7 +16,7 @@ import controllers.AbstractController;
 import domain.DesignerConfiguration;
 
 @Controller
-@RequestMapping("/configuration/admin")
+@RequestMapping("/designerConfiguration/designer")
 public class DesignerConfigurationDesignerController extends AbstractController {
 
 	// Services -------------------------------------------------------

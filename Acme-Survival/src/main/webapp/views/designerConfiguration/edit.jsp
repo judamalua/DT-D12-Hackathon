@@ -30,24 +30,26 @@
 	<p>
 		<em><spring:message code="configuration.all.fields.required" /></em>
 	</p>
+	
 	<div>
 		<acme:textarea code="configuration.movingWood" path="movingWood" />
 		<acme:textarea code="configuration.movingMetal" path="movingMetal" />
 		<acme:textbox code="configuration.movingFood" path="movingFood" />
 		<acme:textbox code="configuration.kmPerSecond" path="kmPerSecond" />
 		<acme:textbox code="configuration.foodWastedPerSecond" path="foodWastedPerSecond" />
-	</div>
-	<div>
 		<acme:textbox code="configuration.waterWastedPerSecond"
 			path="waterWastedPerSecond" />
+	</div>
+	<div>
 		<acme:textbox code="configuration.refugeRecoverTime" path="refugeRecoverTime" />
 		<acme:textbox code="configuration.waterFactorSteal" path="waterFactorSteal" />
 		<acme:textbox code="configuration.foodFactorSteal" path="foodFactorSteal" />
 		<acme:textbox code="configuration.metalFactorSteal" path="metalFactorSteal" />
 		<acme:textbox code="configuration.woodFactorSteal" path="woodFactorSteal" />
-
+		<acme:textbox code="configuration.foodLostGatherFactor" path="foodLostGatherFactor" />
+		<acme:textbox code="configuration.waterLostGatherFactor" path="waterLostGatherFactor" />
+		<acme:textbox code="configuration.experiencePerMinute" path="experiencePerMinute" />
 	</div>
-
 
 	<acme:submit name="save" code="configuration.save" />
 
