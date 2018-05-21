@@ -217,7 +217,7 @@ public class RefugeService {
 			inventory.setFood(designerConfiguration.getInitialFood());
 			inventory.setWater(designerConfiguration.getInitialWater());
 			inventory.setWood(designerConfiguration.getInitialWood());
-			inventory.setMetal(designerConfiguration.getInitialmetal());
+			inventory.setMetal(designerConfiguration.getInitialMetal());
 
 			inventory.setRefuge(result);
 			this.inventoryService.save(inventory);
