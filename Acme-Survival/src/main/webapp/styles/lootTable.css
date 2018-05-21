@@ -9,23 +9,23 @@
     font-size: 20px;
   }
   
-.table-remove {
+.table-remove-item, .table-remove-event {
   color: #700;
   cursor: pointer;
   
 }
 
-.table-remove:hover {
+.table-remove-item:hover, .table-remove-event:hover {
  color: #f00;
 
 }
 
-.table-up, .table-down {
+.table-up-item, .table-up-event, .table-down-item, .table-down-event {
   color: #007;
   cursor: pointer;
 }
 
-.table-up:hover, .table-down:hover {
+.table-up-event:hover, .table-up-item:hover, .table-down-event:hover, .table-down-item:hover {
   color: #00f;
 }
 

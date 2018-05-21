@@ -62,6 +62,7 @@
     </div>
   </div>
    <!-- FIN  Modal Structure -->
+   <h3 class="center-align" id="lootTableName" contenteditable="true">${lootTable.name}</h3>
    
    <h3 class="center-align"><i class="material-icons medium amber-text">flash_on</i><spring:message code="lootTable.events"/></h3>
   <div id="table-event" class="table-editable">
@@ -82,11 +83,11 @@
  		<td contenteditable="true">${probEvent.value}</td>
 		
         <td>
-           <span><i id="table-remove-event" class="table-remove material-icons">delete_forever</i></span>
+           <span><i class="table-remove-event material-icons">delete_forever</i></span>
         </td>
         <td>
-         <span><i id="table-up-event" class="table-up material-icons">arrow_upward</i></span>
-         <span><i id="table-down-event" class="table-down material-icons">arrow_downward</i></span>
+         <span><i class="table-up-event material-icons">arrow_upward</i></span>
+         <span><i class="table-down-event material-icons">arrow_downward</i></span>
         </td>
       </tr>
       </jstl:forEach> 
@@ -98,11 +99,11 @@
          
         <td contenteditable="true">0</td>
         <td>
-          <span><i id="table-remove-event" class="table-remove material-icons">delete_forever</i></span>
+          <span><i class="table-remove-event material-icons">delete_forever</i></span>
         </td>
         <td>
-         <span><i id="table-up-event" class="table-up material-icons">arrow_upward</i></span>
-         <span><i id="table-down-event" class="table-down material-icons">arrow_downward</i></span>
+         <span><i class="table-up-event material-icons">arrow_upward</i></span>
+         <span><i class="table-down-event material-icons">arrow_downward</i></span>
         </td>
       </tr>
     </table>
@@ -125,18 +126,18 @@
         
         <jstl:forEach items="${lootTable.probabilityItems}" var="probItem" varStatus="status">
         <tr>
- 		<td id="IdItemTable${status.index}" class="hide">${probItem.item.id}</td>
- 		<td style="cursor: pointer; " id="imgItemTable${status.index}" onclick="itemSelector(${status.index})"><img  src="${probItem.item.imageUrl}" class="responsive-img"/></td>
- 		<td style="cursor: pointer; " id="itemTable${status.index}" onclick="itemSelector(${status.index})">${probItem.item.name[currentLang]}</td>
+ 		<td id="IdItemTable${status.index}" class="hide">${probItem.itemDesign.id}</td>
+ 		<td style="cursor: pointer; " id="imgItemTable${status.index}" onclick="itemSelector(${status.index})"><img  src="${probItem.itemDesign.imageUrl}" class="responsive-img" style="width: 32px" /></td>
+ 		<td style="cursor: pointer; " id="itemTable${status.index}" onclick="itemSelector(${status.index})">${probItem.itemDesign.name[currentLang]}</td>
  		
  		<td contenteditable="true">${probItem.value}</td>
 		
         <td>
-           <span><i id="table-remove-item" class="table-remove material-icons">delete_forever</i></span>
+           <span><i class="table-remove-item material-icons">delete_forever</i></span>
         </td>
         <td>
-         <span><i id="table-up-item" class="table-up material-icons">arrow_upward</i></span>
-         <span><i id="table-down-item" class="table-down material-icons">arrow_downward</i></span>
+         <span><i class="table-up-item material-icons">arrow_upward</i></span>
+         <span><i class="table-down-item material-icons">arrow_downward</i></span>
         </td>
       </tr>
       </jstl:forEach> 
@@ -150,11 +151,11 @@
          
         <td contenteditable="true">0</td>
         <td>
-          <span><i class="table-remove material-icons">delete_forever</i></span>
+          <span><i class="table-remove-item material-icons">delete_forever</i></span>
         </td>
         <td>
-         <span><i class="table-up material-icons">arrow_upward</i></span>
-         <span><i class="table-down material-icons">arrow_downward</i></span>
+         <span><i class="table-up-item material-icons">arrow_upward</i></span>
+         <span><i class="table-down-item material-icons">arrow_downward</i></span>
         </td>
       </tr>
     </table>

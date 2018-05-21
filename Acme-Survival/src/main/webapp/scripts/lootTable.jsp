@@ -13,7 +13,6 @@
 <!-- Load objects in javascript -->
 var events = new Array();
 var probabilitiesEvent = new Array();
-var test = "";
 
 
 <jstl:forEach items="${requestScope.lootTable.probabilityEvents}" var="probEvent" varStatus="status">
@@ -25,7 +24,7 @@ probabilitiesEvent.push(${probEvent.value});
 var items = new Array();
 var probabilitiesItem = new Array();
 <jstl:forEach items="${requestScope.lootTable.probabilityItems}" var="probItem" varStatus="status">
-items.push("${probItem.event.name[currentLang]}");
+items.push("${probItem.itemDesign.name[currentLang]}");
 probabilitiesItem.push(${probItem.value});
 </jstl:forEach> 
 
@@ -56,20 +55,19 @@ console.log(events);
 
 	var data = {};
 	$("#table-item tr").each(function(index, element) {
-	console.log(index + "-e-" + element);
-		if (!element.className.includes("hide") ){
-	    data[$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
+		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+	    data["item" +$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
 		}
 	    // compare id to what you want
 	});
 	
 		$("#table-event tr").each(function(index, element) {
-	console.log(index + "-e-" + element);
-		if (!element.className.includes("hide") ){
-	    data[$(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
+		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+	    data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
 		}
 	    // compare id to what you want
 	});
+	data["name"] = document.getElementById("lootTableName").innerText;
 	data["save"] = ""; //Needed for spring save
 	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
 
@@ -89,18 +87,18 @@ $('#table-add-event').click(function () {
   eventsCount++;
 });
 
-$('#table-remove-event').click(function () {
+$('.table-remove-event').click(function () {
   $(this).parents('tr').detach();
   eventsCount--;
 });
 
-$('#table-up-event').click(function () {
+$('.table-up-event').click(function () {
   var $row = $(this).parents('tr');
   if ($row.index() === 1) return; // Don't go above the header
   $row.prev().before($row.get(0));
 });
 
-$('#table-down-event').click(function () {
+$('.table-down-event').click(function () {
   var $row = $(this).parents('tr');
   $row.next().after($row.get(0));
 });
@@ -121,18 +119,18 @@ $('#table-add-item').click(function () {
   itemsCount++;
 });
 
-$('#table-remove-item').click(function () {
+$('.table-remove-item').click(function () {
   $(this).parents('tr').detach();
   itemsCount--;
 });
 
-$('#table-up-item').click(function () {
+$('.table-up-item').click(function () {
   var $row = $(this).parents('tr');
   if ($row.index() === 1) return; // Don't go above the header
   $row.prev().before($row.get(0));
 });
 
-$('#table-down-item').click(function () {
+$('.table-down-item').click(function () {
   var $row = $(this).parents('tr');
   $row.next().after($row.get(0));
 });
