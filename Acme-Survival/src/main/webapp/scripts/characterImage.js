@@ -17,3 +17,13 @@ function generateCharacters() {
 		document.getElementsByClassName("characterImage")[int].innerHTML = svg;
 	}
 }
+
+function getCharacters(name, isMale) {
+	var avatars;
+	if (isMale) {
+		avatars = new Avatars(Avatars.sprites.male);
+	} else {
+		avatars = new Avatars(Avatars.sprites.female);
+	}
+	return avatars.create(name);
+}
