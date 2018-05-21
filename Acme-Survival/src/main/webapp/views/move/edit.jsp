@@ -28,7 +28,7 @@
 			<form:hidden path="version" />
 			<form:hidden path="location" />
 
-			<jstl:if test="${!error}">
+			<jstl:if test="${!error and !isAttacking}">
 				<acme:submit name="confirm" code="move.save" />
 			</jstl:if>
 

@@ -476,9 +476,9 @@ public class RefugeService {
 		return result;
 	}
 
-	public void updateInventory(final Refuge refuge) {
+	public Inventory updateInventory(final Refuge refuge) {
 
-		Inventory inventory;
+		Inventory inventory, result;
 		Collection<Room> resourceRooms;
 		Double inventoryCapacity;
 		Integer hours;
@@ -488,6 +488,8 @@ public class RefugeService {
 		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
 
 		resourceRooms = this.roomService.findResourceRoomsByRefuge(refuge.getId());
+
+		result = inventory;
 
 		if (resourceRooms.size() > 0 && refuge.getLastView() != null) {
 			inventoryCapacity = this.getInventoryCapacity(inventory);
@@ -523,11 +525,13 @@ public class RefugeService {
 				} else
 					break;
 			}
+			result = this.inventoryService.save(inventory);
 			if (hours > 0)
 				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 		} else
 			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 
+		return result;
 	}
 
 	private Refuge updateLocation(final Refuge refuge) {
