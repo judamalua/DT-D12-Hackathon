@@ -103,6 +103,7 @@ public class Notification extends DomainEntity {
 
 	@Valid
 	@ManyToMany
+	@NotNull
 	public Collection<Event> getEvents() {
 		return this.events;
 	}

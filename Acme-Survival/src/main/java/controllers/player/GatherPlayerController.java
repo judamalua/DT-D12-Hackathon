@@ -75,7 +75,7 @@ public class GatherPlayerController extends AbstractController {
 			gather = this.gatherService.create(locationId);
 			result = this.createEditModelAndView(gather);
 			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
-			if (move == null)
+			if (move != null)
 				result = result.addObject("isMoving", true);
 
 		} catch (final Throwable oops) {
@@ -153,11 +153,16 @@ public class GatherPlayerController extends AbstractController {
 	private ModelAndView createEditModelAndView(final Gather gather, final String message) {
 		ModelAndView result;
 		final Collection<Character> elegibleCharacters;
+		Player player;
+		Refuge refuge;
+
+		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 
 		// Here we update gathering missions
 		this.gatherService.updateGatheringMissions();
 
-		elegibleCharacters = this.gatherService.findCharactersElegible();
+		elegibleCharacters = this.gatherService.findCharactersWithoutGatheringMission(refuge.getId());
 		result = new ModelAndView("gather/edit");
 
 		result.addObject("gather", gather);

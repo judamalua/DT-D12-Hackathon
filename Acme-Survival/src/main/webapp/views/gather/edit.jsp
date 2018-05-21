@@ -42,7 +42,7 @@
 			<br />
 			<br />
 			<div class="cleared-div">
-				<jstl:if test="${isMoving and !isAttacking}">
+				<jstl:if test="${!isMoving and !isAttacking}">
 					<acme:submit name="save" code="gather.start" />
 				</jstl:if>
 				<acme:cancel url="map/player/display.do" code="gather.cancel" />

@@ -181,6 +181,14 @@ public class GatherService {
 		return result;
 	}
 
+	public Collection<Character> findCharactersWithoutGatheringMission(final int refugeId) {
+		Collection<Character> result;
+
+		result = this.gatherRepository.findCharactersWithoutGatheringMission(refugeId);
+
+		return result;
+	}
+
 	/**
 	 * This method returns all the characters that are currently involved in a Gathering Mission.
 	 * 
@@ -320,7 +328,7 @@ public class GatherService {
 
 		currentlyInGatheringMissionCharacters = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
 
-		for (Character character : currentlyInGatheringMissionCharacters) {
+		for (final Character character : currentlyInGatheringMissionCharacters) {
 			// We check if the current character has a gathering mission that has already finished
 			gatherMission = this.findGatherFinishedByCharacter(character.getId());
 
@@ -334,6 +342,23 @@ public class GatherService {
 				//this.delete(gatherMission); //TODO
 
 				character.setCurrentlyInGatheringMission(false);
+				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
+				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
+
+				if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) > character.getCurrentFood()) {
+					character.setCurrentFood(0);
+					character.setCurrentWater(0);
+
+					character.setCurrentHealth((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) - character.getCurrentFood() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) > character.getCurrentWater()) {
+					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
+					character.setCurrentWater(0);
+
+					character.setCurrentHealth((missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) < character.getCurrentWater()) {
+					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
+					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
+				}
 
 				if (eventsDuringMission.size() != 0)
 					for (final Event event : eventsDuringMission) {
@@ -355,36 +380,21 @@ public class GatherService {
 						}
 
 					}
-				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
-				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
-
-				if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) > character.getCurrentFood()) {
-					character.setCurrentFood(0);
-					character.setCurrentWater(0);
-
-					character.setCurrentHealth((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) - character.getCurrentFood() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
-				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) > character.getCurrentWater()) {
-					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
-					character.setCurrentWater(0);
-
-					character.setCurrentHealth((missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
-				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) < character.getCurrentWater()) {
-					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
-					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
-				}
 
 				experience = character.getExperience() + (missionMinutes * designerConfiguration.getExperiencePerMinute());
 				character.setExperience(experience);
 
-				character = this.characterService.save(character);
+				//character = this.characterService.save(character);
 
-				if (character.getCurrentHealth() < 0)
-					this.characterService.characterRIP(character);
+				if (character.getCurrentHealth() <= 0)
+					character.setCurrentHealth(0);
+
+				this.characterService.save(character);
 
 				notification = this.notificationService.create();
 				notification.setTitle(titleNotification);
 				notification.setBody(bodyNotification);
-				notification.setMoment(new Date(System.currentTimeMillis() - 1));
+				notification.setMoment(new Date(System.currentTimeMillis() - 10000));
 				notification.setPlayer(player);
 				notification.setMission(gatherMission);
 				if (eventsDuringMission.size() != 0)
