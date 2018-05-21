@@ -14,7 +14,7 @@
 <spring:message code = "master.page.current.lang" var = "currentLang" />
 <spring:message code="lootTable.save" var="save" />
 <spring:message code="lootTable.close" var="close" />
-
+<jstl:set var="lootTable" scope="request" value="${lootTable}"></jstl:set>
 <div class="container">
 
    <!-- Modal EVENT Structure -->
@@ -23,7 +23,7 @@
       <h4><spring:message code="lootTable.eventSelector" /></h4>
       <ul class="collection">
     <jstl:forEach items="${events}" var="event" varStatus="status">
-		<li onclick="selectEvent('${event.name[currentLang]}')" class="collection-item avatar listSelector">
+		<li onclick="selectEvent('${event.name[currentLang]}', '${event.id}')" class="collection-item avatar listSelector">
 		<i class="material-icons circle green">explicit</i>
      <p>${event.name[currentLang]} <br>
       ${event.description[currentLang]} </p>
@@ -49,7 +49,7 @@
       <h4><spring:message code="lootTable.itemSelector" /></h4>
       <ul class="collection">
     <jstl:forEach items="${items}" var="item" varStatus="status">
-		<li onclick="selectItem('${item.name[currentLang]}', '${item.imageUrl}')" class="collection-item avatar listSelector">
+		<li onclick="selectItem('${item.name[currentLang]}', '${item.imageUrl}', '${item.id}')" class="collection-item avatar listSelector">
 		<img src="${item.imageUrl}" class="responsive-img circle" />
      <p>${item.name[currentLang]} <br>
       ${item.description[currentLang]} </p>
@@ -77,9 +77,8 @@
         
         <jstl:forEach items="${lootTable.probabilityEvents}" var="probEvent" varStatus="status">
         <tr>
- 		<td class="hide">${probEvent.event.id}</td>
+ 		<td id="IdEventTable${status.index}" class="hide">${probEvent.event.id}</td>
  		<td style="cursor: pointer; " id="eventTable${status.index}" onclick="eventSelector(${status.index})">${probEvent.event.name[currentLang]}</td>
- 		
  		<td contenteditable="true">${probEvent.value}</td>
 		
         <td>
@@ -93,7 +92,7 @@
       </jstl:forEach> 
       <!-- This is our clonable table line -->
       <tr class="hide">
-       <td class="hide">${events[0].id}</td>
+       <td class="hide" id="clone3" onclick="itemSelector()">${events[0].id}</td>
         <td style="cursor: pointer; " id="clone1" onclick="eventSelector()">${events[0].name[currentLang]}</td>
  		
          
@@ -126,7 +125,7 @@
         
         <jstl:forEach items="${lootTable.probabilityItems}" var="probItem" varStatus="status">
         <tr>
- 		<td class="hide">${probItem.item.id}</td>
+ 		<td id="IdItemTable${status.index}" class="hide">${probItem.item.id}</td>
  		<td style="cursor: pointer; " id="imgItemTable${status.index}" onclick="itemSelector(${status.index})"><img  src="${probItem.item.imageUrl}" class="responsive-img"/></td>
  		<td style="cursor: pointer; " id="itemTable${status.index}" onclick="itemSelector(${status.index})">${probItem.item.name[currentLang]}</td>
  		
@@ -143,9 +142,10 @@
       </jstl:forEach> 
       <!-- This is our clonable table line -->
       <tr class="hide">
-       <td class="hide">${items[0].id}</td>
+       <td class="hide" id="clone3" onclick="itemSelector()">${items[0].id}</td>
        <td style="cursor: pointer; " id="clone2" onclick="itemSelector()"><img src="${items[0].imageUrl}"  style="width: 32px" class="responsive-img"/></td>
         <td style="cursor: pointer; " id="clone1" onclick="itemSelector()">${items[0].name[currentLang]}</td>
+
  		
          
         <td contenteditable="true">0</td>

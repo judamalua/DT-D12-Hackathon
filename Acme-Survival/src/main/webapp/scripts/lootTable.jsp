@@ -15,20 +15,16 @@ var events = new Array();
 var probabilitiesEvent = new Array();
 var test = "";
 
-<jstl:if test="${true}">
-<%-- var lootTableId = <jstl:out value="${lootTable.probabilityEvents}"></jstl:out>; --%>
-<!-- console.log("--" + lootTableId); -->
-</jstl:if>
-<jstl:forEach items="${lootTable.probabilityEvents}" var="probEvent" varStatus="status">
-test = "aaa" + ${probEvent.event.name[currentLang]};
+
+<jstl:forEach items="${requestScope.lootTable.probabilityEvents}" var="probEvent" varStatus="status">
 events.push("${probEvent.event.name[currentLang]}");
 probabilitiesEvent.push(${probEvent.value});
 </jstl:forEach> 
-console.log("aa-" + test);
+
 
 var items = new Array();
 var probabilitiesItem = new Array();
-<jstl:forEach items="${lootTable.probabilityItems}" var="probItem" varStatus="status">
+<jstl:forEach items="${requestScope.lootTable.probabilityItems}" var="probItem" varStatus="status">
 items.push("${probItem.event.name[currentLang]}");
 probabilitiesItem.push(${probItem.value});
 </jstl:forEach> 
@@ -75,8 +71,7 @@ console.log(events);
 	    // compare id to what you want
 	});
 	data["save"] = ""; //Needed for spring save
-	console.log("${lootTable}");
-	redirectPost("lootTable/designer/edit.do?tableId=${lootTableId}", data);
+	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
 
 
   });
@@ -88,6 +83,7 @@ $('#table-add-event').click(function () {
 	
   var $clone = $TABLEEVENT.find('tr.hide').clone(true).removeClass('hide table-line');
   $clone.children('#clone1').attr("id","eventTable" + eventsCount).attr("onclick","eventSelector(" + eventsCount+ ")");
+  $clone.children('#clone3').attr("id","IdEventTable" + eventsCount);
   $TABLEEVENT.find('table').append($clone);
   eventSelector(eventsCount);
   eventsCount++;
@@ -119,6 +115,7 @@ $('#table-add-item').click(function () {
   var $clone = $TABLEITEM.find('tr.hide').clone(true).removeClass('hide table-line');
   $clone.children('#clone1').attr("id","itemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
   $clone.children('#clone2').attr("id","imgItemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
+  $clone.children('#clone3').attr("id","IdItemTable" + itemsCount);
   $TABLEITEM.find('table').append($clone);
   itemSelector(itemsCount);
   itemsCount++;
@@ -152,10 +149,11 @@ function eventSelector(id){
 	   currentEvent = id;
 };
 
-function selectEvent(name){
+function selectEvent(name, id){
 	$('#modalEventSelector').modal('close');
+	$('#IdEventTable' + currentEvent)[0].innerHTML = id;
 	$('#eventTable' + currentEvent)[0].innerHTML = name;
-}
+};
 
 var currentItem=0;
 function itemSelector(id){
@@ -164,8 +162,9 @@ function itemSelector(id){
 	   currentItem = id;
 };
 
-function selectItem(name,image){
+function selectItem(name,image, id){
 	$('#modalItemSelector').modal('close');
+	$('#IdItemTable' + currentItem)[0].innerHTML = id;
 	$('#itemTable' + currentItem)[0].innerHTML = name;
 	$('#imgItemTable' + currentItem)[0].innerHTML = "<img src='"+ image + "' style='width: 32px'>"
 	

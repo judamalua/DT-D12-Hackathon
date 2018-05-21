@@ -29,14 +29,12 @@
 	<spring:message code="lootTable.name" var="name" />
 	<spring:message code="lootTable.items" var="items" />
 	<spring:message code="lootTable.events" var="events" />
-	<spring:message code="lootTable.locations" var="locations" />
 	<spring:message code="lootTable.edit" var="editTitle" />
 	
 	
 	<display:column property="name" title="${name}" sortable="false" />
 	<display:column value="${fn:length(lootTable.probabilityItems)}" title="${items}" sortable="false" />
 	<display:column value="${fn:length(lootTable.probabilityEvents)}" title="${events}" sortable="false" />
-	<display:column value="${fn:length(lootTable.locations)}" title="${locations}" sortable="false" />
 	<security:authorize access="hasRole('DESIGNER')">
 	<display:column title="${editTitle}">
 	
