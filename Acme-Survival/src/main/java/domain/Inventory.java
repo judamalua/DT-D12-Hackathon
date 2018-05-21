@@ -17,7 +17,10 @@ public class Inventory extends DomainEntity {
 	private Double	food;
 	private Double	wood;
 	private Double	metal;
-	private Double	capacity;
+	private Double	waterCapacity;
+	private Double	foodCapacity;
+	private Double	woodCapacity;
+	private Double	metalCapacity;
 
 
 	@NotNull
@@ -57,12 +60,39 @@ public class Inventory extends DomainEntity {
 	}
 
 	@NotNull
-	public Double getCapacity() {
-		return this.capacity;
+	public Double getWaterCapacity() {
+		return this.waterCapacity;
 	}
 
-	public void setCapacity(final Double capacity) {
-		this.capacity = capacity;
+	public void setWaterCapacity(final Double waterCapacity) {
+		this.waterCapacity = waterCapacity;
+	}
+
+	@NotNull
+	public Double getFoodCapacity() {
+		return this.foodCapacity;
+	}
+
+	public void setFoodCapacity(final Double foodCapacity) {
+		this.foodCapacity = foodCapacity;
+	}
+
+	@NotNull
+	public Double getWoodCapacity() {
+		return this.woodCapacity;
+	}
+
+	public void setWoodCapacity(final Double woodCapacity) {
+		this.woodCapacity = woodCapacity;
+	}
+
+	@NotNull
+	public Double getMetalCapacity() {
+		return this.metalCapacity;
+	}
+
+	public void setMetalCapacity(final Double metalCapacity) {
+		this.metalCapacity = metalCapacity;
 	}
 
 

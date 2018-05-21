@@ -67,6 +67,7 @@
 		<h3>
 			<spring:message code="refuge.character.list" />
 		</h3>
+		<spring:message code="refuge.capacity" />: <jstl:out value="${characters.length}/${capacity/characters.length}"/>
 		<jstl:forEach items="${characters}" var="character">
 			<div class="character">
 				<div class="characterName">

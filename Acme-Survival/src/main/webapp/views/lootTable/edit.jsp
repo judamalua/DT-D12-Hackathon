@@ -167,4 +167,4 @@
 <br>
  <button id="save-loottable" class="btn btn-primary">${save}</button>
   
-  <acme:cancel url="event/designer/list.do" code="event.cancel"/>
+  <acme:cancel url="lootTable/designer/list.do" code="event.cancel"/>

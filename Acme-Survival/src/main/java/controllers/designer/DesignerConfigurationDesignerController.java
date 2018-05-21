@@ -35,7 +35,7 @@ public class DesignerConfigurationDesignerController extends AbstractController 
 		result = new ModelAndView("configuration/list");
 		configuration = this.designerConfigurationService.findDesignerConfiguration();
 
-		result.addObject("configuration", configuration);
+		result.addObject("designerConfiguration", configuration);
 
 		return result;
 	}
@@ -65,7 +65,7 @@ public class DesignerConfigurationDesignerController extends AbstractController 
 		else
 			try {
 				this.designerConfigurationService.save(configuration);
-				result = new ModelAndView("redirect:/configuration/admin/list.do");
+				result = new ModelAndView("redirect:/designerConfiguration/designer/list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(configuration, "configuration.commit.error");
@@ -88,7 +88,7 @@ public class DesignerConfigurationDesignerController extends AbstractController 
 		ModelAndView result;
 
 		result = new ModelAndView("designerConfiguration/edit");
-		result.addObject("configuration", configuration);
+		result.addObject("designerConfiguration", configuration);
 
 		result.addObject("message", messageCode);
 
