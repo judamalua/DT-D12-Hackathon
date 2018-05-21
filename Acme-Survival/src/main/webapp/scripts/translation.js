@@ -42,6 +42,16 @@ var mapTranslations = {
 			en : "Character in the mission"
 		}
 	},
+	move : {
+		move : {
+			es : "Mudanza en proceso",
+			en : "On going move"
+		},
+		location : {
+			es : "Zona a la que te mueves",
+			en : "Location that you are moving to"
+		}
+	},
 	location : {
 		location : {
 			es : "Zona",

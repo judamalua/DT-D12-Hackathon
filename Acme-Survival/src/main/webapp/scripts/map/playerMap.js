@@ -432,24 +432,6 @@ function generateMap() {
 					lng : Number(mapElements.onGoingAttack.refuge.gpsCoordinates.split(",")[1])
 				}
 		];
-		var r = {
-			A : {
-				x : Number(mapElements.locations[int2].point_a.split(",")[0]),
-				y : Number(mapElements.locations[int2].point_a.split(",")[1])
-			},
-			B : {
-				x : Number(mapElements.locations[int2].point_b.split(",")[0]),
-				y : Number(mapElements.locations[int2].point_b.split(",")[1])
-			},
-			C : {
-				x : Number(mapElements.locations[int2].point_c.split(",")[0]),
-				y : Number(mapElements.locations[int2].point_c.split(",")[1])
-			},
-			D : {
-				x : Number(mapElements.locations[int2].point_d.split(",")[0]),
-				y : Number(mapElements.locations[int2].point_d.split(",")[1])
-			}
-		};
 		var attack = new google.maps.Polyline({
 			path : attackCoordinates,
 			geodesic : true,
@@ -464,6 +446,57 @@ function generateMap() {
 			var contentString = '<b>' + mapTranslations.attack.attack[language] + '</b><br/><b>' + mapTranslations.attack.refuge[language] + ": </b>"
 					+ mapElements.onGoingAttack.refuge.name + '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>" + mapElements.onGoingAttack.refuge.playerName
 					+ '<br/>' + '<b>' + mapTranslations.attack.time[language] + ': </b>' + getRemainingTime(mapElements.onGoingAttack.endMoment);
+			infoWindow.setContent(contentString);
+			infoWindow.setPosition(event.latLng);
+
+			infoWindow.open(map);
+		});
+	}
+
+	// MOVE HANDLING -------------------------------------
+	if (mapElements.onGoingMove.location !== undefined) {
+		var locationToMove = {
+			A : {
+				x : Number(mapElements.onGoingMove.location.point_a.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_a.split(",")[1])
+			},
+			B : {
+				x : Number(mapElements.onGoingMove.location.point_b.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_b.split(",")[1])
+			},
+			C : {
+				x : Number(mapElements.onGoingMove.location.point_c.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_c.split(",")[1])
+			},
+			D : {
+				x : Number(mapElements.onGoingMove.location.point_d.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_d.split(",")[1])
+			}
+		};
+		var locationCenter = getZoneCenter(locationToMove);
+		var moveCoordinates = [
+				{
+					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+				}, {
+					lat : Number(locationCenter.x),
+					lng : Number(locationCenter.y)
+				}
+		];
+		var move = new google.maps.Polyline({
+			path : moveCoordinates,
+			geodesic : true,
+			strokeColor : '#000000',
+			strokeOpacity : 1.0,
+			strokeWeight : 5,
+			map : map
+		});
+		move.addListener('click', function(event) {
+			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+			var language = getLanguageToUse();
+			var contentString = '<b>' + mapTranslations.move.move[language] + '</b><br/><b>' + mapTranslations.move.location[language] + ": </b>"
+					+ mapElements.onGoingMove.location.name[language] + '<br/><b>' + mapTranslations.attack.time[language] + ': </b>'
+					+ getRemainingTime(mapElements.onGoingMove.endMoment);
 			infoWindow.setContent(contentString);
 			infoWindow.setPosition(event.latLng);
 
