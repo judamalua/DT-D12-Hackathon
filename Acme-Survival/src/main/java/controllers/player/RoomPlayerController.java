@@ -13,6 +13,9 @@ package controllers.player;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -24,12 +27,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.CharacterService;
+import services.ConfigurationService;
 import services.InventoryService;
 import services.RefugeService;
 import services.RoomDesignService;
 import services.RoomService;
 import controllers.AbstractController;
 import domain.Actor;
+import domain.Configuration;
 import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
@@ -41,19 +47,25 @@ import domain.RoomDesign;
 public class RoomPlayerController extends AbstractController {
 
 	@Autowired
-	private RoomService			roomService;
+	private RoomService				roomService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
 
 	@Autowired
-	private RoomDesignService	roomDesignService;
+	private RoomDesignService		roomDesignService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private ConfigurationService	configurationService;
 
 	@Autowired
-	private InventoryService	inventoryService;
+	private RefugeService			refugeService;
+
+	@Autowired
+	private InventoryService		inventoryService;
+
+	@Autowired
+	private CharacterService		characterService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -126,6 +138,48 @@ public class RoomPlayerController extends AbstractController {
 				result = "error";
 		} else
 			result = "";
+		return result;
+	}
+
+	// Listing  ---------------------------------------------------------------		
+
+	/**
+	 * That method returns a model and view with the rooms of a player refuge
+	 * 
+	 * @param page
+	 * 
+	 * @return ModelandView
+	 * @author Luis
+	 */
+	@RequestMapping("/list")
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int characterId) {
+		ModelAndView result;
+		final Page<Room> rooms;
+		Refuge refuge;
+		Pageable pageable;
+		Configuration configuration;
+		Player player;
+
+		try {
+			result = new ModelAndView("room/list");
+			configuration = this.configurationService.findConfiguration();
+			pageable = new PageRequest(page, configuration.getPageSize());
+			player = (Player) this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
+
+			for (final Room r : rooms.getContent())
+				if (this.characterService.findCharactersByRoom(r.getId()).size() > r.getRoomDesign().getMaxCapacityCharacters())
+					rooms.getContent().remove(r);
+
+			result.addObject("rooms", rooms.getContent());
+			result.addObject("page", page);
+			result.addObject("pageNum", rooms.getTotalPages());
+			result.addObject("characterId", characterId);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 	//Updating forum ---------------------------------------------------------------------

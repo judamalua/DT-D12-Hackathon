@@ -4,7 +4,9 @@ package services;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -18,6 +20,8 @@ import org.springframework.validation.Validator;
 
 import repositories.GatherRepository;
 import domain.Character;
+import domain.DesignerConfiguration;
+import domain.Event;
 import domain.Gather;
 import domain.Location;
 import domain.Notification;
@@ -31,30 +35,33 @@ public class GatherService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private GatherRepository	gatherRepository;
+	private GatherRepository				gatherRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private RefugeService		refugeService;
+	private RefugeService					refugeService;
 
 	@Autowired
-	private CharacterService	characterService;
+	private CharacterService				characterService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private MoveService			moveService;
+	private MoveService						moveService;
 
 	@Autowired
-	private LocationService		locationService;
+	private LocationService					locationService;
 
 	@Autowired
-	private NotificationService	notificationService;
+	private NotificationService				notificationService;
 
 	@Autowired
-	private Validator			validator;
+	private Validator						validator;
+
+	@Autowired
+	private DesignerConfigurationService	designerConfigurationService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -279,16 +286,32 @@ public class GatherService {
 		return result;
 	}
 
+	public Collection<Gather> findAllGathersOfPlayer(final int playerId) {
+		Collection<Gather> result;
+
+		result = this.gatherRepository.findAllGathersOfPlayer(playerId);
+
+		return result;
+	}
+
 	public void updateGatheringMissions() {
 		Player player;
 		Gather gatherMission;
 		Collection<Character> currentlyInGatheringMissionCharacters;
 		Refuge refuge;
 		Notification notification;
+		List<Event> eventsDuringMission;
+		Long missionMillis;
+		Integer experience;
+		Integer missionMinutes;
+		DesignerConfiguration designerConfiguration;
+		int currentHealth, currentWater, currentFood;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
 		titleNotification.put("es", "¡Misión de recolección finalizada!");
 		final Map<String, String> bodyNotification = new HashMap<String, String>();
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+		Character newCharacter;
 
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
@@ -297,22 +320,73 @@ public class GatherService {
 
 		currentlyInGatheringMissionCharacters = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
 
-		for (final Character character : currentlyInGatheringMissionCharacters) {
+		for (Character character : currentlyInGatheringMissionCharacters) {
 			// We check if the current character has a gathering mission that has already finished
 			gatherMission = this.findGatherFinishedByCharacter(character.getId());
 
 			if (gatherMission != null) {
-				// metodo para recoger cosas de la mision
-				this.delete(gatherMission);
+				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
+				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
+
+				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
+				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
+
+				//this.delete(gatherMission); //TODO
+
 				character.setCurrentlyInGatheringMission(false);
-				this.characterService.save(character);
+
+				if (eventsDuringMission.size() != 0) {
+					currentHealth = character.getCurrentHealth();
+					currentWater = character.getCurrentWater();
+					currentFood = character.getCurrentFood();
+
+					for (final Event event : eventsDuringMission) {
+						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));//TODO
+						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
+						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
+
+						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
+							newCharacter = this.characterService.generateCharacter(refuge.getId());
+							this.characterService.save(newCharacter);
+						}
+
+					}
+				}
+				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
+				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
+
+				if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) > character.getCurrentFood()) {
+					character.setCurrentFood(0);
+					character.setCurrentWater(0);
+
+					character.setCurrentHealth((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) - character.getCurrentFood() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) > character.getCurrentWater()) {
+					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
+					character.setCurrentWater(0);
+
+					character.setCurrentHealth((missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) < character.getCurrentWater()) {
+					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
+					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
+				}
+
+				experience = character.getExperience() + (missionMinutes * designerConfiguration.getExperiencePerMinute());
+				character.setExperience(experience);
+
+				character = this.characterService.save(character);
+
+				if (character.getCurrentHealth() < 0)
+					this.characterService.characterRIP(character);
 
 				notification = this.notificationService.create();
 				notification.setTitle(titleNotification);
+				notification.setBody(bodyNotification);
 				notification.setMoment(new Date(System.currentTimeMillis() - 1));
 				notification.setPlayer(player);
 				notification.setMission(gatherMission);
-
+				if (eventsDuringMission.size() != 0)
+					notification.setEvents(eventsDuringMission);
+				this.notificationService.save(notification);
 			}
 
 		}

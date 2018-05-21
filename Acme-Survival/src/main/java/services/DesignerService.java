@@ -143,4 +143,9 @@ public class DesignerService {
 
 		return result;
 	}
+
+	public void flush() {
+		this.designerRepository.flush();
+
+	}
 }

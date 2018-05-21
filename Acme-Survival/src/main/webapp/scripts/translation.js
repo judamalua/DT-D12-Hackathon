@@ -10,6 +10,28 @@ function getLanguageToUse() {
 };
 
 var mapTranslations = {
+	attack : {
+		attack : {
+			es : "Ataque en proceso",
+			en : "On going attack"
+		},
+		refuge : {
+			es : "Refugio al que atacas",
+			en : "Attacked refuge"
+		},
+		time : {
+			es : "Tiempo restante",
+			en : "Remaining time"
+		},
+		minutes : {
+			es : "min",
+			en : "min"
+		},
+		done : {
+			es : "Misión cumplida, vaya a notificaciones para ver el resultado",
+			en : "Mission acomplished, go to notifications to see the results"
+		}
+	},
 	location : {
 		location : {
 			es : "Zona",
@@ -26,6 +48,10 @@ var mapTranslations = {
 		moveStartLink : {
 			es : "Mover tu refugio a esta zona",
 			en : "Move your refuge to this location"
+		},
+		editLocation : {
+			es : "Editar esta zona",
+			en : "Edit this location"
 		}
 	},
 	refuge : {

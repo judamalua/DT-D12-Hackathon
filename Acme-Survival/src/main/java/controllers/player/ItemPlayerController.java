@@ -62,7 +62,7 @@ public class ItemPlayerController extends AbstractController {
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the characters list of a player
+	 * That method returns a model and view with the characters item list of a player
 	 * 
 	 * @param page
 	 * 
@@ -177,12 +177,15 @@ public class ItemPlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
+			if (this.refugeService.findRefugeByPlayer(player.getId()) != null) {
+				refuge = this.refugeService.findRefugeByPlayer(player.getId());
+				items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
 
-			result.addObject("items", items.getContent());
-			result.addObject("page", page);
-			result.addObject("pageNum", items.getTotalPages());
+				result.addObject("items", items.getContent());
+				result.addObject("page", page);
+				result.addObject("pageNum", items.getTotalPages());
+			} else
+				result = new ModelAndView("redirect:/refuge/player/create.do");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
