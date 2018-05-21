@@ -136,7 +136,7 @@ public class LocationService {
 			result = location;
 		else {
 			result = this.locationRepository.findOne(location.getId());
-			if (result.getFinalMode() != true) {
+			if (!result.getFinalMode()) {
 				result.setFinalMode(location.getFinalMode());
 				result.setPoint_a(location.getPoint_a());
 				result.setPoint_b(location.getPoint_b());
@@ -144,7 +144,7 @@ public class LocationService {
 				result.setPoint_d(location.getPoint_d());
 			}
 			result.setName(location.getName());
-			result.setLootTable(result.getLootTable());
+			result.setLootTable(location.getLootTable());
 		}
 		this.validator.validate(result, binding);
 		return result;
