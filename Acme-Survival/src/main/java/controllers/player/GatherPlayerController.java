@@ -18,11 +18,20 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.ConfigurationService;
 import services.GatherService;
+import services.InventoryService;
+import services.ItemService;
+import services.RefugeService;
 import controllers.AbstractController;
 import domain.Character;
 import domain.Configuration;
 import domain.Gather;
+import domain.Inventory;
+import domain.Item;
+import domain.ItemDesign;
 import domain.Player;
+import domain.Refuge;
+import domain.Resource;
+import domain.Tool;
 
 @Controller
 @RequestMapping("/gather/player")
@@ -36,6 +45,15 @@ public class GatherPlayerController extends AbstractController {
 
 	@Autowired
 	private ActorService			actorService;
+
+	@Autowired
+	private ItemService				itemService;
+
+	@Autowired
+	private RefugeService			refugeService;
+
+	@Autowired
+	private InventoryService		inventoryService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -107,6 +125,85 @@ public class GatherPlayerController extends AbstractController {
 		return result;
 	}
 
+	/**
+	 * That method returns a model and view with the characters list of a player
+	 * 
+	 * @param page
+	 * 
+	 * @return ModelandView
+	 * @author Luis
+	 */
+	@RequestMapping("/foundItems")
+	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int gatherId) {
+		ModelAndView result;
+		Collection<ItemDesign> items;
+		Refuge refuge;
+		final Gather gather;
+		Configuration configuration;
+		final Collection<Item> tools;
+		final Collection<Resource> resources;
+		Item item;
+		Player player;
+		Inventory inventory;
+		boolean fullCapacityRefuge = false;
+
+		try {
+
+			result = new ModelAndView("gather/foundItems");
+			configuration = this.configurationService.findConfiguration();
+			gather = this.gatherService.findOne(gatherId);
+			player = (Player) this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+			items = gather.getLocation().getLootTable().getResultItems(gather.getCharacter().getLuck(), gather.getCharacter().getCapacity());
+
+			for (final ItemDesign itemDesign : items)
+				if (itemDesign instanceof Tool) {
+					item = this.itemService.create();
+					item.setEquipped(false);
+					item.setTool((Tool) itemDesign);
+					final Item saveditem = this.itemService.save(item);
+					tools.add(item);
+				} else {
+					final Double currentWaterCapacity = inventory.getWaterCapacity() - inventory.getWater();
+					final Double currentFoodCapacity = inventory.getFoodCapacity() - inventory.getFood();
+					final Double currentWoodCapacity = inventory.getWoodCapacity() - inventory.getWood();
+					final Double currentMetalCapacity = inventory.getMetalCapacity() - inventory.getMetal();
+					final Resource resource = (Resource) itemDesign;
+					if (currentWaterCapacity - resource.getWater() > 0)
+						inventory.setWater(inventory.getWater() + resource.getWater());
+					if (currentWaterCapacity - resource.getWater() < 0)
+						inventory.setWater(inventory.getWaterCapacity());
+					if (currentWoodCapacity - resource.getWood() > 0)
+						inventory.setWood(inventory.getWood() + resource.getWood());
+					if (currentWoodCapacity - resource.getWood() < 0)
+						inventory.setWood(inventory.getWoodCapacity());
+					if (currentFoodCapacity - resource.getFood() > 0)
+						inventory.setFood(inventory.getFood() + resource.getFood());
+					if (currentFoodCapacity - resource.getFood() < 0)
+						inventory.setFood(inventory.getFoodCapacity());
+					if (currentMetalCapacity - resource.getMetal() > 0)
+						inventory.setMetal(inventory.getMetal() + resource.getMetal());
+					if (currentMetalCapacity - resource.getMetal() < 0)
+						inventory.setMetal(inventory.getMetalCapacity());
+
+					resources.add(resource);
+
+					this.inventoryService.save(inventory);
+
+				}
+			if (this.refugeService.getCurrentCapacity(refuge) < tools.size())
+				fullCapacityRefuge = true;
+
+			result.addObject("items", tools);
+			result.addObject("resources", resources);
+			result.addObject("fullCapacityRefuge", fullCapacityRefuge);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+		return result;
+	}
 	// Ancilliary methods  -----------------------------------------------------------------
 	private ModelAndView createEditModelAndView(final Gather gather) {
 		ModelAndView result;

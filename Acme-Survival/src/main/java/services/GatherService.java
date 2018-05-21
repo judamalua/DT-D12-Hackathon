@@ -352,6 +352,7 @@ public class GatherService {
 
 					}
 				}
+
 				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
 				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
 
