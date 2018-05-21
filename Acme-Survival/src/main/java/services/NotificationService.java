@@ -103,6 +103,23 @@ public class NotificationService {
 
 	}
 
+	public Notification saveToDefendant(final Notification notification) {
+		Assert.notNull(notification);
+
+		Notification result;
+		Date now;
+
+		if (notification.getId() == 0) {
+			now = new Date();
+
+			notification.setMoment(now);
+		}
+
+		result = this.notificationRepository.save(notification);
+
+		return result;
+	}
+
 	public void delete(final Notification notification) {
 		Assert.notNull(notification);
 		Assert.isTrue(notification.getId() != 0);
@@ -167,7 +184,7 @@ public class NotificationService {
 				if (notification == null) {
 					notification = this.create();
 					title = this.generetateTitleMapResultByAttack(attack);
-					body = this.generetateTitleBodyResultByAttack(attack);
+					body = this.generetateMapBodyResultByAttack(attack);
 
 					notification.setBody(body);
 					notification.setTitle(title);
@@ -210,7 +227,7 @@ public class NotificationService {
 
 	}
 
-	public Map<String, String> generetateTitleBodyResultByAttack(final Attack attack) {
+	public Map<String, String> generetateMapBodyResultByAttack(final Attack attack) {
 		Map<String, String> result;
 		Integer resources;
 		Integer waterStolen, foodStolen, metalStolen, woodStolen;

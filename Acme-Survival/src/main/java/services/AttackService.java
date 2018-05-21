@@ -149,7 +149,7 @@ public class AttackService {
 		Assert.isTrue(attack.getId() != 0);
 		Assert.isTrue(this.attackRepository.exists(attack.getId()));
 
-		Notification notification;
+		Notification notification, defendantNotification;
 
 		notification = this.notificationService.findNotificationByMission(attack.getId());
 		this.stealResources(attack);
@@ -159,11 +159,33 @@ public class AttackService {
 			this.notificationService.save(notification);
 		}
 
+		defendantNotification = this.notificationService.create();
+
+		defendantNotification.setPlayer(attack.getDefendant().getPlayer());
+		defendantNotification.setBody(this.notificationService.generetateMapBodyResultByAttack(attack));
+		defendantNotification.setTitle(this.notificationService.generetateTitleMapResultByAttack(attack));
+
+		this.notificationService.saveToDefendant(defendantNotification);
+
 		this.attackRepository.delete(attack);
 
 	}
 
-	private void stealResources(final Attack attack) {
+	public ArrayList<Integer> calculateResourcesToSteal(final Attack attack, final Integer resources) {
+		final ArrayList<Integer> result;
+		ArrayList<Integer> resourcesToSteal;
+		final Double waterStolen, foodStolen, metalStolen, woodStolen;
+		Double attackerCapacity;
+		final Double totalCapacity;
+		Inventory attackerInventory, defendantInventory;
+
+		resourcesToSteal = this.getCollectionResourcesOfAttack(resources);
+		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
+		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
+		attackerCapacity = attackerInventory.getCapacity();
+	}
+	private ArrayList<Integer> stealResources(final Attack attack) {
+		ArrayList<Integer> result;
 		Integer resources;
 		Double waterStolen, foodStolen, metalStolen, woodStolen;
 		ArrayList<Integer> resourcesStolen;
@@ -248,6 +270,15 @@ public class AttackService {
 
 		this.inventoryService.save(attackerInventory);
 		this.inventoryService.save(defendantInventory);
+
+		result = new ArrayList<Integer>();
+
+		result.add(waterStolen.intValue());
+		result.add(foodStolen.intValue());
+		result.add(metalStolen.intValue());
+		result.add(woodStolen.intValue());
+
+		return result;
 
 	}
 	/**
