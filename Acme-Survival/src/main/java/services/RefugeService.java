@@ -21,6 +21,7 @@ import repositories.RefugeRepository;
 import domain.Actor;
 import domain.Attack;
 import domain.Barrack;
+import domain.DesignerConfiguration;
 import domain.Inventory;
 import domain.Item;
 import domain.Location;
@@ -38,42 +39,45 @@ public class RefugeService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private RefugeRepository	refugeRepository;
+	private RefugeRepository				refugeRepository;
 
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService					actorService;
 
 	@Autowired
-	private PlayerService		playerService;
+	private PlayerService					playerService;
 
 	@Autowired
-	private AttackService		attackService;
+	private AttackService					attackService;
 
 	@Autowired
-	private CharacterService	characterService;
+	private DesignerConfigurationService	designerConfigurationService;
 
 	@Autowired
-	private ItemService			itemService;
+	private CharacterService				characterService;
 
 	@Autowired
-	private MoveService			moveService;
+	private ItemService						itemService;
 
 	@Autowired
-	private InventoryService	inventoryService;
+	private MoveService						moveService;
 
 	@Autowired
-	private RoomService			roomService;
+	private InventoryService				inventoryService;
 
 	@Autowired
-	private BarrackService		barrackService;
+	private RoomService						roomService;
 
 	@Autowired
-	private LocationService		locationService;
+	private BarrackService					barrackService;
 
 	@Autowired
-	private Validator			validator;
+	private LocationService					locationService;
+
+	@Autowired
+	private Validator						validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -139,12 +143,13 @@ public class RefugeService {
 		Collection<Room> rooms;
 		Actor actor;
 		Inventory inventory;
+		final DesignerConfiguration designerConfiguration;
 
 		actor = this.actorService.findActorByPrincipal();
 		Assert.isTrue(actor.equals(refuge.getPlayer()));
 
 		result = this.refugeRepository.save(refuge);
-
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 		if (refuge.getId() != 0) {
 			playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
 			attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
@@ -205,24 +210,19 @@ public class RefugeService {
 			inventory = this.inventoryService.create();
 
 			//Poner config
-			inventory.setCapacity(10.);
-			inventory.setFood(3.);
-			inventory.setWater(3.);
-			inventory.setWood(4.);
-			inventory.setMetal(3.);
-
-			//Room initialization
-			rooms = this.createInitialRooms();
+			inventory.setWaterCapacity(designerConfiguration.getMaxInventoryWater());
+			inventory.setFoodCapacity(designerConfiguration.getMaxInventoryFood());
+			inventory.setWoodCapacity(designerConfiguration.getMaxInventoryWood());
+			inventory.setMetalCapacity(designerConfiguration.getMaxInventoryMetal());
+			inventory.setFood(designerConfiguration.getInitialFood());
+			inventory.setWater(designerConfiguration.getInitialWater());
+			inventory.setWood(designerConfiguration.getInitialWood());
+			inventory.setMetal(designerConfiguration.getInitialMetal());
 
 			inventory.setRefuge(result);
 			this.inventoryService.save(inventory);
 
-			for (final Room room : rooms) {
-				room.setRefuge(result);
-				this.roomService.save(room);
-			}
-
-			characters = this.generateCharacters(result);
+			characters = this.generateCharacters(result, designerConfiguration.getNumInitialCharacters());
 		}
 
 		return result;
@@ -407,13 +407,13 @@ public class RefugeService {
 		return result;
 	}
 
-	private Collection<domain.Character> generateCharacters(final Refuge refuge) {
+	private Collection<domain.Character> generateCharacters(final Refuge refuge, final Integer numCharacters) {
 		Collection<domain.Character> result;
 		domain.Character character;
 
 		result = new HashSet<>();
 
-		for (int i = 0; i < 3; i++) {//Poner número en configuración
+		for (int i = 0; i < numCharacters; i++) {//Poner número en configuración
 
 			character = this.characterService.save(this.characterService.generateCharacter(refuge.getId()));
 			result.add(character);
@@ -450,15 +450,18 @@ public class RefugeService {
 		Collection<Room> rooms;
 		Collection<domain.Character> characters;
 		int capacity = 0;
+		DesignerConfiguration designerConfiguration;
 
 		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
 		characters = this.characterService.findCharactersByRefuge(refuge.getId());
+		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
 		for (final Room r : rooms)
 			if (r.getRoomDesign() instanceof Barrack) {
 				final Barrack barrack = (Barrack) r.getRoomDesign();
 				capacity += barrack.getCharacterCapacity();
 			}
+		capacity += designerConfiguration.getRefugeDefaultCapacity();
 		capacity -= characters.size();
 
 		return capacity;
@@ -471,14 +474,14 @@ public class RefugeService {
 
 		currentSize = inventory.getMetal() + inventory.getWater() + inventory.getWood() + inventory.getFood();
 
-		result = inventory.getCapacity() - currentSize;
+		result = inventory.getWaterCapacity() + inventory.getFoodCapacity() + inventory.getWoodCapacity() + inventory.getMetalCapacity() - currentSize;
 
 		return result;
 	}
 
-	public void updateInventory(final Refuge refuge) {
+	public Inventory updateInventory(final Refuge refuge) {
 
-		Inventory inventory;
+		Inventory inventory, result;
 		Collection<Room> resourceRooms;
 		Double inventoryCapacity;
 		Integer hours;
@@ -488,6 +491,8 @@ public class RefugeService {
 		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
 
 		resourceRooms = this.roomService.findResourceRoomsByRefuge(refuge.getId());
+
+		result = inventory;
 
 		if (resourceRooms.size() > 0 && refuge.getLastView() != null) {
 			inventoryCapacity = this.getInventoryCapacity(inventory);
@@ -499,35 +504,37 @@ public class RefugeService {
 			hours = (int) TimeUnit.MILLISECONDS.toHours(difference);
 
 			for (final Room room : resourceRooms) {
-				if ((inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getFood()) < inventory.getCapacity()) {
+				if ((inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getFood()) < inventory.getFoodCapacity()) {
 					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
 				} else
 					break;
 
-				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWater() < inventory.getCapacity()) {
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWater() < inventory.getWaterCapacity()) {
 					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
 				} else
 					break;
 
-				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWood() < inventory.getCapacity()) {
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWood() < inventory.getWood()) {
 					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
 				} else
 					break;
 
-				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getMetal() < inventory.getCapacity()) {
+				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getMetal() < inventory.getMetalCapacity()) {
 					inventory.setWood(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
 				} else
 					break;
 			}
+			result = this.inventoryService.save(inventory);
 			if (hours > 0)
 				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 		} else
 			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 
+		return result;
 	}
 
 	private Refuge updateLocation(final Refuge refuge) {

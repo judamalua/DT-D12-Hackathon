@@ -14,7 +14,32 @@
 <spring:message code="master.page.moment.format" var="formatDate" />
 <spring:message var="format" code="master.page.moment.format.out" />
 <spring:message var="lang" code="master.page.current.lang" />
-
+<div class="inventory">
+	<div class="inventoryElm">
+		<i class="material-icons">local_pizza</i>
+		<spring:message code="inventory.food" />
+		:
+		<jstl:out value="${inventory.food}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">local_drink</i>
+		<spring:message code="inventory.water" />
+		:
+		<jstl:out value="${inventory.water}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">toys</i>
+		<spring:message code="inventory.metal" />
+		:
+		<jstl:out value="${inventory.metal}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">spa</i>
+		<spring:message code="inventory.wood" />
+		:
+		<jstl:out value="${inventory.wood}" />
+	</div>
+</div>
 <br />
 <h2>
 	<jstl:out value="${refuge.name}" />
@@ -38,16 +63,68 @@
 </jstl:if>
 <!-- Only a player who knows the refugee can display this information -->
 <security:authorize access="hasRole('PLAYER')">
-	<jstl:if test="${knowRefuge or owner}">
-		<strong> <spring:message code="refuge.location" />
-		</strong>
-		<iframe class="map"
-			src="https://www.google.com/maps/embed/v1/search?q=${refuge.gpsCoordinates}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c"></iframe>
-		<br />
+	<div class="characterContainer">
+		<h3>
+			<spring:message code="refuge.character.list" />
+		</h3>
+		<spring:message code="refuge.capacity" />: <jstl:out value="${characters.length}/${capacity/characters.length}"/>
+		<jstl:forEach items="${characters}" var="character">
+			<div class="character">
+				<div class="characterName">
+					<jstl:out value="${character.fullName}" />
+				</div>
+				<a href="character/player/display.do?characterId=${character.id}">
+					<div class="characterImage"
+						style="height: 200px; width: 200px; float: left;"></div>
+				</a> <br />
+				<jstl:if test="${character.currentlyInGatheringMission}">
+					<i class="material-icons"> directions_walk </i>
+					<spring:message code="refuge.character.gather" />
+				</jstl:if>
+				<br />
+				<jstl:if test="${character.roomEntrance!=null and !character.currentlyInGatheringMission}">
+					<i class="material-icons"> hotel </i>
+					<spring:message code="refuge.in" />: ${character.room.roomDesign.name[lang]}
+				</jstl:if>
+				<jstl:if test="${character.currentWater<10}">
+					<div class="error">
+						<spring:message code="refuge.thirsty" />
+					</div>
+				</jstl:if>
+				<jstl:if test="${character.currentFood<10}">
+					<div class="error">
+						<spring:message code="refuge.hungry" />
+					</div>
+				</jstl:if>
+				<jstl:if
+					test="${character.currentHealth<100 and character.currentHealth>=50}">
+					<div class="error">
+						<spring:message code="refuge.wounded" />
+					</div>
+				</jstl:if>
+				<jstl:if
+					test="${character.currentHealth<50 and character.currentHealth>=25}">
+					<div class="error">
+						<spring:message code="refuge.agonizing" />
+					</div>
+				</jstl:if>
+				<jstl:if test="${character.currentHealth<25}">
+					<div class="error">
+						<spring:message code="refuge.ligth" />
+					</div>
+				</jstl:if>
+				<div class="characterGenre" hidden="true">
+					<jstl:if test="${character.male}">Male</jstl:if>
+					<jstl:if test="${!character.male}">Female</jstl:if>
+				</div>
+			</div>
+		</jstl:forEach>
+	</div>
+	<br />
 
+	<div class="refugeRooms">
 		<strong> <spring:message code="refuge.room" />
-		</strong>
-		<br />
+		</strong> <br />
 		<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
 			requestURI="refuge/player/display.do?refugeId=${refuge.id}&page=" />
 		<display:table name="${rooms}" id="room"
@@ -63,6 +140,8 @@
 			<spring:message code="refuge.room.resistance"
 				var="resistanceRoomTitle" />
 			<display:column title="${resistanceRoomTitle}">
+				<jstl:out
+					value="${(room.resistance/room.roomDesign.maxResistance)*100}%" />
 				<div class="ratio element">
 					<div class="progress progress-striped active" aria-valuemin="0">
 						<div class="bar"
@@ -88,8 +167,5 @@
 		<jstl:if test="${owner}">
 			<acme:button url="room/player/create.do" code="refuge.room.create" />
 		</jstl:if>
-	</jstl:if>
-	
-	<br/>
-	<acme:button url="character/player/list.do" code="refuge.characters" />
+	</div>
 </security:authorize>

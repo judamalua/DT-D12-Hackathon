@@ -50,6 +50,7 @@
 		<value>/views/move/messages</value>
 		<value>/views/notification/messages</value>
 		<value>/views/item/messages</value>
+		<value>/views/designerConfiguration/messages</value>
 	</util:list>
 
 </beans>

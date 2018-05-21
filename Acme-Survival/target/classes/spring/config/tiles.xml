@@ -49,6 +49,7 @@
 		<value>/views/move/tiles.xml</value>
 		<value>/views/item/tiles.xml</value>
 		<value>/views/notification/tiles.xml</value>
+		<value>/views/designerConfiguration/tiles.xml</value>
 	</util:list>
 
 </beans>

@@ -10,6 +10,8 @@
 
 package controllers.player;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.CharacterService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.PlayerService;
@@ -32,6 +35,7 @@ import services.RoomService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Configuration;
+import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
 import domain.Room;
@@ -48,6 +52,9 @@ public class RefugePlayerController extends AbstractController {
 
 	@Autowired
 	private RoomService				roomService;
+
+	@Autowired
+	private CharacterService		characterService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -117,7 +124,7 @@ public class RefugePlayerController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam(required = false) final Integer refugeId, @RequestParam(required = false, defaultValue = "0") final int pageRoom) {
+	public ModelAndView display(@RequestParam(required = false, defaultValue = "0") final int pageRoom) {
 		ModelAndView result;
 		final Refuge refuge, ownRefuge;
 		Configuration configuration;
@@ -126,7 +133,9 @@ public class RefugePlayerController extends AbstractController {
 		Page<Room> rooms;
 		boolean owner = false;
 		boolean knowRefuge = false;
-
+		Inventory inventory;
+		final Collection<domain.Character> characters;
+		Integer capacity;
 		try {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
@@ -139,19 +148,19 @@ public class RefugePlayerController extends AbstractController {
 
 			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
 
-			if (refugeId == null) {
-				refuge = ownRefuge;
-				Assert.notNull(refuge, "Not have refuge");
-			} else
-				refuge = this.refugeService.findOne(refugeId);
+			refuge = ownRefuge;
+			Assert.notNull(refuge, "Not have refuge");
 
-			this.refugeService.updateInventory(refuge);
+			characters = this.characterService.findCharactersByRefuge(refuge.getId());
+
+			inventory = this.refugeService.updateInventory(refuge);
 			this.gatherService.updateGatheringMissions();
 
 			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
 			owner = ownRefuge != null && ownRefuge.equals(refuge);
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
 
+			capacity = this.refugeService.getCurrentCharacterCapacity(ownRefuge);
 			//Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
 
 			result.addObject("refuge", refuge);
@@ -159,7 +168,10 @@ public class RefugePlayerController extends AbstractController {
 			result.addObject("pageRoom", pageRoom);
 			result.addObject("pageNumRoom", rooms.getTotalPages());
 			result.addObject("knowRefuge", knowRefuge);
+			result.addObject("characters", characters);
+			result.addObject("inventory", inventory);
 			result.addObject("owner", owner);
+			result.addObject("characterCapacity", capacity);
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge"))
