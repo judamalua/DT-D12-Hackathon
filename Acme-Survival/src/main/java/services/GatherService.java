@@ -304,6 +304,7 @@ public class GatherService {
 		Long missionMillis;
 		Integer experience;
 		Integer missionMinutes;
+		Notification notification;
 		DesignerConfiguration designerConfiguration;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
@@ -324,7 +325,6 @@ public class GatherService {
 			gatherMission = this.findGatherFinishedByCharacter(character.getId());
 
 			if (gatherMission != null) {
-				Notification notification;
 				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
 				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
 
