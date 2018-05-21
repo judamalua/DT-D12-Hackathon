@@ -1,3 +1,17 @@
+function randomPointInZone(r) {
+	var p = {};
+	var r1 = Math.random();
+	var r2 = Math.random();
+	if (Math.random(0, 1) > 0.5) {
+		p.x = (1 - Math.sqrt(r1)) * r.A.x + (Math.sqrt(r1) * (1 - r2)) * r.B.x + (Math.sqrt(r1) * r2) * r.C.x;
+		p.y = (1 - Math.sqrt(r1)) * r.A.y + (Math.sqrt(r1) * (1 - r2)) * r.B.y + (Math.sqrt(r1) * r2) * r.C.y;
+	} else {
+		p.x = (1 - Math.sqrt(r1)) * r.A.x + (Math.sqrt(r1) * (1 - r2)) * r.D.x + (Math.sqrt(r1) * r2) * r.C.x;
+		p.y = (1 - Math.sqrt(r1)) * r.A.y + (Math.sqrt(r1) * (1 - r2)) * r.D.y + (Math.sqrt(r1) * r2) * r.C.y;
+	}
+	return p;
+}
+
 function distanceBetweenPoints(m, r) {
 	return Math.sqrt(Math.pow((m.x - r.x), 2) + Math.pow((m.y - r.y), 2));
 }
@@ -69,3 +83,12 @@ function pointInTriange(P, A, B, C) {
 	// Check if point is in triangle
 	return (u >= 0) && (v >= 0) && (u + v < 1);
 }
+
+function getRemainingTime(time) {
+	var language = getLanguageToUse();
+	if (time > 0) {
+		return Math.floor((time / 1000) / 60) + ' ' + mapTranslations.attack.minutes[language];
+	} else {
+		return mapTranslations.attack.done[language];
+	}
+};
