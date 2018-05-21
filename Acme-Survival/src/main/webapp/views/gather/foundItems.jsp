@@ -76,16 +76,16 @@ function save(){
 }
 </script>
 
+<h3><spring:message code="founditems"></spring:message></h3>
 <div id="div3">
-<h1><spring:message code="founditems"></spring:message></h1>
 <jstl:forEach items="${items}" var="item" >
 <img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
  width="75" height="75">
 </jstl:forEach>
 </div>
 
+<h3><spring:message code="foundresources"></spring:message></h3>
 <div id="div4">
-<h1><spring:message code="foundresources"></spring:message></h1>
 <jstl:forEach items="${resources}" var="resource" >
 <img name="${resource.id}" class="img" id="${resource.id}" style ="float:left;"src="${resource.imageUrl}" 
  width="75" height="75">

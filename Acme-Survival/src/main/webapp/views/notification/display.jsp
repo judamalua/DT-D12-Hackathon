@@ -48,7 +48,7 @@
 </jstl:if>
 
 <jstl:if test="${gatherId != null}">
-	<acme:button url="gather/player/delete.do?attackId=${gatherId}" code="notification.finish.result"/>
+	<acme:button code="mission.summary" url="gather/player/foundItems.do?gatherId=${gatherId}"/>
 </jstl:if>
 
 <br/>
