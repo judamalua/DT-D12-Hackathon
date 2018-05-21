@@ -122,5 +122,10 @@ public class EventService {
 		this.validator.validate(result, binding);
 		return result;
 	}
+	
+	public void flush() {
+		this.eventRepository.flush();
+
+	}
 }
 

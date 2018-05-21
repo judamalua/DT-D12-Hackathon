@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +14,8 @@ import org.springframework.validation.Validator;
 
 import repositories.LootTableRepository;
 import domain.LootTable;
+import domain.ProbabilityEvent;
+import domain.ProbabilityItem;
 
 @Service
 @Transactional
@@ -32,9 +35,11 @@ public class LootTableService {
 
 	public LootTable create() {
 		LootTable result;
-
+		
 		result = new LootTable();
-
+		result.setProbabilityEvents(new HashSet<ProbabilityEvent>());
+		result.setProbabilityItems(new HashSet<ProbabilityItem>());
+		result.setName("LootTable Name");
 		return result;
 	}
 

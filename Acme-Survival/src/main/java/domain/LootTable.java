@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
@@ -52,9 +53,8 @@ public class LootTable extends DomainEntity {
 	private Collection<ProbabilityEvent>	probabilityEvents;
 	private Collection<ProbabilityItem>		probabilityItems;
 
-
 	@Valid
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	public Collection<ProbabilityEvent> getProbabilityEvents() {
 		return this.probabilityEvents;
 	}
@@ -64,7 +64,7 @@ public class LootTable extends DomainEntity {
 
 	}
 	@Valid
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	public Collection<ProbabilityItem> getProbabilityItems() {
 		return this.probabilityItems;
 	}

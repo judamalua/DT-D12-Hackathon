@@ -59,11 +59,11 @@ public class NotificationPlayerController extends AbstractController {
 
 			result = new ModelAndView("notification/list");
 
+			this.gatherService.updateGatheringMissions();
+
 			player = (Player) this.actorService.findActorByPrincipal();
 			this.notificationService.generateNotifications();
 			notifications = this.notificationService.findNotificationsByPlayer(player.getId(), pageable);
-
-			this.gatherService.updateGatheringMissions();
 
 			result.addObject("notifications", notifications.getContent());
 			result.addObject("page", page);
