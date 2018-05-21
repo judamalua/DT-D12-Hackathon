@@ -187,7 +187,7 @@
 		<property name="movingMetal" value="5" />
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
-		<property name="kmPerSecond" value="5000" />
+		<property name="kmPerSecond" value="50000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="10" />
@@ -202,7 +202,7 @@
 		<property name="initialFood" value="4" />
 		<property name="initialWater" value="4" />
 		<property name="initialWood" value="4" />
-		<property name="initialmetal" value="4" />
+		<property name="initialMetal" value="4" />
 		<property name="maxInventoryFood" value="20" />
 		<property name="maxInventoryWater" value="20" />
 		<property name="maxInventoryWood" value="20" />

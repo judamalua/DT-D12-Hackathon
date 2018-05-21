@@ -73,6 +73,9 @@
 			access="hasRole('MANAGER')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/designer/edit.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
+			
+		<security:intercept-url pattern="/gather/player/foundItems.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/event/designer/edit.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />

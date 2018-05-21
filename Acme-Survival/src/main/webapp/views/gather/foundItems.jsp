@@ -32,6 +32,20 @@
     border: 1px solid #aaaaaa;
     float:left;
 }
+#div3 {
+    width: 800px;
+    height: 300px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+   
+}
+#div4 {
+    width: 800px;
+    height: 300px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+   
+}
 </style>	
 <script>
 function allowDrop(ev) {
@@ -62,8 +76,26 @@ function save(){
 }
 </script>
 
+<div id="div3">
+<h1><spring:message code="founditems"></spring:message></h1>
+<jstl:forEach items="${items}" var="item" >
+<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
+ width="75" height="75">
+</jstl:forEach>
+</div>
 
-	
+<div id="div4">
+<h1><spring:message code="foundresources"></spring:message></h1>
+<jstl:forEach items="${resources}" var="resource" >
+<img name="${resource.id}" class="img" id="${resource.id}" style ="float:left;"src="${resource.imageUrl}" 
+ width="75" height="75">
+</jstl:forEach>
+</div>
+
+
+
+
+<jstl:if test="${fullCapacityRefuge}">
 <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
 <jstl:forEach items="${items}" var="item" >
 <img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
@@ -75,14 +107,6 @@ draggable="true" ondragstart="drag(event)" width="75" height="75">
 <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">
 </div>
 
-	
-<security:authorize access="hasRole('PLAYER')">
-			<jstl:if test="${!(item.equipped)}">
-				<acme:button
-					url="item/player/remove.do?itemId=${item.id}"
-					code="item.remove" />
-			</jstl:if>
-</security:authorize>
 
 <button class="btn"onclick="save();">Go</button>
-
+</jstl:if>	

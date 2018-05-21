@@ -25,6 +25,12 @@
 		<put-attribute name="title" value="Lista de recolecciones" />
 		<put-attribute name="body" value="/views/gather/list.jsp" />
 	</definition>
+	
+	
+	<definition name="gather/foundItems" extends="master.page">	
+		<put-attribute name="title" value="Resumen de la misión" />
+		<put-attribute name="body" value="/views/gather/foundItems.jsp" />
+	</definition>
 		
 	<definition name="gather/results" extends="master.page">	
 		<put-attribute name="title" value="Resultados de la recolección" />

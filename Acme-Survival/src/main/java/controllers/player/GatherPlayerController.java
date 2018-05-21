@@ -1,6 +1,7 @@
 
 package controllers.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import services.ConfigurationService;
 import services.GatherService;
 import services.InventoryService;
 import services.ItemService;
-import services.RefugeService;
 import services.MoveService;
 import services.RefugeService;
 import controllers.AbstractController;
@@ -37,7 +37,6 @@ import domain.Player;
 import domain.Refuge;
 import domain.Resource;
 import domain.Tool;
-import domain.Refuge;
 
 @Controller
 @RequestMapping("/gather/player")
@@ -63,9 +62,6 @@ public class GatherPlayerController extends AbstractController {
 
 	@Autowired
 	private ItemService				itemService;
-
-	@Autowired
-	private RefugeService			refugeService;
 
 	@Autowired
 	private InventoryService		inventoryService;
@@ -173,9 +169,8 @@ public class GatherPlayerController extends AbstractController {
 		Collection<ItemDesign> items;
 		Refuge refuge;
 		final Gather gather;
-		Configuration configuration;
-		final Collection<Item> tools;
-		final Collection<Resource> resources;
+		final Collection<Item> tools = new ArrayList<Item>();
+		final Collection<Resource> resources = new ArrayList<Resource>();
 		Item item;
 		Player player;
 		Inventory inventory;
@@ -184,7 +179,6 @@ public class GatherPlayerController extends AbstractController {
 		try {
 
 			result = new ModelAndView("gather/foundItems");
-			configuration = this.configurationService.findConfiguration();
 			gather = this.gatherService.findOne(gatherId);
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
@@ -197,7 +191,7 @@ public class GatherPlayerController extends AbstractController {
 					item.setEquipped(false);
 					item.setTool((Tool) itemDesign);
 					final Item saveditem = this.itemService.save(item);
-					tools.add(item);
+					tools.add(saveditem);
 				} else {
 					final Double currentWaterCapacity = inventory.getWaterCapacity() - inventory.getWater();
 					final Double currentFoodCapacity = inventory.getFoodCapacity() - inventory.getFood();
