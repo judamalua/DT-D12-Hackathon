@@ -9,6 +9,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!-- Variables -->
 <spring:message code="master.page.moment.format" var="formatDate" />
@@ -67,7 +68,8 @@
 		<h3>
 			<spring:message code="refuge.character.list" />
 		</h3>
-		<spring:message code="refuge.capacity" />: <jstl:out value="${characters.length}/${capacity/characters.length}"/>
+		<spring:message code="refuge.capacity" />: <jstl:out value="${fn:length(characters)}/${characterCapacity+fn:length(characters)}"/>
+		<br/>
 		<jstl:forEach items="${characters}" var="character">
 			<div class="character">
 				<div class="characterName">

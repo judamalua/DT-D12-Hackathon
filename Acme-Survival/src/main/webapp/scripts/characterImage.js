@@ -1,7 +1,7 @@
 function generateCharacters() {
 	for ( var int = 0; int < document.getElementsByClassName("characterGenre").length; int++) {
 		var genre = document.getElementsByClassName("characterGenre")[int].innerHTML.trim();
-		var name = document.getElementsByClassName("characterName")[int].innerHTML;
+		var name = document.getElementsByClassName("characterName")[int].innerHTML.trim();
 		var avatars;
 		if (genre === "Male") {
 			avatars = new Avatars(Avatars.sprites.male);
@@ -16,4 +16,14 @@ function generateCharacters() {
 		}
 		document.getElementsByClassName("characterImage")[int].innerHTML = svg;
 	}
+}
+
+function getCharacters(name, isMale) {
+	var avatars;
+	if (isMale) {
+		avatars = new Avatars(Avatars.sprites.male);
+	} else {
+		avatars = new Avatars(Avatars.sprites.female);
+	}
+	return avatars.create(name);
 }

@@ -32,6 +32,16 @@ var mapTranslations = {
 			en : "Mission acomplished, go to notifications to see the results"
 		}
 	},
+	gather : {
+		gather : {
+			es : "Recolección en proceso",
+			en : "On going gather"
+		},
+		character : {
+			es : "Personaje en misión",
+			en : "Character in the mission"
+		}
+	},
 	location : {
 		location : {
 			es : "Zona",

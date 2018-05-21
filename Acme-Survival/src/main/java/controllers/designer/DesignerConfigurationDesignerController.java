@@ -32,7 +32,7 @@ public class DesignerConfigurationDesignerController extends AbstractController 
 		ModelAndView result;
 		DesignerConfiguration configuration;
 
-		result = new ModelAndView("configuration/list");
+		result = new ModelAndView("designerConfiguration/list");
 		configuration = this.designerConfigurationService.findDesignerConfiguration();
 
 		result.addObject("designerConfiguration", configuration);

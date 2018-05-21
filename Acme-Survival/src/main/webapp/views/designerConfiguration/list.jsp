@@ -23,12 +23,12 @@
 
 <p>
 <strong><spring:message code="configuration.movingFood" /></strong>:
-&#160;&#160;<jstl:out value="${designerConfiguration.movingFood}" />&#160;<img width="24" src="favicon.ico" />&#160;<jstl:out value="${configuration.businessNameLast}" />
+&#160;&#160;<jstl:out value="${designerConfiguration.movingFood}" />
 </p>
 
 <p>
 	<strong><spring:message code="configuration.kmPerSecond" /></strong>
-	<jstl:out value="${designerConfiguration.kmPerSecond}" />
+	<jstl:out value="${designerConfiguration.kmPerSecond}" /> (Km/s)
 </p>
 <p>
 	<strong><spring:message code="configuration.foodWastedPerSecond" /></strong>
@@ -87,8 +87,8 @@
 	<jstl:out value="${designerConfiguration.initialWood}" />
 </p>
 <p>
-	<strong><spring:message code="configuration.initialmetal" /></strong>
-	<jstl:out value="${designerConfiguration.initialmetal}" />
+	<strong><spring:message code="configuration.initialMetal" /></strong>
+	<jstl:out value="${designerConfiguration.initialMetal}" />
 </p>
 <p>
 	<strong><spring:message code="configuration.maxInventoryFood" /></strong>

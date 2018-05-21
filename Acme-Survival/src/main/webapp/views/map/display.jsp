@@ -31,6 +31,7 @@
 </security:authorize>
 
 <div id="mapElements" hidden="true"></div>
+<div id="randomPoints" hidden="true"></div>
 <div class="row">
 	<div id="map" style="height: 800px;"></div>
 </div>

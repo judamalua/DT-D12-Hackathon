@@ -699,9 +699,9 @@
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="7" />
-		<property name="water" value="7" />
-		<property name="food" value="7" />
+		<property name="health" value="-7" />
+		<property name="water" value="-2" />
+		<property name="food" value="-1" />
 		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
