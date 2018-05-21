@@ -85,7 +85,7 @@
 		<security:intercept-url pattern="/lootTable/designer/list.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/lootTable/designer/create.do"
-			access="hasRole('DESIGNER')" requires-channel="https" />					
+			access="hasRole('DESIGNER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/roomDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />
@@ -151,13 +151,13 @@
 
 		<security:intercept-url pattern="/location/designer/info.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/location/designer/edit.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/location/designer/create.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
-			
+
 		<security:intercept-url pattern="/location/designer/delete.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 
@@ -169,6 +169,9 @@
 
 		<security:intercept-url pattern="/configuration/admin/**"
 			access="hasRole('ADMIN')" requires-channel="https" />
+
+		<security:intercept-url pattern="/designerConfiguration/designer/**"
+			access="hasRole('DESIGNER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/itemDesign/designer/**"
 			access="hasRole('DESIGNER')" requires-channel="https" />

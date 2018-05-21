@@ -10,7 +10,10 @@
 
 package controllers.player;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.CharacterService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.PlayerService;
@@ -32,6 +36,7 @@ import services.RoomService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Configuration;
+import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
 import domain.Room;
@@ -48,6 +53,9 @@ public class RefugePlayerController extends AbstractController {
 
 	@Autowired
 	private RoomService				roomService;
+
+	@Autowired
+	private CharacterService		characterService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -68,45 +76,6 @@ public class RefugePlayerController extends AbstractController {
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the system refuge list
-	 * 
-	 * @param page
-	 * 
-	 * @return ModelandView
-	 * @author MJ
-	 */
-	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
-		ModelAndView result;
-		Page<Refuge> refuges;
-		Pageable pageable;
-		Refuge refuge;
-		Configuration configuration;
-		Player actor;
-
-		try {
-			result = new ModelAndView("refuge/list");
-			configuration = this.configurationService.findConfiguration();
-			pageable = new PageRequest(page, configuration.getPageSize());
-			actor = (Player) this.actorService.findActorByPrincipal();
-
-			refuges = this.playerService.findKnowRefugesByPlayer(actor.getId(), pageable);
-
-			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
-
-			result.addObject("refuges", refuges.getContent());
-			result.addObject("page", page);
-			result.addObject("hasRefuge", refuge != null);
-			result.addObject("pageNum", refuges.getTotalPages());
-			result.addObject("requestURI", "refuge/player/list.do?");
-
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
-		}
-		return result;
-	}
-
-	/**
 	 * That method returns a model and view with the refuge display
 	 * 
 	 * @param pageRoom
@@ -117,7 +86,7 @@ public class RefugePlayerController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam(required = false) final Integer refugeId, @RequestParam(required = false, defaultValue = "0") final int pageRoom) {
+	public ModelAndView display(@RequestParam(required = false, defaultValue = "0") final int pageRoom) {
 		ModelAndView result;
 		final Refuge refuge, ownRefuge;
 		Configuration configuration;
@@ -126,7 +95,9 @@ public class RefugePlayerController extends AbstractController {
 		Page<Room> rooms;
 		boolean owner = false;
 		boolean knowRefuge = false;
-
+		Inventory inventory;
+		final Collection<domain.Character> characters;
+		Integer capacity;
 		try {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
@@ -139,19 +110,19 @@ public class RefugePlayerController extends AbstractController {
 
 			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
 
-			if (refugeId == null) {
-				refuge = ownRefuge;
-				Assert.notNull(refuge, "Not have refuge");
-			} else
-				refuge = this.refugeService.findOne(refugeId);
+			refuge = ownRefuge;
+			Assert.notNull(refuge, "Not have refuge");
 
-			this.refugeService.updateInventory(refuge);
+			characters = this.characterService.findCharactersByRefuge(refuge.getId());
+
+			inventory = this.refugeService.updateInventory(refuge);
 			this.gatherService.updateGatheringMissions();
 
 			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
 			owner = ownRefuge != null && ownRefuge.equals(refuge);
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
 
+			capacity = this.refugeService.getCurrentCharacterCapacity(ownRefuge);
 			//Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
 
 			result.addObject("refuge", refuge);
@@ -159,7 +130,10 @@ public class RefugePlayerController extends AbstractController {
 			result.addObject("pageRoom", pageRoom);
 			result.addObject("pageNumRoom", rooms.getTotalPages());
 			result.addObject("knowRefuge", knowRefuge);
+			result.addObject("characters", characters);
+			result.addObject("inventory", inventory);
 			result.addObject("owner", owner);
+			result.addObject("characterCapacity", capacity);
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge"))
@@ -239,6 +213,8 @@ public class RefugePlayerController extends AbstractController {
 				this.refugeService.save(refuge);
 				result = new ModelAndView("redirect:/refuge/player/display.do");
 
+			} catch (final DataIntegrityViolationException oops) {
+				result = this.createEditModelAndView(refuge, "refuge.name.error");
 			} catch (final Throwable oops) {
 				if (oops.getMessage().contains("Not have refuge"))
 					result = new ModelAndView("redirect:/refuge/player/create.do");

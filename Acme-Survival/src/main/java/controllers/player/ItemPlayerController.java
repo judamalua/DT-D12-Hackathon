@@ -10,6 +10,8 @@
 
 package controllers.player;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -111,12 +113,19 @@ public class ItemPlayerController extends AbstractController {
 		Actor player;
 		Character character;
 		Item item;
+		Collection<Character> charactersInMission;
+		Refuge refuge;
 
 		try {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+
+			charactersInMission = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+
 			Assert.isTrue((player instanceof Player));
 			character = this.characterService.findOne(characterId);
+			Assert.isTrue(!charactersInMission.contains(character));
 			item = this.itemService.findOne(itemId);
 			this.itemService.UpdateEquipped(item, characterId);
 

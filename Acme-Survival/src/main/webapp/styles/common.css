@@ -13,6 +13,29 @@
 	height: 10%;
 }
 
+.character{
+	float:left;
+}
+
+.map{
+	float: left;
+	clear:both;
+	width: 500px;
+	height: 250px;
+}
+
+.refugeRooms{
+	float:left;
+	clear: both;
+	width: 100%;
+}
+.characterName{
+	text-align: center;
+}
+
+.inventoryElm{
+	float:left;
+}
 
 .error {
 	color: red;

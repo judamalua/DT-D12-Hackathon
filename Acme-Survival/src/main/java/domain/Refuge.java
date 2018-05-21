@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,6 +46,8 @@ public class Refuge extends DomainEntity {
 		this.code = code;
 	}
 
+	@Length(min = 5, max = 50)
+	@Column(unique = true)
 	@NotBlank
 	@SafeHtml
 	public String getName() {

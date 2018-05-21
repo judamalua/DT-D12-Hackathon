@@ -26,15 +26,13 @@
 		<a class="brand-logo" href="#">&#160;&#160;Acme&#160;<img
 			width="24" src="images/people.png" />&#160;Template
 		</a>
-		
+
 		<ul id="nav-mobile" class="right hide-on-med-and-down">
 			<security:authorize access="isAuthenticated()">
 				<li><a class="fNiv" href="forum/list.do"><spring:message
 							code="master.page.forum.list" /></a></li>
 				<li><a class="fNiv" href="product/list.do"><spring:message
 							code="master.page.product.list" /></a></li>
-				<li><a href="refuge/list.do"><spring:message
-							code="master.page.refugeList" /></a></li>
 
 				<security:authorize access="hasRole('ADMIN')">
 					<!-- Dropdown Structure -->
@@ -130,7 +128,7 @@
 						<li class="divider"></li>
 						<li><a href="j_spring_security_logout"><spring:message
 									code="master.page.logout" /> </a></li>
-						
+
 					</ul>
 
 					<!-- Dropdown Trigger -->
@@ -150,16 +148,16 @@
 				<!-- Dropdown Structure -->
 				<ul id="dropdownAdminFunctions" class="dropdown-content">
 					<li><a href="actor/admin/register.do"><spring:message
-									code="master.page.registerAdmin" /></a></li>			
+								code="master.page.registerAdmin" /></a></li>
 					<li class="divider"></li>
 					<li><a href="actor/admin/registerManager.do"><spring:message
-									code="master.page.registerManager" /></a></li>
+								code="master.page.registerManager" /></a></li>
 					<li class="divider"></li>
 					<li><a href="actor/admin/registerModerator.do"><spring:message
-									code="master.page.registerModerator" /></a></li>
+								code="master.page.registerModerator" /></a></li>
 					<li class="divider"></li>
 					<li><a href="actor/admin/registerDesigner.do"><spring:message
-									code="master.page.registerDesigner" /></a></li>
+								code="master.page.registerDesigner" /></a></li>
 					<li class="divider"></li>
 					<li><a href="dashboard/admin/list.do"><spring:message
 								code="master.page.dashboardList" /></a></li>
@@ -205,7 +203,7 @@
 					data-activates="dropdownPlayerFunctions"><spring:message
 							code="master.page.player" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
-			
+
 			<security:authorize access="hasRole('DESIGNER')">
 				<!-- Dropdown Structure -->
 				<ul id="dropdownDesignerFunctions" class="dropdown-content">
@@ -218,13 +216,16 @@
 					<li><a href="roomDesign/designer/list.do"><spring:message
 								code="master.page.room.design.list.draft" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
+					<li><a
+						href="itemDesign/designer/list.do?tool=true&finalMode=true"><spring:message
 								code="master.page.designer.tools.final" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
+					<li><a
+						href="itemDesign/designer/list.do?tool=true&finalMode=false"><spring:message
 								code="master.page.designer.tools.notFinal" /></a></li>
 					<li class="divider"></li>
-					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
+					<li><a
+						href="itemDesign/designer/list.do?tool=false&finalMode=true"><spring:message
 								code="master.page.designer.resources.final" /></a></li>
 					<li class="divider"></li>
 					<li><a href="itemDesign/designer/list.do?tool=false&finalMode=false"><spring:message
@@ -235,6 +236,9 @@
 					<li class="divider"></li>
 					<li><a href="lootTable/designer/list.do"><spring:message
 								code="master.page.lootTables" /> </a></li>
+					<li class="divider"></li>
+					<li><a href="designerConfiguration/designer/list.do"><spring:message
+								code="master.page.designerConfiguration" /> </a></li>
 				</ul>
 
 				<!-- Dropdown Trigger -->
@@ -255,7 +259,7 @@
 					data-activates="dropdownManagerFunctions"><spring:message
 							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
-			
+
 			<security:authorize access="isAnonymous()">
 				<li><a class="fNiv" href="security/login.do"> <spring:message
 							code="master.page.login" /></a></li>
@@ -265,8 +269,6 @@
 							code="master.page.forum.list" /></a></li>
 				<li><a class="fNiv" href="product/list.do"><spring:message
 							code="master.page.product.list" /></a></li>
-				<li><a href="refuge/list.do"><spring:message
-							code="master.page.refugeList" /></a></li>
 			</security:authorize>
 		</ul>
 	</div>

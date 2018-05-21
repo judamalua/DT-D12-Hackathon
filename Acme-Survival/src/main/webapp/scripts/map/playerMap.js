@@ -452,22 +452,153 @@ function generateMap() {
 			infoWindow.open(map);
 		});
 	}
-}
 
-function getRemainingTime(time) {
-	var language = getLanguageToUse();
-	if (time > 0) {
-		return Math.floor((time / 1000) / 60) + ' ' + mapTranslations.attack.minutes[language];
-	} else {
-		return mapTranslations.attack.done[language];
+	// MOVE HANDLING -------------------------------------
+	if (mapElements.onGoingMove.location !== undefined) {
+		var locationToMove = {
+			A : {
+				x : Number(mapElements.onGoingMove.location.point_a.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_a.split(",")[1])
+			},
+			B : {
+				x : Number(mapElements.onGoingMove.location.point_b.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_b.split(",")[1])
+			},
+			C : {
+				x : Number(mapElements.onGoingMove.location.point_c.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_c.split(",")[1])
+			},
+			D : {
+				x : Number(mapElements.onGoingMove.location.point_d.split(",")[0]),
+				y : Number(mapElements.onGoingMove.location.point_d.split(",")[1])
+			}
+		};
+		var locationCenter = getZoneCenter(locationToMove);
+		var moveCoordinates = [
+				{
+					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+				}, {
+					lat : Number(locationCenter.x),
+					lng : Number(locationCenter.y)
+				}
+		];
+		var move = new google.maps.Polyline({
+			path : moveCoordinates,
+			geodesic : true,
+			strokeColor : '#000000',
+			strokeOpacity : 1.0,
+			strokeWeight : 5,
+			map : map
+		});
+		move.addListener('click', function(event) {
+			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+			var language = getLanguageToUse();
+			var contentString = '<b>' + mapTranslations.move.move[language] + '</b><br/><b>' + mapTranslations.move.location[language] + ": </b>"
+					+ mapElements.onGoingMove.location.name[language] + '<br/><b>' + mapTranslations.attack.time[language] + ': </b>'
+					+ getRemainingTime(mapElements.onGoingMove.endMoment);
+			infoWindow.setContent(contentString);
+			infoWindow.setPosition(event.latLng);
+
+			infoWindow.open(map);
+		});
 	}
-};
+
+	// GATHER HANDLING -------------------------------------
+	var gatherLineCoordinates = [];
+	var gatherLine = [];
+	var gatherCharacter = [];
+	var randomCoordinates = [];
+	var r = [];
+	for ( var int20 = 0; int20 < mapElements.onGoingGathers.length; int20++) {
+		r[int20] = {
+			A : {
+				x : Number(mapElements.onGoingGathers[int20].location.point_a.split(",")[0]),
+				y : Number(mapElements.onGoingGathers[int20].location.point_a.split(",")[1])
+			},
+			B : {
+				x : Number(mapElements.onGoingGathers[int20].location.point_b.split(",")[0]),
+				y : Number(mapElements.onGoingGathers[int20].location.point_b.split(",")[1])
+			},
+			C : {
+				x : Number(mapElements.onGoingGathers[int20].location.point_c.split(",")[0]),
+				y : Number(mapElements.onGoingGathers[int20].location.point_c.split(",")[1])
+			},
+			D : {
+				x : Number(mapElements.onGoingGathers[int20].location.point_d.split(",")[0]),
+				y : Number(mapElements.onGoingGathers[int20].location.point_d.split(",")[1])
+			}
+		};
+		randomCoordinates[int20] = randomPointInZone(r[int20]);
+		gatherCharacter[int20] = new google.maps.Marker({
+			position : {
+				lat : randomCoordinates[int20].x,
+				lng : randomCoordinates[int20].y
+			},
+			map : map,
+			icon : imageCharacter
+		});
+		gatherLineCoordinates[int20] = [
+				{
+					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+				}, {
+					lat : randomCoordinates[int20].x,
+					lng : randomCoordinates[int20].y
+				}
+		];
+		gatherLine[int20] = new google.maps.Polyline({
+			path : gatherLineCoordinates[int20],
+			geodesic : true,
+			strokeColor : '#0000FF',
+			strokeOpacity : 1.0,
+			strokeWeight : 5,
+			map : map
+		});
+		gatherCharacter[int20].addListener('click', function(event) {
+			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
+			var randomPoints = JSON.parse(document.getElementById("randomPoints").innerHTML);
+			var currentInt = -1;
+			var currentLow = null;
+			for ( var int2 = 0; int2 < randomPoints.length; int2++) {
+				var m = {
+					x : event.latLng.lat(),
+					y : event.latLng.lng()
+				};
+				var r = {
+					x : randomPoints[int2].x,
+					y : randomPoints[int2].y
+				};
+				if (currentLow == null) {
+					currentLow = distanceBetweenPoints(m, r);
+					currentInt = int2;
+				} else {
+					if (distanceBetweenPoints(m, r) < currentLow) {
+						currentLow = distanceBetweenPoints(m, r);
+						currentInt = int2;
+					}
+				}
+			}
+			if (currentInt !== -1) {
+				var language = getLanguageToUse();
+				var contentString = '<b>' + mapTranslations.gather.gather[language] + '</b><br/><b>' + mapTranslations.gather.character[language] + ": </b>"
+						+ mapElements.onGoingGathers[currentInt].character.fullName + '<br/><div style="height: 100px; width: 100px;">'
+						+ getCharacters(mapElements.onGoingGathers[currentInt].character.fullName, mapElements.onGoingGathers[currentInt].character.isMale) + '</div><b>'
+						+ mapTranslations.attack.time[language] + ': </b>' + getRemainingTime(mapElements.onGoingGathers[currentInt].endMoment);
+				infoWindow.setContent(contentString);
+				infoWindow.setPosition(event.latLng);
+
+				infoWindow.open(map);
+			}
+		});
+	}
+	document.getElementById("randomPoints").innerHTML = JSON.stringify(randomCoordinates);
+}
 function createElementsMain() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (this.responseText != "null") {
-				console.log(this.responseText);
 				document.getElementById("mapElements").innerHTML = this.responseText;
 				generateMap();
 			}

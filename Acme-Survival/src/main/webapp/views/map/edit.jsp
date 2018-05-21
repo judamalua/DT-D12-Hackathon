@@ -64,9 +64,9 @@
 	<acme:select id="lootId" code="location.lootTable" path="lootTable" items="${lootTables}" itemLabel="name" />
 	
 	<acme:submit name="save" code="location.save" />
-	<acme:delete clickCode="location.confirm.saveFinal" name="saveFinal" code="location.saveFinal" />
 	<jstl:if test="${location.id!= 0}">
 	<jstl:if test="${location.finalMode== false}">
+	<acme:delete clickCode="location.confirm.saveFinal" name="saveFinal" code="location.saveFinal" />
 	<acme:delete clickCode="location.confirm.delete"
 		name="delete" code="location.delete" />
 			</jstl:if>	

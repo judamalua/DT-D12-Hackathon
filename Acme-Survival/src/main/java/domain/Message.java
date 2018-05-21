@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
@@ -30,6 +31,7 @@ public class Message extends DomainEntity {
 	private String	image;
 
 
+	@Length(min = 5, max = 1000)
 	@NotBlank
 	@SafeHtml
 	public String getText() {

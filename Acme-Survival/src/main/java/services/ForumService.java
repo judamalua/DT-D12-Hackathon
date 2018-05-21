@@ -244,10 +244,10 @@ public class ForumService {
 		return result;
 	}
 
-	public Collection<Forum> findForums(final Boolean staff) {
+	public Collection<Forum> findForums(final Boolean staff, final Actor owner) {
 		Collection<Forum> result;
 
-		result = this.forumRepository.findForums(staff);
+		result = this.forumRepository.findForums(staff, owner);
 
 		return result;
 	}
