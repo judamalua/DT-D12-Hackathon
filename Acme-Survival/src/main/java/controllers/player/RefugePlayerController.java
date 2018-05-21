@@ -135,6 +135,7 @@ public class RefugePlayerController extends AbstractController {
 		boolean knowRefuge = false;
 		Inventory inventory;
 		final Collection<domain.Character> characters;
+		Integer capacity;
 		try {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
@@ -159,6 +160,7 @@ public class RefugePlayerController extends AbstractController {
 			owner = ownRefuge != null && ownRefuge.equals(refuge);
 			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
 
+			capacity = this.refugeService.getCurrentCharacterCapacity(ownRefuge);
 			//Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
 
 			result.addObject("refuge", refuge);
@@ -169,6 +171,7 @@ public class RefugePlayerController extends AbstractController {
 			result.addObject("characters", characters);
 			result.addObject("inventory", inventory);
 			result.addObject("owner", owner);
+			result.addObject("characterCapacity", capacity);
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge"))

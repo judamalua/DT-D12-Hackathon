@@ -205,6 +205,7 @@ public class MapPlayerController {
 			jsonGather.put("character", jsonCharacter);
 			jsonGather.put("location", this.makeLocation(gather.getLocation()));
 			jsonGather.put("endMoment", gather.getEndMoment().getTime() - new Date().getTime());
+			result.put(jsonGather);
 		}
 		return result;
 	}

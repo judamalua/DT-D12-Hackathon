@@ -12,24 +12,102 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <p>
-	<strong><spring:message code="configuration.cookies_eng" /></strong>
-	<jstl:out value="${configuration.cookies_eng}" />
+	<strong><spring:message code="configuration.movingWood" /></strong>
+	<jstl:out value="${designerConfiguration.movingWood}" />
 </p>
 
 <p>
-	<strong><spring:message code="configuration.cookies_es" /></strong>
-	<jstl:out value="${configuration.cookies_es}" />
+	<strong><spring:message code="configuration.movingMetal" /></strong>
+	<jstl:out value="${designerConfiguration.movingMetal}" />
 </p>
 
 <p>
-<strong><spring:message code="configuration.businessName" /></strong>:
-&#160;&#160;<jstl:out value="${configuration.businessNameFirst}" />&#160;<img width="24" src="favicon.ico" />&#160;<jstl:out value="${configuration.businessNameLast}" />
+<strong><spring:message code="configuration.movingFood" /></strong>:
+&#160;&#160;<jstl:out value="${designerConfiguration.movingFood}" />
 </p>
 
 <p>
-	<strong><spring:message code="configuration.pagesize" /></strong>
-	<jstl:out value="${configuration.pageSize}" />
+	<strong><spring:message code="configuration.kmPerSecond" /></strong>
+	<jstl:out value="${designerConfiguration.kmPerSecond}" /> (Km/s)
 </p>
-<acme:button url="slider/admin/list.do" code="configuration.slider"/>
-<br/>
-<acme:button url="configuration/admin/edit.do" code="configuration.edit"/>
+<p>
+	<strong><spring:message code="configuration.foodWastedPerSecond" /></strong>
+	<jstl:out value="${designerConfiguration.foodWastedPerSecond}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.waterWastedPerSecond" /></strong>
+	<jstl:out value="${designerConfiguration.waterWastedPerSecond}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.refugeRecoverTime" /></strong>
+	<jstl:out value="${designerConfiguration.refugeRecoverTime}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.waterFactorSteal" /></strong>
+	<jstl:out value="${designerConfiguration.waterFactorSteal}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.foodFactorSteal" /></strong>
+	<jstl:out value="${designerConfiguration.foodFactorSteal}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.metalFactorSteal" /></strong>
+	<jstl:out value="${designerConfiguration.metalFactorSteal}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.woodFactorSteal" /></strong>
+	<jstl:out value="${designerConfiguration.woodFactorSteal}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.foodLostGatherFactor" /></strong>
+	<jstl:out value="${designerConfiguration.foodLostGatherFactor}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.waterLostGatherFactor" /></strong>
+	<jstl:out value="${designerConfiguration.waterLostGatherFactor}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.experiencePerMinute" /></strong>
+	<jstl:out value="${designerConfiguration.experiencePerMinute}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.refugeDefaultCapacity" /></strong>
+	<jstl:out value="${designerConfiguration.refugeDefaultCapacity}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.initialFood" /></strong>
+	<jstl:out value="${designerConfiguration.initialFood}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.initialWater" /></strong>
+	<jstl:out value="${designerConfiguration.initialWater}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.initialWood" /></strong>
+	<jstl:out value="${designerConfiguration.initialWood}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.initialMetal" /></strong>
+	<jstl:out value="${designerConfiguration.initialMetal}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.maxInventoryFood" /></strong>
+	<jstl:out value="${designerConfiguration.maxInventoryFood}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.maxInventoryWater" /></strong>
+	<jstl:out value="${designerConfiguration.maxInventoryWater}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.maxInventoryWood" /></strong>
+	<jstl:out value="${designerConfiguration.maxInventoryWood}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.maxInventoryMetal" /></strong>
+	<jstl:out value="${designerConfiguration.maxInventoryMetal}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.numInitialCharacters" /></strong>
+	<jstl:out value="${designerConfiguration.numInitialCharacters}" />
+</p>
+<acme:button url="designerConfiguration/designer/edit.do" code="configuration.edit"/>

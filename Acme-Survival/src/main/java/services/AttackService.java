@@ -174,7 +174,7 @@ public class AttackService {
 		resourcesStolen = this.getCollectionResourcesOfAttack(resources);
 		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
 		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
-		attackerCapacity = attackerInventory.getCapacity();
+		attackerCapacity = attackerInventory.getWaterCapacity() + attackerInventory.getFoodCapacity() + attackerInventory.getMetalCapacity() + attackerInventory.getWaterCapacity();
 		totalCapacity = attackerCapacity;
 
 		waterStolen = 1.0 * resourcesStolen.get(0);
