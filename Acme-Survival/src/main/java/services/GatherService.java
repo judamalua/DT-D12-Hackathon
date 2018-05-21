@@ -300,13 +300,11 @@ public class GatherService {
 		Gather gatherMission;
 		Collection<Character> currentlyInGatheringMissionCharacters;
 		Refuge refuge;
-		Notification notification;
 		List<Event> eventsDuringMission;
 		Long missionMillis;
 		Integer experience;
 		Integer missionMinutes;
 		DesignerConfiguration designerConfiguration;
-		int currentHealth, currentWater, currentFood;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
 		titleNotification.put("es", "¡Misión de recolección finalizada!");
@@ -326,6 +324,7 @@ public class GatherService {
 			gatherMission = this.findGatherFinishedByCharacter(character.getId());
 
 			if (gatherMission != null) {
+				Notification notification;
 				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
 				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
 
@@ -336,15 +335,19 @@ public class GatherService {
 
 				character.setCurrentlyInGatheringMission(false);
 
-				if (eventsDuringMission.size() != 0) {
-					currentHealth = character.getCurrentHealth();
-					currentWater = character.getCurrentWater();
-					currentFood = character.getCurrentFood();
-
+				if (eventsDuringMission.size() != 0)
 					for (final Event event : eventsDuringMission) {
-						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));//TODO
-						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
-						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
+						character.setCurrentHealth(character.getCurrentHealth() + event.getHealth());
+						if (character.getCurrentHealth() > 100)
+							character.setCurrentHealth(100);
+
+						character.setCurrentWater(character.getCurrentWater() + event.getWater());
+						if (character.getCurrentWater() > 100)
+							character.setCurrentWater(100);
+
+						character.setCurrentFood(character.getCurrentFood() + event.getFood());
+						if (character.getCurrentFood() > 100)
+							character.setCurrentFood(100);
 
 						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
 							newCharacter = this.characterService.generateCharacter(refuge.getId());
@@ -352,7 +355,6 @@ public class GatherService {
 						}
 
 					}
-				}
 				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
 				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
 
