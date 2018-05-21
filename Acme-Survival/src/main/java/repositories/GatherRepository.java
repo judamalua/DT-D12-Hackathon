@@ -19,6 +19,9 @@ public interface GatherRepository extends JpaRepository<Gather, Integer> {
 	@Query("select g.character from Gather g where g.endMoment > ?1 and g.character.refuge.id = ?2")
 	Collection<Character> findCharactersInGatheringMission(Date date, int refugeId);
 
+	@Query("select c from Character c where c.refuge.id = ?1 and c not in (select g.character from Gather g where g.character.refuge.id = ?1)")
+	Collection<Character> findCharactersWithoutGatheringMission(int refugeId);
+
 	@Query("select g from Gather g where g.character.id = ?1 and g.endMoment > ?2")
 	Gather findGatherNotFinishedByCharacter(int characterId, Date date);
 

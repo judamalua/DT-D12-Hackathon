@@ -19,6 +19,7 @@ import org.springframework.validation.Validator;
 
 import repositories.NotificationRepository;
 import domain.Attack;
+import domain.Event;
 import domain.Gather;
 import domain.Notification;
 import domain.Player;
@@ -53,11 +54,12 @@ public class NotificationService {
 		Player player;
 
 		result = new Notification();
-		now = new Date();
+		now = new Date(System.currentTimeMillis() - 1000);
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		result.setMoment(now);
 		result.setPlayer(player);
+		result.setEvents(new ArrayList<Event>());
 
 		return result;
 	}

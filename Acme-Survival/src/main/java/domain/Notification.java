@@ -11,8 +11,8 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -102,7 +102,8 @@ public class Notification extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany
+	@ManyToMany
+	@NotNull
 	public Collection<Event> getEvents() {
 		return this.events;
 	}
