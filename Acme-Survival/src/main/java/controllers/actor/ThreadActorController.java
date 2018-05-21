@@ -154,11 +154,13 @@ public class ThreadActorController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Thread thread, final String messageCode) {
 		ModelAndView result;
 		Collection<Forum> forums;
+		Actor actor;
 
 		result = new ModelAndView("thread/edit");
+		actor = this.actorService.findActorByPrincipal();
 
 		if (thread.getForum() != null) {
-			forums = this.forumService.findForums(false);
+			forums = this.forumService.findForums(false, actor);
 			result.addObject("forums", forums);
 		}
 

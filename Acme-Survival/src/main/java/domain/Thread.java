@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
@@ -27,6 +28,7 @@ public class Thread extends DomainEntity {
 	private Collection<String>	tags;
 
 
+	@Length(min = 5, max = 50)
 	@NotBlank
 	@SafeHtml
 	public String getName() {

@@ -13,6 +13,7 @@ package controllers.player;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,45 +74,6 @@ public class RefugePlayerController extends AbstractController {
 	}
 
 	// Listing  ---------------------------------------------------------------		
-
-	/**
-	 * That method returns a model and view with the system refuge list
-	 * 
-	 * @param page
-	 * 
-	 * @return ModelandView
-	 * @author MJ
-	 */
-	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
-		ModelAndView result;
-		Page<Refuge> refuges;
-		Pageable pageable;
-		Refuge refuge;
-		Configuration configuration;
-		Player actor;
-
-		try {
-			result = new ModelAndView("refuge/list");
-			configuration = this.configurationService.findConfiguration();
-			pageable = new PageRequest(page, configuration.getPageSize());
-			actor = (Player) this.actorService.findActorByPrincipal();
-
-			refuges = this.playerService.findKnowRefugesByPlayer(actor.getId(), pageable);
-
-			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
-
-			result.addObject("refuges", refuges.getContent());
-			result.addObject("page", page);
-			result.addObject("hasRefuge", refuge != null);
-			result.addObject("pageNum", refuges.getTotalPages());
-			result.addObject("requestURI", "refuge/player/list.do?");
-
-		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
-		}
-		return result;
-	}
 
 	/**
 	 * That method returns a model and view with the refuge display
@@ -251,6 +213,8 @@ public class RefugePlayerController extends AbstractController {
 				this.refugeService.save(refuge);
 				result = new ModelAndView("redirect:/refuge/player/display.do");
 
+			} catch (final DataIntegrityViolationException oops) {
+				result = this.createEditModelAndView(refuge, "refuge.name.error");
 			} catch (final Throwable oops) {
 				if (oops.getMessage().contains("Not have refuge"))
 					result = new ModelAndView("redirect:/refuge/player/create.do");
