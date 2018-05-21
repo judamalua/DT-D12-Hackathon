@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
@@ -24,9 +25,9 @@ public class Event extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private Map<String, String>  name;
     private Map<String, String>  description;
-	private double	health;
-	private double	water;
-	private double	food;
+	private Integer	health;
+	private Integer	water;
+	private Integer food;
 	private boolean	finalMode;
 	private boolean	findCharacter;
 
@@ -51,27 +52,30 @@ public class Event extends DomainEntity {
 		this.description = description;
 	}
 
-	public double getHealth() {
+	@NotNull
+	public Integer getHealth() {
 		return this.health;
 	}
 
-	public void setHealth(final double health) {
+	public void setHealth(final Integer health) {
 		this.health = health;
 	}
 
-	public double getWater() {
+	@NotNull
+	public Integer getWater() {
 		return this.water;
 	}
 
-	public void setWater(final double water) {
+	public void setWater(final Integer water) {
 		this.water = water;
 	}
 
-	public double getFood() {
+	@NotNull
+	public Integer getFood() {
 		return this.food;
 	}
 
-	public void setFood(final double food) {
+	public void setFood(final Integer food) {
 		this.food = food;
 	}
 
