@@ -34,6 +34,6 @@
 
 	<acme:submit name="save" code="refuge.save" />
 
-	<acme:cancel url="refuge/list.do" code="refuge.cancel" />
+	<acme:cancel url="/" code="refuge.cancel" />
 
 </form:form>

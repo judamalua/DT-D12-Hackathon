@@ -146,14 +146,14 @@ public class ForumActorController extends AbstractController {
 
 		actor = this.actorService.findActorByPrincipal();
 		if (forum.getId() == 0) {
-			forums = this.forumService.findForums(false);
+			forums = this.forumService.findForums(false, actor);
 			if (!(actor instanceof Player))
-				forums.addAll(this.forumService.findForums(true));
+				forums.addAll(this.forumService.findForums(true, actor));
 		} else {
 			if (forum.getStaff() && !(actor instanceof Player))
-				forums = this.forumService.findForums(true);
+				forums = this.forumService.findForums(true, actor);
 			else
-				forums = this.forumService.findForums(false);
+				forums = this.forumService.findForums(false, actor);
 			subForums = this.forumService.findAllSubForums(forum.getId());
 			forums.removeAll(subForums);
 		}

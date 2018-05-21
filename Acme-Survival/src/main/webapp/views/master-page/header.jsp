@@ -33,8 +33,6 @@
 							code="master.page.forum.list" /></a></li>
 				<li><a class="fNiv" href="product/list.do"><spring:message
 							code="master.page.product.list" /></a></li>
-				<li><a href="refuge/list.do"><spring:message
-							code="master.page.refugeList" /></a></li>
 
 				<security:authorize access="hasRole('ADMIN')">
 					<!-- Dropdown Structure -->
@@ -271,8 +269,6 @@
 							code="master.page.forum.list" /></a></li>
 				<li><a class="fNiv" href="product/list.do"><spring:message
 							code="master.page.product.list" /></a></li>
-				<li><a href="refuge/list.do"><spring:message
-							code="master.page.refugeList" /></a></li>
 			</security:authorize>
 		</ul>
 	</div>
