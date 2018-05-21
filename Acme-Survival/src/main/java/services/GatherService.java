@@ -1,6 +1,7 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -386,6 +387,8 @@ public class GatherService {
 				notification.setMission(gatherMission);
 				if (eventsDuringMission.size() != 0)
 					notification.setEvents(eventsDuringMission);
+				else
+					notification.setEvents(new ArrayList<Event>());
 				this.notificationService.save(notification);
 			}
 
