@@ -13,23 +13,18 @@
 <!-- Load objects in javascript -->
 var events = new Array();
 var probabilitiesEvent = new Array();
-var test = "";
 
-<jstl:if test="${true}">
-<%-- var lootTableId = <jstl:out value="${lootTable.probabilityEvents}"></jstl:out>; --%>
-<!-- console.log("--" + lootTableId); -->
-</jstl:if>
-<jstl:forEach items="${lootTable.probabilityEvents}" var="probEvent" varStatus="status">
-test = "aaa" + ${probEvent.event.name[currentLang]};
+
+<jstl:forEach items="${requestScope.lootTable.probabilityEvents}" var="probEvent" varStatus="status">
 events.push("${probEvent.event.name[currentLang]}");
 probabilitiesEvent.push(${probEvent.value});
 </jstl:forEach> 
-console.log("aa-" + test);
+
 
 var items = new Array();
 var probabilitiesItem = new Array();
-<jstl:forEach items="${lootTable.probabilityItems}" var="probItem" varStatus="status">
-items.push("${probItem.event.name[currentLang]}");
+<jstl:forEach items="${requestScope.lootTable.probabilityItems}" var="probItem" varStatus="status">
+items.push("${probItem.itemDesign.name[currentLang]}");
 probabilitiesItem.push(${probItem.value});
 </jstl:forEach> 
 
@@ -60,23 +55,21 @@ console.log(events);
 
 	var data = {};
 	$("#table-item tr").each(function(index, element) {
-	console.log(index + "-e-" + element);
-		if (!element.className.includes("hide") ){
-	    data[$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
+		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+	    data["item" +$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
 		}
 	    // compare id to what you want
 	});
 	
 		$("#table-event tr").each(function(index, element) {
-	console.log(index + "-e-" + element);
-		if (!element.className.includes("hide") ){
-	    data[$(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
+		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+	    data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
 		}
 	    // compare id to what you want
 	});
+	data["name"] = document.getElementById("lootTableName").innerText;
 	data["save"] = ""; //Needed for spring save
-	console.log("${lootTable}");
-	redirectPost("lootTable/designer/edit.do?tableId=${lootTableId}", data);
+	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
 
 
   });
@@ -88,23 +81,24 @@ $('#table-add-event').click(function () {
 	
   var $clone = $TABLEEVENT.find('tr.hide').clone(true).removeClass('hide table-line');
   $clone.children('#clone1').attr("id","eventTable" + eventsCount).attr("onclick","eventSelector(" + eventsCount+ ")");
+  $clone.children('#clone3').attr("id","IdEventTable" + eventsCount);
   $TABLEEVENT.find('table').append($clone);
   eventSelector(eventsCount);
   eventsCount++;
 });
 
-$('#table-remove-event').click(function () {
+$('.table-remove-event').click(function () {
   $(this).parents('tr').detach();
   eventsCount--;
 });
 
-$('#table-up-event').click(function () {
+$('.table-up-event').click(function () {
   var $row = $(this).parents('tr');
   if ($row.index() === 1) return; // Don't go above the header
   $row.prev().before($row.get(0));
 });
 
-$('#table-down-event').click(function () {
+$('.table-down-event').click(function () {
   var $row = $(this).parents('tr');
   $row.next().after($row.get(0));
 });
@@ -119,23 +113,24 @@ $('#table-add-item').click(function () {
   var $clone = $TABLEITEM.find('tr.hide').clone(true).removeClass('hide table-line');
   $clone.children('#clone1').attr("id","itemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
   $clone.children('#clone2').attr("id","imgItemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
+  $clone.children('#clone3').attr("id","IdItemTable" + itemsCount);
   $TABLEITEM.find('table').append($clone);
   itemSelector(itemsCount);
   itemsCount++;
 });
 
-$('#table-remove-item').click(function () {
+$('.table-remove-item').click(function () {
   $(this).parents('tr').detach();
   itemsCount--;
 });
 
-$('#table-up-item').click(function () {
+$('.table-up-item').click(function () {
   var $row = $(this).parents('tr');
   if ($row.index() === 1) return; // Don't go above the header
   $row.prev().before($row.get(0));
 });
 
-$('#table-down-item').click(function () {
+$('.table-down-item').click(function () {
   var $row = $(this).parents('tr');
   $row.next().after($row.get(0));
 });
@@ -152,10 +147,11 @@ function eventSelector(id){
 	   currentEvent = id;
 };
 
-function selectEvent(name){
+function selectEvent(name, id){
 	$('#modalEventSelector').modal('close');
+	$('#IdEventTable' + currentEvent)[0].innerHTML = id;
 	$('#eventTable' + currentEvent)[0].innerHTML = name;
-}
+};
 
 var currentItem=0;
 function itemSelector(id){
@@ -164,8 +160,9 @@ function itemSelector(id){
 	   currentItem = id;
 };
 
-function selectItem(name,image){
+function selectItem(name,image, id){
 	$('#modalItemSelector').modal('close');
+	$('#IdItemTable' + currentItem)[0].innerHTML = id;
 	$('#itemTable' + currentItem)[0].innerHTML = name;
 	$('#imgItemTable' + currentItem)[0].innerHTML = "<img src='"+ image + "' style='width: 32px'>"
 	

@@ -683,9 +683,9 @@
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="0.40" />
-		<property name="water" value="0.40" />
-		<property name="food" value="0.40" />
+		<property name="health" value="7" />
+		<property name="water" value="7" />
+		<property name="food" value="7" />
 		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
@@ -723,9 +723,9 @@
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="0.35" />
-		<property name="water" value="0.70" />
-		<property name="food" value="0.10" />
+		<property name="health" value="5" />
+		<property name="water" value="7" />
+		<property name="food" value="1" />
 		<property name="finalMode" value="false" />
 		<property name="findCharacter" value="false" />
 	</bean>
@@ -763,9 +763,9 @@
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="0.20" />
+		<property name="health" value="20" />
 		<property name="water" value="1" />
-		<property name="food" value="0.80" />
+		<property name="food" value="8" />
 		<property name="finalMode" value="false" />
 		<property name="findCharacter" value="false" />
 	</bean>

@@ -93,8 +93,13 @@ public class ProbabilityEventService {
 	public void deleteAll(final Collection<ProbabilityEvent> probabilityEvents) {
 
 		assert probabilityEvents != null;
-
+		
 		this.probabilityEventRepository.delete(probabilityEvents);
+
+	}
+	
+	public void flush() {
+		this.probabilityEventRepository.flush();
 
 	}
 }

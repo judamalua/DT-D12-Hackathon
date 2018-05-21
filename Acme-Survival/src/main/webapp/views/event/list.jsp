@@ -26,8 +26,8 @@
 	<spring:message code="event.name" var="name" />
 	<spring:message code="event.description" var="description" />
 	
-	<display:column property="name[currentLang]" title="name" sortable="false" />
-	<display:column property="description[currentLang]" title="description" sortable="false" />
+<display:column title="${name}" sortable="false"><jstl:out value="${event.name[currentLang]}"/></display:column>
+	<display:column title="${description}" sortable="false"><jstl:out value="${event.description[currentLang]}"/></display:column>
 	
 
 </display:table>

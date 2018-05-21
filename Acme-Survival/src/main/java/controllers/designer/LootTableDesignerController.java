@@ -10,6 +10,7 @@
 
 package controllers.designer;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -176,16 +177,23 @@ public class LootTableDesignerController extends AbstractController {
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView updateLootTable(@RequestParam Integer tableId, @RequestParam Map<String,String> allRequestParams, ModelMap model) {
+		LootTable lootTable;
+		if (tableId != 0){
+		 lootTable = lootTableService.findOne(tableId);
+		}else{
+			lootTable = lootTableService.create();
+		}
 		
-		LootTable lootTable = lootTableService.findOne(tableId);
 		
 		BindingResult binding = null;
 		ModelAndView result;
+		try {
 		if (lootTable != null){
 		lootTable = this.lootTableService.reconstruct(lootTable, binding);
 		allRequestParams.remove("save");
-		Collection<ProbabilityItem> probItems = new HashSet<ProbabilityItem>();
-		Collection<ProbabilityEvent> probEvents = new HashSet<ProbabilityEvent>();
+		List<ProbabilityItem> probItems = new ArrayList<ProbabilityItem>();
+		List<ProbabilityEvent> probEvents = new ArrayList<ProbabilityEvent>();
+		lootTable.setName(allRequestParams.get("name"));
 		for (Entry<String, String> entry : allRequestParams.entrySet()){
 			if (entry.getKey().contains("item")){
 				ItemDesign item = itemDesignService.findOne(Integer.parseInt(entry.getKey().replaceFirst("item", "")));
@@ -203,12 +211,24 @@ public class LootTableDesignerController extends AbstractController {
 				probEvents.add(pEvent);
 			}
 		}
-		probabilityItemService.deleteAll(lootTable.getProbabilityItems());
-		probabilityEventService.deleteAll(lootTable.getProbabilityEvents());
-		probabilityEventService.saveAll(probEvents);
-		probabilityItemService.saveAll(probItems);
+		Collection<ProbabilityItem> delItems = new HashSet<ProbabilityItem>(lootTable.getProbabilityItems());
+		Collection<ProbabilityEvent> delEvents = new HashSet<ProbabilityEvent>(lootTable.getProbabilityEvents());
+		lootTable.getProbabilityEvents().clear();
+		lootTable.getProbabilityItems().clear();
 		lootTable.setProbabilityEvents(probEvents);
 		lootTable.setProbabilityItems(probItems);
+		probabilityEventService.saveAll(probEvents);
+		probabilityItemService.saveAll(probItems);
+		probabilityItemService.deleteAll(delItems);
+		probabilityEventService.deleteAll(delEvents);
+		this.lootTableService.save(lootTable);
+//		probabilityEventService.saveAll(delEvents);
+//		probabilityItemService.saveAll(delItems);
+		
+		
+
+
+		result = new ModelAndView("redirect:/lootTable/designer/list.do");
 		
 		}
 		else{
@@ -217,9 +237,9 @@ public class LootTableDesignerController extends AbstractController {
 //		if (binding.hasErrors())
 //			result = this.createEditModelAndView(lootTable, "lootTable.params.error");
 //		else
-			try {
-				this.lootTableService.save(lootTable);
-				result = new ModelAndView("redirect:/lootTable/designer/list.do");
+			
+				
+				
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(lootTable, "lootTable.commit.error");
 			}
