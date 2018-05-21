@@ -98,5 +98,10 @@ public class ProbabilityItemService {
 		this.probabilityItemRepository.delete(probabilityItems);
 
 	}
+	
+	public void flush() {
+		this.probabilityItemRepository.flush();
+
+	}
 }
 

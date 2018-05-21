@@ -14,18 +14,18 @@
 
 <spring:message code="master.page.current.lang" var="currentLang" />
 
-<acme:pagination requestURI="item/player/armory?page="
+<acme:pagination requestURI="item/player/armory.do?page="
 	pageNum="${pageNum}" page="${page}" />
 
 <display:table name="items" id="item"
-	requestURI="${requestURI}" class="displaytag">
+	requestURI="item/player/armory.do" class="displaytag">
 
 	<display:column>
 		<img class="forumImg" src="${item.tool.imageUrl}" />
 	</display:column>
 
 <spring:message code="item.name" var="nameTitle" />
-	<display:column title="${nameTitle}">
+	<display:column sortable = "true" title="${nameTitle}">
 		<jstl:out value="${item.tool.name[currentLang]}" />
 	</display:column>
 
@@ -35,13 +35,13 @@
 	</display:column>
 	
 	<spring:message code="tool.strength" var="strengthTitle" />
-	<display:column title="${strengthTitle}" property="tool.strength" />
+	<display:column  sortable = "true" title="${strengthTitle}" property="tool.strength" />
 
 	<spring:message code="tool.luck" var="luckTitle" />
-	<display:column title="${luckTitle}" property="tool.luck" />
+	<display:column sortable = "true" title="${luckTitle}" property="tool.luck" />
 
 	<spring:message code="tool.capacity" var="capacityTitle" />
-	<display:column title="${strengthTitle}" property="tool.capacity" />
+	<display:column sortable = "true" title="${strengthTitle}" property="tool.capacity" />
 	
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">

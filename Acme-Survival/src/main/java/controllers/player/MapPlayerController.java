@@ -2,6 +2,7 @@
 package controllers.player;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -17,9 +18,13 @@ import services.AttackService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.LocationService;
+import services.MoveService;
 import services.RefugeService;
 import domain.Actor;
+import domain.Attack;
+import domain.Gather;
 import domain.Location;
+import domain.Move;
 import domain.Player;
 import domain.Refuge;
 
@@ -45,6 +50,9 @@ public class MapPlayerController {
 
 	@Autowired
 	private GatherService			gatherService;
+
+	@Autowired
+	private MoveService				moveService;
 
 
 	// Map display -----------------------------------------------------------
@@ -157,28 +165,49 @@ public class MapPlayerController {
 			json.put("onGoingGathers", onGoingGathers);
 			final JSONObject onGoingAttack = this.getOnGoingAttack();
 			json.put("onGoingAttack", onGoingAttack);
+			final JSONObject onGoingMove = this.getOnGoingMove();
+			json.put("onGoingMove", onGoingMove);
 			result = json.toString();
 		} catch (final Throwable e) {
 			result = e.getMessage();
 		}
 		return result;
 	}
-
 	// get Methods ----------------------------------
 
+	private JSONObject getOnGoingMove() {
+		final JSONObject result = new JSONObject();
+		final Move move = this.moveService.findCurrentMoveByRefuge(this.refugeService.findRefugeByPlayer(this.actorService.findActorByPrincipal().getId()).getId());
+		if (move != null) {
+			result.put("endMoment", move.getEndDate().getTime() - new Date().getTime());
+			result.put("location", this.makeLocation(move.getLocation()));
+		}
+		return result;
+	}
 	private JSONObject getOnGoingAttack() {
 		final JSONObject result = new JSONObject();
-		//Attack attack = this.attackService.findAllAttacksByPlayer(refugeId, pageable)
-		// TODO Finish this
+		final Attack attack = this.attackService.findAttackByPlayer(this.actorService.findActorByPrincipal().getId());
+		if (attack != null) {
+			result.put("endMoment", attack.getEndMoment().getTime() - new Date().getTime());
+			result.put("refuge", this.makeRefuge(attack.getDefendant()));
+		}
 		return result;
 	}
-
 	private JSONArray getOnGoingGathers() {
 		final JSONArray result = new JSONArray();
-		// TODO Finish this too
+		final Collection<Gather> gathers = this.gatherService.findAllGathersOfPlayer(this.actorService.findActorByPrincipal().getId());
+		for (final Gather gather : gathers) {
+			final JSONObject jsonGather = new JSONObject();
+			final JSONObject jsonCharacter = new JSONObject();
+			jsonCharacter.put("fullName", gather.getCharacter().getFullName());
+			jsonCharacter.put("isMale", gather.getCharacter().getMale());
+			jsonCharacter.put("id", gather.getCharacter().getId());
+			jsonGather.put("character", jsonCharacter);
+			jsonGather.put("location", this.makeLocation(gather.getLocation()));
+			jsonGather.put("endMoment", gather.getEndMoment().getTime() - new Date().getTime());
+		}
 		return result;
 	}
-
 	private JSONArray getLocations() {
 		final JSONArray result = new JSONArray();
 		final Collection<Location> locations = this.locationService.findAllLocationsByFinal();

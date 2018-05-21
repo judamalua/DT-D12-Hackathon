@@ -78,7 +78,7 @@ public class AttackPlayerController extends AbstractController {
 	public ModelAndView saveAttackToRefuge(@ModelAttribute("attack") Attack attack, final BindingResult binding) {
 		ModelAndView result;
 		Move move;
-		Player player;
+		final Player player;
 		Refuge refuge;
 
 		try {
@@ -89,19 +89,20 @@ public class AttackPlayerController extends AbstractController {
 			result = new ModelAndView("redirect:/misc/403");
 		else
 			try {
+
 				player = (Player) this.actorService.findActorByPrincipal();
 				refuge = this.refugeService.findRefugeByPlayer(player.getId());
 				move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
 				Assert.isTrue(move == null);
 
-				this.attackService.save(attack);
+				this.attackService.saveToAttack(attack);
+
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");
 			}
 		return result;
 	}
-
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(final int attackId) {
 		ModelAndView result;

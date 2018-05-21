@@ -195,6 +195,9 @@
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
 		<property name="woodFactorSteal" value="0.25" />
+		<property name="foodLostGatherFactor" value="2" />
+		<property name="waterLostGatherFactor" value="1" />
+		<property name="experiencePerMinute" value="20" />
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
@@ -461,6 +464,15 @@
 		<property name="capacity" value="100" />
 		<property name="refuge" ref="Refuge1" />
 	</bean>
+	
+	<bean id="Inventory2" class="domain.Inventory">
+		<property name="water" value="20" />
+		<property name="food" value="20" />
+		<property name="wood" value="20" />
+		<property name="metal" value="20" />
+		<property name="capacity" value="100" />
+		<property name="refuge" ref="Refuge2" />
+	</bean>
 
 	<!-- %%%%%% domain.Location %%%%%% -->
 	<bean id="Location1" class="domain.Location">
@@ -667,14 +679,14 @@
 					<key>
 						<value>es</value>
 					</key>
-					<value>Descripcion sobre el evento ded la villa</value>
+					<value>Descripcion sobre el evento de la villa</value>
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="0.40" />
-		<property name="water" value="0.40" />
-		<property name="food" value="0.40" />
-		<property name="finalMode" value="false" />
+		<property name="health" value="7" />
+		<property name="water" value="7" />
+		<property name="food" value="7" />
+		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
 
@@ -711,9 +723,9 @@
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="0.35" />
-		<property name="water" value="0.70" />
-		<property name="food" value="0.10" />
+		<property name="health" value="5" />
+		<property name="water" value="7" />
+		<property name="food" value="1" />
 		<property name="finalMode" value="false" />
 		<property name="findCharacter" value="false" />
 	</bean>
@@ -751,9 +763,9 @@
 				</entry>
 			</map>
 		</property>
-		<property name="health" value="0.20" />
+		<property name="health" value="20" />
 		<property name="water" value="1" />
-		<property name="food" value="0.80" />
+		<property name="food" value="8" />
 		<property name="finalMode" value="false" />
 		<property name="findCharacter" value="false" />
 	</bean>

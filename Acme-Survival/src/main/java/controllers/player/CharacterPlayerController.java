@@ -176,7 +176,7 @@ public class CharacterPlayerController extends AbstractController {
 			if (roomId != null) {
 				room = this.roomService.findOne(roomId);
 				numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
-				Assert.isTrue(numCharacter > room.getRoomDesign().getMaxResistance());
+				Assert.isTrue(numCharacter < room.getRoomDesign().getMaxCapacityCharacters());
 				character.setRoomEntrance(new Date(System.currentTimeMillis() - 1));
 			} else {
 				room = null;

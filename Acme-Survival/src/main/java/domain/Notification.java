@@ -1,6 +1,7 @@
 
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -74,8 +76,9 @@ public class Notification extends DomainEntity {
 
 	// Relationships -------------------------------------------------------------
 
-	private Player	player;
-	private Mission	mission;
+	private Player				player;
+	private Mission				mission;
+	private Collection<Event>	events;
 
 
 	@NotNull
@@ -96,6 +99,16 @@ public class Notification extends DomainEntity {
 
 	public void setMission(final Mission mission) {
 		this.mission = mission;
+	}
+
+	@Valid
+	@OneToMany
+	public Collection<Event> getEvents() {
+		return this.events;
+	}
+
+	public void setEvents(final Collection<Event> events) {
+		this.events = events;
 	}
 
 }

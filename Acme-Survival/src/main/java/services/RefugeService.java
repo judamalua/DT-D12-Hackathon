@@ -446,6 +446,25 @@ public class RefugeService {
 
 	}
 
+	public Integer getCurrentCharacterCapacity(final Refuge refuge) {
+		Collection<Room> rooms;
+		Collection<domain.Character> characters;
+		int capacity = 0;
+
+		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
+		characters = this.characterService.findCharactersByRefuge(refuge.getId());
+
+		for (final Room r : rooms)
+			if (r.getRoomDesign() instanceof Barrack) {
+				final Barrack barrack = (Barrack) r.getRoomDesign();
+				capacity += barrack.getCharacterCapacity();
+			}
+		capacity -= characters.size();
+
+		return capacity;
+
+	}
+
 	private Double getInventoryCapacity(final Inventory inventory) {
 		Double result;
 		Double currentSize;
