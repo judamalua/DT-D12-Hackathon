@@ -33,6 +33,7 @@ public class Notification extends DomainEntity {
 	private Map<String, String>	title;
 	private Map<String, String>	body;
 	private Date				moment;
+	private Integer				characterId;
 
 
 	@NotNull
@@ -73,12 +74,21 @@ public class Notification extends DomainEntity {
 		this.moment = moment;
 	}
 
+	public Integer getCharacterId() {
+		return this.characterId;
+	}
+
+	public void setCharacterId(final Integer characterId) {
+		this.characterId = characterId;
+	}
+
 
 	// Relationships -------------------------------------------------------------
 
-	private Player				player;
-	private Mission				mission;
-	private Collection<Event>	events;
+	private Player					player;
+	private Mission					mission;
+	private Collection<Event>		events;
+	private Collection<ItemDesign>	itemDesigns;
 
 
 	@NotNull
@@ -110,6 +120,17 @@ public class Notification extends DomainEntity {
 
 	public void setEvents(final Collection<Event> events) {
 		this.events = events;
+	}
+
+	@Valid
+	@ManyToMany
+	@NotNull
+	public Collection<ItemDesign> getItemDesigns() {
+		return this.itemDesigns;
+	}
+
+	public void setItemDesigns(final Collection<ItemDesign> itemDesigns) {
+		this.itemDesigns = itemDesigns;
 	}
 
 }

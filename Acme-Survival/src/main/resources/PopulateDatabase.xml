@@ -419,7 +419,7 @@
 		<property name="capacity" value="12" />
 		<property name="luck" value="7" />
 		<property name="strength" value="11" />
-		<property name="currentHealth" value="100" />
+		<property name="currentHealth" value="50" />
 		<property name="currentWater" value="100" />
 		<property name="currentFood" value="100" />
 		<property name="fullName" value="Rob Stark" />

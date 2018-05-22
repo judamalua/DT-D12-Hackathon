@@ -21,6 +21,7 @@ import repositories.NotificationRepository;
 import domain.Attack;
 import domain.Event;
 import domain.Gather;
+import domain.ItemDesign;
 import domain.Notification;
 import domain.Player;
 
@@ -58,8 +59,10 @@ public class NotificationService {
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		result.setMoment(now);
+		result.setCharacterId(null);
 		result.setPlayer(player);
 		result.setEvents(new ArrayList<Event>());
+		result.setItemDesigns(new ArrayList<ItemDesign>());
 
 		return result;
 	}

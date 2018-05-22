@@ -738,7 +738,7 @@ function widgToolbar(theEditor) {
 				break;
 
 			case "hyperlink":
-				this.addButton(this.theList.id + "ButtonLink", "widgButtonLink", widgEditorTranslation.link[language], "link");
+				this.addButton(this.theList.id + "ButtonLink", "widgButtonLink", widgEditorTranslation.hyperlink[language], "link");
 				break;
 
 			case "unorderedlist":
