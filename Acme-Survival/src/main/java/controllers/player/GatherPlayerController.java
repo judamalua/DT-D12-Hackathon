@@ -33,6 +33,7 @@ import domain.Inventory;
 import domain.Item;
 import domain.ItemDesign;
 import domain.Move;
+import domain.Notification;
 import domain.Player;
 import domain.Refuge;
 import domain.Resource;
@@ -164,7 +165,7 @@ public class GatherPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/foundItems")
-	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int gatherId) {
+	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int notificationId) {
 		ModelAndView result;
 		Collection<ItemDesign> items;
 		Refuge refuge;
@@ -175,15 +176,16 @@ public class GatherPlayerController extends AbstractController {
 		Player player;
 		Inventory inventory;
 		boolean fullCapacityRefuge = false;
+		final Notification notification;
 
 		try {
 
+			notification = this.notificationService.findOne(notificationId);
 			result = new ModelAndView("gather/foundItems");
-			gather = this.gatherService.findOne(gatherId);
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
-			items = gather.getLocation().getLootTable().getResultItems(gather.getCharacter().getLuck(), gather.getCharacter().getCapacity());
+			items = notification.getItemDesigns();
 
 			for (final ItemDesign itemDesign : items)
 				if (itemDesign instanceof Tool) {
