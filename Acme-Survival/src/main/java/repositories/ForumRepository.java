@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import domain.Actor;
 import domain.Forum;
 
 @Repository
@@ -25,6 +24,6 @@ public interface ForumRepository extends JpaRepository<Forum, Integer> {
 	Page<Forum> findForums(Boolean staff, Pageable pageable);
 
 	@Query("select f from Forum f where f.staff=?1 and f.owner.id=?2")
-	Collection<Forum> findForums(Boolean staff, Actor owner);
+	Collection<Forum> findForums(Boolean staff, Integer ownerId);
 
 }

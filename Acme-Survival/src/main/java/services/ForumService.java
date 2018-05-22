@@ -247,7 +247,7 @@ public class ForumService {
 	public Collection<Forum> findForums(final Boolean staff, final Actor owner) {
 		Collection<Forum> result;
 
-		result = this.forumRepository.findForums(staff, owner);
+		result = this.forumRepository.findForums(staff, owner.getId());
 
 		return result;
 	}
