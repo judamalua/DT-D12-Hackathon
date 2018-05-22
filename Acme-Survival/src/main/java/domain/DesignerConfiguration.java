@@ -41,6 +41,8 @@ public class DesignerConfiguration extends DomainEntity {
 	private Double	maxInventoryWood;
 	private Double	maxInventoryMetal;
 	private Integer	numInitialCharacters;
+	private Double	refugeFindingProbability;
+	private Integer	refugeFindingMinuteAugmentProbability;
 
 
 	public double getMovingWood() {
@@ -267,6 +269,26 @@ public class DesignerConfiguration extends DomainEntity {
 
 	public void setNumInitialCharacters(final Integer numInitialCharacters) {
 		this.numInitialCharacters = numInitialCharacters;
+	}
+
+	@Range(min = 0L, max = 1L)
+	@NotNull
+	public Double getRefugeFindingProbability() {
+		return this.refugeFindingProbability;
+	}
+
+	public void setRefugeFindingProbability(final Double refugeFindingProbability) {
+		this.refugeFindingProbability = refugeFindingProbability;
+	}
+
+	@Min(1)
+	@NotNull
+	public Integer getRefugeFindingMinuteAugmentProbability() {
+		return this.refugeFindingMinuteAugmentProbability;
+	}
+
+	public void setRefugeFindingMinuteAugmentProbability(final Integer refugeFindingMinuteAugmentProbability) {
+		this.refugeFindingMinuteAugmentProbability = refugeFindingMinuteAugmentProbability;
 	}
 
 	// Relationships ----------------------------------------------------------

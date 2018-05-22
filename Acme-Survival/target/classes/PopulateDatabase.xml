@@ -208,6 +208,9 @@
 		<property name="maxInventoryWood" value="20" />
 		<property name="maxInventoryMetal" value="20" />
 		<property name="numInitialCharacters" value="3" />
+		<property name="refugeFindingProbability" value="0.1" />
+		<property name="refugeFindingMinuteAugmentProbability" value="90" />
+		
 	</bean>
 
 	<!-- %%%% Payers %%%% -->

@@ -110,12 +110,17 @@
       	<br/>
       	<spring:message code = "notification.modal.event.health"/> <jstl:out value="${event.health}"/>, <spring:message code = "notification.modal.event.food"/> <jstl:out value="${event.food}"/> <spring:message code = "notification.modal.event.water"/> <jstl:out value="${event.water}"/>
       	<jstl:if test="${event.findCharacter}">
+      	<br/>
       		<spring:message code = "notification.modal.event.findChar"/>
       	</jstl:if>
       </jstl:forEach>
       </jstl:if>
        <jstl:if test="${fn:length(notification.events) eq 0}">
        	<spring:message code = "notification.modal.event.noEvent"/>
+       </jstl:if>
+       <jstl:if test="${notification.foundRefuge}">
+       <br/>
+       <spring:message code = "notification.modal.foundRefuge"/>
        </jstl:if>
     </div>
     <div class="modal-footer">
