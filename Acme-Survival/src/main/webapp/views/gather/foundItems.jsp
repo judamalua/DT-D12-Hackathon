@@ -76,28 +76,48 @@ function save(){
 }
 </script>
 
-<div id="div3">
-<h1><spring:message code="founditems"></spring:message></h1>
-<jstl:forEach items="${items}" var="item" >
-<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
- width="75" height="75">
-</jstl:forEach>
-</div>
-
+<h4><spring:message code="foundresources"></spring:message></h4>
 <div id="div4">
-<h1><spring:message code="foundresources"></spring:message></h1>
 <jstl:forEach items="${resources}" var="resource" >
 <img name="${resource.id}" class="img" id="${resource.id}" style ="float:left;"src="${resource.imageUrl}" 
  width="75" height="75">
 </jstl:forEach>
 </div>
+<br>
+
+<jstl:if test="${currentCapacityRefuge>totalTools}">
+<h4><spring:message code="founditems"></spring:message></h4>
+<div id="div3">
+<jstl:forEach items="${items}" var="item" >
+<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
+ width="75" height="75">
+</jstl:forEach>
+</div>
+</jstl:if>
+
+
+<jstl:if test="${currentCapacityRefuge<totalTools && currentCapacityRefuge == 0}">
+
+
+<h4><spring:message code="founditems"></spring:message></h4>
+<spring:message code="mission.descartedItems"></spring:message>
+<div id="div3">
+<jstl:forEach items="${items}" var="item" >
+<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
+ width="75" height="75">
+</jstl:forEach>
+</div>
+</jstl:if>
 
 
 
 
-<jstl:if test="${fullCapacityRefuge}">
+<jstl:if test="${currentCapacityRefuge<totalTools && currentCapacityRefuge>0}">
 <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
 <jstl:forEach items="${items}" var="item" >
+<spring:message code="item.message1"></spring:message>
+<spring:message code="item.message2">${currentCapacity}</spring:message>
+<spring:message code="item.message3"></spring:message>
 <img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
 draggable="true" ondragstart="drag(event)" width="75" height="75">
 
@@ -108,5 +128,7 @@ draggable="true" ondragstart="drag(event)" width="75" height="75">
 </div>
 
 
-<button class="btn"onclick="save();">Go</button>
+
 </jstl:if>	
+<br>
+<button class="btn"onclick="save();"><spring:message code="mission.finish"></spring:message></button>

@@ -68,7 +68,7 @@ public class GatherService {
 	// Simple CRUD methods --------------------------------------------------
 
 	//Recoleccion: controlador que reciba una location y redirigir a una vista que seleccione el personaje con un select (este no debe estar en una mision de recoleccion ya).
-	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado mï¿½s de lo que puede llevar en la capacidad, tiene que decidir quï¿½ materias tirar y cuales quedarse.
+	//Cuando llegue de la mision, mostrar lo que ha ganado. Si ha ganado más de lo que puede llevar en la capacidad, tiene que decidir qué materias tirar y cuales quedarse.
 
 	public Gather create(final int locationId) {
 		Gather result;
@@ -317,7 +317,7 @@ public class GatherService {
 		DesignerConfiguration designerConfiguration;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
-		titleNotification.put("es", "ï¿½Misiï¿½n de recolecciï¿½n finalizada!");
+		titleNotification.put("es", "¡Misión de recolección finalizada!");
 		final Map<String, String> bodyNotification = new HashMap<String, String>();
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 		Character newCharacter;
@@ -338,30 +338,11 @@ public class GatherService {
 				itemsDuringMission = gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
 
 				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
-				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misiï¿½n de recolecciï¿½n en \"" + gatherMission.getLocation().getName().get("es") + "\", ï¿½puede que tengas nuevos objetos en tu refugio!");
+				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
 
 				//this.delete(gatherMission); //TODO
 
 				character.setCurrentlyInGatheringMission(false);
-
-				if (eventsDuringMission.size() != 0) {
-					currentHealth = character.getCurrentHealth();
-					currentWater = character.getCurrentWater();
-					currentFood = character.getCurrentFood();
-
-					for (final Event event : eventsDuringMission) {
-						character.setCurrentHealth(currentHealth - (int) (currentHealth * event.getHealth()));//TODO
-						character.setCurrentWater(currentWater - (int) (currentWater * event.getWater()));
-						character.setCurrentFood(currentFood - (int) (currentFood * event.getFood()));
-
-						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
-							newCharacter = this.characterService.generateCharacter(refuge.getId());
-							this.characterService.save(newCharacter);
-						}
-
-					}
-				}
-
 				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
 				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
 
