@@ -39,10 +39,47 @@
 	<jstl:out value="${formatNotificationMoment}"/>
 </p>
 <br/>
+
+<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
 <p>
 	<jstl:out value="${notification.body[currentLang]}" />
 </p>
+</jstl:if>
 
+<jstl:if test="${(notification.mission[\"class\"].simpleName != \"Gather\")}">
+	<p>
+		<jstl:out value="${notificationMessage}" />
+	</p>
+	<div class="inventory">
+	<div class="inventoryElm">
+		<i class="material-icons">local_pizza</i>
+		<spring:message code="inventory.food" />
+		:
+		<jstl:out value="${notificationFood}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">local_drink</i>
+		<spring:message code="inventory.water" />
+		:
+		<jstl:out value="${notificationWater}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">toys</i>
+		<spring:message code="inventory.metal" />
+		:
+		<jstl:out value="${notificationMetal}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">spa</i>
+		<spring:message code="inventory.wood" />
+		:
+		<jstl:out value="${notificationWood}" />
+	</div>
+</div>
+	
+<br/>
+<br/>
+</jstl:if>
 <jstl:if test="${attackId != null}">
 	<acme:button url="attack/player/delete.do?attackId=${attackId}" code="notification.finish.result"/>
 </jstl:if>

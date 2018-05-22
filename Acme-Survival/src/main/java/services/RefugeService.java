@@ -71,9 +71,6 @@ public class RefugeService {
 	private RoomService						roomService;
 
 	@Autowired
-	private BarrackService					barrackService;
-
-	@Autowired
 	private LocationService					locationService;
 
 	@Autowired
@@ -330,27 +327,8 @@ public class RefugeService {
 		for (int i = 0; i < 10; i++) {
 			result += alphabet.charAt(random.nextInt(alphabet.length()));
 		}
-
 		return result;
 	}
-
-	private Collection<Room> createInitialRooms() {
-		final Collection<Room> result;
-		Room barrackRoom;
-		final Barrack barrack;
-
-		result = new HashSet<>();
-		barrack = (Barrack) this.barrackService.findAll().toArray()[0];
-
-		barrackRoom = this.roomService.create();
-		barrackRoom.setResistance(10);//Poner en config
-		barrackRoom.setRoomDesign(barrack);
-
-		result.add(barrackRoom);
-
-		return result;
-	}
-
 	public Refuge findRefugeByPlayer(final int playerId) {
 		Refuge result;
 
@@ -492,8 +470,7 @@ public class RefugeService {
 
 		Inventory inventory, result;
 		Collection<Room> resourceRooms;
-		Double inventoryCapacity;
-		Integer hours;
+		Integer minutes;
 		long difference;
 		Date currentDate;
 
@@ -504,45 +481,39 @@ public class RefugeService {
 		result = inventory;
 
 		if (resourceRooms.size() > 0 && refuge.getLastView() != null) {
-			inventoryCapacity = this.getInventoryCapacity(inventory);
 
 			currentDate = new Date();
 
 			difference = currentDate.getTime() - refuge.getLastView().getTime();
 
-			hours = (int) TimeUnit.MILLISECONDS.toHours(difference);
+			minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
 
 			for (final Room room : resourceRooms) {
-				if ((inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getFood()) < inventory.getFoodCapacity()) {
-					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * hours);
-					inventoryCapacity = this.getInventoryCapacity(inventory);
+				if ((((ResourceRoom) room.getRoomDesign()).getFood() + inventory.getFood()) < inventory.getFoodCapacity()) {
+					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * minutes);
 				} else {
-					break;
+					inventory.setFood(inventory.getFoodCapacity());
 				}
 
-				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWater() < inventory.getWaterCapacity()) {
-					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * hours);
-					inventoryCapacity = this.getInventoryCapacity(inventory);
+				if ((((ResourceRoom) room.getRoomDesign()).getWater() + inventory.getWater()) < inventory.getWaterCapacity()) {
+					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * minutes);
 				} else {
-					break;
+					inventory.setWater(inventory.getWaterCapacity());
+				}
+				if ((((ResourceRoom) room.getRoomDesign()).getWood() + inventory.getWood()) < inventory.getWoodCapacity()) {
+					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * minutes);
+				} else {
+					inventory.setWood(inventory.getWoodCapacity());
 				}
 
-				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWood() < inventory.getWood()) {
-					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * hours);
-					inventoryCapacity = this.getInventoryCapacity(inventory);
+				if ((((ResourceRoom) room.getRoomDesign()).getMetal() + inventory.getMetal()) < inventory.getMetalCapacity()) {
+					inventory.setMetal(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * minutes);
 				} else {
-					break;
-				}
-
-				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getMetal() < inventory.getMetalCapacity()) {
-					inventory.setWood(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * hours);
-					inventoryCapacity = this.getInventoryCapacity(inventory);
-				} else {
-					break;
+					inventory.setMetal(inventory.getMetalCapacity());
 				}
 			}
 			result = this.inventoryService.save(inventory);
-			if (hours > 0) {
+			if (minutes > 0) {
 				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 			}
 		} else {
@@ -551,7 +522,6 @@ public class RefugeService {
 
 		return result;
 	}
-
 	private Refuge updateLocation(final Refuge refuge) {
 
 		Move move;

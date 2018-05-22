@@ -230,6 +230,8 @@
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/character/player/move.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/inventory/player/**"
+			access="hasRole('PLAYER')" requires-channel="https" />
 
 
 		<security:intercept-url pattern="/**"
