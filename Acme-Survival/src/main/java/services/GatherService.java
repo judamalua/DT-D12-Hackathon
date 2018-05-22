@@ -357,12 +357,13 @@ public class GatherService {
 					character.setCurrentFood(0);
 					character.setCurrentWater(0);
 
-					character.setCurrentHealth((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) - character.getCurrentFood() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+					character.setCurrentHealth(character.getCurrentHealth() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor())
+						- character.getCurrentFood());
 				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) > character.getCurrentWater()) {
 					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
 					character.setCurrentWater(0);
 
-					character.setCurrentHealth((missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
+					character.setCurrentHealth(character.getCurrentHealth() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) - character.getCurrentWater());
 				} else if ((missionMinutes / designerConfiguration.getFoodLostGatherFactor()) < character.getCurrentFood() && (missionMinutes / designerConfiguration.getWaterLostGatherFactor()) < character.getCurrentWater()) {
 					character.setCurrentFood(character.getCurrentFood() - (missionMinutes / designerConfiguration.getFoodLostGatherFactor()));
 					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
