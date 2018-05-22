@@ -238,12 +238,12 @@ public class NotificationService {
 
 		result = new HashMap<String, String>();
 		resources = this.attackService.getResourcesOfAttack(attack);
-		resourcesStolen = this.attackService.getCollectionResourcesOfAttack(resources);
 
 		if (resources <= 0) {
 			bodyEs = "El atacante no condiguió robar ningún recurso.";
 			bodyEn = "The attacker didn't steal any resources.";
 		} else {
+			resourcesStolen = this.attackService.calculateResourcesToSteal(attack, resources);
 			waterStolen = resourcesStolen.get(0);
 			foodStolen = resourcesStolen.get(1);
 			metalStolen = resourcesStolen.get(2);

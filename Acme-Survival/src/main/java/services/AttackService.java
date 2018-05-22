@@ -150,9 +150,13 @@ public class AttackService {
 		Assert.isTrue(this.attackRepository.exists(attack.getId()));
 
 		Notification notification, defendantNotification;
+		ArrayList<Integer> resourcesStolen;
+		Integer resources;
 
+		resources = this.getResourcesOfAttack(attack);
+		resourcesStolen = this.calculateResourcesToSteal(attack, resources);
 		notification = this.notificationService.findNotificationByMission(attack.getId());
-		this.stealResources(attack);
+		this.stealResources(attack, resourcesStolen);
 
 		if (notification != null) {
 			notification.setMission(null);
