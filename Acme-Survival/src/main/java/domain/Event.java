@@ -1,14 +1,20 @@
 
 package domain;
 
+import java.util.Map;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+
+import annotations.MapNotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -17,78 +23,59 @@ public class Event extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name_en;
-	private String	name_es;
-	private String	description_en;
-	private String	description_es;
-	private double	health;
-	private double	water;
-	private double	food;
+	private Map<String, String>  name;
+    private Map<String, String>  description;
+	private Integer	health;
+	private Integer	water;
+	private Integer food;
 	private boolean	finalMode;
 	private boolean	findCharacter;
 
 
-	@NotBlank
-	@SafeHtml
-	public String getName_en() {
-		return this.name_en;
+	@MapNotBlank
+	@ElementCollection
+	public Map<String,String> getName(){
+		return this.name;
 	}
 
-	public void setName_en(final String name_en) {
-		this.name_en = name_en;
+	@MapNotBlank
+	@ElementCollection
+	public Map<String,String> getDescription(){
+		return this.description;
+	}
+	
+	public void setName(final Map<String,String> name) {
+		this.name = name;
+	}
+	
+	public void setDescription(final Map<String,String> description) {
+		this.description = description;
 	}
 
-	@NotBlank
-	@SafeHtml
-	public String getName_es() {
-		return this.name_es;
-	}
-
-	public void setName_es(final String name_es) {
-		this.name_es = name_es;
-	}
-
-	@NotBlank
-	@SafeHtml
-	public String getDescription_en() {
-		return this.description_en;
-	}
-
-	public void setDescription_en(final String description_en) {
-		this.description_en = description_en;
-	}
-
-	@NotBlank
-	@SafeHtml
-	public String getDescription_es() {
-		return this.description_es;
-	}
-
-	public void setDescription_es(final String description_es) {
-		this.description_es = description_es;
-	}
-
-	public double getHealth() {
+	@NotNull
+	public Integer getHealth() {
 		return this.health;
 	}
 
-	public void setHealth(final double health) {
+	public void setHealth(final Integer health) {
 		this.health = health;
 	}
 
-	public double getWater() {
+	@NotNull
+	public Integer getWater() {
 		return this.water;
 	}
 
-	public void setWater(final double water) {
+	public void setWater(final Integer water) {
 		this.water = water;
 	}
 
-	public double getFood() {
+	@NotNull
+	public Integer getFood() {
 		return this.food;
 	}
 
-	public void setFood(final double food) {
+	public void setFood(final Integer food) {
 		this.food = food;
 	}
 
@@ -115,11 +102,11 @@ public class Event extends DomainEntity {
 
 	@Valid
 	@ManyToOne(optional = true)
-	public ItemDesign getitemDesign() {
+	public ItemDesign getItemDesign() {
 		return this.itemDesign;
 	}
 
-	public void setitemDesign(final ItemDesign itemDesign) {
+	public void setItemDesign(final ItemDesign itemDesign) {
 		this.itemDesign = itemDesign;
 
 	}

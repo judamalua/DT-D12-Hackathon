@@ -1,7 +1,6 @@
 
 package domain;
 
-import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -9,15 +8,18 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -29,10 +31,8 @@ public class Refuge extends DomainEntity {
 	private String	code;
 	private String	name;
 	private Date	momentOfCreation;
-	private double	water;
-	private double	food;
-	private double	metal;
-	private double	wood;
+	private String	gpsCoordinates;
+	private Date	lastView;
 
 
 	@Pattern(regexp = "^\\w{10}$")
@@ -46,6 +46,8 @@ public class Refuge extends DomainEntity {
 		this.code = code;
 	}
 
+	@Length(min = 5, max = 50)
+	@Column(unique = true)
 	@NotBlank
 	@SafeHtml
 	public String getName() {
@@ -56,7 +58,10 @@ public class Refuge extends DomainEntity {
 		this.name = name;
 	}
 
+	@NotNull
 	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
 	public Date getMomentOfCreation() {
 		return this.momentOfCreation;
 	}
@@ -65,74 +70,54 @@ public class Refuge extends DomainEntity {
 		this.momentOfCreation = momentOfCreation;
 	}
 
-	public double getWater() {
-		return this.water;
+	@Pattern(regexp = "^(\\-?\\d+(\\.\\d+)?),\\w*(\\-?\\d+(\\.\\d+)?)$")
+	@SafeHtml
+	@NotBlank
+	public String getGpsCoordinates() {
+		return this.gpsCoordinates;
 	}
 
-	public void setWater(final double water) {
-		this.water = water;
+	public void setGpsCoordinates(final String gpsCoordinates) {
+		this.gpsCoordinates = gpsCoordinates;
 	}
 
-	public double getFood() {
-		return this.food;
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+	public Date getLastView() {
+		return this.lastView;
 	}
 
-	public void setFood(final double food) {
-		this.food = food;
-	}
-
-	public double getMetal() {
-		return this.metal;
-	}
-
-	public void setMetal(final double metal) {
-		this.metal = metal;
-	}
-
-	public double getWood() {
-		return this.wood;
-	}
-
-	public void setWood(final double wood) {
-		this.wood = wood;
+	public void setLastView(final Date lastView) {
+		this.lastView = lastView;
 	}
 
 
 	// Relationships ----------------------------------------------------------
-	private Player				player;
-	private Collection<Item>	items;
-	private Location			location;
+	private Player		player;
+	private Location	location;
 
 
 	@Valid
 	@NotNull
 	@OneToOne(optional = false)
-	public Player getplayer() {
+	public Player getPlayer() {
 		return this.player;
 	}
 
-	public void setplayer(final Player player) {
+	public void setPlayer(final Player player) {
 		this.player = player;
 
 	}
-	@Valid
-	@OneToMany
-	public Collection<Item> getitems() {
-		return this.items;
-	}
 
-	public void setitems(final Collection<Item> items) {
-		this.items = items;
-
-	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Location getlocation() {
+	public Location getLocation() {
 		return this.location;
 	}
 
-	public void setlocation(final Location location) {
+	public void setLocation(final Location location) {
 		this.location = location;
 
 	}

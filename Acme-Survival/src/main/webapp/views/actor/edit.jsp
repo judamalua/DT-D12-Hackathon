@@ -10,9 +10,20 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
 
 <!-- Selecting request uri -->
-<jstl:set var="requestURI" value="actor/admin/edit.do"/>
-<security:authorize access="hasRole('USER')">
-	<jstl:set var="requestURI" value="actor/user/edit.do"/>
+<security:authorize access="hasRole('ADMIN')">
+	<jstl:set var="requestURI" value="actor/admin/edit.do"/>
+</security:authorize>
+<security:authorize access="hasRole('PLAYER')">
+	<jstl:set var="requestURI" value="actor/player/edit.do"/>
+</security:authorize>
+<security:authorize access="hasRole('DESIGNER')">
+	<jstl:set var="requestURI" value="actor/designer/edit.do"/>
+</security:authorize>
+<security:authorize access="hasRole('MODERATOR')">
+	<jstl:set var="requestURI" value="actor/moderator/edit.do"/>
+</security:authorize>
+<security:authorize access="hasRole('MANAGER')">
+	<jstl:set var="requestURI" value="actor/manager/edit.do"/>
 </security:authorize>
 
 
@@ -29,7 +40,7 @@
 	
 	<acme:textbox code="actor.phoneNumber" path="phoneNumber"/>
 	
-	<acme:textbox code="actor.postalAddress" path="postalAddress"/>
+	<acme:textbox code="actor.avatar" path="avatar" placeholder = "URL"/>
 	
 	<acme:textbox code="actor.email" path="email" required = "true"/>
 	

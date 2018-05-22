@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.URL;
@@ -26,6 +27,7 @@ public class Forum extends DomainEntity {
 	private boolean	support;
 
 
+	@Length(min = 5, max = 100)
 	@NotBlank
 	@SafeHtml
 	public String getName() {
@@ -36,6 +38,7 @@ public class Forum extends DomainEntity {
 		this.name = name;
 	}
 
+	@Length(min = 10, max = 1000)
 	@NotBlank
 	@SafeHtml
 	public String getDescription() {
@@ -75,17 +78,29 @@ public class Forum extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Forum	forum;
+	private Actor	owner;
 
 
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
-	public Forum getforum() {
+	@ManyToOne
+	public Forum getForum() {
 		return this.forum;
 	}
 
-	public void setforum(final Forum forum) {
+	public void setForum(final Forum forum) {
 		this.forum = forum;
 
 	}
+
+	@Valid
+	@NotNull
+	@ManyToOne
+	public Actor getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(final Actor owner) {
+		this.owner = owner;
+	}
+
 }

@@ -1,56 +1,76 @@
 
 package domain;
 
+import java.util.Date;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(name = "`character`")
 public class Character extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name;
-	private String	surname;
+	private String	fullName;
 	private int		currentHealth;
 	private int		currentWater;
 	private int		currentFood;
-	private int		strenght;
+	private int		strength;
 	private int		luck;
 	private int		capacity;
 	private int		level;
 	private int		experience;
+	private boolean	male;
+	private boolean	currentlyInGatheringMission;
+	private Date	roomEntrance;
 
+
+	//private boolean	male;
+
+	public boolean getMale() {
+		return this.male;
+	}
+
+	public void setMale(final boolean male) {
+		this.male = male;
+	}
 
 	@NotBlank
 	@SafeHtml
-	public String getName() {
-		return this.name;
+	public String getFullName() {
+		return this.fullName;
 	}
 
-	public void setName(final String name) {
-		this.name = name;
+	public void setFullName(final String fullName) {
+		this.fullName = fullName;
 	}
 
-	@NotBlank
-	@SafeHtml
-	public String getSurname() {
-		return this.surname;
-	}
+	//	public boolean getMale() {
+	//		return this.male;
+	//	}
+	//
+	//	public void setMale(final boolean male) {
+	//		this.male = male;
+	//	}
 
-	public void setSurname(final String surname) {
-		this.surname = surname;
-	}
-
+	@Min(value = 0)
 	public int getCurrentHealth() {
 		return this.currentHealth;
 	}
@@ -59,6 +79,7 @@ public class Character extends DomainEntity {
 		this.currentHealth = currentHealth;
 	}
 
+	@Min(value = 0)
 	public int getCurrentWater() {
 		return this.currentWater;
 	}
@@ -67,6 +88,7 @@ public class Character extends DomainEntity {
 		this.currentWater = currentWater;
 	}
 
+	@Min(value = 0)
 	public int getCurrentFood() {
 		return this.currentFood;
 	}
@@ -75,14 +97,16 @@ public class Character extends DomainEntity {
 		this.currentFood = currentFood;
 	}
 
-	public int getStrenght() {
-		return this.strenght;
+	@Min(value = 1)
+	public int getStrength() {
+		return this.strength;
 	}
 
-	public void setStrenght(final int strenght) {
-		this.strenght = strenght;
+	public void setStrength(final int strength) {
+		this.strength = strength;
 	}
 
+	@Min(value = 1)
 	public int getLuck() {
 		return this.luck;
 	}
@@ -91,6 +115,7 @@ public class Character extends DomainEntity {
 		this.luck = luck;
 	}
 
+	@Min(value = 1)
 	public int getCapacity() {
 		return this.capacity;
 	}
@@ -99,6 +124,7 @@ public class Character extends DomainEntity {
 		this.capacity = capacity;
 	}
 
+	@Min(value = 1)
 	public int getLevel() {
 		return this.level;
 	}
@@ -107,12 +133,32 @@ public class Character extends DomainEntity {
 		this.level = level;
 	}
 
+	@Min(value = 0)
 	public int getExperience() {
 		return this.experience;
 	}
 
 	public void setExperience(final int experience) {
 		this.experience = experience;
+	}
+
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+	public Date getRoomEntrance() {
+		return this.roomEntrance;
+	}
+
+	public void setRoomEntrance(final Date roomEntrance) {
+		this.roomEntrance = roomEntrance;
+	}
+
+	public boolean getCurrentlyInGatheringMission() {
+		return this.currentlyInGatheringMission;
+	}
+
+	public void setCurrentlyInGatheringMission(final boolean currentlyInGatheringMission) {
+		this.currentlyInGatheringMission = currentlyInGatheringMission;
 	}
 
 
@@ -124,33 +170,33 @@ public class Character extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional = false)
-	public Refuge getrefuge() {
+	@ManyToOne(optional = true)
+	public Refuge getRefuge() {
 		return this.refuge;
 	}
 
-	public void setrefuge(final Refuge refuge) {
+	public void setRefuge(final Refuge refuge) {
 		this.refuge = refuge;
 
 	}
 	@Valid
 	@OneToOne(optional = true)
-	public Item getitem() {
+	public Item getItem() {
 		return this.item;
 	}
 
-	public void setitem(final Item item) {
+	public void setItem(final Item item) {
 		this.item = item;
 
 	}
+
 	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
-	public Room getroom() {
+	@ManyToOne
+	public Room getRoom() {
 		return this.room;
 	}
 
-	public void setroom(final Room room) {
+	public void setRoom(final Room room) {
 		this.room = room;
 
 	}

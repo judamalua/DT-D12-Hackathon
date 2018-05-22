@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
@@ -49,6 +50,7 @@ public class CreditCard extends DomainEntity {
 		this.brandName = brandName;
 	}
 
+	@Pattern(regexp = "^\\d{16}$")
 	@NotBlank
 	@CreditCardNumber
 	@SafeHtml
@@ -105,11 +107,11 @@ public class CreditCard extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Player getplayer() {
+	public Player getPlayer() {
 		return this.player;
 	}
 
-	public void setplayer(final Player player) {
+	public void setPlayer(final Player player) {
 		this.player = player;
 
 	}

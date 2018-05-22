@@ -1,15 +1,21 @@
+
 package services;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.LootTableRepository;
 import domain.LootTable;
+import domain.ProbabilityEvent;
+import domain.ProbabilityItem;
 
 @Service
 @Transactional
@@ -19,6 +25,8 @@ public class LootTableService {
 
 	@Autowired
 	private LootTableRepository	lootTableRepository;
+	@Autowired
+	private Validator			validator;
 
 
 	// Supporting services --------------------------------------------------
@@ -27,9 +35,11 @@ public class LootTableService {
 
 	public LootTable create() {
 		LootTable result;
-
+		
 		result = new LootTable();
-
+		result.setProbabilityEvents(new HashSet<ProbabilityEvent>());
+		result.setProbabilityItems(new HashSet<ProbabilityItem>());
+		result.setName("LootTable Name");
 		return result;
 	}
 
@@ -77,5 +87,27 @@ public class LootTableService {
 		this.lootTableRepository.delete(lootTable);
 
 	}
-}
 
+	public LootTable reconstruct(final LootTable lootTable, final BindingResult binding) {
+		LootTable result;
+
+		if (lootTable.getId() == 0)
+			result = lootTable;
+		else {
+			result = this.lootTableRepository.findOne(lootTable.getId());
+			result.setName(lootTable.getName());
+			result.setFinalMode(lootTable.getFinalMode());
+			result.setProbabilityEvents(lootTable.getProbabilityEvents());
+			result.setProbabilityItems(lootTable.getProbabilityItems());
+		}
+		this.validator.validate(result, binding);
+		return result;
+	}
+
+	public Collection<LootTable> findAllFinal() {
+		Collection<LootTable> result;
+		result = this.lootTableRepository.findAllFinal();
+		return result;
+	}
+
+}

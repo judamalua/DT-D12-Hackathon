@@ -49,8 +49,7 @@ public class MissionService {
 	}
 
 	public Mission save(final Mission mission) {
-
-		assert mission != null;
+		Assert.notNull(mission);
 
 		Mission result;
 
@@ -62,13 +61,7 @@ public class MissionService {
 
 	public void delete(final Mission mission) {
 
-		assert mission != null;
-		assert mission.getId() != 0;
-
-		Assert.isTrue(this.missionRepository.exists(mission.getId()));
-
-		this.missionRepository.delete(mission);
+		//TODO
 
 	}
 }
-

@@ -8,11 +8,35 @@
  * 
  */
 
-.rendezvousPhoto{
-	
+.forumImg{
 	width: 10%;
 	height: 10%;
 }
+
+.character{
+	float:left;
+}
+
+.map{
+	float: left;
+	clear:both;
+	width: 500px;
+	height: 250px;
+}
+
+.refugeRooms{
+	float:left;
+	clear: both;
+	width: 100%;
+}
+.characterName{
+	text-align: center;
+}
+
+.inventoryElm{
+	float:left;
+}
+
 .error {
 	color: red;
 	font-weight: bolder;
@@ -28,7 +52,7 @@
 }
 
 .dropdown-menu > li > a:hover {
-    background-color: #525864;//FF9F33
+    background-color: #023F02;
     background-image: none;
 }
 
@@ -47,7 +71,6 @@
 
 .paginacion{
 	margin-left: 1%;
-	background-color: 
 }
 
 .body{
@@ -67,7 +90,7 @@ summary{
 }
 
 .progress .bar{
-	color: #2F0F0F;
+	color: #023F02;
 }
 
 .footer {
@@ -109,11 +132,11 @@ summary{
 
 .btn{
 	/* font-family:'Raleway'; */
-	background-color: #c62828;
+	background-color: #023F02;
 }
 
 .btn:hover{
-	background-color: #e53935;
+	background-color: #753019;
 }
 
 textarea{
@@ -121,7 +144,7 @@ textarea{
 }
 
 .navbar .brand{
-	color: #CECECE;
+	color: #023F02;
 	padding-top: 10px;
     padding-right: 20px;
     padding-bottom: 10px;
@@ -133,13 +156,13 @@ textarea{
 }
 
 .progress-striped .bar{
-	background-color: #FF9F33;
+	background-color: #023F02;
 	font-family: helvetica;
 	font-weight: bold;
 }
 
 .navbar .nav>li>a{
-	color: #CECECE;
+	color: #023F02;
 	font-size: 14px;
 }
 
@@ -152,7 +175,7 @@ input, select{
 }
 
 body{
-	background-color: #f5f5f5;/*#fffaf0*/
+	background-color: #fffaf0;/*#fffaf0*/
 	font-family:'Raleway';
 	
 }
@@ -172,30 +195,25 @@ body {
 	background-color: #fff;
 }
 
-.pagination li.active {
-	background-color: #b71c1c;
+.slider .indicators .indicator-item.active {
+    background-color: #023F02;
 }
-
 /*Nav and footer Materialize color*/
 nav{
-	background-color: #b71c1c;
+	background-color: #023F02;
 }
 
 .page-footer{
-	background-color: #b71c1c;
+	padding-top:0%;
+	background-color: #023F02;
 }
 
 .cleared-div{
 	clear: both;
 }
 
-.slider .indicators .indicator-item.active{
-	background-color: #c62828;
-}
-
-
 .slider .indicators .indicator-item{
-	background-color: #f5f5f5;
+	background-color: none;
 }
    
 .slider-image{
@@ -209,8 +227,28 @@ nav{
 	color: #f5f5f5;
 }
 
+.red.darken-4 {
+    background-color: #023F02 !important;
+}
+
 .dropdown-content {
     overflow-y:auto !important;
+}
+
+.dropdown-content > li{
+   background-color: #753019;
+   color: white;
+}
+
+.select-dropdown > li{
+   background-color: #f5f5f5;
+}
+.select-dropdown > li > span{
+   color: #5D5D5D;
+}
+
+.dropdown-content > li > a{
+   color: white;
 }
 
 .serviceImg{

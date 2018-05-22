@@ -1,13 +1,20 @@
 
 package domain;
 
+import java.util.Map;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
+
+import annotations.MapNotBlank;
+import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -16,60 +23,55 @@ public class Product extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String	name_en;
-	private String	name_es;
-	private String	description_en;
-	private String	description_es;
-	private double	price;
-	private boolean	finalMode;
+	private Map<String, String>	name;
+	private Map<String, String>	description;
+	private String				pictureUrl;
+	private Double				price;
+	private boolean				finalMode;
+	private boolean				discontinued;
 
 
-	@NotBlank
-	@SafeHtml
-	public String getName_en() {
-		return this.name_en;
+	@NotNull
+	@MapNotBlank
+	@MapSafeHtml
+	@ElementCollection
+	public Map<String, String> getName() {
+		return this.name;
 	}
 
-	public void setName_en(final String name_en) {
-		this.name_en = name_en;
+	public void setName(final Map<String, String> name) {
+		this.name = name;
 	}
 
-	@NotBlank
-	@SafeHtml
-	public String getName_es() {
-		return this.name_es;
+	@MapSafeHtml
+	@NotNull
+	@MapNotBlank
+	@ElementCollection
+	public Map<String, String> getDescription() {
+		return this.description;
 	}
 
-	public void setName_es(final String name_es) {
-		this.name_es = name_es;
-	}
-
-	@NotBlank
-	@SafeHtml
-	public String getDescription_en() {
-		return this.description_en;
-	}
-
-	public void setDescription_en(final String description_en) {
-		this.description_en = description_en;
+	public void setDescription(final Map<String, String> description) {
+		this.description = description;
 	}
 
 	@NotBlank
 	@SafeHtml
-	public String getDescription_es() {
-		return this.description_es;
+	public String getPictureUrl() {
+		return this.pictureUrl;
 	}
 
-	public void setDescription_es(final String description_es) {
-		this.description_es = description_es;
+	public void setPictureUrl(final String pictureUrl) {
+		this.pictureUrl = pictureUrl;
 	}
 
+	@NotNull
 	@Range(min = 0)
-	public double getPrice() {
+	public Double getPrice() {
 		return this.price;
 	}
 
-	public void setPrice(final double price) {
+	public void setPrice(final Double price) {
 		this.price = price;
 	}
 
@@ -79,6 +81,14 @@ public class Product extends DomainEntity {
 
 	public void setFinalMode(final boolean finalMode) {
 		this.finalMode = finalMode;
+	}
+
+	public boolean getDiscontinued() {
+		return this.discontinued;
+	}
+
+	public void setDiscontinued(final boolean discontinued) {
+		this.discontinued = discontinued;
 	}
 
 	// Relationships ----------------------------------------------------------

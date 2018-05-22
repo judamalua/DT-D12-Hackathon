@@ -6,11 +6,15 @@ import java.util.Collection;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ItemDesignRepository;
+import domain.Event;
 import domain.ItemDesign;
+import domain.ProbabilityItem;
 
 @Service
 @Transactional
@@ -38,6 +42,18 @@ public class ItemDesignService {
 
 	}
 
+	public Page<ItemDesign> findAll(final Pageable pageable) {
+
+		Page<ItemDesign> result;
+
+		Assert.notNull(this.itemDesignRepository);
+		result = this.itemDesignRepository.findAll(pageable);
+		Assert.notNull(result);
+
+		return result;
+
+	}
+
 	public ItemDesign findOne(final int itemDesignId) {
 
 		ItemDesign result;
@@ -50,7 +66,7 @@ public class ItemDesignService {
 
 	public ItemDesign save(final ItemDesign itemDesign) {
 
-		assert itemDesign != null;
+		Assert.notNull(itemDesign);
 
 		ItemDesign result;
 
@@ -70,5 +86,42 @@ public class ItemDesignService {
 		this.itemDesignRepository.delete(itemDesign);
 
 	}
-}
 
+	public Collection<Event> findEventsByItemDesign(final int itemDesignId) {
+		Collection<Event> result;
+
+		result = this.itemDesignRepository.findEventsByItemDesign(itemDesignId);
+
+		return result;
+	}
+
+	public Collection<ProbabilityItem> findProbabilityItemsByItemDesign(final int itemDesignId) {
+		Collection<ProbabilityItem> result;
+
+		result = this.itemDesignRepository.findProbabilityItemsByItemDesign(itemDesignId);
+
+		return result;
+	}
+
+	public Page<ItemDesign> findNotFinal(final Pageable pageable) {
+		Page<ItemDesign> result;
+
+		result = this.itemDesignRepository.findNotFinal(pageable);
+
+		return result;
+	}
+
+	public Page<ItemDesign> findFinal(final Pageable pageable) {
+		Page<ItemDesign> result;
+
+		result = this.itemDesignRepository.findFinal(pageable);
+
+		return result;
+	}
+
+	public void flush() {
+
+		this.itemDesignRepository.flush();
+
+	}
+}

@@ -23,13 +23,33 @@
 		<value>/views/security/tiles.xml</value>
 		<value>/views/welcome/tiles.xml</value>
 		<value>/views/admin/tiles.xml</value>
-		<value>/views/user/tiles.xml</value>
 		<value>/views/actor/tiles.xml</value>
 		<value>/views/dashboard/tiles.xml</value>
 		<value>/views/configuration/tiles.xml</value>
 		<value>/views/law/tiles.xml</value>
 		<value>/views/cookie/tiles.xml</value>
 		<value>/views/slider/tiles.xml</value>
+		<value>/views/player/tiles.xml</value>
+		<value>/views/product/tiles.xml</value>
+		<value>/views/forum/tiles.xml</value>
+		<value>/views/thread/tiles.xml</value>
+		<value>/views/message/tiles.xml</value>
+		<value>/views/inventory/tiles.xml</value>
+		<value>/views/refuge/tiles.xml</value>
+		<value>/views/room/tiles.xml</value>
+		<value>/views/event/tiles.xml</value>
+		<value>/views/itemDesign/tiles.xml</value>
+		<value>/views/attack/tiles.xml</value>
+		<value>/views/gather/tiles.xml</value>
+		<value>/views/character/tiles.xml</value>
+		<value>/views/creditCard/tiles.xml</value>
+		<value>/views/roomDesign/tiles.xml</value>
+		<value>/views/map/tiles.xml</value>
+		<value>/views/lootTable/tiles.xml</value>
+		<value>/views/move/tiles.xml</value>
+		<value>/views/item/tiles.xml</value>
+		<value>/views/notification/tiles.xml</value>
+		<value>/views/designerConfiguration/tiles.xml</value>
 	</util:list>
 
 </beans>

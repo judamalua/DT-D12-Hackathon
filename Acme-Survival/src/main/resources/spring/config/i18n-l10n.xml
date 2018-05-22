@@ -23,13 +23,34 @@
 		<value>/views/security/messages</value>		
 		<value>/views/welcome/messages</value>
 		<value>/views/admin/messages</value>
-		<value>/views/user/messages</value>
 		<value>/views/actor/messages</value>
 		<value>/views/dashboard/messages</value>
 		<value>/views/configuration/messages</value>
 		<value>/views/law/messages</value>
 		<value>/views/cookie/messages</value>
 		<value>/views/slider/messages</value>
+		<value>/views/player/messages</value>
+		<value>/views/character/messages</value>
+		<value>/views/product/messages</value>
+		<value>/views/forum/messages</value>
+		<value>/views/thread/messages</value>
+		<value>/views/message/messages</value>
+		<value>/views/refuge/messages</value>
+		<value>/views/room/messages</value>
+		<value>/views/inventory/messages</value>
+		<value>/views/event/messages</value>
+		<value>/views/itemDesign/messages</value>
+		<value>/views/attack/messages</value>
+		<value>/views/gather/messages</value>
+		<value>/views/roomDesign/messages</value>
+		<value>/views/creditCard/messages</value>
+		<value>/views/roomDesign/messages</value>
+		<value>/views/map/messages</value>
+		<value>/views/lootTable/messages</value>
+		<value>/views/move/messages</value>
+		<value>/views/notification/messages</value>
+		<value>/views/item/messages</value>
+		<value>/views/designerConfiguration/messages</value>
 	</util:list>
 
 </beans>

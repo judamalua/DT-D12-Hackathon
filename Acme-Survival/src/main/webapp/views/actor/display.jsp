@@ -24,8 +24,8 @@
 </h4>
 <br />
 
-<strong><spring:message code="actor.postalAddress" />:</strong>
-<jstl:out value="${actor.postalAddress}" />
+<strong><spring:message code="actor.avatar" />:</strong>
+<jstl:out value="${actor.avatar}" />
 <br />
 <strong><spring:message code="actor.phoneNumber" />:</strong>
 <jstl:out value="${actor.phoneNumber}" />
@@ -35,5 +35,5 @@
 <br />
 <strong><spring:message code="actor.birthDate" />:</strong>
 <fmt:formatDate value="${actor.birthDate}" pattern="${birthDateFormat}" />
-<br />
-<br />
+
+

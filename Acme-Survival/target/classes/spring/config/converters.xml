@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
- * converters.xml
- *
- * Copyright (C) 2017 Universidad de Sevilla
- * 
- * The use of this project is hereby constrained to the conditions of the 
- * TDG Licence, a copy of which you may download from 
- * http://www.tdg-seville.info/License.html
- -->
+<!-- * converters.xml * * Copyright (C) 2017 Universidad de Sevilla * * The 
+	use of this project is hereby constrained to the conditions of the * TDG 
+	Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
@@ -18,28 +12,135 @@
 	">
 
 	<util:list id="converters">
-		<!-- 
-			Add your own converters using entries of the following form: 
-			<bean class="converters.Class1ToClass2" /> 
-		-->
-		
-	
-		
-		<bean class="converters.UserToStringConverter" />
-		<bean class="converters.StringToUserConverter" />
-		
+		<!-- Add your own converters using entries of the following form: <bean 
+			class="converters.Class1ToClass2" /> -->
+
 		<bean class="converters.UserAccountToStringConverter" />
 		<bean class="converters.StringToUserAccountConverter" />
-		
+
 		<bean class="converters.AuthorityToStringConverter" />
 		<bean class="converters.StringToAuthorityConverter" />
+
+		<bean class="converters.AdminToStringConverter" />
+		<bean class="converters.StringToAdminConverter" />
+
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.StringToActorConverter" />
+
+		<bean class="converters.AttackToStringConverter" />
+		<bean class="converters.StringToAttackConverter" />
+
+		<bean class="converters.BarrackToStringConverter" />
+		<bean class="converters.StringToBarrackConverter" />
+
+		<bean class="converters.CharacterToStringConverter" />
+		<bean class="converters.StringToCharacterConverter" />
+
+		<bean class="converters.CharacterToStringConverter" />
+		<bean class="converters.StringToCharacterConverter" />
+
+		<bean class="converters.CreditCardToStringConverter" />
+		<bean class="converters.StringToCreditCardConverter" />
+
+		<bean class="converters.DesignerConfigurationToStringConverter" />
+		<bean class="converters.StringToDesignerConfigurationConverter" />
+
+		<bean class="converters.DesignerToStringConverter" />
+		<bean class="converters.StringToDesignerConverter" />
+
+		<bean class="converters.EventToStringConverter" />
+		<bean class="converters.StringToEventConverter" />
+
+		<bean class="converters.ForumToStringConverter" />
+		<bean class="converters.StringToForumConverter" />
+
+		<bean class="converters.ItemDesignToStringConverter" />
+		<bean class="converters.StringToItemDesignConverter" />
+
+		<bean class="converters.ItemToStringConverter" />
+		<bean class="converters.StringToItemConverter" />
+
+		<bean class="converters.LocationToStringConverter" />
+		<bean class="converters.StringToLocationConverter" />
+
+		<bean class="converters.LootTableToStringConverter" />
+		<bean class="converters.StringToLootTableConverter" />
+
+		<bean class="converters.ManagerToStringConverter" />
+		<bean class="converters.StringToManagerConverter" />
+
+		<bean class="converters.MessageToStringConverter" />
+		<bean class="converters.StringToMessageConverter" />
+
+		<bean class="converters.MissionToStringConverter" />
+		<bean class="converters.StringToMissionConverter" />
+
+		<bean class="converters.ModeratorToStringConverter" />
+		<bean class="converters.StringToModeratorConverter" />
+
+		<bean class="converters.ModeratorToStringConverter" />
+		<bean class="converters.StringToModeratorConverter" />
+
+		<bean class="converters.MoveToStringConverter" />
+		<bean class="converters.StringToMoveConverter" />
+
+		<bean class="converters.OrderToStringConverter" />
+		<bean class="converters.StringToOrderConverter" />
+
+		<bean class="converters.PlayerToStringConverter" />
+		<bean class="converters.StringToPlayerConverter" />
+
+		<bean class="converters.ProbabilityEventToStringConverter" />
+		<bean class="converters.StringToProbabilityEventConverter" />
+
+		<bean class="converters.ProbabilityItemToStringConverter" />
+		<bean class="converters.StringToProbabilityItemConverter" />
+
+		<bean class="converters.ProductToStringConverter" />
+		<bean class="converters.StringToProductConverter" />
+
+		<bean class="converters.GatherToStringConverter" />
+		<bean class="converters.StringToGatherConverter" />
+
+		<bean class="converters.RefugeToStringConverter" />
+		<bean class="converters.StringToRefugeConverter" />
+
+		<bean class="converters.ResourceRoomToStringConverter" />
+		<bean class="converters.StringToResourceRoomConverter" />
+
+		<bean class="converters.ResourceToStringConverter" />
+		<bean class="converters.StringToResourceConverter" />
+
+		<bean class="converters.RestorationRoomToStringConverter" />
+		<bean class="converters.StringToRestorationRoomConverter" />
+
+		<bean class="converters.RoomDesignToStringConverter" />
+		<bean class="converters.StringToRoomDesignConverter" />
+
+		<bean class="converters.RoomToStringConverter" />
+		<bean class="converters.StringToRoomConverter" />
+
+		<bean class="converters.SliderToStringConverter" />
+		<bean class="converters.StringToSliderConverter" />
+
+		<bean class="converters.SystemConfigurationToStringConverter" />
+		<bean class="converters.StringToSystemConfigurationConverter" />
+
+		<bean class="converters.ThreadToStringConverter" />
+		<bean class="converters.StringToThreadConverter" />
+
+		<bean class="converters.ToolToStringConverter" />
+		<bean class="converters.StringToToolConverter" />
+
+		<bean class="converters.WarehouseToStringConverter" />
+		<bean class="converters.StringToWarehouseConverter" />
+
+		<bean class="converters.InventoryToStringConverter" />
+		<bean class="converters.StringToInventoryConverter" />
 		
-		<bean class="converters.UserToStringConverter" />
-		<bean class="converters.StringToUserConverter" />
-		
-		<bean class="converters.AdministratorToStringConverter" />
-		<bean class="converters.StringToAdministratorConverter" />
-	
+		<bean class="converters.NotificationToStringConverter" />
+		<bean class="converters.StringToNotificationConverter" />
+
 	</util:list>
-	
+
 </beans>
