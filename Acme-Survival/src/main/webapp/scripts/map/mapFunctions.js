@@ -92,3 +92,10 @@ function getRemainingTime(time) {
 		return mapTranslations.attack.done[language];
 	}
 };
+
+function getZoneCenter(p) {
+	return {
+		x : (p.A.x + p.B.x + p.C.x + p.D.x) / 4,
+		y : (p.A.y + p.B.y + p.C.y + p.D.y) / 4
+	};
+}

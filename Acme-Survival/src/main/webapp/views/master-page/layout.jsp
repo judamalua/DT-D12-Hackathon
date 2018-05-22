@@ -39,6 +39,7 @@
 <script src="scripts/businessNameAjax.js"></script>
 <script src="scripts/widgEditor.js"></script>
 <script src="scripts/map/mapFunctions.js"></script>
+<script src="scripts/imageFormHandle.js"></script>
 <script type="text/javascript" src="https://unpkg.com/@dicebear/avatars@2.0.0/dist/avatars.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/@dicebear/avatars-male-sprites@1.0.0/dist/sprites.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/@dicebear/avatars-female-sprites@1.0.0/dist/sprites.min.js"></script>
@@ -68,6 +69,7 @@ window.onload = function() {
 	type="text/css" />
 <link rel="stylesheet" href="styles/displaytag.css" type="text/css">
 <link rel="stylesheet" href="styles/attackRowColor.css" type="text/css">
+<link rel="stylesheet" href="styles/widgEditor.css" type="text/css">
 <!-- <link rel="stylesheet" href="styles/style.css" type="text/css"> -->
 <!-- <link rel="stylesheet" href="styles/bootstrap-datetimepicker.css"
 	type="text/css"> -->

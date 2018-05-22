@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -17,10 +18,10 @@ import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import security.UserAccount;
+import annotations.ExtendedURL;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -69,7 +70,8 @@ public abstract class Actor extends DomainEntity {
 		this.birthDate = birthDate;
 	}
 
-	@URL
+	@ExtendedURL(admitData = true)
+	@Column(columnDefinition = "longtext")
 	@SafeHtml
 	public String getAvatar() {
 		return this.avatar;

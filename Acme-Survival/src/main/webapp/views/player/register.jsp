@@ -26,7 +26,7 @@
 	
 	<acme:textbox code="player.birthDate" path="birthDate" placeholder="dd/MM/yyyy" required="true"/>
 	
-	<acme:textbox code="player.avatar" path="avatar"/>
+	<acme:imageUpload code="player.avatar" path="avatar"/>
 		
 	<acme:textbox code="player.email" path="email" required="true"/>
 	

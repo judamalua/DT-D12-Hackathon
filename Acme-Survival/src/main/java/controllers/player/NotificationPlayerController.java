@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,11 +16,13 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.NotificationService;
+import services.RefugeService;
 import controllers.AbstractController;
 import domain.Attack;
 import domain.Configuration;
 import domain.Notification;
 import domain.Player;
+import domain.Refuge;
 
 @Controller
 @RequestMapping("/notification/player")
@@ -37,6 +40,9 @@ public class NotificationPlayerController extends AbstractController {
 	@Autowired
 	private GatherService			gatherService;
 
+	@Autowired
+	private RefugeService			refugeService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -49,11 +55,18 @@ public class NotificationPlayerController extends AbstractController {
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
 		Player player;
-		Configuration configuration;
+		final Configuration configuration;
 		Pageable pageable;
 		Page<Notification> notifications;
+		Refuge refuge;
 
 		try {
+			player = (Player) this.actorService.findActorByPrincipal();
+
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+
+			Assert.notNull(refuge, "You don't have refuge");
+
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 
@@ -61,7 +74,6 @@ public class NotificationPlayerController extends AbstractController {
 
 			this.gatherService.updateGatheringMissions();
 
-			player = (Player) this.actorService.findActorByPrincipal();
 			this.notificationService.generateNotifications();
 			notifications = this.notificationService.findNotificationsByPlayer(player.getId(), pageable);
 
@@ -71,12 +83,14 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/misc/403");
+			if (oops.getMessage().contains("You don't have refuge"))
+				result = new ModelAndView("redirect:/refuge/player/create.do");
+			else
+				result = new ModelAndView("redirect:/misc/403");
 		}
 
 		return result;
 	}
-
 	//Display ------------------------------------
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(final int notificationId) {
