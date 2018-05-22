@@ -66,6 +66,7 @@ public class AttackService {
 		defendant = this.refugeService.findOne(refugeId);
 
 		Assert.isTrue(this.playerKnowsRefugee(defendant));
+		//Assert.isTrue(this.refugeIsAttackable(defendant.getId()), "Refuge can't be attacked");
 
 		player = (Player) this.actorService.findActorByPrincipal();
 
@@ -130,16 +131,22 @@ public class AttackService {
 
 		Assert.notNull(attack);
 		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()), "Player doesn't know the Refuge");
+		Assert.isTrue(this.refugeIsAttackable(attack.getDefendant().getId()), "Refuge can't be attacked");
 
 		Attack result;
 		Player player;
+		Refuge refuge;
 
 		player = (Player) this.actorService.findActorByPrincipal();
+		refuge = attack.getDefendant();
 
 		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()), "Player is already attacking");
 		Assert.isTrue(attack.getPlayer().equals(player));
 
 		result = this.attackRepository.save(attack);
+		refuge.setLastAttackReceived(result.getEndMoment());
+
+		this.refugeService.saveToUpdateLastTimeAttacked(refuge);
 
 		return result;
 
@@ -471,6 +478,34 @@ public class AttackService {
 
 		if (attack.getEndMoment().before(now))
 			result = true;
+
+		return result;
+	}
+
+	public boolean refugeIsAttackable(final int refugeId) {
+		boolean result;
+		Refuge refuge;
+		Double refugeRecoverTime;
+		Integer integerRecoverTime;
+		Date attackableTime, now;
+		Long miliseconds;
+
+		refuge = this.refugeService.findOne(refugeId);
+
+		if (refuge.getLastAttackReceived() == null)
+			result = true;
+		else {
+			result = false;
+			now = new Date();
+			refugeRecoverTime = this.designerConfigurationService.findDesignerConfiguration().getRefugeRecoverTime();
+			integerRecoverTime = refugeRecoverTime.intValue();
+			miliseconds = (long) (integerRecoverTime * 60000);
+
+			attackableTime = new Date(refuge.getLastAttackReceived().getTime() + miliseconds);
+
+			if (attackableTime.before(now))
+				result = true;
+		}
 
 		return result;
 	}

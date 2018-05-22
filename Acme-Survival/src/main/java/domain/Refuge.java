@@ -33,6 +33,7 @@ public class Refuge extends DomainEntity {
 	private Date	momentOfCreation;
 	private String	gpsCoordinates;
 	private Date	lastView;
+	private Date	lastAttackReceived;
 
 
 	@Pattern(regexp = "^\\w{10}$")
@@ -90,6 +91,17 @@ public class Refuge extends DomainEntity {
 
 	public void setLastView(final Date lastView) {
 		this.lastView = lastView;
+	}
+
+	@Past
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+	public Date getLastAttackReceived() {
+		return this.lastAttackReceived;
+	}
+
+	public void setLastAttackReceived(final Date lastAttackReceived) {
+		this.lastAttackReceived = lastAttackReceived;
 	}
 
 

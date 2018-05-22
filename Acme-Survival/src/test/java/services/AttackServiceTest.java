@@ -43,17 +43,17 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPositive() {
 		int refugeId;
 		Attack attack, saved;
-		Player player;
+		final Player player;
 
 		super.authenticate("player1"); //The player knows the Refuge
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
-		player = (Player) this.actorService.findActorByPrincipal();
+		//player = (Player) this.actorService.findActorByPrincipal();
 
-		attack.setPlayer(player);
+		//attack.setPlayer(player);
 
-		saved = this.attackService.save(attack);
+		saved = this.attackService.saveToAttack(attack);
 
 		this.attackService.flush();
 
@@ -121,15 +121,15 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPlayerIsAlreadyAttacking() {
 		int refugeId;
 		Attack attack, attack2, saved, saved2;
-		Player player;
+		final Player player;
 
 		super.authenticate("player1"); //The player knows the Refuge and attacks it.
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
-		player = (Player) this.actorService.findActorByPrincipal();
+		//player = (Player) this.actorService.findActorByPrincipal();
 
-		attack.setPlayer(player);
+		//attack.setPlayer(player);
 		saved = this.attackService.save(attack);
 
 		this.attackService.flush();

@@ -514,10 +514,10 @@
 	</bean>
 
 	<bean id="Inventory2" class="domain.Inventory">
-		<property name="water" value="1" />
-		<property name="food" value="1" />
-		<property name="wood" value="1" />
-		<property name="metal" value="1" />
+		<property name="water" value="20" />
+		<property name="food" value="20" />
+		<property name="wood" value="20" />
+		<property name="metal" value="20" />
 		<property name="waterCapacity" value="30" />
 		<property name="foodCapacity" value="30" />
 		<property name="woodCapacity" value="30" />

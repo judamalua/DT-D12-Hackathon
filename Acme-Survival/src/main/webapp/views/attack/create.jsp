@@ -49,7 +49,13 @@
 	
 	</dl>
 	
-	<jstl:if test="${isMoving and !isAttacking}">
+	<jstl:if test="${!isAttackable}">
+		<div class="error">
+			<spring:message code="attack.refuge.no.attackable"/>
+		</div>
+	</jstl:if>
+	
+	<jstl:if test="${isMoving and !isAttacking and isAttackable}">
 		<acme:submit name="save" code="attack.start" />
 	</jstl:if>
 	
