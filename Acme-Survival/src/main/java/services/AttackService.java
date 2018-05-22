@@ -156,7 +156,6 @@ public class AttackService {
 		resources = this.getResourcesOfAttack(attack);
 		resourcesStolen = this.calculateResourcesToSteal(attack, resources);
 		notification = this.notificationService.findNotificationByMission(attack.getId());
-		this.stealResources(attack, resourcesStolen);
 
 		if (notification != null) {
 			notification.setMission(null);
@@ -168,6 +167,8 @@ public class AttackService {
 		defendantNotification.setPlayer(attack.getDefendant().getPlayer());
 		defendantNotification.setBody(this.notificationService.generetateMapBodyResultByAttack(attack));
 		defendantNotification.setTitle(this.notificationService.generetateTitleMapResultByAttack(attack));
+
+		this.stealResources(attack, resourcesStolen);
 
 		this.notificationService.saveToDefendant(defendantNotification);
 
