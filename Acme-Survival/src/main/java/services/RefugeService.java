@@ -262,20 +262,25 @@ public class RefugeService {
 			this.playerService.save(player);
 		}
 
-		for (final Attack attack : attacks)
+		for (final Attack attack : attacks) {
 			this.attackService.delete(attack);
+		}
 
-		for (final domain.Character character : characters)
+		for (final domain.Character character : characters) {
 			this.characterService.delete(character);
+		}
 
-		for (final Item item : items)
+		for (final Item item : items) {
 			this.itemService.delete(item);
+		}
 
-		for (final Move move : moves)
+		for (final Move move : moves) {
 			this.moveService.delete(move);
+		}
 
-		for (final Room room : rooms)
+		for (final Room room : rooms) {
 			this.roomService.delete(room);
+		}
 
 		this.inventoryService.delete(inventory);
 
@@ -322,8 +327,9 @@ public class RefugeService {
 		alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
 
 		result = "";
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++) {
 			result += alphabet.charAt(random.nextInt(alphabet.length()));
+		}
 
 		return result;
 	}
@@ -349,8 +355,9 @@ public class RefugeService {
 		Refuge result;
 
 		result = this.refugeRepository.findRefugeByPlayer(playerId);
-		if (result != null)
+		if (result != null) {
 			this.updateLocation(result);
+		}
 
 		return result;
 	}
@@ -435,11 +442,12 @@ public class RefugeService {
 		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
 		items = this.itemService.findItemsByRefuge(refuge.getId());
 
-		for (final Room r : rooms)
+		for (final Room r : rooms) {
 			if (r.getRoomDesign() instanceof Warehouse) {
 				final Warehouse warehouse = (Warehouse) r.getRoomDesign();
 				capacity += warehouse.getItemCapacity();
 			}
+		}
 		capacity -= items.size();
 
 		return capacity;
@@ -456,11 +464,12 @@ public class RefugeService {
 		characters = this.characterService.findCharactersByRefuge(refuge.getId());
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-		for (final Room r : rooms)
+		for (final Room r : rooms) {
 			if (r.getRoomDesign() instanceof Barrack) {
 				final Barrack barrack = (Barrack) r.getRoomDesign();
 				capacity += barrack.getCharacterCapacity();
 			}
+		}
 		capacity += designerConfiguration.getRefugeDefaultCapacity();
 		capacity -= characters.size();
 
@@ -507,32 +516,38 @@ public class RefugeService {
 				if ((inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getFood()) < inventory.getFoodCapacity()) {
 					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
-				} else
+				} else {
 					break;
+				}
 
 				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWater() < inventory.getWaterCapacity()) {
 					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
-				} else
+				} else {
 					break;
+				}
 
 				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getWood() < inventory.getWood()) {
 					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
-				} else
+				} else {
 					break;
+				}
 
 				if (inventoryCapacity + ((ResourceRoom) room.getRoomDesign()).getMetal() < inventory.getMetalCapacity()) {
 					inventory.setWood(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * hours);
 					inventoryCapacity = this.getInventoryCapacity(inventory);
-				} else
+				} else {
 					break;
+				}
 			}
 			result = this.inventoryService.save(inventory);
-			if (hours > 0)
+			if (hours > 0) {
 				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
-		} else
+			}
+		} else {
 			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
+		}
 
 		return result;
 	}
@@ -553,6 +568,14 @@ public class RefugeService {
 
 			result = this.save(refuge);
 		}
+
+		return result;
+	}
+
+	public Collection<Refuge> findAllRefugesInLocationExceptPlayerRefuge(final int locationId, final int refugeId) {
+		Collection<Refuge> result;
+
+		result = this.refugeRepository.findAllRefugesInLocationExceptPlayerRefuge(locationId, refugeId);
 
 		return result;
 	}

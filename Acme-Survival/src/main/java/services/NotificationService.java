@@ -60,6 +60,7 @@ public class NotificationService {
 
 		result.setMoment(now);
 		result.setCharacterId(null);
+		result.setFoundRefuge(false);
 		result.setPlayer(player);
 		result.setEvents(new ArrayList<Event>());
 		result.setItemDesigns(new ArrayList<ItemDesign>());
@@ -165,7 +166,7 @@ public class NotificationService {
 		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null)
+		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByMission(attack.getId());
 
@@ -184,6 +185,7 @@ public class NotificationService {
 				}
 
 			}
+		}
 
 		gathers = this.gatherService.findGathersFinishedByPlayer(player.getId());
 

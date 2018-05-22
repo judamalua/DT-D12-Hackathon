@@ -1,11 +1,13 @@
 
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
@@ -59,10 +61,13 @@ public class GatherService {
 	private NotificationService				notificationService;
 
 	@Autowired
-	private Validator						validator;
+	private DesignerConfigurationService	designerConfigurationService;
 
 	@Autowired
-	private DesignerConfigurationService	designerConfigurationService;
+	private PlayerService					playerService;
+
+	@Autowired
+	private Validator						validator;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -307,18 +312,22 @@ public class GatherService {
 		Player player;
 		Gather gatherMission;
 		Collection<Character> currentlyInGatheringMissionCharacters;
-		Refuge refuge;
+		Refuge refuge, foundRefuge;
 		List<Event> eventsDuringMission;
-		List<ItemDesign> itemsDuringMission;
+		List<ItemDesign> itemsDuringMission = new ArrayList<ItemDesign>();
 		Long missionMillis;
 		Integer experience;
 		Integer missionMinutes;
 		Notification notification;
 		DesignerConfiguration designerConfiguration;
 		final Map<String, String> titleNotification = new HashMap<String, String>();
+		final Map<String, String> titleNotificationDead = new HashMap<String, String>();
 		titleNotification.put("en", "Gathering mission finished!");
 		titleNotification.put("es", "¡Misión de recolección finalizada!");
+		titleNotificationDead.put("en", "Your character has dead!");
+		titleNotificationDead.put("es", "¡Tu personaje ha muerto!");
 		final Map<String, String> bodyNotification = new HashMap<String, String>();
+		final Map<String, String> bodyNotificationDead = new HashMap<String, String>();
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 		Character newCharacter;
 
@@ -335,12 +344,10 @@ public class GatherService {
 
 			if (gatherMission != null) {
 				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
-				itemsDuringMission = gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
+				itemsDuringMission = gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity());
 
 				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
 				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
-
-				//this.delete(gatherMission); //TODO
 
 				character.setCurrentlyInGatheringMission(false);
 				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
@@ -361,53 +368,112 @@ public class GatherService {
 					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
 				}
 
-				if (eventsDuringMission.size() != 0)
+				if (eventsDuringMission.size() != 0) {
 					for (final Event event : eventsDuringMission) {
 						character.setCurrentHealth(character.getCurrentHealth() + event.getHealth());
-						if (character.getCurrentHealth() > 100)
+						if (character.getCurrentHealth() > 100) {
 							character.setCurrentHealth(100);
+						}
 
 						character.setCurrentWater(character.getCurrentWater() + event.getWater());
-						if (character.getCurrentWater() > 100)
+						if (character.getCurrentWater() > 100) {
 							character.setCurrentWater(100);
+						}
 
 						character.setCurrentFood(character.getCurrentFood() + event.getFood());
-						if (character.getCurrentFood() > 100)
+						if (character.getCurrentFood() > 100) {
 							character.setCurrentFood(100);
+						}
 
 						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
 							newCharacter = this.characterService.generateCharacter(refuge.getId());
 							this.characterService.save(newCharacter);
 						}
 
+						if (event.getItemDesign() != null) {
+							itemsDuringMission.add(event.getItemDesign());
+						}
+
 					}
+				}
 
 				experience = character.getExperience() + (missionMinutes * designerConfiguration.getExperiencePerMinute());
 				character.setExperience(experience);
 
-				//character = this.characterService.save(character);
-
-				if (character.getCurrentHealth() <= 0)
+				if (character.getCurrentHealth() <= 0) {
 					character.setCurrentHealth(0);
-				else {
+
 					this.characterService.save(character);
 
+					bodyNotificationDead.put("en", "Your character \"" + character.getFullName() + "\" has dead during the gathering mission in \"" + gatherMission.getLocation().getName().get("en")
+						+ "\", everything that could have been gathered has disappeared!");
+					bodyNotificationDead.put("es", "Tu personaje \"" + character.getFullName() + "\" ha muerto durante su misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", todo lo que haya recolectado ha desaparecido!");
+
 					notification = this.notificationService.create();
+					notification.setTitle(titleNotificationDead);
+					notification.setBody(bodyNotificationDead);
+					notification.setMoment(new Date(System.currentTimeMillis() - 10000));
+					notification.setPlayer(player);
+					notification.setMission(gatherMission);
+					notification.setCharacterId(character.getId());
+					if (eventsDuringMission.size() != 0) {
+						notification.setEvents(eventsDuringMission);
+					}
+					this.notificationService.save(notification);
+
+				} else {
+					this.characterService.save(character);
+					notification = this.notificationService.create();
+
+					foundRefuge = this.findRefugeInGatheringMission(gatherMission.getLocation(), refuge, missionMinutes);
+					if (foundRefuge != null) {
+						player.getRefuges().add(foundRefuge);
+						this.playerService.save(player);
+						notification.setFoundRefuge(true);
+					}
+
 					notification.setTitle(titleNotification);
 					notification.setBody(bodyNotification);
 					notification.setMoment(new Date(System.currentTimeMillis() - 10000));
 					notification.setPlayer(player);
 					notification.setMission(gatherMission);
 					notification.setCharacterId(character.getId());
-					if (eventsDuringMission.size() != 0)
+					if (eventsDuringMission.size() != 0) {
 						notification.setEvents(eventsDuringMission);
-					if (itemsDuringMission.size() != 0)
+					}
+					if (itemsDuringMission.size() != 0) {
 						notification.setItemDesigns(itemsDuringMission);
+					}
 					this.notificationService.save(notification);
 				}
-
 			}
-
 		}
+	}
+	public Refuge findRefugeInGatheringMission(final Location location, final Refuge refuge, final Integer missionMinutes) {
+		Refuge result = null;
+		List<Refuge> refugesInLocation;
+		Double probability;
+		Random random;
+		Double randomDouble;
+		Integer randomRefugeIndex, augmentProbability, augmentProbabilityDesigner;
+
+		augmentProbabilityDesigner = this.designerConfigurationService.findDesignerConfiguration().getRefugeFindingMinuteAugmentProbability();
+
+		augmentProbability = missionMinutes / augmentProbabilityDesigner;
+
+		random = new Random();
+
+		randomDouble = random.nextDouble() / 0.9;
+
+		refugesInLocation = (List<Refuge>) this.refugeService.findAllRefugesInLocationExceptPlayerRefuge(location.getId(), refuge.getId());
+
+		probability = this.designerConfigurationService.findDesignerConfiguration().getRefugeFindingProbability();
+
+		if (((probability * augmentProbability) > randomDouble) && refugesInLocation.size() != 0) {
+			randomRefugeIndex = (random.nextInt(refugesInLocation.size())) / (refugesInLocation.size() - 1);
+			result = refugesInLocation.get(randomRefugeIndex);
+		}
+
+		return result;
 	}
 }
