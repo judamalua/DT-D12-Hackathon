@@ -1,7 +1,6 @@
 
 package services;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +23,7 @@ import domain.Character;
 import domain.DesignerConfiguration;
 import domain.Event;
 import domain.Gather;
+import domain.ItemDesign;
 import domain.Location;
 import domain.Notification;
 import domain.Player;
@@ -309,6 +309,7 @@ public class GatherService {
 		Collection<Character> currentlyInGatheringMissionCharacters;
 		Refuge refuge;
 		List<Event> eventsDuringMission;
+		List<ItemDesign> itemsDuringMission;
 		Long missionMillis;
 		Integer experience;
 		Integer missionMinutes;
@@ -334,7 +335,7 @@ public class GatherService {
 
 			if (gatherMission != null) {
 				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
-				//gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
+				itemsDuringMission = gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity()); //TODO
 
 				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
 				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misi�n de recolecci�n en \"" + gatherMission.getLocation().getName().get("es") + "\", �puede que tengas nuevos objetos en tu refugio!");
@@ -407,20 +408,23 @@ public class GatherService {
 
 				if (character.getCurrentHealth() <= 0)
 					character.setCurrentHealth(0);
+				else {
+					this.characterService.save(character);
 
-				this.characterService.save(character);
+					notification = this.notificationService.create();
+					notification.setTitle(titleNotification);
+					notification.setBody(bodyNotification);
+					notification.setMoment(new Date(System.currentTimeMillis() - 10000));
+					notification.setPlayer(player);
+					notification.setMission(gatherMission);
+					notification.setCharacterId(character.getId());
+					if (eventsDuringMission.size() != 0)
+						notification.setEvents(eventsDuringMission);
+					if (itemsDuringMission.size() != 0)
+						notification.setItemDesigns(itemsDuringMission);
+					this.notificationService.save(notification);
+				}
 
-				notification = this.notificationService.create();
-				notification.setTitle(titleNotification);
-				notification.setBody(bodyNotification);
-				notification.setMoment(new Date(System.currentTimeMillis() - 10000));
-				notification.setPlayer(player);
-				notification.setMission(gatherMission);
-				if (eventsDuringMission.size() != 0)
-					notification.setEvents(eventsDuringMission);
-				else
-					notification.setEvents(new ArrayList<Event>());
-				this.notificationService.save(notification);
 			}
 
 		}
