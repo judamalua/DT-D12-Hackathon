@@ -67,6 +67,9 @@ public class GatherPlayerController extends AbstractController {
 	@Autowired
 	private InventoryService		inventoryService;
 
+	@Autowired
+	private NotificationService		notificationService;
+
 
 	// Constructors -----------------------------------------------------------
 
@@ -181,12 +184,16 @@ public class GatherPlayerController extends AbstractController {
 		try {
 
 			notification = this.notificationService.findOne(notificationId);
+			
+			if(notification.)
+				
 			result = new ModelAndView("gather/foundItems");
 			player = (Player) this.actorService.findActorByPrincipal();
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
 			items = notification.getItemDesigns();
 
+			
 			for (final ItemDesign itemDesign : items)
 				if (itemDesign instanceof Tool) {
 					item = this.itemService.create();
