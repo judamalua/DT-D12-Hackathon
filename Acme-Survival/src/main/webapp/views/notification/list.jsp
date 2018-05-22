@@ -14,7 +14,7 @@
 <spring:message code = "master.page.current.lang" var = "currentLang" />
 <spring:message code="master.page.moment.format" var="formatMoment" />
 
-<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}?page="/>
+<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestUri}?page="/>
 
 <display:table name="notifications" id="notification"
 	requestURI="${requestURI}"
