@@ -69,6 +69,7 @@ window.onload = function() {
 	type="text/css" />
 <link rel="stylesheet" href="styles/displaytag.css" type="text/css">
 <link rel="stylesheet" href="styles/attackRowColor.css" type="text/css">
+<link rel="stylesheet" href="styles/widgEditor.css" type="text/css">
 <!-- <link rel="stylesheet" href="styles/style.css" type="text/css"> -->
 <!-- <link rel="stylesheet" href="styles/bootstrap-datetimepicker.css"
 	type="text/css"> -->

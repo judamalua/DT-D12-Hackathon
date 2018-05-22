@@ -60,9 +60,14 @@
 			<em><spring:message code="form.required.params" /></em>
 		</p>
 
-		<acme:textbox code="message.text" path="text" required="true" />
-
-		<acme:textarea code="message.image" path="image" />
+		<div class="form-group">
+		<div class="row">
+			<div class="input-field col s9">
+				<form:textarea path="text" class="widgEditor" required="true"/>
+				<form:errors path="text" cssClass="error" />
+			</div>
+		</div>
+	</div>
 
 		<acme:submit name="save" code="message.save" />
 

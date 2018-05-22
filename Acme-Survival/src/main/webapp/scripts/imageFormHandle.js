@@ -50,3 +50,9 @@ function useImageUrl() {
 	document.getElementById('myFile').files = null;
 	document.getElementById("preview").src = previewImage;
 }
+
+function imageReload() {
+	if (document.getElementById("imageUrl").value !== "") {
+		document.getElementById('preview').src = document.getElementById("imageUrl").value;
+	}
+}

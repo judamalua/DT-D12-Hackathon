@@ -26,7 +26,7 @@ import org.hibernate.validator.constraints.URL;
  * @author Hardy Ferentschik
  */
 @Documented
-@Constraint(validatedBy = {})
+@Constraint(validatedBy = ExtendedURLValidator.class)
 @Target({
 	METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER
 })
