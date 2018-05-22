@@ -70,15 +70,16 @@
 
 			<acme:select id="roomDesign" items="${roomDesigns}"
 				itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
+			<br/>
+			<div class="cleared-div">
+				<acme:submit name="save" code="room.save" />
 
-			<acme:submit name="save" code="room.save" />
-
-			<jstl:if test="${room.id!=0}">
-				<acme:delete clickCode="room.delete.message" name="delete"
-					code="room.delete" />
-			</jstl:if>
-			<acme:cancel url="refuge/player/display.do" code="room.cancel" />
-
+				<jstl:if test="${room.id!=0}">
+					<acme:delete clickCode="room.delete.message" name="delete"
+						code="room.delete" />
+				</jstl:if>
+				<acme:cancel url="refuge/player/display.do" code="room.cancel" />
+			</div>
 		</form:form>
 	</div>
 </div>
