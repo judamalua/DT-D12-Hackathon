@@ -137,7 +137,6 @@ public class MovePlayerController extends AbstractController {
 
 		return result;
 	}
-
 	@RequestMapping(value = "/confirm", method = RequestMethod.POST, params = "confirm")
 	public ModelAndView confirm(@ModelAttribute("move") Move move, final BindingResult binding) {
 		ModelAndView result;
@@ -152,7 +151,6 @@ public class MovePlayerController extends AbstractController {
 		}
 
 		try {
-
 			player = (Player) this.actorService.findActorByPrincipal();
 			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
 
