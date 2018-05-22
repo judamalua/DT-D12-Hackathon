@@ -357,7 +357,7 @@
 	<!-- %%%%%% domain.Forum %%%%%% -->
 	<bean id="Forum1" class="domain.Forum">
 		<property name="name" value="Forum 1" />
-		<property name="description" value="Forum 1" />
+		<property name="description" value="Description Forum 1" />
 		<property name="image"
 			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
 		<property name="staff" value="false" />
@@ -367,7 +367,7 @@
 
 	<bean id="Forum2" class="domain.Forum">
 		<property name="name" value="Forum 2" />
-		<property name="description" value="Forum 2" />
+		<property name="description" value="Description Forum 2" />
 		<property name="image"
 			value="http://4.bp.blogspot.com/-YoA65hHHuqA/VV_aIDXFdgI/AAAAAAAAAUg/1CzS4dKqn54/s1600/foro.jpg" />
 		<property name="staff" value="true" />
@@ -377,7 +377,7 @@
 
 	<bean id="Forum3" class="domain.Forum">
 		<property name="name" value="Forum 3" />
-		<property name="description" value="Forum 3" />
+		<property name="description" value="Description Forum 3" />
 		<property name="image"
 			value="https://pbs.twimg.com/profile_images/796057953359032320/eMJZCPTE.jpg" />
 		<property name="staff" value="false" />
@@ -387,7 +387,7 @@
 
 	<bean id="Forum4" class="domain.Forum">
 		<property name="name" value="Forum 4" />
-		<property name="description" value="Forum 4" />
+		<property name="description" value="Description Forum 4" />
 		<property name="image"
 			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
 		<property name="staff" value="false" />
@@ -427,7 +427,7 @@
 		<property name="experience" value="325" />
 		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
-		<property name="currentlyInGatheringMission" value = "false" />
+		<property name="currentlyInGatheringMission" value="false" />
 
 	</bean>
 
@@ -477,7 +477,7 @@
 		<property name="metalCapacity" value="30" />
 		<property name="refuge" ref="Refuge1" />
 	</bean>
-	
+
 	<bean id="Inventory2" class="domain.Inventory">
 		<property name="water" value="20" />
 		<property name="food" value="20" />
