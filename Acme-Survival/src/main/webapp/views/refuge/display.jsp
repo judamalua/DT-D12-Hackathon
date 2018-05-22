@@ -9,8 +9,20 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<script>
+$(document).ready(function(){
+	setInterval(function() {
+		$.get("inventory/player/update.do", function(data, status) {
+			var values = data.split(",");
+			$("#food").text(values[0]);
+			$("#water").text(values[1]);
+			$("#metal").text(values[2]);
+			$("#wood").text(values[3]);
+		});
+	}, 60000);
+});
+</script>
 <!-- Variables -->
 <spring:message code="master.page.moment.format" var="formatDate" />
 <spring:message var="format" code="master.page.moment.format.out" />
@@ -20,25 +32,33 @@
 		<i class="material-icons">local_pizza</i>
 		<spring:message code="inventory.food" />
 		:
-		<jstl:out value="${inventory.food}" />
+		<div id="food">
+			<jstl:out value="${inventory.food}" />
+		</div>
 	</div>
 	<div class="inventoryElm">
 		<i class="material-icons">local_drink</i>
 		<spring:message code="inventory.water" />
 		:
-		<jstl:out value="${inventory.water}" />
+		<div id="water">
+			<jstl:out value="${inventory.water}" />
+		</div>
 	</div>
 	<div class="inventoryElm">
 		<i class="material-icons">toys</i>
 		<spring:message code="inventory.metal" />
 		:
-		<jstl:out value="${inventory.metal}" />
+		<div id="metal">
+			<jstl:out value="${inventory.metal}" />
+		</div>
 	</div>
 	<div class="inventoryElm">
 		<i class="material-icons">spa</i>
 		<spring:message code="inventory.wood" />
 		:
-		<jstl:out value="${inventory.wood}" />
+		<div id="wood">
+			<jstl:out value="${inventory.wood}" />
+		</div>
 	</div>
 </div>
 <br />
@@ -68,8 +88,11 @@
 		<h3>
 			<spring:message code="refuge.character.list" />
 		</h3>
-		<spring:message code="refuge.capacity" />: <jstl:out value="${fn:length(characters)}/${characterCapacity+fn:length(characters)}"/>
-		<br/>
+		<spring:message code="refuge.capacity" />
+		:
+		<jstl:out
+			value="${fn:length(characters)}/${characterCapacity+fn:length(characters)}" />
+		<br />
 		<jstl:forEach items="${characters}" var="character">
 			<div class="character">
 				<div class="characterName">
@@ -84,7 +107,8 @@
 					<spring:message code="refuge.character.gather" />
 				</jstl:if>
 				<br />
-				<jstl:if test="${character.roomEntrance!=null and !character.currentlyInGatheringMission}">
+				<jstl:if
+					test="${character.roomEntrance!=null and !character.currentlyInGatheringMission}">
 					<i class="material-icons"> hotel </i>
 					<spring:message code="refuge.in" />: ${character.room.roomDesign.name[lang]}
 				</jstl:if>

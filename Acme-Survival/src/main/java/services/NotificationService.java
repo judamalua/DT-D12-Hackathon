@@ -20,7 +20,6 @@ import org.springframework.validation.Validator;
 import repositories.NotificationRepository;
 import domain.Attack;
 import domain.Event;
-import domain.Gather;
 import domain.ItemDesign;
 import domain.Notification;
 import domain.Player;
@@ -60,6 +59,7 @@ public class NotificationService {
 
 		result.setMoment(now);
 		result.setCharacterId(null);
+		result.setFoundRefuge(false);
 		result.setPlayer(player);
 		result.setEvents(new ArrayList<Event>());
 		result.setItemDesigns(new ArrayList<ItemDesign>());
@@ -174,7 +174,6 @@ public class NotificationService {
 		Attack attack;
 		Player player;
 		Notification notification;
-		Collection<Gather> gathers;
 		Map<String, String> title, body;
 		Date now;
 
@@ -182,7 +181,7 @@ public class NotificationService {
 		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null)
+		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByMission(attack.getId());
 
@@ -197,16 +196,11 @@ public class NotificationService {
 
 					this.save(notification);
 
-					this.flush();
 				}
 
 			}
-
-		gathers = this.gatherService.findGathersFinishedByPlayer(player.getId());
-
-		for (final Gather g : gathers) {
-
 		}
+
 	}
 
 	public Map<String, String> generetateTitleMapResultByAttack(final Attack attack) {
@@ -251,9 +245,9 @@ public class NotificationService {
 			foodStolen = resourcesStolen.get(1);
 			metalStolen = resourcesStolen.get(2);
 			woodStolen = resourcesStolen.get(3);
-			bodyEs = "El atacante consiguió robar: \n" + waterStolen + " Agua \n" + foodStolen + " Comida \n" + metalStolen + "Metal \n" + woodStolen + "Madera.";
+			bodyEs = "El atacante consiguió robar:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 
-			bodyEn = "The attacker could steal: \n" + waterStolen + " Water \n" + foodStolen + " Food \n" + metalStolen + "Metal \n" + woodStolen + "Wood.";
+			bodyEn = "The attacker could steal:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 		}
 
 		result.put("es", bodyEs);
