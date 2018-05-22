@@ -1,6 +1,8 @@
 
 package controllers.player;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -96,12 +98,24 @@ public class NotificationPlayerController extends AbstractController {
 	public ModelAndView display(final int notificationId) {
 		ModelAndView result;
 		Notification notification;
+		String bodyEn;
+		ArrayList<String> resources;
 
 		try {
 			notification = this.notificationService.findOne(notificationId);
 			result = new ModelAndView("notification/display");
+			bodyEn = notification.getBody().get("en");
 
-			result.addObject("notification", notification);
+			if (bodyEn != "The attacker didn't steal any resources.") {
+				resources = this.splitBodyNotification(bodyEn);
+
+				result.addObject("notification", notification);
+				result.addObject("notificationMessage", resources.get(0));
+				result.addObject("notificationWater", resources.get(1));
+				result.addObject("notificationFood", resources.get(2));
+				result.addObject("notificationMetal", resources.get(3));
+				result.addObject("notificationWood", resources.get(4));
+			}
 
 			if (notification.getMission() != null)
 				if (notification.getMission() instanceof Attack)
@@ -115,4 +129,17 @@ public class NotificationPlayerController extends AbstractController {
 		return result;
 	}
 
+	public ArrayList<String> splitBodyNotification(final String body) {
+		ArrayList<String> result;
+
+		result = new ArrayList<String>();
+
+		result.add(body.split(",")[0]); //Message
+		result.add(body.split(",")[1]); //Water
+		result.add(body.split(",")[2]); //Food
+		result.add(body.split(",")[3]); //Metal
+		result.add(body.split(",")[4]); //Wood
+
+		return result;
+	}
 }

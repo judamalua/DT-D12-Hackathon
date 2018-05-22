@@ -29,10 +29,6 @@
 		<jstl:out value = "${notification.title[currentLang]}"/>
 	</display:column>
 	
-	<spring:message code="notification.body" var="titleBody" />
-	<display:column title="${titleBody}" >
-		<jstl:out value = "${notification.body[currentLang]}"/>
-	</display:column>
 	
 	<spring:message code="notification.display" var="titleDislay" />
 	<display:column title="${titleDislay}" sortable="false" >
