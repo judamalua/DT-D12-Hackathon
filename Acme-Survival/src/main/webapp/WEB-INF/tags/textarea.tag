@@ -35,7 +35,7 @@
 <jstl:if test="${required == null}">
 	<jstl:set var="required" value="false" />
 </jstl:if>
-<jstl:if test="${class == null}">
+<jstl:if test="${customClass == null}">
 	<jstl:set var="customClass" value="" />
 </jstl:if>
 <%-- Definition --%>
@@ -46,7 +46,7 @@
 	<form:label path="${path}">
 		<spring:message code="${code}" /><jstl:if test="${required}">*</jstl:if>
 	</form:label>
-	<form:textarea path="${path}" readonly="${readonly}" class="materialize-textarea" ${customClass}/>
+	<form:textarea path="${path}" readonly="${readonly}" class="materialize-textarea ${customClass}" />
 	<form:errors path="${path}" cssClass="error" />
 	</div>
 	</div>

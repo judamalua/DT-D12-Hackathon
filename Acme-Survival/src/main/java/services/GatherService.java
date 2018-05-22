@@ -470,7 +470,11 @@ public class GatherService {
 		probability = this.designerConfigurationService.findDesignerConfiguration().getRefugeFindingProbability();
 
 		if (((probability * augmentProbability) > randomDouble) && refugesInLocation.size() != 0) {
-			randomRefugeIndex = (random.nextInt(refugesInLocation.size())) / (refugesInLocation.size() - 1);
+			if (refugesInLocation.size() == 1) {
+				randomRefugeIndex = 0;
+			} else {
+				randomRefugeIndex = (random.nextInt(refugesInLocation.size())) / (refugesInLocation.size() - 1);
+			}
 			result = refugesInLocation.get(randomRefugeIndex);
 		}
 
