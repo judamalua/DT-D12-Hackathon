@@ -193,3 +193,20 @@ var widgEditorTranslation = {
 		en : "Enter width of this image:"
 	}
 };
+
+var imageUploadTranslation = {
+	error : {
+		nonUrl : {
+			es : "Error, la imagen introducida no es una url",
+			en : "Error, this image is not an url"
+		},
+		notSupported : {
+			es : "Error, formato no soportado",
+			en : "Error, format not supported"
+		},
+		tooLarge : {
+			es : "Error, archivo demasiado grande",
+			en : "Error, file too large"
+		}
+	}
+}
