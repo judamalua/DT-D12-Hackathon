@@ -80,6 +80,9 @@
        <jstl:if test="${fn:length(notification.events) eq 0}">
        	<spring:message code = "notification.modal.event.noEvent"/>
        </jstl:if>
+       <jstl:if test="${notification.foundRefuge}">
+       <spring:message code = "notification.modal.foundRefuge"/>
+       </jstl:if>
     </div>
     <div class="modal-footer">
       <a href="notification/player/display.do?notificationId=${notification.id}" class="modal-close waves-effect waves-green btn-flat"><spring:message code = "notification.modal.accept"/></a>
