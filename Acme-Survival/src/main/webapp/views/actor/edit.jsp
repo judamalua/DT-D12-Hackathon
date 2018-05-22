@@ -40,7 +40,7 @@
 	
 	<acme:textbox code="actor.phoneNumber" path="phoneNumber"/>
 	
-	<acme:textbox code="actor.avatar" path="avatar" placeholder = "URL"/>
+	<acme:imageUpload code="actor.avatar" path="avatar"/>
 	
 	<acme:textbox code="actor.email" path="email" required = "true"/>
 	
