@@ -187,7 +187,7 @@
 		<property name="movingMetal" value="5" />
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
-		<property name="kmPerSecond" value="5000" />
+		<property name="kmPerSecond" value="50000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="10" />
@@ -208,6 +208,9 @@
 		<property name="maxInventoryWood" value="20" />
 		<property name="maxInventoryMetal" value="20" />
 		<property name="numInitialCharacters" value="3" />
+		<property name="refugeFindingProbability" value="0.1" />
+		<property name="refugeFindingMinuteAugmentProbability" value="90" />
+		
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
@@ -511,10 +514,10 @@
 	</bean>
 
 	<bean id="Inventory2" class="domain.Inventory">
-		<property name="water" value="20" />
-		<property name="food" value="20" />
-		<property name="wood" value="20" />
-		<property name="metal" value="20" />
+		<property name="water" value="1" />
+		<property name="food" value="1" />
+		<property name="wood" value="1" />
+		<property name="metal" value="1" />
 		<property name="waterCapacity" value="30" />
 		<property name="foodCapacity" value="30" />
 		<property name="woodCapacity" value="30" />

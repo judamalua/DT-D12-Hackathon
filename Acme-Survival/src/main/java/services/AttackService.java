@@ -149,102 +149,135 @@ public class AttackService {
 		Assert.isTrue(attack.getId() != 0);
 		Assert.isTrue(this.attackRepository.exists(attack.getId()));
 
-		Notification notification;
+		Notification notification, defendantNotification;
+		ArrayList<Integer> resourcesStolen;
+		Integer resources;
 
+		resources = this.getResourcesOfAttack(attack);
+		resourcesStolen = this.calculateResourcesToSteal(attack, resources);
 		notification = this.notificationService.findNotificationByMission(attack.getId());
-		this.stealResources(attack);
 
 		if (notification != null) {
 			notification.setMission(null);
 			this.notificationService.save(notification);
 		}
 
+		defendantNotification = this.notificationService.create();
+
+		defendantNotification.setPlayer(attack.getDefendant().getPlayer());
+		defendantNotification.setBody(this.notificationService.generetateMapBodyResultByAttack(attack));
+		defendantNotification.setTitle(this.notificationService.generetateTitleMapResultByAttack(attack));
+
+		this.stealResources(attack, resourcesStolen);
+
+		this.notificationService.saveToDefendant(defendantNotification);
+
 		this.attackRepository.delete(attack);
 
 	}
 
-	private void stealResources(final Attack attack) {
-		Integer resources;
+	public ArrayList<Integer> calculateResourcesToSteal(final Attack attack, final Integer resources) {
+		ArrayList<Integer> result;
 		Double waterStolen, foodStolen, metalStolen, woodStolen;
 		ArrayList<Integer> resourcesStolen;
 		Inventory attackerInventory, defendantInventory;
-		Double attackerCapacity, totalCapacity;
 
-		resources = this.getResourcesOfAttack(attack);
 		resourcesStolen = this.getCollectionResourcesOfAttack(resources);
 		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
 		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
-		attackerCapacity = attackerInventory.getWaterCapacity() + attackerInventory.getFoodCapacity() + attackerInventory.getMetalCapacity() + attackerInventory.getWaterCapacity();
-		totalCapacity = attackerCapacity;
 
 		waterStolen = 1.0 * resourcesStolen.get(0);
 		foodStolen = 1.0 * resourcesStolen.get(1);
 		metalStolen = 1.0 * resourcesStolen.get(2);
 		woodStolen = 1.0 * resourcesStolen.get(3);
 
-		if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + waterStolen <= attackerCapacity) && (defendantInventory.getWater() - waterStolen >= 0)) {
-			attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
-			defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
-
-		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + waterStolen <= attackerCapacity) && (defendantInventory.getWater() - waterStolen < 0)) {
+		//WATER
+		if ((attackerInventory.getWater() + waterStolen <= attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen < 0))
 			waterStolen = defendantInventory.getWater();
-			attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
-			defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
+		else if ((attackerInventory.getWater() + waterStolen > attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen >= 0))
+			waterStolen = attackerInventory.getWaterCapacity() - attackerInventory.getWater();
+		else if ((attackerInventory.getWater() + waterStolen > attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen < 0)) {
+			waterStolen = attackerInventory.getWaterCapacity() - attackerInventory.getWater();
 
-		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + waterStolen > attackerCapacity) && (defendantInventory.getWater() - waterStolen >= 0)) {
-			waterStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
-			attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
-			defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
+			if (defendantInventory.getWater() - waterStolen < 0)
+				waterStolen = defendantInventory.getWater();
 
 		}
 
-		if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + foodStolen <= attackerCapacity && (defendantInventory.getFood() - foodStolen >= 0)) {
-			attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
-			defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
-
-		} else if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + foodStolen <= attackerCapacity && (defendantInventory.getFood() - foodStolen < 0)) {
+		//FOOD
+		if ((attackerInventory.getFood() + foodStolen <= attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen < 0))
 			foodStolen = defendantInventory.getFood();
-			attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
-			defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
+		else if ((attackerInventory.getFood() + foodStolen > attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen >= 0))
+			foodStolen = attackerInventory.getFoodCapacity() - attackerInventory.getFood();
+		else if ((attackerInventory.getFood() + foodStolen > attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen < 0)) {
+			foodStolen = attackerInventory.getFoodCapacity() - attackerInventory.getFood();
 
-		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + foodStolen > attackerCapacity) && (defendantInventory.getFood() - foodStolen >= 0)) {
-			foodStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
-			attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
-			defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
+			if (defendantInventory.getFood() - foodStolen < 0)
+				foodStolen = defendantInventory.getFood();
 
 		}
 
-		if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + metalStolen <= attackerCapacity && (defendantInventory.getMetal() - metalStolen >= 0)) {
-			attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
-			defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
-			totalCapacity = totalCapacity + metalStolen;
-		} else if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + metalStolen <= attackerCapacity && (defendantInventory.getMetal() - metalStolen < 0)) {
+		//METAL
+		if ((attackerInventory.getMetal() + metalStolen <= attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen < 0))
 			metalStolen = defendantInventory.getMetal();
-			attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
-			defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
-			totalCapacity = totalCapacity + metalStolen;
-		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + metalStolen > attackerCapacity) && (defendantInventory.getMetal() - metalStolen >= 0)) {
-			metalStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
-			attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
-			defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
+		else if ((attackerInventory.getMetal() + metalStolen > attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen >= 0))
+			metalStolen = attackerInventory.getMetalCapacity() - attackerInventory.getMetal();
+		else if ((attackerInventory.getMetal() + metalStolen > attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen < 0)) {
+			metalStolen = attackerInventory.getMetalCapacity() - attackerInventory.getMetal();
+
+			if (defendantInventory.getMetal() - metalStolen < 0)
+				metalStolen = defendantInventory.getMetal();
 
 		}
 
-		if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + woodStolen <= attackerCapacity && (defendantInventory.getWood() - woodStolen >= 0)) {
-			attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
-			defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
-			totalCapacity = totalCapacity + woodStolen;
-		} else if (this.inventoryService.findTotalResourcesByInventory(attackerInventory) + woodStolen <= attackerCapacity && (defendantInventory.getWood() - woodStolen < 0)) {
+		//WOOD	
+		if ((attackerInventory.getWood() + woodStolen <= attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen < 0))
 			woodStolen = defendantInventory.getWood();
-			attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
-			defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
-			totalCapacity = totalCapacity + woodStolen;
-		} else if ((this.inventoryService.findTotalResourcesByInventory(attackerInventory) + woodStolen > attackerCapacity) && (defendantInventory.getWood() - woodStolen >= 0)) {
-			woodStolen = (attackerCapacity - this.inventoryService.findTotalResourcesByInventory(attackerInventory));
-			attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
-			defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
+		else if ((attackerInventory.getWood() + woodStolen > attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen >= 0))
+			woodStolen = attackerInventory.getWoodCapacity() - attackerInventory.getWood();
+		else if ((attackerInventory.getWood() + woodStolen > attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen < 0)) {
+			woodStolen = attackerInventory.getWoodCapacity() - attackerInventory.getWood();
+
+			if (defendantInventory.getWood() - woodStolen >= 0)
+				woodStolen = defendantInventory.getWood();
 
 		}
+
+		result = new ArrayList<Integer>();
+
+		result.add(waterStolen.intValue());
+		result.add(foodStolen.intValue());
+		result.add(metalStolen.intValue());
+		result.add(woodStolen.intValue());
+
+		return result;
+
+	}
+
+	public void stealResources(final Attack attack, final ArrayList<Integer> resourcesArray) {
+		Integer waterStolen;
+		Integer foodStolen;
+		Integer metalStolen;
+		Integer woodStolen;
+		Inventory attackerInventory, defendantInventory;
+
+		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
+		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
+
+		waterStolen = resourcesArray.get(0);
+		foodStolen = resourcesArray.get(1);
+		metalStolen = resourcesArray.get(2);
+		woodStolen = resourcesArray.get(3);
+
+		attackerInventory.setWater(attackerInventory.getWater() + waterStolen);
+		attackerInventory.setFood(attackerInventory.getFood() + foodStolen);
+		attackerInventory.setMetal(attackerInventory.getMetal() + metalStolen);
+		attackerInventory.setWood(attackerInventory.getWood() + woodStolen);
+
+		defendantInventory.setWater(defendantInventory.getWater() - waterStolen);
+		defendantInventory.setFood(defendantInventory.getFood() - foodStolen);
+		defendantInventory.setMetal(defendantInventory.getMetal() - metalStolen);
+		defendantInventory.setWood(defendantInventory.getWood() - woodStolen);
 
 		this.inventoryService.save(attackerInventory);
 		this.inventoryService.save(defendantInventory);

@@ -327,10 +327,8 @@ public class RefugeService {
 		for (int i = 0; i < 10; i++) {
 			result += alphabet.charAt(random.nextInt(alphabet.length()));
 		}
-
 		return result;
 	}
-
 	public Refuge findRefugeByPlayer(final int playerId) {
 		Refuge result;
 
@@ -540,6 +538,14 @@ public class RefugeService {
 
 			result = this.save(refuge);
 		}
+
+		return result;
+	}
+
+	public Collection<Refuge> findAllRefugesInLocationExceptPlayerRefuge(final int locationId, final int refugeId) {
+		Collection<Refuge> result;
+
+		result = this.refugeRepository.findAllRefugesInLocationExceptPlayerRefuge(locationId, refugeId);
 
 		return result;
 	}
