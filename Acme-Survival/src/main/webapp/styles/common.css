@@ -36,6 +36,14 @@
 	text-align: center;
 }
 
+.plusLabel{
+	float:left;
+}
+
+.plusElm{
+	float:left;
+}
+
 .map{
 	float: left;
 	clear:both;

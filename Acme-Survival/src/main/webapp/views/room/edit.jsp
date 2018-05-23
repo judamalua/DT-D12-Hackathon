@@ -33,6 +33,48 @@
 				} else if (result.length > 0) {
 					$('#wood').html(result.split(',')[0]);
 					$('#metal').html(result.split(',')[1]);
+					if (result.split(',')[2] > 0) {
+						$('#resourceHealth').show();
+						$('#plusHealth').html(result.split(',')[2]);
+					} else {
+						$('#resourceHealth').hide();
+					}
+					if (result.split(',')[3] > 0) {
+						$('#resourceFood').show();
+						$('#plusFood').html(result.split(',')[3]);
+					} else {
+						$('#resourceFood').hide();
+					}
+					if (result.split(',')[4] > 0) {
+						$('#resourceWater').show();
+						$('#plusWater').html(result.split(',')[4]);
+					} else {
+						$('#resourceWater').hide();
+					}
+					if (result.split(',')[5] > 0) {
+						$('#resourceMetal').show();
+						$('#plusMetal').html(result.split(',')[5]);
+					} else {
+						$('#resourceMetal').hide();
+					}
+					if (result.split(',')[6] > 0) {
+						$('#resourceWood').show();
+						$('#plusWood').html(result.split(',')[6]);
+					} else {
+						$('#resourceWood').hide();
+					}
+					if (result.split(',')[7] > 0) {
+						$('#resourceCharacterCapacity').show();
+						$('#plusCharacterCapacity').html(result.split(',')[7]);
+					} else {
+						$('#resourceCharacterCapacity').hide();
+					}
+					if (result.split(',')[8] > 0) {
+						$('#resourceItemCapacity').show();
+						$('#plusItemCapacity').html(result.split(',')[8]);
+					} else {
+						$('#resourceItemCapacity').hide();
+					}
 					$('#resources').show();
 					$('#resourceError').hide();
 				} else {
@@ -56,13 +98,96 @@
 			</p>
 
 			<div id="resources">
-				<spring:message code="room.wood" />
-				:
-				<div id="wood"></div>
-				<spring:message code="room.metal" />
-				:
-				<div id="metal"></div>
+				<div class="plusLabel">
+					<spring:message code="room.wood" />
+					:
+				</div>
+				<div class="plusElm">
+					<div id="wood"></div>
+				</div>
+				<br />
+				<div class="plusLabel">
+					<spring:message code="room.metal" />
+					:
+				</div>
+				<div class="plusElm">
+					<div id="metal"></div>
+				</div>
+				<br />
+				<div id="resourceHealth">
+
+					<div class="plusLabel">
+						<spring:message code="room.health" />
+						+
+					</div>
+					<div class="plusElm">
+						<div id="plusHealth"></div>
+						/min
+					</div>
+					<br />
+				</div>
+
+				<div id="resourceFood">
+					<div class="plusLabel">
+						<spring:message code="room.food" />
+						+
+					</div>
+					<div class="plusElm">
+						<div id="plusFood"></div>
+						/min
+					</div>
+					<br />
+				</div>
+				<div id="resourceWater">
+					<div class="plusLabel">
+						<spring:message code="room.water" />
+						+
+					</div>
+					<div class="plusElm">
+						<div id="plusWater"></div>/min
+					</div>
+					<br />
+				</div>
+				<div id="resourceMetal">
+					<div class="plusLabel">
+						<spring:message code="room.metal" />
+						+
+					</div>
+					<div class="plusElm">
+						<div id="plusMetal"></div>
+						/min
+					</div>
+					<br />
+				</div>
+				<div id="resourceWood">
+					<div class="plusLabel">
+						<spring:message code="room.wood" />
+						+
+					</div>
+					<div class="plusElm">
+						<div id="plusWood"></div>
+						/min
+					</div>
+					<br />
+				</div>
+				<div id="resourceCharacterCapacity">
+					<div class="plusLabel">
+						<spring:message code="room.characterCapacity" />
+						+
+					</div>
+
+					<div class="plusElm" id="plusCharacterCapacity"></div>
+				</div>
+				<div id="resourceItemCapacity">
+					<div class="plusLabel">
+						<spring:message code="room.itemCapacity" /> + 
+					</div>
+					
+					<div class="plusElm" id="plusItemCapacity"></div>
+					<br />
+				</div>
 			</div>
+			<br />
 			<div id="resourceError" class="error">
 				<spring:message code="room.resources.error" />
 			</div>
@@ -70,7 +195,7 @@
 
 			<acme:select id="roomDesign" items="${roomDesigns}"
 				itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
-			<br/>
+			<br />
 			<div class="cleared-div">
 				<acme:submit name="save" code="room.save" />
 
