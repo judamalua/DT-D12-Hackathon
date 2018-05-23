@@ -431,6 +431,7 @@
 		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="currentlyInGatheringMission" value="false" />
+		<property name="gatherNotificated" value="true" />
 
 	</bean>
 

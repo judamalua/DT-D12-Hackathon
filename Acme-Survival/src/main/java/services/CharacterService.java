@@ -93,9 +93,8 @@ public class CharacterService {
 
 		result = this.characterRepository.findOne(characterId);
 
-		if (result != null && result.getRoom() != null && result.getRoom().getRoomDesign() instanceof RestorationRoom) {
+		if (result != null && result.getRoom() != null && result.getRoom().getRoomDesign() instanceof RestorationRoom)
 			result = this.updateStats(result);
-		}
 
 		return result;
 
@@ -147,9 +146,8 @@ public class CharacterService {
 		Assert.isTrue(this.characterRepository.exists(character.getId()));
 		Assert.isTrue(character.getCurrentHealth() == 0);
 
-		if (character.getItem() != null) {
+		if (character.getItem() != null)
 			this.itemService.delete(character.getItem());
-		}
 
 		this.characterRepository.delete(character);
 
@@ -229,11 +227,10 @@ public class CharacterService {
 		refuge = this.refugeService.findOne(refugeId);
 		final String name = faker.gameOfThrones().character();
 
-		if (sexo == 0) {
+		if (sexo == 0)
 			character.setMale(true);
-		} else {
+		else
 			character.setMale(false);
-		}
 
 		character.setFullName(name);
 		character.setCurrentFood(100);
@@ -245,6 +242,7 @@ public class CharacterService {
 		character.setRefuge(refuge);
 		character.setRoom(null);
 		character.setCurrentlyInGatheringMission(false);
+		character.setGatherNotificated(true);
 
 		this.generateCharacterAbilities(character);
 
@@ -262,7 +260,7 @@ public class CharacterService {
 		final List<Integer> properties = new ArrayList<Integer>();
 		final Random r = new Random();
 
-		for (int i = 1; i <= 3; i++) {
+		for (int i = 1; i <= 3; i++)
 			if ((i == 1)) {
 				final Integer property = r.nextInt(11) + 1;
 				properties.add(property);
@@ -278,7 +276,6 @@ public class CharacterService {
 				properties.add(last);
 				sum += last;
 			}
-		}
 		Assert.isTrue(sum == 30);
 
 		character.setCapacity(properties.get(0));
@@ -322,17 +319,15 @@ public class CharacterService {
 
 		//La experiencia para cada nivel se calcula (nivel^2*100) 
 		//ejemplo para alcanzar nivel 2(2*2*100 = 400 experiencia)
-		if (experience < (currentLevel + 1) * (currentLevel + 1) * 100) {
+		if (experience < (currentLevel + 1) * (currentLevel + 1) * 100)
 			finalLevel = currentLevel;
-		} else {
+		else
 			for (int i = currentLevel + 1; i <= 100; i++) {
 				finalLevel = i;
 				this.LevelUP(character);
-				if (i == 100 || experience < (i + 1) * (i + 1) * 100) {
+				if (i == 100 || experience < (i + 1) * (i + 1) * 100)
 					break;
-				}
 			}
-		}
 		character.setLevel(finalLevel);
 
 		Assert.isTrue(character.getLevel() == 100 || ((character.getLevel() + 1) * (character.getLevel() + 1) * 100) > character.getExperience());
@@ -349,7 +344,7 @@ public class CharacterService {
 		final List<Integer> properties = new ArrayList<Integer>();
 		final Random r = new Random();
 
-		for (int i = 1; i <= 3; i++) {
+		for (int i = 1; i <= 3; i++)
 			if ((i == 1)) {
 				final Integer property = r.nextInt(2) + 1;
 				properties.add(property);
@@ -365,7 +360,6 @@ public class CharacterService {
 				properties.add(last);
 				sum += last;
 			}
-		}
 		Assert.isTrue(sum == 5);
 
 		character.setCapacity(character.getCapacity() + properties.get(0));
@@ -485,30 +479,34 @@ public class CharacterService {
 		if (character.getCurrentFood() + food < 100) {
 			character.setCurrentFood((int) (character.getCurrentFood() + food));
 			inventory.setFood(inventory.getFood() - food);
-		} else {
+		} else
 			character.setCurrentFood(100);
-		}
 
-		if (character.getCurrentHealth() + health < 100) {
+		if (character.getCurrentHealth() + health < 100)
 			character.setCurrentHealth((int) (character.getCurrentHealth() + health));
-		} else {
+		else
 			character.setCurrentHealth(100);
-		}
 
 		if (character.getCurrentWater() + water < 100) {
 			character.setCurrentWater((int) (character.getCurrentWater() + water));
 			inventory.setWater(inventory.getWater() - water);
-		} else {
+		} else
 			character.setCurrentWater(100);
-		}
 
-		if (minutes > 0) {
+		if (minutes > 0)
 			character.setRoomEntrance(currentDate);
-		}
 
 		this.inventoryService.save(inventory);
 
 		result = this.save(character);
+
+		return result;
+	}
+
+	public Collection<Character> findCharactersNotNotificatedOfGather(final int refugeId) {
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersNotNotificatedOfGather(refugeId);
 
 		return result;
 	}
