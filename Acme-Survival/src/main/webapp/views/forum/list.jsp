@@ -37,10 +37,14 @@
 
 	<display:column title="">
 		<img class="forumImg" src="${forum.image}" />
-		<a href="forum/list.do?forumId=${forum.id}"><jstl:out
-				value="${forum.name}" /></a>
-		<br />
-		<jstl:out value="${forum.description}" />
+		<div class="forumNameDescription">
+			<div class="forumName">
+				<a href="forum/list.do?forumId=${forum.id}"><jstl:out
+						value="${forum.name}" /></a>
+			</div>
+			<br />
+			<div class="forumDescrition"><jstl:out value="${forum.description}" /></div>
+		</div>
 	</display:column>
 
 	<display:column>
@@ -86,7 +90,7 @@
 
 <security:authorize access="isAuthenticated()">
 	<acme:button url="forum/actor/create.do" code="forum.create" />
-
+	<br/>
 	<jstl:if test="${fatherForum!=null}">
 		<acme:button url="thread/actor/create.do?forumId=${fatherForum.id}"
 			code="thread.create" />

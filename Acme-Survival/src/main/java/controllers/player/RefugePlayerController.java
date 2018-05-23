@@ -40,6 +40,7 @@ import domain.Configuration;
 import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
+import domain.RestorationRoom;
 import domain.Room;
 
 @Controller
@@ -117,7 +118,7 @@ public class RefugePlayerController extends AbstractController {
 			characters = this.characterService.findCharactersByRefuge(refuge.getId());
 			charactersUpdated = new HashSet<>();
 			for (final domain.Character character : characters) {
-				if (character.getRoom() != null) {
+				if (character.getRoom() != null && (character.getRoom().getRoomDesign() instanceof RestorationRoom)) {
 					charactersUpdated.add(this.characterService.updateStats(character));
 				} else {
 					charactersUpdated.add(character);

@@ -21,43 +21,44 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <script>
-$(document).ready(function() {
-	$('.chips').chips();
-});
-
+	
 </script>
-<form:form action="thread/actor/edit.do" modelAttribute="thread">
+<div class="form-group">
+	<div class="row">
+		<form:form action="thread/actor/edit.do" modelAttribute="thread">
 
-	<form:hidden path="id" />
-	<form:hidden path="version" />
-	<jstl:if test="${thread.forum!=null}">
-		<form:hidden path="forum" />
-	</jstl:if>
-	<p>
-		<em><spring:message code="form.required.params" /></em>
-	</p>
+			<form:hidden path="id" />
+			<form:hidden path="version" />
+			<jstl:if test="${thread.forum!=null}">
+				<form:hidden path="forum" />
+			</jstl:if>
+			<p>
+				<em><spring:message code="form.required.params" /></em>
+			</p>
 
-	<acme:textbox code="thread.name" path="name" required="true" />
-	
-	<spring:message code="thread.tags.info"/>
-	<acme:textarea code="thread.tags" path="tags" />
-	
-	<jstl:if test="${thread.forum==null}">
-		<acme:select items="${forums}" itemLabel="name" code="thread.forum"
-			path="forum" />
-	</jstl:if>
-	<acme:submit name="save" code="thread.save" />
+			<acme:textbox code="thread.name" path="name" required="true" />
 
-	<jstl:if test="${thread.id!=0}">
-		<acme:delete clickCode="thread.delete.message" name="delete"
-			code="thread.delete" />
-	</jstl:if>
-	<jstl:if test="${thread.forum==null}">
-		<acme:cancel url="forum/list.do" code="thread.cancel" />
-	</jstl:if>
-	<jstl:if test="${thread.forum!=null}">
-		<acme:cancel url="forum/list.do?forumId=${thread.forum.id}"
-			code="thread.cancel" />
-	</jstl:if>
+			<spring:message code="thread.tags.info" />
+			<acme:textarea code="thread.tags" path="tags" />
 
-</form:form>
+			<jstl:if test="${thread.forum==null}">
+				<acme:select items="${forums}" itemLabel="name" code="thread.forum"
+					path="forum" />
+			</jstl:if>
+			<acme:submit name="save" code="thread.save" />
+
+			<jstl:if test="${thread.id!=0}">
+				<acme:delete clickCode="thread.delete.message" name="delete"
+					code="thread.delete" />
+			</jstl:if>
+			<jstl:if test="${thread.forum==null}">
+				<acme:cancel url="forum/list.do" code="thread.cancel" />
+			</jstl:if>
+			<jstl:if test="${thread.forum!=null}">
+				<acme:cancel url="forum/list.do?forumId=${thread.forum.id}"
+					code="thread.cancel" />
+			</jstl:if>
+
+		</form:form>
+	</div>
+</div>
