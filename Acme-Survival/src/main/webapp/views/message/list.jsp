@@ -22,7 +22,7 @@
 <br/>
 <h5><jstl:out value="${fatherThread.name}" /></h5>
 
-<acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
+<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
 	page="${page}" />
 
 <display:table name="messages" id="row" requestURI="${requestURI}"

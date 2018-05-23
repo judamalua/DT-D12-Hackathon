@@ -88,7 +88,7 @@
 
 </display:table>
 
-<security:authorize access="isAuthenticated()">
+<security:authorize access="isAuthenticated() and !hasRole('PLAYER')">
 	<acme:button url="forum/actor/create.do" code="forum.create" />
 	<br/>
 	<jstl:if test="${fatherForum!=null}">

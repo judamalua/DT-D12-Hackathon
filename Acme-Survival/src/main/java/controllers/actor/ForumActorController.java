@@ -69,8 +69,11 @@ public class ForumActorController extends AbstractController {
 	public ModelAndView create() {
 		ModelAndView result;
 		final Forum forum;
+		Actor actor;
 		try {
-			this.actorService.checkActorLogin();
+
+			actor = this.actorService.findActorByPrincipal();
+			Assert.isTrue(!(actor instanceof Player));
 			forum = this.forumService.create();
 
 			result = this.createEditModelAndView(forum);
@@ -91,20 +94,22 @@ public class ForumActorController extends AbstractController {
 			forum = this.forumService.reconstruct(forum, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(sendedForum, "forum.params.error");
-		else
+		} else {
 			try {
 				Assert.notNull(forum);
 				savedForum = this.forumService.save(forum);
-				if (savedForum.getForum() != null)
+				if (savedForum.getForum() != null) {
 					result = new ModelAndView("redirect:/forum/list.do?forumId=" + savedForum.getForum().getId() + "&staff=" + savedForum.getStaff());
-				else
+				} else {
 					result = new ModelAndView("redirect:/forum/list.do?staff=" + savedForum.getStaff());
+				}
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(forum, "forum.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -117,10 +122,11 @@ public class ForumActorController extends AbstractController {
 			forum = this.forumService.findOne(forum.getId());
 			this.forumService.delete(forum);
 
-			if (forum.getForum() != null)
+			if (forum.getForum() != null) {
 				result = new ModelAndView("redirect:/forum/list.do?forumId=" + forum.getForum().getId() + "&staff=" + forum.getStaff());
-			else
+			} else {
 				result = new ModelAndView("redirect:/forum/list.do?staff=" + forum.getStaff());
+			}
 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(forum, "forum.commit.error");
@@ -147,13 +153,15 @@ public class ForumActorController extends AbstractController {
 		actor = this.actorService.findActorByPrincipal();
 		if (forum.getId() == 0) {
 			forums = this.forumService.findForums(false, actor);
-			if (!(actor instanceof Player))
+			if (!(actor instanceof Player)) {
 				forums.addAll(this.forumService.findForums(true, actor));
+			}
 		} else {
-			if (forum.getStaff() && !(actor instanceof Player))
+			if (forum.getStaff() && !(actor instanceof Player)) {
 				forums = this.forumService.findForums(true, actor);
-			else
+			} else {
 				forums = this.forumService.findForums(false, actor);
+			}
 			subForums = this.forumService.findAllSubForums(forum.getId());
 			forums.removeAll(subForums);
 		}
