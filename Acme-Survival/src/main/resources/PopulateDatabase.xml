@@ -190,7 +190,7 @@
 		<property name="kmPerSecond" value="50000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
-		<property name="refugeRecoverTime" value="1" />
+		<property name="refugeRecoverTime" value="2" />
 		<property name="waterFactorSteal" value="0.25" />
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
