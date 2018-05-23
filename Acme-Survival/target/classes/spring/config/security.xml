@@ -83,6 +83,8 @@
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/event/designer/list.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
+		<security:intercept-url pattern="/event/designer/list-final.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/event/designer/create.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/lootTable/designer/edit.do"

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -81,30 +83,24 @@ public class LootTableDesignerController extends AbstractController {
 
 	
 	@RequestMapping(value = "/list")
-	public ModelAndView listLootTables(@RequestParam(defaultValue = "0") final int page) {
+	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
-		//Page<LootTable> lootTables;
-		Collection<LootTable> lootTables;
+		Page<LootTable> lootTables;
 		Actor actor;
 		Pageable pageable;
 		Configuration configuration;
-
 		try {
-
 			configuration = this.configurationService.findConfiguration();
-
 			pageable = new PageRequest(page, configuration.getPageSize());
 			result = new ModelAndView("lootTable/list");
 			actor = this.actorService.findActorByPrincipal();
-			
-
-			lootTables = this.lootTableService.findAll();
-
-			result.addObject("managerDraftModeView", true);
-			result.addObject("lootTables", lootTables);
-		//	result.addObject("page", page);
+			// Checking that the user trying to list draft mode products is a manager.
+			Assert.isTrue(actor instanceof Designer);
+			lootTables = this.lootTableService.findAll(pageable);
+			result.addObject("lootTables", lootTables.getContent());
+			result.addObject("page", page);
 			result.addObject("requestURI", "lootTable/designer/list.do");
-		//	result.addObject("pageNum", draftModeProducts.getTotalPages());
+			result.addObject("pageNum", lootTables.getTotalPages());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -235,15 +231,35 @@ public class LootTableDesignerController extends AbstractController {
 		else{
 			result = this.createEditModelAndView(lootTable, "lootTable.params.error");
 		}
-//		if (binding.hasErrors())
-//			result = this.createEditModelAndView(lootTable, "lootTable.params.error");
-//		else
-			
-				
 				
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(lootTable, "lootTable.commit.error");
 			}
+
+		return result;
+	}
+	
+	/**
+	 * This method deletes a LootTable
+	 * 
+	 * @param lootTable
+	 * @param binding
+	 * @return a model depending on the error/success on the operation
+	 * 
+	 * @author Alejandro
+	 */
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(@Valid final LootTable lootTable, final BindingResult binding) {
+		ModelAndView result;
+
+		try {
+			Assert.isTrue(!lootTable.getFinalMode());
+			this.lootTableService.delete(lootTable);
+			result = new ModelAndView("redirect:list.do");
+
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(lootTable, "lootTable.commit.error");
+		}
 
 		return result;
 	}
