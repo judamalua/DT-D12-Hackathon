@@ -9,12 +9,31 @@
  */
 
 .forumImg{
-	width: 10%;
-	height: 10%;
+	width: 100px;
+	height: 100px;
+	float:left;
+}
+
+.forumNameDescription{
+	float:left;
+	clear: right;
+	vertical-align: middle;
+}
+
+.forumName a{
+	font-size: 35px;
+	color: black;
+	font-weight: bold;
+}
+
+.forumDescrition{
+	margin-top: -20px;
+	margin-bottom: 5px;
 }
 
 .character{
 	float:left;
+	text-align: center;
 }
 
 .map{
@@ -71,6 +90,18 @@
 
 .paginacion{
 	margin-left: 1%;
+}
+
+.pagination li {
+    background-color: #232323;
+    color:white;
+}
+
+.pagination li > a{
+    color:white;
+}
+.pagination li.active{
+    background-color: #666666;
 }
 
 .body{
@@ -236,7 +267,11 @@ nav{
 }
 
 .dropdown-content > li{
-   background-color: #753019;
+   background-color: #232323;
+   color: white;
+}
+.dropdown-content > li:hover{
+   background-color: #5A5A5A;
    color: white;
 }
 

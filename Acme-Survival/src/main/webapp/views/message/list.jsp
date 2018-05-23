@@ -31,7 +31,7 @@
 	<spring:message code="message.image" var="image" />
 	<display:column>
 		<img src="${row.image}" />
-		<jstl:out value="${row.text}" />
+		${row.text}
 		<br />
 		<fmt:formatDate value="${row.moment}" pattern="${format}" />
 	</display:column>
