@@ -14,7 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.EventRepository;
+import domain.Actor;
+import domain.Designer;
+import domain.Admin;
 import domain.Event;
+import domain.Manager;
 
 @Service
 @Transactional
@@ -26,6 +30,8 @@ public class EventService {
 	private EventRepository	eventRepository;
 	@Autowired
 	private Validator				validator;
+	@Autowired
+	private ActorService	actorService;
 
 
 	// Supporting services --------------------------------------------------
@@ -58,6 +64,10 @@ public class EventService {
 	
 	public Page<Event> findNotFinal(Pageable pageable) {
 		Page<Event> result;
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to modify/create a product is a designer.
+		Assert.isTrue(actor instanceof Designer || actor instanceof Admin);
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findNotFinal(pageable);
 		Assert.notNull(result);
@@ -66,6 +76,10 @@ public class EventService {
 	
 	public Page<Event> findFinal(Pageable pageable) {
 		Page<Event> result;
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to modify/create a product is a designer.
+		Assert.isTrue(actor instanceof Designer || actor instanceof Admin);
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findFinal(pageable);	
 		Assert.notNull(result);
