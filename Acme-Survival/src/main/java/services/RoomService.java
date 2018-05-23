@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RoomRepository;
+import domain.Barrack;
 import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
@@ -115,12 +116,44 @@ public class RoomService {
 		return result;
 
 	}
+
+	public Room saveRoomByAttack(final Room room) {
+		Room result;
+
+		result = this.roomRepository.save(room);
+
+		return result;
+	}
 	public void delete(final Room room) {
 
 		Assert.notNull(room);
 		Assert.isTrue(room.getId() != 0);
 
 		Assert.isTrue(this.roomRepository.exists(room.getId()));
+		Collection<domain.Character> characters;
+		//		Collection<domain.Character> charactersInRefuge;
+		Integer currentCapacity;
+		//		final domain.Character deleteCharacter;
+
+		characters = this.characterService.findCharactersByRoom(room.getId());
+		//		charactersInRefuge = this.characterService.findCharactersByRefuge(room.getRefuge().getId());
+		currentCapacity = this.refugeService.getCurrentCharacterCapacity(room.getRefuge());
+
+		if (!(room.getRoomDesign() instanceof Barrack)) {
+			for (final domain.Character character : characters) {
+				character.setRoom(null);
+				this.characterService.save(character);
+			}
+		} else {
+			Assert.isTrue(characters.size() > (currentCapacity - ((Barrack) room.getRoomDesign()).getCharacterCapacity()), "You not have space");
+
+			//				for (int i = 0; i < (charactersInRefuge.size() - (currentCapacity + ((Barrack) room.getRoomDesign()).getCharacterCapacity())); i++) {
+			//					deleteCharacter = (domain.Character) charactersInRefuge.toArray()[(int) Math.round(Math.random() * charactersInRefuge.size())];
+			//					this.characterService.characterRIP(deleteCharacter);
+			//				}
+			//			}
+		}
+
 		this.roomRepository.delete(room);
 	}
 
@@ -142,9 +175,11 @@ public class RoomService {
 		rooms = this.roomRepository.findRoomsByRefuge(refugeId);
 		result = new HashSet<>();
 
-		for (final Room room : rooms)
-			if (room.getRoomDesign() instanceof ResourceRoom)
+		for (final Room room : rooms) {
+			if (room.getRoomDesign() instanceof ResourceRoom) {
 				result.add(room);
+			}
+		}
 
 		return result;
 	}

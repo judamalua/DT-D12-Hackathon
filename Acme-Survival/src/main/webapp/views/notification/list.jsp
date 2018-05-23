@@ -36,7 +36,7 @@
 	<jstl:if test="${notification.gather!=null}">
 	<acme:button url="notification/player/displayGatherNotification.do?notificationId=${notification.id}" code="notification.display"/>
 	</jstl:if>
-	<jstl:if test="${notification.attack !=null}">
+	<jstl:if test="${notification.characterId ==null}">
 		<acme:button url="notification/player/display.do?notificationId=${notification.id}" code="notification.display"/>
 	</jstl:if>
 	</display:column>

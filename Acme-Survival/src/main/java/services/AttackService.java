@@ -20,6 +20,7 @@ import domain.Inventory;
 import domain.Notification;
 import domain.Player;
 import domain.Refuge;
+import domain.Room;
 
 @Service
 @Transactional
@@ -52,6 +53,9 @@ public class AttackService {
 
 	@Autowired
 	private InventoryService				inventoryService;
+
+	@Autowired
+	private RoomService						roomService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -199,58 +203,54 @@ public class AttackService {
 		woodStolen = 1.0 * resourcesStolen.get(3);
 
 		//WATER
-		if ((attackerInventory.getWater() + waterStolen <= attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen < 0)) {
+		if ((attackerInventory.getWater() + waterStolen <= attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen < 0))
 			waterStolen = defendantInventory.getWater();
-		} else if ((attackerInventory.getWater() + waterStolen > attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen >= 0)) {
+		else if ((attackerInventory.getWater() + waterStolen > attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen >= 0))
 			waterStolen = attackerInventory.getWaterCapacity() - attackerInventory.getWater();
-		} else if ((attackerInventory.getWater() + waterStolen > attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen < 0)) {
+		else if ((attackerInventory.getWater() + waterStolen > attackerInventory.getWaterCapacity()) && (defendantInventory.getWater() - waterStolen < 0)) {
 			waterStolen = attackerInventory.getWaterCapacity() - attackerInventory.getWater();
 
-			if (defendantInventory.getWater() - waterStolen < 0) {
+			if (defendantInventory.getWater() - waterStolen < 0)
 				waterStolen = defendantInventory.getWater();
-			}
 
 		}
 
 		//FOOD
-		if ((attackerInventory.getFood() + foodStolen <= attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen < 0)) {
+		if ((attackerInventory.getFood() + foodStolen <= attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen < 0))
 			foodStolen = defendantInventory.getFood();
-		} else if ((attackerInventory.getFood() + foodStolen > attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen >= 0)) {
+		else if ((attackerInventory.getFood() + foodStolen > attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen >= 0))
 			foodStolen = attackerInventory.getFoodCapacity() - attackerInventory.getFood();
-		} else if ((attackerInventory.getFood() + foodStolen > attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen < 0)) {
+		else if ((attackerInventory.getFood() + foodStolen > attackerInventory.getFoodCapacity()) && (defendantInventory.getFood() - foodStolen < 0)) {
 			foodStolen = attackerInventory.getFoodCapacity() - attackerInventory.getFood();
 
-			if (defendantInventory.getFood() - foodStolen < 0) {
+			if (defendantInventory.getFood() - foodStolen < 0)
 				foodStolen = defendantInventory.getFood();
-			}
 
 		}
 
 		//METAL
-		if ((attackerInventory.getMetal() + metalStolen <= attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen < 0)) {
+		if ((attackerInventory.getMetal() + metalStolen <= attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen < 0))
 			metalStolen = defendantInventory.getMetal();
-		} else if ((attackerInventory.getMetal() + metalStolen > attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen >= 0)) {
+		else if ((attackerInventory.getMetal() + metalStolen > attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen >= 0))
 			metalStolen = attackerInventory.getMetalCapacity() - attackerInventory.getMetal();
-		} else if ((attackerInventory.getMetal() + metalStolen > attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen < 0)) {
+		else if ((attackerInventory.getMetal() + metalStolen > attackerInventory.getMetalCapacity()) && (defendantInventory.getMetal() - metalStolen < 0)) {
 			metalStolen = attackerInventory.getMetalCapacity() - attackerInventory.getMetal();
 
-			if (defendantInventory.getMetal() - metalStolen < 0) {
+			if (defendantInventory.getMetal() - metalStolen < 0)
 				metalStolen = defendantInventory.getMetal();
-			}
 
 		}
 
 		//WOOD	
-		if ((attackerInventory.getWood() + woodStolen <= attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen < 0)) {
+		if ((attackerInventory.getWood() + woodStolen <= attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen < 0))
 			woodStolen = defendantInventory.getWood();
-		} else if ((attackerInventory.getWood() + woodStolen > attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen >= 0)) {
+		else if ((attackerInventory.getWood() + woodStolen > attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen >= 0))
 			woodStolen = attackerInventory.getWoodCapacity() - attackerInventory.getWood();
-		} else if ((attackerInventory.getWood() + woodStolen > attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen < 0)) {
+		else if ((attackerInventory.getWood() + woodStolen > attackerInventory.getWoodCapacity()) && (defendantInventory.getWood() - woodStolen < 0)) {
 			woodStolen = attackerInventory.getWoodCapacity() - attackerInventory.getWood();
 
-			if (defendantInventory.getWood() - woodStolen >= 0) {
+			if (defendantInventory.getWood() - woodStolen >= 0)
 				woodStolen = defendantInventory.getWood();
-			}
 
 		}
 
@@ -270,7 +270,9 @@ public class AttackService {
 		Integer foodStolen;
 		Integer metalStolen;
 		Integer woodStolen;
+		Integer attackResults, roomResistance;
 		Inventory attackerInventory, defendantInventory;
+		Collection<Room> rooms;
 
 		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
 		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
@@ -293,6 +295,23 @@ public class AttackService {
 		this.inventoryService.save(attackerInventory);
 		this.inventoryService.save(defendantInventory);
 
+		attackResults = this.getResourcesOfAttack(attack);
+		if (attackResults > 0) {
+			rooms = this.roomService.findRoomsByRefuge(attack.getDefendant().getId());
+
+			for (final Room r : rooms) {
+				roomResistance = r.getResistance();
+				if (roomResistance > 0) {
+					r.setResistance(roomResistance - 1); //TODO Add default roomDamage in DesignerConfiguration
+
+					if (r.getResistance() < 0)
+
+						r.setResistance(0);
+					this.roomService.saveRoomByAttack(r);
+				}
+			}
+		}
+
 	}
 	/**
 	 * This method checks that the player who is connected (the principal)
@@ -309,9 +328,8 @@ public class AttackService {
 		result = false;
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		if (player.getRefuges().contains(refuge)) {
+		if (player.getRefuges().contains(refuge))
 			result = true;
-		}
 
 		return result;
 	}
@@ -329,9 +347,8 @@ public class AttackService {
 
 		attack = this.attackRepository.findAttackByPlayer(playerId);
 
-		if (attack != null) {
+		if (attack != null)
 			result = true;
-		}
 
 		return result;
 	}
@@ -340,7 +357,7 @@ public class AttackService {
 	 * This methot returns the number of resources stolen in the Attack. If the attacker loses, it returns 0 or a negative number.
 	 * 
 	 * @param attack
-	 * @return resources stolen of the Attack. If is a lost, then it returns 0 or a negative number.
+	 * @return resources stolen of the Attack. If is a lost, then it returns 0.
 	 */
 	public Integer getResourcesOfAttack(final Attack attack) {
 		Integer strengthSumAttacker, strengthSumDefendant;
@@ -349,11 +366,13 @@ public class AttackService {
 		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
 		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
 
-		if (strengthSumDefendant == null) {
+		if (strengthSumDefendant == null)
 			strengthSumDefendant = 1;
-		}
 
 		result = strengthSumAttacker - strengthSumDefendant;
+
+		if (result < 0)
+			result = 0;
 
 		return result;
 
@@ -483,9 +502,8 @@ public class AttackService {
 		result = false;
 		now = new Date();
 
-		if (attack.getEndMoment().before(now)) {
+		if (attack.getEndMoment().before(now))
 			result = true;
-		}
 
 		return result;
 	}
@@ -500,9 +518,9 @@ public class AttackService {
 
 		refuge = this.refugeService.findOne(refugeId);
 
-		if (refuge.getLastAttackReceived() == null) {
+		if (refuge.getLastAttackReceived() == null)
 			result = true;
-		} else {
+		else {
 			result = false;
 			now = new Date();
 			refugeRecoverTime = this.designerConfigurationService.findDesignerConfiguration().getRefugeRecoverTime();
@@ -511,9 +529,8 @@ public class AttackService {
 
 			attackableTime = new Date(refuge.getLastAttackReceived().getTime() + miliseconds);
 
-			if (attackableTime.before(now)) {
+			if (attackableTime.before(now))
 				result = true;
-			}
 		}
 
 		return result;

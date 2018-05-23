@@ -33,7 +33,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.food" />
 		:
 		<div id="food">
-			<jstl:out value="${inventory.food}" />
+			<jstl:out value="${inventory.food}" />/<jstl:out value="${inventory.foodCapacity}"></jstl:out>
 		</div>
 	</div>
 	<div class="inventoryElm">
@@ -41,7 +41,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.water" />
 		:
 		<div id="water">
-			<jstl:out value="${inventory.water}" />
+			<jstl:out value="${inventory.water}" />/<jstl:out value="${inventory.waterCapacity}"/>
 		</div>
 	</div>
 	<div class="inventoryElm">
@@ -49,7 +49,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.metal" />
 		:
 		<div id="metal">
-			<jstl:out value="${inventory.metal}" />
+			<jstl:out value="${inventory.metal}" />/<jstl:out value="${inventory.metalCapacity}"/>
 		</div>
 	</div>
 	<div class="inventoryElm">
@@ -57,7 +57,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.wood" />
 		:
 		<div id="wood">
-			<jstl:out value="${inventory.wood}" />
+			<jstl:out value="${inventory.wood}" />/<jstl:out value="${inventory.woodCapacity}"/>
 		</div>
 	</div>
 </div>
@@ -159,6 +159,26 @@ $(document).ready(function(){
 				<jstl:out value="${room.roomDesign.name[lang]}" />
 				<br />
 				<jstl:out value="${room.roomDesign.description[lang]}" />
+			</display:column>
+			
+			<display:column title="">
+				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
+					<jstl:if test="${room.roomDesign.food>0}">
+						<spring:message code="food" />: +${room.roomDesign.food}
+					</jstl:if>	
+					<jstl:if test="${room.roomDesign.water>0}">
+						<spring:message code="water" />: +${room.roomDesign.water}
+					</jstl:if>	
+					<jstl:if test="${room.roomDesign.metal>0}">
+						<spring:message code="metal" />: +${room.roomDesign.metal}
+					</jstl:if>	
+					<jstl:if test="${room.roomDesign.wood>0}">
+						<spring:message code="wood" />: +${room.roomDesign.wood}
+					</jstl:if>		
+				</jstl:if>
+				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"Barrack\"}">
+					<spring:message code="capacity" />: +${room.roomDesign.characterCapacity}
+				</jstl:if>
 			</display:column>
 
 			<spring:message code="refuge.room.resistance"
