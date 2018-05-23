@@ -194,6 +194,7 @@ public class LootTableDesignerController extends AbstractController {
 		List<ProbabilityItem> probItems = new ArrayList<ProbabilityItem>();
 		List<ProbabilityEvent> probEvents = new ArrayList<ProbabilityEvent>();
 		lootTable.setName(allRequestParams.get("name"));
+		lootTable.setFinalMode(Boolean.valueOf(allRequestParams.get("finalMode")));
 		for (Entry<String, String> entry : allRequestParams.entrySet()){
 			if (entry.getKey().contains("item")){
 				ItemDesign item = itemDesignService.findOne(Integer.parseInt(entry.getKey().replaceFirst("item", "")));
@@ -263,8 +264,8 @@ public class LootTableDesignerController extends AbstractController {
 		result = new ModelAndView("lootTable/edit");
 		result.addObject("message", messageCode);
 		result.addObject("lootTable", lootTable);
-		result.addObject("events", eventService.findAll());
-		result.addObject("items", itemDesignService.findAll());
+		result.addObject("events", eventService.findFinal());
+		result.addObject("items", itemDesignService.findFinal());
 
 		return result;
 

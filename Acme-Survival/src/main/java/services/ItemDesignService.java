@@ -31,27 +31,35 @@ public class ItemDesignService {
 	// Simple CRUD methods --------------------------------------------------
 
 	public Collection<ItemDesign> findAll() {
-
 		Collection<ItemDesign> result;
-
 		Assert.notNull(this.itemDesignRepository);
 		result = this.itemDesignRepository.findAll();
 		Assert.notNull(result);
-
 		return result;
-
+	}
+	
+	public Collection<ItemDesign> findFinal() {
+		Collection<ItemDesign> result;
+		Assert.notNull(this.itemDesignRepository);
+		result = this.itemDesignRepository.findFinal();
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Collection<ItemDesign> findNotFinal() {
+		Collection<ItemDesign> result;
+		Assert.notNull(this.itemDesignRepository);
+		result = this.itemDesignRepository.findNotFinal();
+		Assert.notNull(result);
+		return result;
 	}
 
 	public Page<ItemDesign> findAll(final Pageable pageable) {
-
 		Page<ItemDesign> result;
-
 		Assert.notNull(this.itemDesignRepository);
 		result = this.itemDesignRepository.findAll(pageable);
 		Assert.notNull(result);
-
 		return result;
-
 	}
 
 	public ItemDesign findOne(final int itemDesignId) {

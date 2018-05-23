@@ -13,11 +13,12 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+
 <jsp:useBean id="date" class="java.util.Date" />
 <br/>
 <div class="cookies"></div>
 <footer class = page-footer>
-<div class = "footer-copyright">
+<div class = "footer-copyright metal-wasted">
 <div class="container">
 <strong>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" /> Acme Inc.</strong>
 
