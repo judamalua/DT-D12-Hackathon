@@ -85,12 +85,10 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("You don't have refuge")) {
+			if (oops.getMessage().contains("You don't have refuge"))
 				result = new ModelAndView("redirect:/refuge/player/create.do");
-			} else {
+			else
 				result = new ModelAndView("redirect:/misc/403");
-
-			}
 		}
 
 		return result;
@@ -109,10 +107,8 @@ public class NotificationPlayerController extends AbstractController {
 
 			result.addObject("notification", notification);
 
-			if (notification.getGather() != null) {
-
+			if (notification.getGather() != null)
 				result.addObject("gatherId", notification.getGather().getId());
-			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -142,16 +138,18 @@ public class NotificationPlayerController extends AbstractController {
 				result.addObject("notificationFood", resources.get(2));
 				result.addObject("notificationMetal", resources.get(3));
 				result.addObject("notificationWood", resources.get(4));
-			}
+
+				result.addObject("attackWon", true);
+			} else
+				result.addObject("attackWon", false);
+
 			result.addObject("notification", notification);
 
-			if (notification.getAttack() != null) {
-				if (notification.getAttack() instanceof Attack) {
+			if (notification.getAttack() != null)
+				if (notification.getAttack() instanceof Attack)
 					result.addObject("attackId", notification.getAttack().getId());
-				} else {
+				else
 					result.addObject("gatherId", notification.getGather().getId());
-				}
-			}
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
