@@ -62,6 +62,7 @@ $(document).ready(function(){
 	</div>
 </div>
 <br />
+<br />
 <h2>
 	<jstl:out value="${refuge.name}" />
 </h2>
@@ -78,10 +79,6 @@ $(document).ready(function(){
 </strong>
 <br />
 
-<jstl:if test="${owner}">
-	<acme:button url="refuge/player/edit.do?refugeId=${refuge.id}"
-		code="refuge.edit" />
-</jstl:if>
 <!-- Only a player who knows the refugee can display this information -->
 <security:authorize access="hasRole('PLAYER')">
 	<div class="characterContainer">
@@ -104,6 +101,7 @@ $(document).ready(function(){
 				</a> <br />
 				<jstl:if test="${character.currentlyInGatheringMission}">
 					<i class="material-icons"> directions_walk </i>
+					
 					<spring:message code="refuge.character.gather" />
 				</jstl:if>
 				<br />
@@ -152,7 +150,7 @@ $(document).ready(function(){
 		<strong> <spring:message code="refuge.room" />
 		</strong> <br />
 		<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
-			requestURI="refuge/player/display.do?refugeId=${refuge.id}&page=" />
+			requestURI="refuge/player/display.do?refugeId=${refuge.id}&pageRoom=" />
 		<display:table name="${rooms}" id="room"
 			requestURI="refuge/display.do?refugeId=${refuge.id}">
 
