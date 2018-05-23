@@ -171,34 +171,30 @@ public class NotificationService {
 	}
 
 	public void generateNotifications() {
-		Attack attack;
+		final Attack attack;
 		Player player;
-		Notification notification;
-		Map<String, String> title, body;
+		final Notification notification;
+		final Map<String, String> title, body;
 		Date now;
 
 		player = (Player) this.actorService.findActorByPrincipal();
 		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null)
+		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByMission(attack.getId());
+				title = this.generetateTitleMapResultByAttack(attack);
+				body = this.generetateMapBodyResultByAttack(attack);
 
-				if (notification == null) {
-					notification = this.create();
-					title = this.generetateTitleMapResultByAttack(attack);
-					body = this.generetateMapBodyResultByAttack(attack);
+				notification.setBody(body);
+				notification.setTitle(title);
+				notification.setMission(attack);
 
-					notification.setBody(body);
-					notification.setTitle(title);
-					notification.setMission(attack);
-
-					this.save(notification);
-
-				}
+				this.save(notification);
 
 			}
+		}
 
 	}
 
@@ -211,10 +207,10 @@ public class NotificationService {
 		resources = this.attackService.getResourcesOfAttack(attack);
 
 		if (resources <= 0) {
-			titleEs = "El defensor resistió el ataque";
+			titleEs = "El defensor resistiï¿½ el ataque";
 			titleEn = "The defendant resisted the attack";
 		} else {
-			titleEs = "El atacante consiguió robar recursos";
+			titleEs = "El atacante consiguiï¿½ robar recursos";
 			titleEn = "The attacker managed to steal resources";
 		}
 
@@ -236,7 +232,7 @@ public class NotificationService {
 		resources = this.attackService.getResourcesOfAttack(attack);
 
 		if (resources <= 0) {
-			bodyEs = "El atacante no condiguió robar ningún recurso.";
+			bodyEs = "El atacante no condiguiï¿½ robar ningï¿½n recurso.";
 			bodyEn = "The attacker didn't steal any resources.";
 		} else {
 			resourcesStolen = this.attackService.calculateResourcesToSteal(attack, resources);
@@ -244,7 +240,7 @@ public class NotificationService {
 			foodStolen = resourcesStolen.get(1);
 			metalStolen = resourcesStolen.get(2);
 			woodStolen = resourcesStolen.get(3);
-			bodyEs = "El atacante consiguió robar:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
+			bodyEs = "El atacante consiguiï¿½ robar:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 
 			bodyEn = "The attacker could steal:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 		}

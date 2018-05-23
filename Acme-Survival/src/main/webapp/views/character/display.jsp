@@ -25,11 +25,12 @@
 
 <!--Base Info-->
 <br>
+
+
+<div style="width: 200px; float: left;">
 <h3 class="characterName">
 	<jstl:out value="${character.fullName}" />
 </h3>
-
-<div style="width: 200px; float: left;">
 	<div class="characterImage" style="height: 200px; width: 200px;">
 	</div>
 	<br>

@@ -3,6 +3,7 @@ package controllers.player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
@@ -175,7 +177,7 @@ public class GatherPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/foundItems")
-	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int notificationId) {
+	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int notificationId, @RequestParam(defaultValue = "false", required = false) final Boolean failedSelection) {
 		ModelAndView result;
 		Collection<ItemDesign> items;
 		Refuge refuge;
@@ -253,14 +255,94 @@ public class GatherPlayerController extends AbstractController {
 				currentCapacityRefuge = this.refugeService.getCurrentCapacity(refuge);
 				totalTools = tools.size();
 
+				if (currentCapacityRefuge > totalTools) {
+					for (final Item tool : tools) {
+						tool.setRefuge(refuge);
+						this.itemService.save(tool);
+					}
+
+				}
+
+				result.addObject("failedSelection", failedSelection);
 				result.addObject("items", tools);
 				result.addObject("resources", resources);
 				result.addObject("currentCapacityRefuge", currentCapacityRefuge);
 				result.addObject("totalTools", totalTools);
+				result.addObject("notificationId", notificationId);
 			}
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
+		return result;
+	}
+
+	@RequestMapping(value = "/finishMission", method = RequestMethod.POST)
+	public @ResponseBody
+	String finishMission(@ModelAttribute("selected") String itemsSelected, @ModelAttribute("notSelected") String itemsNotSelected, @ModelAttribute("notificationId") final Integer notificationId) {
+		String result;
+		final Notification notification;
+		final Player player;
+		Gather gather;
+		final Refuge refuge;
+		final int currentCapacity;
+		final List<Integer> itemsToSave = new ArrayList<Integer>();
+		final List<Integer> itemsToRemove = new ArrayList<Integer>();
+		String[] itemsIds;
+		String[] notItemsIds;
+
+		itemsSelected = itemsSelected.substring(1, itemsSelected.length() - 1);
+		itemsNotSelected = itemsNotSelected.substring(1, itemsNotSelected.length() - 1);
+
+		itemsIds = itemsSelected.split(",");
+		notItemsIds = itemsNotSelected.split(",");
+
+		try {
+
+			player = (Player) this.actorService.findActorByPrincipal();
+			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			currentCapacity = this.refugeService.getCurrentCapacity(refuge);
+			notification = this.notificationService.findOne(notificationId);
+			gather = (Gather) notification.getMission();
+			result = "notification/player/list.do";
+
+			for (final String al : itemsIds) {
+
+				if (!al.equals("") && !(al.equals("\"\""))) {
+					final String s = al.substring(1, al.length() - 1);
+					final Integer i = new Integer(s);
+					itemsToSave.add(i);
+				}
+			}
+			for (final String al : notItemsIds) {
+				al.substring(1, al.length() - 1);
+				if (!al.equals("") && !(al.equals("\"\""))) {
+					final String s = al.substring(1, al.length() - 1);
+					final Integer i = new Integer(s);
+					itemsToRemove.add(i);
+				}
+			}
+
+			if (itemsToSave.size() <= currentCapacity) {
+				for (int i = 0; i < itemsToSave.size(); i++) {
+					final Item item = this.itemService.findOne(new Integer(itemsToSave.get(i)));
+					item.setRefuge(refuge);
+					this.itemService.save(item);
+				}
+				for (int i = 0; i < itemsToRemove.size(); i++) {
+					final Item item = this.itemService.findOne(new Integer(itemsToRemove.get(i)));
+					this.itemService.delete(item);
+				}
+				this.notificationService.delete(notification);
+				this.gatherService.delete(gather);
+
+			} else {
+				result = "gather/player/foundItems.do?notificationId=" + notification.getId() + "?failedSelection=true";
+			}
+
+		} catch (final Throwable oops) {
+			result = "misc/403";
+		}
+
 		return result;
 	}
 	// Ancilliary methods  -----------------------------------------------------------------

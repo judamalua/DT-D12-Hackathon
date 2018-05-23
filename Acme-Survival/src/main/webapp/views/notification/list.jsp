@@ -31,8 +31,14 @@
 	
 	
 	<spring:message code="notification.display" var="titleDislay" />
+	
 	<display:column title="${titleDislay}" sortable="false" >
+	<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
+	<acme:button url="notification/player/displayGatherNotification.do?notificationId=${notification.id}" code="notification.display"/>
+	</jstl:if>
+	<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Mission\"}">
 		<acme:button url="notification/player/display.do?notificationId=${notification.id}" code="notification.display"/>
+	</jstl:if>
 	</display:column>
 
 </display:table>
