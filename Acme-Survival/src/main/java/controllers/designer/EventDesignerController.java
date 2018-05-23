@@ -13,6 +13,8 @@ package controllers.designer;
 import java.util.Collection;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,11 +34,13 @@ import services.DesignerService;
 import services.EventService;
 import controllers.AbstractController;
 import domain.Actor;
+import domain.Barrack;
 import domain.Configuration;
 import domain.Designer;
 import domain.Event;
 import domain.Manager;
 import domain.Product;
+import domain.RoomDesign;
 import forms.ActorForm;
 
 @Controller
@@ -56,13 +60,11 @@ public class EventDesignerController extends AbstractController {
 	public EventDesignerController() {
 		super();
 	}
-
 	
-	@RequestMapping(value = "/list")
-	public ModelAndView listEvents(@RequestParam(defaultValue = "0") final int page) {
+	@RequestMapping(value = "/list-final")
+	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
-		//Page<Event> events;
-		Collection<Event> events;
+		Page<Event> eventsFinal;
 		Actor actor;
 		Pageable pageable;
 		Configuration configuration;
@@ -74,15 +76,43 @@ public class EventDesignerController extends AbstractController {
 			pageable = new PageRequest(page, configuration.getPageSize());
 			result = new ModelAndView("event/list");
 			actor = this.actorService.findActorByPrincipal();
-			
-
-			events = this.eventService.findAll();
-
-			result.addObject("managerDraftModeView", true);
-			result.addObject("events", events);
-		//	result.addObject("page", page);
+			// Checking that the user trying to list draft mode products is a manager.
+			Assert.isTrue(actor instanceof Designer);
+			eventsFinal = this.eventService.findFinal(pageable);
+			result.addObject("designerDraftModeView", false);
+			result.addObject("events", eventsFinal.getContent());
+			result.addObject("page", page);
 			result.addObject("requestURI", "event/designer/list.do");
-		//	result.addObject("pageNum", draftModeProducts.getTotalPages());
+			result.addObject("pageNum", eventsFinal.getTotalPages());
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
+	
+	@RequestMapping(value = "/list")
+	public ModelAndView listDraftMode(@RequestParam(defaultValue = "0") final int page) {
+		ModelAndView result;
+		Page<Event> eventsNotFinal;
+		Actor actor;
+		Pageable pageable;
+		Configuration configuration;
+		try {
+			configuration = this.configurationService.findConfiguration();
+			pageable = new PageRequest(page, configuration.getPageSize());
+			result = new ModelAndView("event/list");
+			actor = this.actorService.findActorByPrincipal();
+			// Checking that the user trying to list draft mode products is a manager.
+			Assert.isTrue(actor instanceof Designer);
+			eventsNotFinal = this.eventService.findNotFinal(pageable);
+			result.addObject("designerDraftModeView", true);
+			result.addObject("events", eventsNotFinal.getContent());
+			result.addObject("page", page);
+			result.addObject("requestURI", "event/designer/list.do");
+			result.addObject("pageNum", eventsNotFinal.getTotalPages());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -140,6 +170,7 @@ public class EventDesignerController extends AbstractController {
 		
 		event = eventService.findOne(eventId);
 		Assert.notNull(event);
+		Assert.isTrue(!event.getFinalMode());
 
 		result = this.createEditModelAndView(event);
 
@@ -168,6 +199,31 @@ public class EventDesignerController extends AbstractController {
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(event, "event.commit.error");
 			}
+
+		return result;
+	}
+	
+	/**
+	 * This method deletes a Event
+	 * 
+	 * @param event
+	 * @param binding
+	 * @return a model depending on the error/success on the operation
+	 * 
+	 * @author Alejandro
+	 */
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(@Valid final Event event, final BindingResult binding) {
+		ModelAndView result;
+
+		try {
+			Assert.isTrue(!event.getFinalMode());
+			this.eventService.delete(event);
+			result = new ModelAndView("redirect:list.do");
+
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(event, "event.commit.error");
+		}
 
 		return result;
 	}

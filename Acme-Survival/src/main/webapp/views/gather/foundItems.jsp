@@ -19,116 +19,166 @@
 
 <style>
 #div1 {
-    width: 650px;
-    height: 800px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-    float:right;
+	width: 650px;
+	height: 800px;
+	padding: 10px;
+	border: 1px solid #aaaaaa;
+	float: left;
 }
-#div2 {
-    width: 650px;
-    height: 800px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-    float:left;
+.divd {
+	width: 650px;
+	height: 800px;
+	padding: 10px;
+	border: 1px solid #aaaaaa;
+	float: left;
 }
+
+
 #div3 {
-    width: 800px;
-    height: 300px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-   
+	width: 800px;
+	height: 300px;
+	padding: 10px;
+	border: 1px solid #aaaaaa;
 }
+
+.div{
+	width: 800px;
+	height: 300px;
+	padding: 10px;
+	border: 1px solid #aaaaaa;
+}
+
 #div4 {
-    width: 800px;
-    height: 300px;
-    padding: 10px;
-    border: 1px solid #aaaaaa;
-   
+	width: 800px;
+	height: 300px;
+	padding: 10px;
+	border: 1px solid #aaaaaa;
 }
-</style>	
+</style>
 <script>
-function allowDrop(ev) {
-    ev.preventDefault();
-}
+	function allowDrop(ev) {
+		ev.preventDefault();
+	}
 
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
+	function drag(ev) {
+		ev.dataTransfer.setData("text", ev.target.id);
+	}
 
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(data));
-}
+	function drop(ev) {
+		ev.preventDefault();
+		var data = ev.dataTransfer.getData("text");
+		ev.target.appendChild(document.getElementById(data));
+	}
 
-function save(){
-	
-	var parent = document.getElementById('div2');
-    var images = parent.getElementsByClassName('img');
-    window.alert('Hola');
-    var attributes = [];
-    for(var i=0;i<images.length;i++){
-    	attributes[i]=images[i].getAttribute('name');
-    }
-    
-    window.alert(attributes);
-}
+	function save() {
+
+		var parent = document.getElementById('div2');
+		var notSelected = document.getElementById('div1');
+		var notSelected2 = document.getElementById('div3');
+		var itemsSelected = new Array();
+		var itemsNotSelected = new Array();
+		
+
+		if (parent != undefined) {
+			var images = parent.getElementsByClassName('img');
+			for ( var i = 0; i < images.length; i++) {
+				itemsSelected[i] = images[i].getAttribute('name');
+			}
+		}
+			
+		if (notSelected != undefined) {
+			var imagesNotSelected = notSelected.getElementsByClassName('img');
+			for ( var i = 0; i < imagesNotSelected.length; i++) {
+				itemsNotSelected[i] = imagesNotSelected[i].getAttribute('name');
+			}
+		} else if (notSelected2 != undefined){
+			var imagesNotSelected2 = notSelected2.getElementsByClassName('img');
+			for ( var i = 0; i < imagesNotSelected2.length; i++) {
+				itemsNotSelected[i] = imagesNotSelected2[i].getAttribute('name');
+			}
+		}
+		
+		var id = document.getElementById('notificationId').innerHTML;
+		
+		$.post("gather/player/finishMission.do", {
+			selected : JSON.stringify(itemsSelected),
+			notSelected : JSON.stringify(itemsNotSelected),
+			notificationId : id
+		}, function(data, status) {
+			relativeRedir(data);
+		});
+	}
 </script>
-
-<h4><spring:message code="foundresources"></spring:message></h4>
+<div id="notificationId" hidden="true"><jstl:out value="${notificationId}" /></div>
+<h4>
+	<spring:message code="foundresources"></spring:message>
+</h4>
 <div id="div4">
-<jstl:forEach items="${resources}" var="resource" >
-<img name="${resource.id}" class="img" id="${resource.id}" style ="float:left;"src="${resource.imageUrl}" 
- width="75" height="75">
-</jstl:forEach>
+	<jstl:forEach items="${resources}" var="resource">
+		<img name="${resource.id}" class="img" id="${resource.id}"
+			style="float: left;" src="${resource.imageUrl}" width="75"
+			height="75">
+	</jstl:forEach>
 </div>
 <br>
 
-<jstl:if test="${currentCapacityRefuge>totalTools}">
-<h4><spring:message code="founditems"></spring:message></h4>
-<div id="div3">
-<jstl:forEach items="${items}" var="item" >
-<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
- width="75" height="75">
-</jstl:forEach>
-</div>
+<jstl:if test="${currentCapacityRefuge>=totalTools}">
+	<h4>
+		<spring:message code="founditems"></spring:message>
+	</h4>
+	<div id="div2" class ="div" >
+		<jstl:forEach items="${items}" var="item">
+			<img name="${item.id}" class="img" id="${item.id}"
+				style="float: left;" src="${item.tool.imageUrl}" width="75"
+				height="75">
+		</jstl:forEach>
+	</div>
 </jstl:if>
 
 
 <jstl:if test="${currentCapacityRefuge<totalTools && currentCapacityRefuge == 0}">
 
 
-<h4><spring:message code="founditems"></spring:message></h4>
-<spring:message code="mission.descartedItems"></spring:message>
-<div id="div3">
-<jstl:forEach items="${items}" var="item" >
-<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
- width="75" height="75">
-</jstl:forEach>
-</div>
+	<h4>
+		<spring:message code="founditems"></spring:message>
+	</h4>
+	<spring:message code="mission.descartedItems"></spring:message>
+	<div id="div3" class="div">
+		<jstl:forEach items="${items}" var="item">
+			<img name="${item.id}" class="img" id="${item.id}"
+				style="float: left;" src="${item.tool.imageUrl}" width="75"
+				height="75">
+		</jstl:forEach>
+	</div>
 </jstl:if>
 
 
 
 
 <jstl:if test="${currentCapacityRefuge<totalTools && currentCapacityRefuge>0}">
-<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
-<jstl:forEach items="${items}" var="item" >
-<spring:message code="item.message1"></spring:message>
-<spring:message code="item.message2">${currentCapacity}</spring:message>
-<spring:message code="item.message3"></spring:message>
-<img name="${item.id}" class="img" id="${item.id}" style ="float:left;"src="${item.tool.imageUrl}" 
-draggable="true" ondragstart="drag(event)" width="75" height="75">
-
-</jstl:forEach>
-</div>
-
-<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">
-</div>
-
-
-
+	<p><spring:message code="item.message1"></spring:message><br></p>
+	<p><spring:message code="item.message2"></spring:message><b>  <jstl:out value="${currentCapacityRefuge}"></jstl:out></b></p><br>
+	<p><spring:message code="item.message3"></spring:message></p>
+<jstl:if test="${failedSelection}">	
+	<p style="color=#F00;"><spring:message code="error.message"></spring:message>!!!</p>
 </jstl:if>	
-<br>
-<button class="btn"onclick="save();"><spring:message code="mission.finish"></spring:message></button>
+	<div id="div2" class="divd" ondrop="drop(event)" ondragover="allowDrop(event)">
+	</div>
+	<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+		<jstl:forEach items="${items}" var="item">
+			<img name="${item.id}" class="img" id="${item.id}"
+				style="float: left;" src="${item.tool.imageUrl}" draggable="true"
+				ondragstart="drag(event)" width="75" height="75">
+
+		</jstl:forEach>
+	</div>
+
+	
+
+
+
+</jstl:if>
+<br><br><br>
+<button class="btn" onclick="save();">
+	<spring:message code="mission.finish"></spring:message>
+</button>

@@ -85,10 +85,37 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("You don't have refuge"))
+			if (oops.getMessage().contains("You don't have refuge")) {
 				result = new ModelAndView("redirect:/refuge/player/create.do");
-			else
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+
+			}
+		}
+
+		return result;
+
+	}
+
+	//Display ------------------------------------
+	@RequestMapping(value = "/displayGatherNotification", method = RequestMethod.GET)
+	public ModelAndView displayGatherNotification(final int notificationId) {
+		ModelAndView result;
+		Notification notification;
+
+		try {
+			notification = this.notificationService.findOne(notificationId);
+			result = new ModelAndView("notification/displayGatherNotification");
+
+			result.addObject("notification", notification);
+
+			if (notification.getGather() != null) {
+
+				result.addObject("gatherId", notification.getGather().getId());
+			}
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
 		}
 
 		return result;
@@ -110,19 +137,21 @@ public class NotificationPlayerController extends AbstractController {
 			if (titleEn.equals("The attacker managed to steal resources")) {
 				resources = this.splitBodyNotification(bodyEn);
 
-				result.addObject("notification", notification);
 				result.addObject("notificationMessage", resources.get(0));
 				result.addObject("notificationWater", resources.get(1));
 				result.addObject("notificationFood", resources.get(2));
 				result.addObject("notificationMetal", resources.get(3));
 				result.addObject("notificationWood", resources.get(4));
 			}
+			result.addObject("notification", notification);
 
-			if (notification.getMission() != null)
-				if (notification.getMission() instanceof Attack)
-					result.addObject("attackId", notification.getMission().getId());
-				else
-					result.addObject("gatherId", notification.getMission().getId());
+			if (notification.getAttack() != null) {
+				if (notification.getAttack() instanceof Attack) {
+					result.addObject("attackId", notification.getAttack().getId());
+				} else {
+					result.addObject("gatherId", notification.getGather().getId());
+				}
+			}
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}

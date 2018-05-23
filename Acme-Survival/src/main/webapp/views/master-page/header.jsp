@@ -240,7 +240,10 @@
 								code="master.page.designer.resources.notFinal" /></a></li>
 					<li class="divider"></li>
 					<li><a href="event/designer/list.do"><spring:message
-								code="master.page.events" /> </a></li>
+								code="master.page.events-notfinal" /> </a></li>
+					<li class="divider"></li>
+					<li><a href="event/designer/list-final.do"><spring:message
+								code="master.page.events-final" /> </a></li>
 					<li class="divider"></li>
 					<li><a href="lootTable/designer/list.do"><spring:message
 								code="master.page.lootTables" /> </a></li>

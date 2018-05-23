@@ -58,6 +58,8 @@ public class NotificationService {
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		result.setMoment(now);
+		result.setGather(null);
+		result.setAttack(null);
 		result.setCharacterId(null);
 		result.setFoundRefuge(false);
 		result.setPlayer(player);
@@ -97,7 +99,7 @@ public class NotificationService {
 		Assert.isTrue(notification.getPlayer().equals(player));
 
 		if (notification.getId() == 0) {
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			notification.setMoment(now);
 		}
@@ -115,7 +117,7 @@ public class NotificationService {
 		Date now;
 
 		if (notification.getId() == 0) {
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			notification.setMoment(now);
 		}
@@ -148,7 +150,7 @@ public class NotificationService {
 			result = notification;
 
 			player = (Player) this.actorService.findActorByPrincipal();
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			result.setMoment(now);
 			result.setPlayer(player);
@@ -171,10 +173,10 @@ public class NotificationService {
 	}
 
 	public void generateNotifications() {
-		Attack attack;
+		final Attack attack;
 		Player player;
-		Notification notification;
-		Map<String, String> title, body;
+		final Notification notification;
+		final Map<String, String> title, body;
 		Date now;
 
 		player = (Player) this.actorService.findActorByPrincipal();
@@ -183,20 +185,15 @@ public class NotificationService {
 
 		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
-				notification = this.findNotificationByMission(attack.getId());
+				notification = this.findNotificationByAttack(attack.getId());
+				title = this.generetateTitleMapResultByAttack(attack);
+				body = this.generetateMapBodyResultByAttack(attack);
 
-				if (notification == null) {
-					notification = this.create();
-					title = this.generetateTitleMapResultByAttack(attack);
-					body = this.generetateMapBodyResultByAttack(attack);
+				notification.setBody(body);
+				notification.setTitle(title);
+				notification.setAttack(attack);
 
-					notification.setBody(body);
-					notification.setTitle(title);
-					notification.setMission(attack);
-
-					this.save(notification);
-
-				}
+				this.save(notification);
 
 			}
 		}
@@ -212,10 +209,10 @@ public class NotificationService {
 		resources = this.attackService.getResourcesOfAttack(attack);
 
 		if (resources <= 0) {
-			titleEs = "El defensor resistió el ataque";
+			titleEs = "El defensor resistiï¿½ el ataque";
 			titleEn = "The defendant resisted the attack";
 		} else {
-			titleEs = "El atacante consiguió robar recursos";
+			titleEs = "El atacante consiguiï¿½ robar recursos";
 			titleEn = "The attacker managed to steal resources";
 		}
 
@@ -237,7 +234,7 @@ public class NotificationService {
 		resources = this.attackService.getResourcesOfAttack(attack);
 
 		if (resources <= 0) {
-			bodyEs = "El atacante no condiguió robar ningún recurso.";
+			bodyEs = "El atacante no condiguiï¿½ robar ningï¿½n recurso.";
 			bodyEn = "The attacker didn't steal any resources.";
 		} else {
 			resourcesStolen = this.attackService.calculateResourcesToSteal(attack, resources);
@@ -245,7 +242,7 @@ public class NotificationService {
 			foodStolen = resourcesStolen.get(1);
 			metalStolen = resourcesStolen.get(2);
 			woodStolen = resourcesStolen.get(3);
-			bodyEs = "El atacante consiguió robar:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
+			bodyEs = "El atacante consiguiï¿½ robar:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 
 			bodyEn = "The attacker could steal:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 		}
@@ -257,10 +254,10 @@ public class NotificationService {
 
 	}
 
-	public Notification findNotificationByMission(final int missionId) {
+	public Notification findNotificationByAttack(final int attackId) {
 		Notification result;
 
-		result = this.notificationRepository.findNotificationByMission(missionId);
+		result = this.notificationRepository.findNotificationByAttack(attackId);
 
 		return result;
 	}

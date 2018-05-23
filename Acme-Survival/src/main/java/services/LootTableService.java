@@ -7,6 +7,8 @@ import java.util.HashSet;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -107,6 +109,12 @@ public class LootTableService {
 	public Collection<LootTable> findAllFinal() {
 		Collection<LootTable> result;
 		result = this.lootTableRepository.findAllFinal();
+		return result;
+	}
+	
+	public Page<LootTable> findAll(Pageable pageable) {
+		Page<LootTable> result;
+		result = this.lootTableRepository.findAll(pageable);
 		return result;
 	}
 

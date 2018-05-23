@@ -95,7 +95,8 @@ public class Notification extends DomainEntity {
 	// Relationships -------------------------------------------------------------
 
 	private Player					player;
-	private Mission					mission;
+	private Attack					attack;
+	private Gather					gather;
 	private Collection<Event>		events;
 	private Collection<ItemDesign>	itemDesigns;
 
@@ -110,14 +111,21 @@ public class Notification extends DomainEntity {
 		this.player = player;
 	}
 
-	@Valid
 	@OneToOne(optional = true)
-	public Mission getMission() {
-		return this.mission;
+	public Attack getAttack() {
+		return this.attack;
 	}
 
-	public void setMission(final Mission mission) {
-		this.mission = mission;
+	public void setAttack(final Attack attack) {
+		this.attack = attack;
+	}
+	@OneToOne(optional = true)
+	public Gather getGather() {
+		return this.gather;
+	}
+
+	public void setGather(final Gather gather) {
+		this.gather = gather;
 	}
 
 	@Valid
