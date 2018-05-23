@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
@@ -50,6 +52,22 @@ public class EventService {
 		Collection<Event> result;
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findFinal();
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Page<Event> findNotFinal(Pageable pageable) {
+		Page<Event> result;
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findNotFinal(pageable);
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Page<Event> findFinal(Pageable pageable) {
+		Page<Event> result;
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findFinal(pageable);	
 		Assert.notNull(result);
 		return result;
 	}

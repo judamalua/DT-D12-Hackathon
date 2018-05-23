@@ -177,7 +177,7 @@ public class GatherPlayerController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/foundItems")
-	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int notificationId, @RequestParam(defaultValue = "false", required = false) final Boolean failedSelection) {
+	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final Integer notificationId, @RequestParam(defaultValue = "false", required = false) final Boolean failedSelection) {
 		ModelAndView result;
 		Collection<ItemDesign> items;
 		Refuge refuge;
@@ -331,11 +331,14 @@ public class GatherPlayerController extends AbstractController {
 					final Item item = this.itemService.findOne(new Integer(itemsToRemove.get(i)));
 					this.itemService.delete(item);
 				}
+				final Character character = gather.getCharacter();
+				character.setCurrentlyInGatheringMission(false);
+				this.characterService.save(character);
 				this.notificationService.delete(notification);
 				this.gatherService.delete(gather);
 
 			} else {
-				result = "gather/player/foundItems.do?notificationId=" + notification.getId() + "?failedSelection=true";
+				result = "gather/player/foundItems.do?notificationId=" + notification.getId() + "&failedSelection=true";
 			}
 
 		} catch (final Throwable oops) {
