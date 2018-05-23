@@ -349,7 +349,7 @@ public class GatherService {
 				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
 				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
 
-				character.setCurrentlyInGatheringMission(false);
+				//character.setCurrentlyInGatheringMission(false);
 				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
 				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
 
@@ -369,34 +369,29 @@ public class GatherService {
 					character.setCurrentWater(character.getCurrentWater() - (missionMinutes / designerConfiguration.getWaterLostGatherFactor()));
 				}
 
-				if (eventsDuringMission.size() != 0) {
+				if (eventsDuringMission.size() != 0)
 					for (final Event event : eventsDuringMission) {
 						character.setCurrentHealth(character.getCurrentHealth() + event.getHealth());
-						if (character.getCurrentHealth() > 100) {
+						if (character.getCurrentHealth() > 100)
 							character.setCurrentHealth(100);
-						}
 
 						character.setCurrentWater(character.getCurrentWater() + event.getWater());
-						if (character.getCurrentWater() > 100) {
+						if (character.getCurrentWater() > 100)
 							character.setCurrentWater(100);
-						}
 
 						character.setCurrentFood(character.getCurrentFood() + event.getFood());
-						if (character.getCurrentFood() > 100) {
+						if (character.getCurrentFood() > 100)
 							character.setCurrentFood(100);
-						}
 
 						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
 							newCharacter = this.characterService.generateCharacter(refuge.getId());
 							this.characterService.save(newCharacter);
 						}
 
-						if (event.getItemDesign() != null) {
+						if (event.getItemDesign() != null)
 							itemsDuringMission.add(event.getItemDesign());
-						}
 
 					}
-				}
 
 				experience = character.getExperience() + (missionMinutes * designerConfiguration.getExperiencePerMinute());
 				character.setExperience(experience);
@@ -417,9 +412,8 @@ public class GatherService {
 					notification.setPlayer(player);
 					notification.setGather(gatherMission);
 					notification.setCharacterId(character.getId());
-					if (eventsDuringMission.size() != 0) {
+					if (eventsDuringMission.size() != 0)
 						notification.setEvents(eventsDuringMission);
-					}
 					this.notificationService.save(notification);
 
 				} else {
@@ -439,12 +433,10 @@ public class GatherService {
 					notification.setPlayer(player);
 					notification.setGather(gatherMission);
 					notification.setCharacterId(character.getId());
-					if (eventsDuringMission.size() != 0) {
+					if (eventsDuringMission.size() != 0)
 						notification.setEvents(eventsDuringMission);
-					}
-					if (itemsDuringMission.size() != 0) {
+					if (itemsDuringMission.size() != 0)
 						notification.setItemDesigns(itemsDuringMission);
-					}
 					this.notificationService.save(notification);
 				}
 			}
@@ -471,11 +463,10 @@ public class GatherService {
 		probability = this.designerConfigurationService.findDesignerConfiguration().getRefugeFindingProbability();
 
 		if (((probability * augmentProbability) > randomDouble) && refugesInLocation.size() != 0) {
-			if (refugesInLocation.size() == 1) {
+			if (refugesInLocation.size() == 1)
 				randomRefugeIndex = 0;
-			} else {
+			else
 				randomRefugeIndex = (random.nextInt(refugesInLocation.size())) / (refugesInLocation.size() - 1);
-			}
 			result = refugesInLocation.get(randomRefugeIndex);
 		}
 
