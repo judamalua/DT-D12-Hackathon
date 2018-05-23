@@ -223,6 +223,9 @@
 		<security:intercept-url pattern="/notification/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
+		<security:intercept-url pattern="/notification/player/displayGatherNotification.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/notification/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 

@@ -171,35 +171,35 @@ public class NotificationService {
 	}
 
 	public void generateNotifications() {
-		Attack attack;
+		final Attack attack;
 		Player player;
-		Notification notification;
-		Map<String, String> title, body;
+		final Notification notification;
+		final Map<String, String> title, body;
 		Date now;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		attack = this.attackService.findAttackByPlayer(player.getId());
+		//attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null) {
-			if (attack.getEndMoment().before(now)) {
-				notification = this.findNotificationByMission(attack.getId());
+		//		if (attack != null) {
+		//			if (attack.getEndMoment().before(now)) {
+		//				notification = this.findNotificationByMission(attack.getId());
+		//
+		//				if (notification == null) {
+		//					notification = this.create();
+		//					title = this.generetateTitleMapResultByAttack(attack);
+		//					body = this.generetateMapBodyResultByAttack(attack);
+		//
+		//					notification.setBody(body);
+		//					notification.setTitle(title);
+		//					notification.setMission(attack);
+		//
+		//					this.save(notification);
+		//
+		//				}
 
-				if (notification == null) {
-					notification = this.create();
-					title = this.generetateTitleMapResultByAttack(attack);
-					body = this.generetateMapBodyResultByAttack(attack);
-
-					notification.setBody(body);
-					notification.setTitle(title);
-					notification.setMission(attack);
-
-					this.save(notification);
-
-				}
-
-			}
-		}
+		//}
+		//}
 
 	}
 
