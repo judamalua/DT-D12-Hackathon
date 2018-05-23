@@ -90,9 +90,11 @@ public class NotificationPlayerController extends AbstractController {
 			} else {
 				result = new ModelAndView("redirect:/misc/403");
 
+			}
 		}
 
 		return result;
+
 	}
 
 	//Display ------------------------------------

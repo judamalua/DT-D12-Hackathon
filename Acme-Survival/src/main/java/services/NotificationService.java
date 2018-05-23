@@ -178,25 +178,23 @@ public class NotificationService {
 		Date now;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		//attack = this.attackService.findAttackByPlayer(player.getId());
+		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null)
+		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByMission(attack.getId());
+				title = this.generetateTitleMapResultByAttack(attack);
+				body = this.generetateMapBodyResultByAttack(attack);
 
-		//}
-		//}
+				notification.setBody(body);
+				notification.setTitle(title);
+				notification.setMission(attack);
 
-					notification.setBody(body);
-					notification.setTitle(title);
-					notification.setMission(attack);
-
-					this.save(notification);
-
-				}
+				this.save(notification);
 
 			}
+		}
 
 	}
 
