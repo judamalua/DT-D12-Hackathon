@@ -242,6 +242,7 @@ public class CharacterService {
 		character.setRefuge(refuge);
 		character.setRoom(null);
 		character.setCurrentlyInGatheringMission(false);
+		character.setGatherNotificated(true);
 
 		this.generateCharacterAbilities(character);
 
@@ -448,7 +449,7 @@ public class CharacterService {
 		return result;
 	}
 
-	private Character updateStats(final Character character) {
+	public Character updateStats(final Character character) {
 
 		Assert.notNull(character);
 
@@ -458,7 +459,7 @@ public class CharacterService {
 		Inventory inventory;
 		Double food, water, health;
 		Date entrance, currentDate;
-		long hours;
+		long minutes;
 
 		room = character.getRoom();
 
@@ -469,11 +470,11 @@ public class CharacterService {
 		entrance = character.getRoomEntrance();
 		currentDate = new Date();
 
-		hours = TimeUnit.MILLISECONDS.toHours(currentDate.getTime() - entrance.getTime());
+		minutes = TimeUnit.MILLISECONDS.toMinutes(currentDate.getTime() - entrance.getTime());
 
-		food = restorationRoom.getFood() * hours;
-		health = restorationRoom.getHealth() * hours;
-		water = restorationRoom.getWater() * hours;
+		food = restorationRoom.getFood() * minutes;
+		health = restorationRoom.getHealth() * minutes;
+		water = restorationRoom.getWater() * minutes;
 
 		if (character.getCurrentFood() + food < 100) {
 			character.setCurrentFood((int) (character.getCurrentFood() + food));
@@ -492,12 +493,20 @@ public class CharacterService {
 		} else
 			character.setCurrentWater(100);
 
-		if (hours > 0)
+		if (minutes > 0)
 			character.setRoomEntrance(currentDate);
 
 		this.inventoryService.save(inventory);
 
 		result = this.save(character);
+
+		return result;
+	}
+
+	public Collection<Character> findCharactersNotNotificatedOfGather(final int refugeId) {
+		Collection<Character> result;
+
+		result = this.characterRepository.findCharactersNotNotificatedOfGather(refugeId);
 
 		return result;
 	}

@@ -68,6 +68,7 @@ console.log(events);
 	    // compare id to what you want
 	});
 	data["name"] = document.getElementById("lootTableName").innerText;
+	data["finalMode"] = document.getElementById("finalMode").checked;
 	data["save"] = ""; //Needed for spring save
 	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
 

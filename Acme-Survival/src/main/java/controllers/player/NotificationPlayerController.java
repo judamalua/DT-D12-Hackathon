@@ -1,6 +1,8 @@
 
 package controllers.player;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -90,24 +92,64 @@ public class NotificationPlayerController extends AbstractController {
 		}
 
 		return result;
+
+	}
+
+	//Display ------------------------------------
+	@RequestMapping(value = "/displayGatherNotification", method = RequestMethod.GET)
+	public ModelAndView displayGatherNotification(final int notificationId) {
+		ModelAndView result;
+		Notification notification;
+
+		try {
+			notification = this.notificationService.findOne(notificationId);
+			result = new ModelAndView("notification/displayGatherNotification");
+
+			result.addObject("notification", notification);
+
+			if (notification.getGather() != null)
+				result.addObject("gatherId", notification.getGather().getId());
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
 	}
 	//Display ------------------------------------
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(final int notificationId) {
 		ModelAndView result;
 		Notification notification;
+		String bodyEn, titleEn;
+		ArrayList<String> resources;
 
 		try {
 			notification = this.notificationService.findOne(notificationId);
 			result = new ModelAndView("notification/display");
+			bodyEn = notification.getBody().get("en");
+			titleEn = notification.getTitle().get("en");
+
+			if (titleEn.equals("The attacker managed to steal resources")) {
+				resources = this.splitBodyNotification(bodyEn);
+
+				result.addObject("notificationMessage", resources.get(0));
+				result.addObject("notificationWater", resources.get(1));
+				result.addObject("notificationFood", resources.get(2));
+				result.addObject("notificationMetal", resources.get(3));
+				result.addObject("notificationWood", resources.get(4));
+
+				result.addObject("attackWon", true);
+			} else
+				result.addObject("attackWon", false);
 
 			result.addObject("notification", notification);
 
-			if (notification.getMission() != null)
-				if (notification.getMission() instanceof Attack)
-					result.addObject("attackId", notification.getMission().getId());
+			if (notification.getAttack() != null)
+				if (notification.getAttack() instanceof Attack)
+					result.addObject("attackId", notification.getAttack().getId());
 				else
-					result.addObject("gatherId", notification.getMission().getId());
+					result.addObject("gatherId", notification.getGather().getId());
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
@@ -115,4 +157,17 @@ public class NotificationPlayerController extends AbstractController {
 		return result;
 	}
 
+	public ArrayList<String> splitBodyNotification(final String body) {
+		ArrayList<String> result;
+
+		result = new ArrayList<String>();
+
+		result.add(body.split(",")[0]); //Message
+		result.add(body.split(",")[1]); //Water
+		result.add(body.split(",")[2]); //Food
+		result.add(body.split(",")[3]); //Metal
+		result.add(body.split(",")[4]); //Wood
+
+		return result;
+	}
 }

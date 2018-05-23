@@ -14,7 +14,7 @@
 <spring:message code = "master.page.current.lang" var = "currentLang" />
 <spring:message code="master.page.moment.format" var="formatMoment" />
 
-<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestURI}?page="/>
+<acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestUri}?page="/>
 
 <display:table name="notifications" id="notification"
 	requestURI="${requestURI}"
@@ -29,14 +29,16 @@
 		<jstl:out value = "${notification.title[currentLang]}"/>
 	</display:column>
 	
-	<spring:message code="notification.body" var="titleBody" />
-	<display:column title="${titleBody}" >
-		<jstl:out value = "${notification.body[currentLang]}"/>
-	</display:column>
 	
 	<spring:message code="notification.display" var="titleDislay" />
+	
 	<display:column title="${titleDislay}" sortable="false" >
+	<jstl:if test="${notification.gather!=null}">
+	<acme:button url="notification/player/displayGatherNotification.do?notificationId=${notification.id}" code="notification.display"/>
+	</jstl:if>
+	<jstl:if test="${notification.characterId ==null}">
 		<acme:button url="notification/player/display.do?notificationId=${notification.id}" code="notification.display"/>
+	</jstl:if>
 	</display:column>
 
 </display:table>

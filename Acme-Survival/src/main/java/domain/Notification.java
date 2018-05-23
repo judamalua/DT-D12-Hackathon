@@ -33,6 +33,8 @@ public class Notification extends DomainEntity {
 	private Map<String, String>	title;
 	private Map<String, String>	body;
 	private Date				moment;
+	private Integer				characterId;
+	private boolean				foundRefuge;
 
 
 	@NotNull
@@ -73,12 +75,30 @@ public class Notification extends DomainEntity {
 		this.moment = moment;
 	}
 
+	public Integer getCharacterId() {
+		return this.characterId;
+	}
+
+	public void setCharacterId(final Integer characterId) {
+		this.characterId = characterId;
+	}
+
+	public boolean isFoundRefuge() {
+		return this.foundRefuge;
+	}
+
+	public void setFoundRefuge(final boolean foundRefuge) {
+		this.foundRefuge = foundRefuge;
+	}
+
 
 	// Relationships -------------------------------------------------------------
 
-	private Player				player;
-	private Mission				mission;
-	private Collection<Event>	events;
+	private Player					player;
+	private Attack					attack;
+	private Gather					gather;
+	private Collection<Event>		events;
+	private Collection<ItemDesign>	itemDesigns;
 
 
 	@NotNull
@@ -91,14 +111,21 @@ public class Notification extends DomainEntity {
 		this.player = player;
 	}
 
-	@Valid
 	@OneToOne(optional = true)
-	public Mission getMission() {
-		return this.mission;
+	public Attack getAttack() {
+		return this.attack;
 	}
 
-	public void setMission(final Mission mission) {
-		this.mission = mission;
+	public void setAttack(final Attack attack) {
+		this.attack = attack;
+	}
+	@OneToOne(optional = true)
+	public Gather getGather() {
+		return this.gather;
+	}
+
+	public void setGather(final Gather gather) {
+		this.gather = gather;
 	}
 
 	@Valid
@@ -110,6 +137,17 @@ public class Notification extends DomainEntity {
 
 	public void setEvents(final Collection<Event> events) {
 		this.events = events;
+	}
+
+	@Valid
+	@ManyToMany
+	@NotNull
+	public Collection<ItemDesign> getItemDesigns() {
+		return this.itemDesigns;
+	}
+
+	public void setItemDesigns(final Collection<ItemDesign> itemDesigns) {
+		this.itemDesigns = itemDesigns;
 	}
 
 }

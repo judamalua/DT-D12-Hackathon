@@ -14,25 +14,31 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
+	
+<link rel="stylesheet" type="text/css" href="./styles/newStyle.css">
 
 <!-- <div class = "crop">
 	<a href="welcome/index.do"> <img class="banner img-responsive" src="https://i.ytimg.com/vi/BzX6jMalUck/maxresdefault.jpg"
 		alt="Acme Co., Inc." />
 	</a>
 </div> -->
-
+<div class="navbar-fixed">
 <nav>
-	<div class="nav-wrapper">
+	<div class="nav-wrapper metal-wasted">
+	<img width="240" style="position: absolute" src="images/bannerheader.png" />
 		<a class="brand-logo" href="#">&#160;&#160;Acme&#160;<img
 			width="24" src="images/people.png" />&#160;Template
 		</a>
 
 		<ul id="nav-mobile" class="right hide-on-med-and-down">
 			<security:authorize access="isAuthenticated()">
-				<li><a class="fNiv" href="forum/list.do"><spring:message
-							code="master.page.forum.list" /></a></li>
-				<li><a class="fNiv" href="product/list.do"><spring:message
-							code="master.page.product.list" /></a></li>
+			
+				<li class="li-separation"><a class="fNiv valign-wrapper" href="forum/list.do">
+				<img class="icon-image" width="48" src="images/icons/Items/enchanting-book.png" />
+				<spring:message code="master.page.forum.list" /></a></li>
+				<li class="li-separation"><a class="fNiv valign-wrapper" href="product/list.do">
+				<img class="icon-image" width="48" src="images/icons/Currency/currency-large-gold-stack.png" />
+				<spring:message code="master.page.product.list" /></a></li>
 
 				<security:authorize access="hasRole('ADMIN')">
 					<!-- Dropdown Structure -->
@@ -48,7 +54,7 @@
 					</ul>
 
 					<!-- Dropdown Trigger -->
-					<li><a class="dropdown-button" href="#!"
+					<li class="valign-wrapper li-separation"><img class="icon-image-nomargin" width="48" src="images/icons/keysnew/key_007.png" /><a class="dropdown-button" href="#!"
 						data-activates="dropdownAdminProfile"><security:authentication
 								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
@@ -68,7 +74,7 @@
 					</ul>
 
 					<!-- Dropdown Trigger -->
-					<li><a class="dropdown-button" href="#!"
+					<li class="valign-wrapper li-separation"><img class="icon-image-nomargin" width="48" src="images/icons/keysnew/key_007.png" /><a class="dropdown-button" href="#!"
 						data-activates="dropdownManagerProfile"><security:authentication
 								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
@@ -89,7 +95,7 @@
 					</ul>
 
 					<!-- Dropdown Trigger -->
-					<li><a class="dropdown-button" href="#!"
+					<li class="valign-wrapper li-separation"><img class="icon-image-nomargin" width="48" src="images/icons/keysnew/key_007.png" /><a class="dropdown-button" href="#!"
 						data-activates="dropdownPlayerProfile"><security:authentication
 								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
@@ -110,7 +116,7 @@
 					</ul>
 
 					<!-- Dropdown Trigger -->
-					<li><a class="dropdown-button" href="#!"
+					<li class="valign-wrapper li-separation"><img class="icon-image-nomargin" width="48" src="images/icons/keysnew/key_007.png" /><a class="dropdown-button" href="#!"
 						data-activates="dropdownModeratorProfile"><security:authentication
 								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
@@ -120,6 +126,7 @@
 				<security:authorize access="hasRole('DESIGNER')">
 					<!-- Dropdown Structure -->
 					<ul id="dropdownDesignerProfile" class="dropdown-content">
+					
 						<li><a href="actor/designer/edit.do"><spring:message
 									code="master.page.actorEdit" /></a></li>
 						<li class="divider"></li>
@@ -132,7 +139,8 @@
 					</ul>
 
 					<!-- Dropdown Trigger -->
-					<li><a class="dropdown-button" href="#!"
+					
+					<li class="valign-wrapper li-separation"><img class="icon-image-nomargin" width="48" src="images/icons/keysnew/key_007.png" /><a class="dropdown-button" href="#!"
 						data-activates="dropdownDesignerProfile"><security:authentication
 								property="principal.username" /><i class="material-icons right">arrow_drop_down</i></a></li>
 
@@ -170,7 +178,7 @@
 				</ul>
 
 				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
+				<li class="valign-wrapper"><img class="icon-image-nomargin" width="48" src="images/icons/wands/wands_003.png" /><a class="dropdown-button" href="#!"
 					data-activates="dropdownAdminFunctions"><spring:message
 							code="master.page.admin" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
@@ -181,14 +189,8 @@
 					<li><a href="map/player/display.do"><spring:message
 								code="master.page.map" /></a></li>
 					<li class="divider"></li>
-					<li><a href="refuge/player/list.do"><spring:message
-								code="master.page.knowRefuge" /></a></li>
-					<li class="divider"></li>
 					<li><a href="refuge/player/display.do"><spring:message
 								code="master.page.myRefuge" /></a></li>
-					<li class="divider"></li>
-					<li><a href="inventory/player/display.do"><spring:message
-								code="master.page.myInventory" /></a></li>
 					<li class="divider"></li>
 					<li><a href="notification/player/list.do"><spring:message
 								code="master.page.myNotifications" /></a></li>
@@ -199,7 +201,7 @@
 				</ul>
 
 				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
+				<li class="valign-wrapper"><img class="icon-image-nomargin" width="48" src="images/icons/wands/wands_003.png" /><a class="dropdown-button" href="#!"
 					data-activates="dropdownPlayerFunctions"><spring:message
 							code="master.page.player" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
@@ -232,7 +234,10 @@
 								code="master.page.designer.resources.notFinal" /></a></li>
 					<li class="divider"></li>
 					<li><a href="event/designer/list.do"><spring:message
-								code="master.page.events" /> </a></li>
+								code="master.page.events-notfinal" /> </a></li>
+					<li class="divider"></li>
+					<li><a href="event/designer/list-final.do"><spring:message
+								code="master.page.events-final" /> </a></li>
 					<li class="divider"></li>
 					<li><a href="lootTable/designer/list.do"><spring:message
 								code="master.page.lootTables" /> </a></li>
@@ -242,7 +247,7 @@
 				</ul>
 
 				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
+				<li class="valign-wrapper"><img class="icon-image-nomargin" width="48" src="images/icons/wands/wands_003.png" /><a class="dropdown-button" href="#!"
 					data-activates="dropdownDesignerFunctions"><spring:message
 							code="master.page.designer" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
@@ -255,7 +260,7 @@
 				</ul>
 
 				<!-- Dropdown Trigger -->
-				<li><a class="dropdown-button" href="#!"
+				<li class="valign-wrapper"><img class="icon-image-nomargin" width="48" src="images/icons/wands/wands_003.png" /><a class="dropdown-button" href="#!"
 					data-activates="dropdownManagerFunctions"><spring:message
 							code="master.page.manager" /><i class="material-icons right">arrow_drop_down</i></a></li>
 			</security:authorize>
@@ -273,7 +278,7 @@
 		</ul>
 	</div>
 </nav>
-
+</div>
 <p></p>
 
 

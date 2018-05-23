@@ -21,33 +21,11 @@ public class Configuration extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private String				cookies_eng;
-	private String				cookies_es;
 	private String				businessNameFirst;
 	private String				businessNameLast;
 	private Integer				pageSize;
 	private Collection<String>	languages;
 
-
-	@SafeHtml
-	@NotBlank
-	public String getCookies_eng() {
-		return this.cookies_eng;
-	}
-
-	public void setCookies_eng(final String cookies_eng) {
-		this.cookies_eng = cookies_eng;
-	}
-
-	@SafeHtml
-	@NotBlank
-	public String getCookies_es() {
-		return this.cookies_es;
-	}
-
-	public void setCookies_es(final String cookies_es) {
-		this.cookies_es = cookies_es;
-	}
 
 	@SafeHtml
 	@NotBlank

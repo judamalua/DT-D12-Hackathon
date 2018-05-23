@@ -11,6 +11,7 @@
 package controllers.player;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,6 +40,7 @@ import domain.Configuration;
 import domain.Inventory;
 import domain.Player;
 import domain.Refuge;
+import domain.RestorationRoom;
 import domain.Room;
 
 @Controller
@@ -96,7 +98,7 @@ public class RefugePlayerController extends AbstractController {
 		boolean owner = false;
 		boolean knowRefuge = false;
 		Inventory inventory;
-		final Collection<domain.Character> characters;
+		final Collection<domain.Character> characters, charactersUpdated;
 		Integer capacity;
 		try {
 			configuration = this.configurationService.findConfiguration();
@@ -114,6 +116,14 @@ public class RefugePlayerController extends AbstractController {
 			Assert.notNull(refuge, "Not have refuge");
 
 			characters = this.characterService.findCharactersByRefuge(refuge.getId());
+			charactersUpdated = new HashSet<>();
+			for (final domain.Character character : characters) {
+				if (character.getRoom() != null && (character.getRoom().getRoomDesign() instanceof RestorationRoom)) {
+					charactersUpdated.add(this.characterService.updateStats(character));
+				} else {
+					charactersUpdated.add(character);
+				}
+			}
 
 			inventory = this.refugeService.updateInventory(refuge);
 			this.gatherService.updateGatheringMissions();
@@ -130,16 +140,17 @@ public class RefugePlayerController extends AbstractController {
 			result.addObject("pageRoom", pageRoom);
 			result.addObject("pageNumRoom", rooms.getTotalPages());
 			result.addObject("knowRefuge", knowRefuge);
-			result.addObject("characters", characters);
+			result.addObject("characters", charactersUpdated);
 			result.addObject("inventory", inventory);
 			result.addObject("owner", owner);
 			result.addObject("characterCapacity", capacity);
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge"))
+			if (oops.getMessage().contains("Not have refuge")) {
 				result = new ModelAndView("redirect:/refuge/player/create.do");
-			else
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 		return result;
 	}
@@ -157,10 +168,11 @@ public class RefugePlayerController extends AbstractController {
 			result = this.createEditModelAndView(ownRefuge);
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge"))
+			if (oops.getMessage().contains("Not have refuge")) {
 				result = new ModelAndView("redirect:/refuge/player/create.do");
-			else
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 		return result;
 	}
@@ -200,27 +212,30 @@ public class RefugePlayerController extends AbstractController {
 		} catch (final Throwable oops) {//Not delete
 		}
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(sendedRefuge, "refuge.params.error");
-		else
+		} else {
 			try {
 				player = (Player) this.actorService.findActorByPrincipal();
 				ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
-				if (refuge.getId() != 0)
+				if (refuge.getId() != 0) {
 					Assert.isTrue(ownRefuge.equals(refuge));
-				else
+				} else {
 					Assert.isTrue(ownRefuge == null, "Not have refuge");
+				}
 				this.refugeService.save(refuge);
 				result = new ModelAndView("redirect:/refuge/player/display.do");
 
 			} catch (final DataIntegrityViolationException oops) {
 				result = this.createEditModelAndView(refuge, "refuge.name.error");
 			} catch (final Throwable oops) {
-				if (oops.getMessage().contains("Not have refuge"))
+				if (oops.getMessage().contains("Not have refuge")) {
 					result = new ModelAndView("redirect:/refuge/player/create.do");
-				else
+				} else {
 					result = this.createEditModelAndView(refuge, "refuge.commit.error");
+				}
 			}
+		}
 
 		return result;
 	}

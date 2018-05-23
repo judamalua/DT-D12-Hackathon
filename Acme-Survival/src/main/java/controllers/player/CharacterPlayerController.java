@@ -130,8 +130,9 @@ public class CharacterPlayerController extends AbstractController {
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
 
-			if (discard)
+			if (discard) {
 				this.itemService.UpdateDiscard(character);
+			}
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
 
 			character = this.characterService.findOne(characterId);
@@ -172,6 +173,7 @@ public class CharacterPlayerController extends AbstractController {
 
 			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
 			Assert.isTrue(!charactersInMission.contains(character));
+			Assert.isTrue(character.getCurrentHealth() > 0);
 
 			if (roomId != null) {
 				room = this.roomService.findOne(roomId);

@@ -76,10 +76,14 @@
 			
 		<security:intercept-url pattern="/gather/player/foundItems.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
+			<security:intercept-url pattern="/gather/player/finishMission.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/event/designer/edit.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/event/designer/list.do"
+			access="hasRole('DESIGNER')" requires-channel="https" />
+		<security:intercept-url pattern="/event/designer/list-final.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
 		<security:intercept-url pattern="/event/designer/create.do"
 			access="hasRole('DESIGNER')" requires-channel="https" />
@@ -221,6 +225,9 @@
 		<security:intercept-url pattern="/notification/player/list.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
+		<security:intercept-url pattern="/notification/player/displayGatherNotification.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+			
 		<security:intercept-url pattern="/notification/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
@@ -229,6 +236,8 @@
 		<security:intercept-url pattern="/character/player/display.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/character/player/move.do"
+			access="hasRole('PLAYER')" requires-channel="https" />
+		<security:intercept-url pattern="/inventory/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 

@@ -20,7 +20,7 @@ import org.springframework.validation.Validator;
 import repositories.NotificationRepository;
 import domain.Attack;
 import domain.Event;
-import domain.Gather;
+import domain.ItemDesign;
 import domain.Notification;
 import domain.Player;
 
@@ -58,8 +58,13 @@ public class NotificationService {
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		result.setMoment(now);
+		result.setGather(null);
+		result.setAttack(null);
+		result.setCharacterId(null);
+		result.setFoundRefuge(false);
 		result.setPlayer(player);
 		result.setEvents(new ArrayList<Event>());
+		result.setItemDesigns(new ArrayList<ItemDesign>());
 
 		return result;
 	}
@@ -94,7 +99,7 @@ public class NotificationService {
 		Assert.isTrue(notification.getPlayer().equals(player));
 
 		if (notification.getId() == 0) {
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			notification.setMoment(now);
 		}
@@ -103,6 +108,23 @@ public class NotificationService {
 
 		return result;
 
+	}
+
+	public Notification saveToDefendant(final Notification notification) {
+		Assert.notNull(notification);
+
+		Notification result;
+		Date now;
+
+		if (notification.getId() == 0) {
+			now = new Date(System.currentTimeMillis() - 100);
+
+			notification.setMoment(now);
+		}
+
+		result = this.notificationRepository.save(notification);
+
+		return result;
 	}
 
 	public void delete(final Notification notification) {
@@ -128,7 +150,7 @@ public class NotificationService {
 			result = notification;
 
 			player = (Player) this.actorService.findActorByPrincipal();
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			result.setMoment(now);
 			result.setPlayer(player);
@@ -154,7 +176,6 @@ public class NotificationService {
 		Attack attack;
 		Player player;
 		Notification notification;
-		Collection<Gather> gathers;
 		Map<String, String> title, body;
 		Date now;
 
@@ -164,29 +185,21 @@ public class NotificationService {
 
 		if (attack != null)
 			if (attack.getEndMoment().before(now)) {
-				notification = this.findNotificationByMission(attack.getId());
-
+				notification = this.findNotificationByAttack(attack.getId());
 				if (notification == null) {
-					notification = this.create();
 					title = this.generetateTitleMapResultByAttack(attack);
-					body = this.generetateTitleBodyResultByAttack(attack);
+					body = this.generetateMapBodyResultByAttack(attack);
+					notification = this.create();
 
 					notification.setBody(body);
 					notification.setTitle(title);
-					notification.setMission(attack);
+					notification.setAttack(attack);
 
 					this.save(notification);
-
-					this.flush();
 				}
 
 			}
 
-		gathers = this.gatherService.findGathersFinishedByPlayer(player.getId());
-
-		for (final Gather g : gathers) {
-
-		}
 	}
 
 	public Map<String, String> generetateTitleMapResultByAttack(final Attack attack) {
@@ -212,7 +225,7 @@ public class NotificationService {
 
 	}
 
-	public Map<String, String> generetateTitleBodyResultByAttack(final Attack attack) {
+	public Map<String, String> generetateMapBodyResultByAttack(final Attack attack) {
 		Map<String, String> result;
 		Integer resources;
 		Integer waterStolen, foodStolen, metalStolen, woodStolen;
@@ -221,19 +234,19 @@ public class NotificationService {
 
 		result = new HashMap<String, String>();
 		resources = this.attackService.getResourcesOfAttack(attack);
-		resourcesStolen = this.attackService.getCollectionResourcesOfAttack(resources);
 
 		if (resources <= 0) {
 			bodyEs = "El atacante no condiguió robar ningún recurso.";
 			bodyEn = "The attacker didn't steal any resources.";
 		} else {
+			resourcesStolen = this.attackService.calculateResourcesToSteal(attack, resources);
 			waterStolen = resourcesStolen.get(0);
 			foodStolen = resourcesStolen.get(1);
 			metalStolen = resourcesStolen.get(2);
 			woodStolen = resourcesStolen.get(3);
-			bodyEs = "El atacante consiguió robar: \n" + waterStolen + " Agua \n" + foodStolen + " Comida \n" + metalStolen + "Metal \n" + woodStolen + "Madera.";
+			bodyEs = "El atacante consiguió robar:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 
-			bodyEn = "The attacker could steal: \n" + waterStolen + " Water \n" + foodStolen + " Food \n" + metalStolen + "Metal \n" + woodStolen + "Wood.";
+			bodyEn = "The attacker could steal:," + waterStolen + "," + foodStolen + "," + metalStolen + "," + woodStolen;
 		}
 
 		result.put("es", bodyEs);
@@ -243,10 +256,10 @@ public class NotificationService {
 
 	}
 
-	public Notification findNotificationByMission(final int missionId) {
+	public Notification findNotificationByAttack(final int attackId) {
 		Notification result;
 
-		result = this.notificationRepository.findNotificationByMission(missionId);
+		result = this.notificationRepository.findNotificationByAttack(attackId);
 
 		return result;
 	}

@@ -26,6 +26,7 @@
 <%@ attribute name="code" required="true" %>
 <%@ attribute name="readonly" required="false" %>
 <%@ attribute name="required" required="false" %>
+<%@ attribute name="customClass" required="false" %>
 
 <jstl:if test="${readonly == null}">
 	<jstl:set var="readonly" value="false" />
@@ -34,7 +35,9 @@
 <jstl:if test="${required == null}">
 	<jstl:set var="required" value="false" />
 </jstl:if>
-
+<jstl:if test="${customClass == null}">
+	<jstl:set var="customClass" value="" />
+</jstl:if>
 <%-- Definition --%>
 
 <div class="form-group">
@@ -43,7 +46,7 @@
 	<form:label path="${path}">
 		<spring:message code="${code}" /><jstl:if test="${required}">*</jstl:if>
 	</form:label>
-	<form:textarea path="${path}" readonly="${readonly}" class="materialize-textarea"/>
+	<form:textarea path="${path}" readonly="${readonly}" class="materialize-textarea ${customClass}" />
 	<form:errors path="${path}" cssClass="error" />
 	</div>
 	</div>

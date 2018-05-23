@@ -39,26 +39,69 @@
 	<jstl:out value="${formatNotificationMoment}"/>
 </p>
 <br/>
+
+
 <p>
-	<jstl:out value="${notification.body[currentLang]}" />
+	<jstl:if test="${attackWon}">
+		<spring:message code="notification.attack.body.won"/>
+	</jstl:if>
+	
+	<jstl:if test="${!attackWon}">
+		<spring:message code="notification.attack.body.failed"/>
+	</jstl:if>
 </p>
+	
+<br/>
+	
+	<div class="inventory">
+	<div class="inventoryElm">
+		<i class="material-icons">local_pizza</i>
+		<spring:message code="inventory.food" />
+		:
+		<jstl:out value="${notificationFood}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">local_drink</i>
+		<spring:message code="inventory.water" />
+		:
+		<jstl:out value="${notificationWater}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">toys</i>
+		<spring:message code="inventory.metal" />
+		:
+		<jstl:out value="${notificationMetal}" />
+	</div>
+	<div class="inventoryElm">
+		<i class="material-icons">spa</i>
+		<spring:message code="inventory.wood" />
+		:
+		<jstl:out value="${notificationWood}" />
+	</div>
+</div>
+	
+<br/>
+<br/>
 
 <jstl:if test="${attackId != null}">
 	<acme:button url="attack/player/delete.do?attackId=${attackId}" code="notification.finish.result"/>
 </jstl:if>
 
+<!--
 <jstl:if test="${gatherId != null}">
-	<acme:button url="gather/player/delete.do?attackId=${gatherId}" code="notification.finish.result"/>
+	<acme:button code="mission.summary" url="gather/player/foundItems.do?notificationId=${notification.id}"/>
 </jstl:if>
 
 <br/>
-
-<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
+-->
+ 
+<!-- <jstl:if test="${notification.gather!=null}"> -->
 
 <!-- Modal Trigger -->
-  <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a>
+<!--   <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a> -->
 
   <!-- Modal Structure -->
+  <!-- 
   <div id="modalEvents" class="modal">
     <div class="modal-content">
       <h4><spring:message code = "notification.modal.title"/></h4>
@@ -73,6 +116,7 @@
       	<br/>
       	<spring:message code = "notification.modal.event.health"/> <jstl:out value="${event.health}"/>, <spring:message code = "notification.modal.event.food"/> <jstl:out value="${event.food}"/> <spring:message code = "notification.modal.event.water"/> <jstl:out value="${event.water}"/>
       	<jstl:if test="${event.findCharacter}">
+      	<br/>
       		<spring:message code = "notification.modal.event.findChar"/>
       	</jstl:if>
       </jstl:forEach>
@@ -80,9 +124,14 @@
        <jstl:if test="${fn:length(notification.events) eq 0}">
        	<spring:message code = "notification.modal.event.noEvent"/>
        </jstl:if>
+       <jstl:if test="${notification.foundRefuge}">
+       <br/>
+       <spring:message code = "notification.modal.foundRefuge"/>
+       </jstl:if>
     </div>
     <div class="modal-footer">
       <a href="notification/player/display.do?notificationId=${notification.id}" class="modal-close waves-effect waves-green btn-flat"><spring:message code = "notification.modal.accept"/></a>
     </div>
   </div>
 </jstl:if>
+-->

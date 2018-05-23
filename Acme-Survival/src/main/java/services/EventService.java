@@ -6,13 +6,19 @@ import java.util.Date;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.EventRepository;
+import domain.Actor;
+import domain.Designer;
+import domain.Admin;
 import domain.Event;
+import domain.Manager;
 
 @Service
 @Transactional
@@ -24,6 +30,8 @@ public class EventService {
 	private EventRepository	eventRepository;
 	@Autowired
 	private Validator				validator;
+	@Autowired
+	private ActorService	actorService;
 
 
 	// Supporting services --------------------------------------------------
@@ -39,15 +47,51 @@ public class EventService {
 	}
 
 	public Collection<Event> findAll() {
-
 		Collection<Event> result;
-
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findAll();
 		Assert.notNull(result);
-
 		return result;
-
+	}
+	
+	public Collection<Event> findFinal() {
+		Collection<Event> result;
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findFinal();
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Page<Event> findNotFinal(Pageable pageable) {
+		Page<Event> result;
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to modify/create a product is a designer.
+		Assert.isTrue(actor instanceof Designer || actor instanceof Admin);
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findNotFinal(pageable);
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Page<Event> findFinal(Pageable pageable) {
+		Page<Event> result;
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		// Checking that the user trying to modify/create a product is a designer.
+		Assert.isTrue(actor instanceof Designer || actor instanceof Admin);
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findFinal(pageable);	
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Collection<Event> findNotFinal() {
+		Collection<Event> result;
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findNotFinal();
+		Assert.notNull(result);
+		return result;
 	}
 
 	public Event findOne(final int eventId) {

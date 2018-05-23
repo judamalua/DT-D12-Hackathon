@@ -45,7 +45,7 @@ public class Item extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	public Refuge getRefuge() {
 		return this.refuge;
 	}

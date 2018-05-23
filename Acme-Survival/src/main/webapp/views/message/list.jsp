@@ -22,7 +22,7 @@
 <br/>
 <h5><jstl:out value="${fatherThread.name}" /></h5>
 
-<acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
+<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
 	page="${page}" />
 
 <display:table name="messages" id="row" requestURI="${requestURI}"
@@ -30,8 +30,7 @@
 
 	<spring:message code="message.image" var="image" />
 	<display:column>
-		<img src="${row.image}" />
-		<jstl:out value="${row.text}" />
+		${row.text}
 		<br />
 		<fmt:formatDate value="${row.moment}" pattern="${format}" />
 	</display:column>
@@ -51,7 +50,7 @@
 <security:authorize access="isAuthenticated()">
 
 	<form:form action="message/actor/edit.do" modelAttribute="messageForm">
-
+	<h4><spring:message code="message.createNew"/></h4>
 		<form:hidden path="id" />
 		<form:hidden path="version" />
 		<form:hidden path="thread" value="${fatherThread.id}" />
@@ -60,9 +59,14 @@
 			<em><spring:message code="form.required.params" /></em>
 		</p>
 
-		<acme:textbox code="message.text" path="text" required="true" />
-
-		<acme:textarea code="message.image" path="image" />
+		<div class="form-group">
+		<div class="row">
+			<div class="input-field col s9">
+				<form:textarea path="text" class="widgEditor" required="true"/>
+				<form:errors path="text" cssClass="error" />
+			</div>
+		</div>
+	</div>
 
 		<acme:submit name="save" code="message.save" />
 

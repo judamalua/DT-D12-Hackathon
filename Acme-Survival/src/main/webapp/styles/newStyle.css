@@ -1,0 +1,28 @@
+.brand-logo{
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.metal-wasted{
+	 background-image: url("../images/headerback.jpg");
+}
+
+.icon-image{
+	position:abosolute;
+	margin-right: 10px;
+	margin-left: 10px;
+	padding-bottom: 6px;
+}
+
+.icon-image-nomargin{
+	position:abosolute;
+	padding-bottom: 6px;
+}
+
+button, .btn { 
+	 background-image: url("../images/headerback.jpg");
+}
+
+.li-separation{
+	margin-right: 10px;
+	margin-left: 10px;
+}

@@ -125,6 +125,7 @@ public class ItemPlayerController extends AbstractController {
 
 			Assert.isTrue((player instanceof Player));
 			character = this.characterService.findOne(characterId);
+			Assert.isTrue(character.getCurrentHealth() > 0);
 			Assert.isTrue(!charactersInMission.contains(character));
 			item = this.itemService.findOne(itemId);
 			this.itemService.UpdateEquipped(item, characterId);
@@ -193,8 +194,9 @@ public class ItemPlayerController extends AbstractController {
 				result.addObject("items", items.getContent());
 				result.addObject("page", page);
 				result.addObject("pageNum", items.getTotalPages());
-			} else
+			} else {
 				result = new ModelAndView("redirect:/refuge/player/create.do");
+			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");

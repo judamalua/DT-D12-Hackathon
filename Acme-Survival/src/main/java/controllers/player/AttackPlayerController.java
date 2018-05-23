@@ -64,6 +64,7 @@ public class AttackPlayerController extends AbstractController {
 			result = new ModelAndView("attack/create");
 			result.addObject("attack", attack);
 			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
+			result.addObject("isAttackable", this.attackService.refugeIsAttackable(refugeId));
 			if (move == null)
 				result.addObject("isMoving", true);
 
@@ -78,7 +79,7 @@ public class AttackPlayerController extends AbstractController {
 	public ModelAndView saveAttackToRefuge(@ModelAttribute("attack") Attack attack, final BindingResult binding) {
 		ModelAndView result;
 		Move move;
-		final Player player;
+		Player player;
 		Refuge refuge;
 
 		try {
@@ -99,7 +100,11 @@ public class AttackPlayerController extends AbstractController {
 
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
-				result = new ModelAndView("redirect:/misc/403");
+				if (oops.getMessage() == "Refuge can't be attacked")
+					result = this.createAttackToRefuge(attack.getId());
+				else
+					result = new ModelAndView("redirect:/misc/403");
+
 			}
 		return result;
 	}

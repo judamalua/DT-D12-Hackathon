@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ConfigurationService;
 import services.SliderService;
-import domain.Configuration;
 import domain.Slider;
 
 @Controller
@@ -57,9 +56,6 @@ public class WelcomeController extends AbstractController {
 		result = new ModelAndView("welcome/index");
 		result.addObject("name", name);
 		result.addObject("moment", moment);
-		final Configuration configuration = this.configurationService.findConfiguration();
-		result.addObject("cookies_es", configuration.getCookies_es());
-		result.addObject("cookies_en", configuration.getCookies_eng());
 		try {
 			final Collection<Slider> sliders = this.sliderService.findAll();
 			if (sliders.size() == 0)
