@@ -31,9 +31,14 @@
 		<em><spring:message code="form.required.params" /></em>
 	</p>
 
-	<acme:textarea code="message.text" path="text" required="true" customClass="widgEditor"/>
-
-	<acme:textbox code="message.image" path="image" />
+	<div class="form-group">
+		<div class="row">
+			<div class="input-field col s9">
+				<form:textarea path="text" class="widgEditor" required="true" />
+				<form:errors path="text" cssClass="error" />
+			</div>
+		</div>
+	</div>
 
 	<acme:submit name="save" code="message.save" />
 
@@ -42,7 +47,8 @@
 			code="message.delete" />
 	</jstl:if>
 	<jstl:if test="${thread!=null and thread.forum.forum!=null }">
-		<acme:cancel url="forum/list.do?forumId=${thread.forum.forum}" code="thread.cancel" />
+		<acme:cancel url="forum/list.do?forumId=${thread.forum.forum}"
+			code="thread.cancel" />
 	</jstl:if>
 	<jstl:if test="${thread==null or thread.forum.forum==null }">
 		<acme:cancel url="forum/list.do" code="thread.cancel" />
