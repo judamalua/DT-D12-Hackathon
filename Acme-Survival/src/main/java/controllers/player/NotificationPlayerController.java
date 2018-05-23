@@ -98,15 +98,16 @@ public class NotificationPlayerController extends AbstractController {
 	public ModelAndView display(final int notificationId) {
 		ModelAndView result;
 		Notification notification;
-		String bodyEn;
+		String bodyEn, titleEn;
 		ArrayList<String> resources;
 
 		try {
 			notification = this.notificationService.findOne(notificationId);
 			result = new ModelAndView("notification/display");
 			bodyEn = notification.getBody().get("en");
+			titleEn = notification.getTitle().get("en");
 
-			if (bodyEn != "The attacker didn't steal any resources.") {
+			if (titleEn.equals("The attacker managed to steal resources")) {
 				resources = this.splitBodyNotification(bodyEn);
 
 				result.addObject("notification", notification);
