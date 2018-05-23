@@ -58,6 +58,8 @@ public class NotificationService {
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		result.setMoment(now);
+		result.setGather(null);
+		result.setAttack(null);
 		result.setCharacterId(null);
 		result.setFoundRefuge(false);
 		result.setPlayer(player);
@@ -183,13 +185,13 @@ public class NotificationService {
 
 		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
-				notification = this.findNotificationByMission(attack.getId());
+				notification = this.findNotificationByAttack(attack.getId());
 				title = this.generetateTitleMapResultByAttack(attack);
 				body = this.generetateMapBodyResultByAttack(attack);
 
 				notification.setBody(body);
 				notification.setTitle(title);
-				notification.setMission(attack);
+				notification.setAttack(attack);
 
 				this.save(notification);
 
@@ -252,10 +254,10 @@ public class NotificationService {
 
 	}
 
-	public Notification findNotificationByMission(final int missionId) {
+	public Notification findNotificationByAttack(final int attackId) {
 		Notification result;
 
-		result = this.notificationRepository.findNotificationByMission(missionId);
+		result = this.notificationRepository.findNotificationByAttack(attackId);
 
 		return result;
 	}
