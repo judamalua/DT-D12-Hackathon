@@ -331,6 +331,9 @@ public class GatherPlayerController extends AbstractController {
 					final Item item = this.itemService.findOne(new Integer(itemsToRemove.get(i)));
 					this.itemService.delete(item);
 				}
+				final Character character = gather.getCharacter();
+				character.setCurrentlyInGatheringMission(false);
+				this.characterService.save(character);
 				this.notificationService.delete(notification);
 				this.gatherService.delete(gather);
 
