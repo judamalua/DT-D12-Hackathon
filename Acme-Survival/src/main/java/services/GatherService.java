@@ -143,6 +143,8 @@ public class GatherService {
 		// We set to true this property, indicating that the character is now on a gathering mission
 		character.setCurrentlyInGatheringMission(true);
 
+		character.setGatherNotificated(false);
+
 		// And we save the character
 		this.characterService.save(character);
 
@@ -202,15 +204,13 @@ public class GatherService {
 	 */
 	public Collection<Character> findCharacterInGatheringMission() {
 		Collection<Character> result;
-		Date now;
 		Refuge refuge;
 		Player player;
 
 		player = (Player) this.actorService.findActorByPrincipal();
 		refuge = this.refugeService.findRefugeByPlayer(player.getId());
 
-		now = new Date();
-		result = this.gatherRepository.findCharactersInGatheringMission(now, refuge.getId());
+		result = this.gatherRepository.findCharactersInGatheringMission(refuge.getId());
 
 		return result;
 
@@ -336,7 +336,7 @@ public class GatherService {
 
 		Assert.notNull(player);
 
-		currentlyInGatheringMissionCharacters = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+		currentlyInGatheringMissionCharacters = this.characterService.findCharactersNotNotificatedOfGather(refuge.getId());
 
 		for (final Character character : currentlyInGatheringMissionCharacters) {
 			// We check if the current character has a gathering mission that has already finished
@@ -349,7 +349,7 @@ public class GatherService {
 				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
 				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
 
-				//character.setCurrentlyInGatheringMission(false);
+				character.setGatherNotificated(true);
 				missionMillis = gatherMission.getEndMoment().getTime() - gatherMission.getStartDate().getTime();
 				missionMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(missionMillis);
 
