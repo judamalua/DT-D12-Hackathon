@@ -164,20 +164,20 @@ $(document).ready(function(){
 			<display:column title="">
 				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
 					<jstl:if test="${room.roomDesign.food>0}">
-						<spring:message code="food" />: +${room.roomDesign.food}
+						<spring:message code="inventory.food" />: +${room.roomDesign.food}
 					</jstl:if>	
 					<jstl:if test="${room.roomDesign.water>0}">
-						<spring:message code="water" />: +${room.roomDesign.water}
+						<spring:message code="inventory.water" />: +${room.roomDesign.water}
 					</jstl:if>	
 					<jstl:if test="${room.roomDesign.metal>0}">
-						<spring:message code="metal" />: +${room.roomDesign.metal}
+						<spring:message code="inventory.metal" />: +${room.roomDesign.metal}
 					</jstl:if>	
 					<jstl:if test="${room.roomDesign.wood>0}">
-						<spring:message code="wood" />: +${room.roomDesign.wood}
+						<spring:message code="inventory.wood" />: +${room.roomDesign.wood}
 					</jstl:if>		
 				</jstl:if>
 				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"Barrack\"}">
-					<spring:message code="capacity" />: +${room.roomDesign.characterCapacity}
+					<spring:message code="inventory.capacity" />: +${room.roomDesign.characterCapacity}
 				</jstl:if>
 			</display:column>
 
