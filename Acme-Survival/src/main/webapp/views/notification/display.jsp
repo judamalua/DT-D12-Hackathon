@@ -46,7 +46,7 @@
 </p>
 </jstl:if>
 
-<jstl:if test="${(notification.mission[\"class\"].simpleName != \"Gather\")}">
+<jstl:if test="${notification.attack!=null}">
 	<p>
 		<jstl:out value="${notificationMessage}" />
 	</p>
@@ -90,7 +90,7 @@
 
 <br/>
 
-<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
+<jstl:if test="${notification.gather!=null}">
 
 <!-- Modal Trigger -->
   <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a>
