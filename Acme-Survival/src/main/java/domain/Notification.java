@@ -110,7 +110,6 @@ public class Notification extends DomainEntity {
 		this.player = player;
 	}
 
-	@Valid
 	@OneToOne(optional = true)
 	public Mission getMission() {
 		return this.mission;

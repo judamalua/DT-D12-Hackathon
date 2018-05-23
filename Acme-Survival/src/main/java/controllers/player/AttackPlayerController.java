@@ -100,10 +100,11 @@ public class AttackPlayerController extends AbstractController {
 
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
-				if (oops.getMessage() == "")
+				if (oops.getMessage() == "Refuge can't be attacked")
 					result = this.createAttackToRefuge(attack.getId());
 				else
 					result = new ModelAndView("redirect:/misc/403");
+
 			}
 		return result;
 	}

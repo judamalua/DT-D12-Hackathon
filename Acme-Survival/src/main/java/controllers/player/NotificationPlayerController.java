@@ -89,7 +89,7 @@ public class NotificationPlayerController extends AbstractController {
 				result = new ModelAndView("redirect:/refuge/player/create.do");
 			} else {
 				result = new ModelAndView("redirect:/misc/403");
-			}
+
 		}
 
 		return result;
@@ -135,14 +135,13 @@ public class NotificationPlayerController extends AbstractController {
 			if (titleEn.equals("The attacker managed to steal resources")) {
 				resources = this.splitBodyNotification(bodyEn);
 
-				result.addObject("notification", notification);
-				result.addObject("notificationId", notification.getId());
 				result.addObject("notificationMessage", resources.get(0));
 				result.addObject("notificationWater", resources.get(1));
 				result.addObject("notificationFood", resources.get(2));
 				result.addObject("notificationMetal", resources.get(3));
 				result.addObject("notificationWood", resources.get(4));
 			}
+			result.addObject("notification", notification);
 
 			if (notification.getMission() != null) {
 				if (notification.getMission() instanceof Attack) {
