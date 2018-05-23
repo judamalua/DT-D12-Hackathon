@@ -95,11 +95,11 @@ public class RoomService {
 		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
 
 		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
-
-		Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
-		inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
-		inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
-
+		if (room.getId() == 0) {
+			Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
+			inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
+			inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
+		}
 		this.inventoryService.save(inventory);
 
 		result = this.roomRepository.save(room);
