@@ -115,6 +115,14 @@ public class RoomService {
 		return result;
 
 	}
+
+	public Room saveRoomByAttack(final Room room) {
+		Room result;
+
+		result = this.roomRepository.save(room);
+
+		return result;
+	}
 	public void delete(final Room room) {
 
 		Assert.notNull(room);
