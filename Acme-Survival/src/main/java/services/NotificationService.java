@@ -97,7 +97,7 @@ public class NotificationService {
 		Assert.isTrue(notification.getPlayer().equals(player));
 
 		if (notification.getId() == 0) {
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			notification.setMoment(now);
 		}
@@ -115,7 +115,7 @@ public class NotificationService {
 		Date now;
 
 		if (notification.getId() == 0) {
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			notification.setMoment(now);
 		}
@@ -148,7 +148,7 @@ public class NotificationService {
 			result = notification;
 
 			player = (Player) this.actorService.findActorByPrincipal();
-			now = new Date();
+			now = new Date(System.currentTimeMillis() - 100);
 
 			result.setMoment(now);
 			result.setPlayer(player);
