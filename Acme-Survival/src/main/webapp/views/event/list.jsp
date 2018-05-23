@@ -28,7 +28,11 @@
 	
 <display:column title="${name}" sortable="false"><jstl:out value="${event.name[currentLang]}"/></display:column>
 	<display:column title="${description}" sortable="false"><jstl:out value="${event.description[currentLang]}"/></display:column>
-	
+		<jstl:if test="${designerDraftModeView && !event.finalMode}">
+		<display:column>
+			<acme:button url="event/designer/edit.do?eventId=${event.id}" code="event.edit"/>
+		</display:column>
+		</jstl:if>
 
 </display:table>
 
