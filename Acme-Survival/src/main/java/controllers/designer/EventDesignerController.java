@@ -37,6 +37,7 @@ import domain.Designer;
 import domain.Event;
 import domain.Manager;
 import domain.Product;
+import domain.RoomDesign;
 import forms.ActorForm;
 
 @Controller
@@ -56,13 +57,11 @@ public class EventDesignerController extends AbstractController {
 	public EventDesignerController() {
 		super();
 	}
-
 	
-	@RequestMapping(value = "/list")
-	public ModelAndView listEvents(@RequestParam(defaultValue = "0") final int page) {
+	@RequestMapping(value = "/list-final")
+	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
-		//Page<Event> events;
-		Collection<Event> events;
+		Page<Event> eventsFinal;
 		Actor actor;
 		Pageable pageable;
 		Configuration configuration;
@@ -74,15 +73,43 @@ public class EventDesignerController extends AbstractController {
 			pageable = new PageRequest(page, configuration.getPageSize());
 			result = new ModelAndView("event/list");
 			actor = this.actorService.findActorByPrincipal();
-			
-
-			events = this.eventService.findAll();
-
-			result.addObject("managerDraftModeView", true);
-			result.addObject("events", events);
-		//	result.addObject("page", page);
+			// Checking that the user trying to list draft mode products is a manager.
+			Assert.isTrue(actor instanceof Designer);
+			eventsFinal = this.eventService.findFinal(pageable);
+			result.addObject("designerDraftModeView", false);
+			result.addObject("events", eventsFinal.getContent());
+			result.addObject("page", page);
 			result.addObject("requestURI", "event/designer/list.do");
-		//	result.addObject("pageNum", draftModeProducts.getTotalPages());
+			result.addObject("pageNum", eventsFinal.getTotalPages());
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
+	
+	@RequestMapping(value = "/list")
+	public ModelAndView listDraftMode(@RequestParam(defaultValue = "0") final int page) {
+		ModelAndView result;
+		Page<Event> eventsNotFinal;
+		Actor actor;
+		Pageable pageable;
+		Configuration configuration;
+		try {
+			configuration = this.configurationService.findConfiguration();
+			pageable = new PageRequest(page, configuration.getPageSize());
+			result = new ModelAndView("event/list");
+			actor = this.actorService.findActorByPrincipal();
+			// Checking that the user trying to list draft mode products is a manager.
+			Assert.isTrue(actor instanceof Designer);
+			eventsNotFinal = this.eventService.findNotFinal(pageable);
+			result.addObject("designerDraftModeView", true);
+			result.addObject("events", eventsNotFinal.getContent());
+			result.addObject("page", page);
+			result.addObject("requestURI", "event/designer/list.do");
+			result.addObject("pageNum", eventsNotFinal.getTotalPages());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -140,6 +167,7 @@ public class EventDesignerController extends AbstractController {
 		
 		event = eventService.findOne(eventId);
 		Assert.notNull(event);
+		Assert.isTrue(!event.getFinalMode());
 
 		result = this.createEditModelAndView(event);
 
