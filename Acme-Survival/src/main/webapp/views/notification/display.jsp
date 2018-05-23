@@ -40,16 +40,19 @@
 </p>
 <br/>
 
-<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
-<p>
-	<jstl:out value="${notification.body[currentLang]}" />
-</p>
-</jstl:if>
 
-<jstl:if test="${notification.attack!=null}">
-	<p>
-		<jstl:out value="${notificationMessage}" />
-	</p>
+<p>
+	<jstl:if test="${attackWon}">
+		<spring:message code="notification.attack.body.won"/>
+	</jstl:if>
+	
+	<jstl:if test="${!attackWon}">
+		<spring:message code="notification.attack.body.failed"/>
+	</jstl:if>
+</p>
+	
+<br/>
+	
 	<div class="inventory">
 	<div class="inventoryElm">
 		<i class="material-icons">local_pizza</i>
@@ -79,23 +82,26 @@
 	
 <br/>
 <br/>
-</jstl:if>
+
 <jstl:if test="${attackId != null}">
 	<acme:button url="attack/player/delete.do?attackId=${attackId}" code="notification.finish.result"/>
 </jstl:if>
 
+<!--
 <jstl:if test="${gatherId != null}">
 	<acme:button code="mission.summary" url="gather/player/foundItems.do?notificationId=${notification.id}"/>
 </jstl:if>
 
 <br/>
-
-<jstl:if test="${notification.gather!=null}">
+-->
+ 
+<!-- <jstl:if test="${notification.gather!=null}"> -->
 
 <!-- Modal Trigger -->
-  <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a>
+<!--   <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a> -->
 
   <!-- Modal Structure -->
+  <!-- 
   <div id="modalEvents" class="modal">
     <div class="modal-content">
       <h4><spring:message code = "notification.modal.title"/></h4>
@@ -128,3 +134,4 @@
     </div>
   </div>
 </jstl:if>
+-->
