@@ -431,6 +431,7 @@
 		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="currentlyInGatheringMission" value="false" />
+		<property name="gatherNotificated" value="true" />
 
 	</bean>
 
@@ -465,6 +466,39 @@
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
+
+
+	<bean id="Room7" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room8" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room9" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room10" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room11" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room12" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+
 
 	<!-- %%%%%% domain.Item %%%%%% -->
 	<bean id="Item1" class="domain.Item">
