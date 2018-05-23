@@ -39,15 +39,27 @@ public class EventService {
 	}
 
 	public Collection<Event> findAll() {
-
 		Collection<Event> result;
-
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findAll();
 		Assert.notNull(result);
-
 		return result;
-
+	}
+	
+	public Collection<Event> findFinal() {
+		Collection<Event> result;
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findFinal();
+		Assert.notNull(result);
+		return result;
+	}
+	
+	public Collection<Event> findNotFinal() {
+		Collection<Event> result;
+		Assert.notNull(this.eventRepository);
+		result = this.eventRepository.findNotFinal();
+		Assert.notNull(result);
+		return result;
 	}
 
 	public Event findOne(final int eventId) {

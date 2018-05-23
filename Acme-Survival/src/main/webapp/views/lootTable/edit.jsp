@@ -169,7 +169,6 @@
 				<td style="cursor: pointer;" id="clone1" onclick="itemSelector()">${items[0].name[currentLang]}</td>
 
 
-
 				<td contenteditable="true">0</td>
 				<td><span><i class="table-remove-item material-icons">delete_forever</i></span>
 				</td>
@@ -178,11 +177,17 @@
 				</td>
 			</tr>
 		</table>
+		
 	</div>
+ 
+ 
+    <input class="filled-in" id="finalMode" type="checkbox" >
+    <label for="finalMode"><spring:message code="lootTable.finalMode" /></label>
 
 
 </div>
-
+	
+       
 <br>
 <button id="save-loottable" class="btn btn-primary">${save}</button>
 
