@@ -415,7 +415,7 @@ public class GatherService {
 					notification.setBody(bodyNotificationDead);
 					notification.setMoment(new Date(System.currentTimeMillis() - 10000));
 					notification.setPlayer(player);
-					notification.setMission(gatherMission);
+					notification.setGather(gatherMission);
 					notification.setCharacterId(character.getId());
 					if (eventsDuringMission.size() != 0) {
 						notification.setEvents(eventsDuringMission);
@@ -437,7 +437,7 @@ public class GatherService {
 					notification.setBody(bodyNotification);
 					notification.setMoment(new Date(System.currentTimeMillis() - 10000));
 					notification.setPlayer(player);
-					notification.setMission(gatherMission);
+					notification.setGather(gatherMission);
 					notification.setCharacterId(character.getId());
 					if (eventsDuringMission.size() != 0) {
 						notification.setEvents(eventsDuringMission);

@@ -109,9 +109,9 @@ public class NotificationPlayerController extends AbstractController {
 
 			result.addObject("notification", notification);
 
-			if (notification.getMission() != null) {
+			if (notification.getGather() != null) {
 
-				result.addObject("gatherId", notification.getMission().getId());
+				result.addObject("gatherId", notification.getGather().getId());
 			}
 
 		} catch (final Throwable oops) {
@@ -145,11 +145,11 @@ public class NotificationPlayerController extends AbstractController {
 			}
 			result.addObject("notification", notification);
 
-			if (notification.getMission() != null) {
-				if (notification.getMission() instanceof Attack) {
-					result.addObject("attackId", notification.getMission().getId());
+			if (notification.getAttack() != null) {
+				if (notification.getAttack() instanceof Attack) {
+					result.addObject("attackId", notification.getAttack().getId());
 				} else {
-					result.addObject("gatherId", notification.getMission().getId());
+					result.addObject("gatherId", notification.getGather().getId());
 				}
 			}
 		} catch (final Throwable oops) {

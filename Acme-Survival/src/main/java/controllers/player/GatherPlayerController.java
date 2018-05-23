@@ -197,7 +197,7 @@ public class GatherPlayerController extends AbstractController {
 			character = this.characterService.findOne(notification.getCharacterId());
 			if (character.getCurrentHealth() == 0) {
 				this.notificationService.delete(notification);
-				this.gatherService.delete((Gather) notification.getMission());
+				this.gatherService.delete(notification.getGather());
 				this.characterService.characterRIP(character);
 				result = new ModelAndView("redirect:/refuge/player/display.do");
 
@@ -302,7 +302,7 @@ public class GatherPlayerController extends AbstractController {
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			currentCapacity = this.refugeService.getCurrentCapacity(refuge);
 			notification = this.notificationService.findOne(notificationId);
-			gather = (Gather) notification.getMission();
+			gather = notification.getGather();
 			result = "notification/player/list.do";
 
 			for (final String al : itemsIds) {
