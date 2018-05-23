@@ -13,6 +13,8 @@ package controllers.designer;
 import java.util.Collection;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +34,7 @@ import services.DesignerService;
 import services.EventService;
 import controllers.AbstractController;
 import domain.Actor;
+import domain.Barrack;
 import domain.Configuration;
 import domain.Designer;
 import domain.Event;
@@ -196,6 +199,31 @@ public class EventDesignerController extends AbstractController {
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(event, "event.commit.error");
 			}
+
+		return result;
+	}
+	
+	/**
+	 * This method deletes a Event
+	 * 
+	 * @param event
+	 * @param binding
+	 * @return a model depending on the error/success on the operation
+	 * 
+	 * @author Alejandro
+	 */
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(@Valid final Event event, final BindingResult binding) {
+		ModelAndView result;
+
+		try {
+			Assert.isTrue(!event.getFinalMode());
+			this.eventService.delete(event);
+			result = new ModelAndView("redirect:list.do");
+
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(event, "event.commit.error");
+		}
 
 		return result;
 	}
