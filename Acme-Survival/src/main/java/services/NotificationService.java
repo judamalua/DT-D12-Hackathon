@@ -181,7 +181,7 @@ public class NotificationService {
 		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null) {
+		if (attack != null)
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByMission(attack.getId());
 
@@ -199,7 +199,6 @@ public class NotificationService {
 				}
 
 			}
-		}
 
 	}
 
