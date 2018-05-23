@@ -54,7 +54,7 @@
 
 <br/>
 
-<jstl:if test="${notification.mission[\"class\"].simpleName eq \"Gather\"}">
+<jstl:if test="${notification.gather!=null}">
 <!-- Modal Trigger -->
   <a class="waves-effect waves-light btn modal-trigger" href="#modalEvents"><spring:message code = "notification.modal.events"/></a>
   <!-- Modal Structure -->
@@ -86,7 +86,7 @@
        </jstl:if>
     </div>
     <div class="modal-footer">
-      <a href="notification/player/display.do?notificationId=${notification.id}" class="modal-close waves-effect waves-green btn-flat"><spring:message code = "notification.modal.accept"/></a>
+      <a href="notification/player/displayGatherNotification.do?notificationId=${notification.id}" class="modal-close waves-effect waves-green btn-flat"><spring:message code = "notification.modal.accept"/></a>
     </div>
   </div>
 </jstl:if>

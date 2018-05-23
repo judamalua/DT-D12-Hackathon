@@ -314,7 +314,6 @@ public class GatherPlayerController extends AbstractController {
 				}
 			}
 			for (final String al : notItemsIds) {
-				al.substring(1, al.length() - 1);
 				if (!al.equals("") && !(al.equals("\"\""))) {
 					final String s = al.substring(1, al.length() - 1);
 					final Integer i = new Integer(s);
