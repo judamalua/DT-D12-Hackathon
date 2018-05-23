@@ -38,7 +38,7 @@
 		<acme:textbox code="slider.title_es" path="title_es" required="true" />
 		<acme:textarea code="slider.text_es" path="text_es" required="true" />
 		
-		<acme:textbox code="slider.pictureUrl" path="pictureUrl" />
+		<acme:imageUpload code="slider.pictureUrl" path="pictureUrl" required="true"/>
 		
 		
 		<div>
