@@ -434,6 +434,23 @@
 		<property name="gatherNotificated" value="true" />
 
 	</bean>
+	
+	<bean id="Character2" class="domain.Character">
+		<property name="capacity" value="12" />
+		<property name="luck" value="7" />
+		<property name="strength" value="15" />
+		<property name="currentHealth" value="50" />
+		<property name="currentWater" value="100" />
+		<property name="currentFood" value="100" />
+		<property name="fullName" value="Tyrion Lannister" />
+		<property name="level" value="1" />
+		<property name="experience" value="325" />
+		<property name="male" value="true" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="currentlyInGatheringMission" value="false" />
+		<property name="gatherNotificated" value="true" />
+
+	</bean>
 
 	<!-- %%%%%% domain.Room %%%%%% -->
 	<bean id="Room1" class="domain.Room">
