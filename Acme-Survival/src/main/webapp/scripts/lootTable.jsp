@@ -52,26 +52,29 @@ function redirectPost(url, data) {
 $(document).ready(function() {
 
  $('#save-loottable').click(()=>{
-
+	 var tableName = document.getElementById("lootTableName").innerText;
+	 if (tableName != ""){
 	var data = {};
 	$("#table-item tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
 	    data["item" +$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
 		}
-	    // compare id to what you want
 	});
 	
 		$("#table-event tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
 	    data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
 		}
-	    // compare id to what you want
 	});
-	data["name"] = document.getElementById("lootTableName").innerText;
+	data["name"] = tableName;
 	data["finalMode"] = document.getElementById("finalMode").checked;
 	data["save"] = ""; //Needed for spring save
 	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
-
+	
+	 }else{
+		 var emptyName="<spring:message code="lootTable.emptyName"/>";
+		 Materialize.toast(emptyName);
+	 }
 
   });
 var $TABLEEVENT = $('#table-event');
@@ -170,9 +173,9 @@ function selectItem(name,image, id){
 	var itemsCount = $("#table-item tr").length;
 	$("#table-item tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
-	    if ($(this).find("td:first").text() == id){
-	    	var duplicatedMsg="<spring:message code="lootTable.duplicated"/>";
+	    if ($(this).find("td:first").text() == id){	
 	    	duplicated = true;
+	    	var duplicatedMsg="<spring:message code="lootTable.duplicated"/>";
 	    	Materialize.toast(duplicatedMsg,3000);
 	    	Materialize.toast("<spring:message code="lootTable.save" var="save" />",2);
 	    }
