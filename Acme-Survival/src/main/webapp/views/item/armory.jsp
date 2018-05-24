@@ -41,7 +41,7 @@
 	<display:column sortable = "true" title="${luckTitle}" property="tool.luck" />
 
 	<spring:message code="tool.capacity" var="capacityTitle" />
-	<display:column sortable = "true" title="${strengthTitle}" property="tool.capacity" />
+	<display:column sortable = "true" title="${capacityTitle}" property="tool.capacity" />
 	
 	<display:column>
 		<security:authorize access="hasRole('PLAYER')">
