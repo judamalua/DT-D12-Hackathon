@@ -17,7 +17,7 @@
 <acme:pagination page="${page}" pageNum="${pageNum}" requestURI="${requestUri}?page="/>
 
 <display:table name="notifications" id="notification"
-	requestURI="${requestURI}"
+	requestURI="${requestUri}"
 	class="displayTag">
 
 	<spring:message code="notification.moment" var="titleMoment"/>
