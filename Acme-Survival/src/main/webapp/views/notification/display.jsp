@@ -53,7 +53,8 @@
 	
 <br/>
 	
-	<div class="inventory">
+<jstl:if test="${attackWon}">
+<div class="inventory">
 	<div class="inventoryElm">
 		<i class="material-icons">local_pizza</i>
 		<spring:message code="inventory.food" />
@@ -79,12 +80,23 @@
 		<jstl:out value="${notificationWood}" />
 	</div>
 </div>
-	
 <br/>
 <br/>
+</jstl:if>
+
 
 <jstl:if test="${attackId != null}">
 	<acme:button url="attack/player/delete.do?attackId=${attackId}" code="notification.finish.result"/>
+</jstl:if>
+
+<jstl:if test="${attackId == null}">
+	<div>
+		<a href="notification/player/delete.do?notificationId=${notification.id}" onclick="return confirm('<spring:message code="notification.delete.confirm"/>')">
+			<button class="btn">
+				<spring:message code="notification.delete" />
+			</button>
+		</a>
+	</div>
 </jstl:if>
 
 <!--

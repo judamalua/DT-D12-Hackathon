@@ -22,7 +22,7 @@
 <br/>
 <h5><jstl:out value="${fatherThread.name}" /></h5>
 
-<acme:pagination requestURI="${requestURI}" pageNum="${pageNum}"
+<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
 	page="${page}" />
 
 <display:table name="messages" id="row" requestURI="${requestURI}"
@@ -30,7 +30,6 @@
 
 	<spring:message code="message.image" var="image" />
 	<display:column>
-		<img src="${row.image}" />
 		${row.text}
 		<br />
 		<fmt:formatDate value="${row.moment}" pattern="${format}" />
@@ -51,7 +50,7 @@
 <security:authorize access="isAuthenticated()">
 
 	<form:form action="message/actor/edit.do" modelAttribute="messageForm">
-
+	<h4><spring:message code="message.createNew"/></h4>
 		<form:hidden path="id" />
 		<form:hidden path="version" />
 		<form:hidden path="thread" value="${fatherThread.id}" />

@@ -170,7 +170,7 @@
 </jstl:if>
 
 <jstl:if
-	test="${!isAttacking and character.currentHealth>0  and character.currentlyInGatheringMission}">
+	test="${!isAttacking and character.currentHealth>0  and !character.currentlyInGatheringMission}">
 	<acme:button url="room/player/list.do?characterId=${character.id}"
 		code="character.changeRoom" />
 </jstl:if>
@@ -186,7 +186,7 @@
 			src=" ${character.item.tool.imageUrl}" />
 	</div>
 	<jstl:if
-		test="${!isAttacking and character.currentHealth>0  and character.currentlyInGatheringMission}">
+		test="${!isAttacking and character.currentHealth>0  and !character.currentlyInGatheringMission}">
 		<acme:button
 			url="character/player/display.do?characterId=${character.id}&discard=true"
 			code="item.discard" />
@@ -194,7 +194,7 @@
 </jstl:if>
 
 <jstl:if
-	test="${!isAttacking and character.currentHealth>0 and character.currentlyInGatheringMission}">
+	test="${!isAttacking and character.currentHealth>0 and !character.currentlyInGatheringMission}">
 	<acme:button url="item/player/list.do?characterId=${character.id} "
 		code="item.equip" />
 
