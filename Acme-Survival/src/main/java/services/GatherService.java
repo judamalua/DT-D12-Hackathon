@@ -391,10 +391,12 @@ public class GatherService {
 						}
 
 						if (event.getItemDesign() != null) {
-							randomItemIndex = new Random();
-							itemIndex = randomItemIndex.nextInt(itemsDuringMission.size());
+							if (itemsDuringMission.size() == character.getCapacity()) {
+								randomItemIndex = new Random();
+								itemIndex = randomItemIndex.nextInt(itemsDuringMission.size());
 
-							itemsDuringMission.remove(itemIndex);
+								itemsDuringMission.remove(itemsDuringMission.get(itemIndex));
+							}
 							itemsDuringMission.add(event.getItemDesign());
 						}
 
