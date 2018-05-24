@@ -1178,8 +1178,7 @@
 				</entry>
 			</map>
 		</property>
-		<property name="imageUrl"
-			value="https://cdn.pixabay.com/photo/2016/01/15/11/51/axe-1141489_960_720.png" />
+		<property name="imageUrl" value="https://i.pinimg.com/originals/fb/65/02/fb6502ed75c54f6966c803cd258e326a.png" />
 		<property name="finalMode" value="true" />
 		<property name="strength" value="4" />
 		<property name="luck" value="0" />
