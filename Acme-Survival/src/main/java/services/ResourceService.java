@@ -39,6 +39,9 @@ public class ResourceService {
 	private EventService			eventService;
 
 	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
 	private Validator				validator;
 
 
@@ -81,6 +84,8 @@ public class ResourceService {
 		Resource result;
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
+		this.actorService.checkActorLogin();
+		Assert.isTrue(!resource.getFinalMode());
 
 		result = this.resourceRepository.save(resource);
 
@@ -111,6 +116,9 @@ public class ResourceService {
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
 
+		this.actorService.checkActorLogin();
+		Assert.isTrue(!resource.getFinalMode());
+
 		this.resourceRepository.delete(resource);
 
 		events = this.itemDesignService.findEventsByItemDesign(resource.getId());
@@ -121,8 +129,9 @@ public class ResourceService {
 			this.eventService.save(event);
 		}
 
-		for (final ProbabilityItem probabilityItem : propabilityItems)
+		for (final ProbabilityItem probabilityItem : propabilityItems) {
 			this.probabilityItemService.delete(probabilityItem);
+		}
 
 	}
 
@@ -142,12 +151,16 @@ public class ResourceService {
 		return result;
 	}
 
+	public void flush() {
+		this.resourceRepository.flush();
+	}
+
 	public Resource reconstruct(final Resource resource, final BindingResult binding) {
 		Resource result;
 
-		if (resource.getId() == 0)
+		if (resource.getId() == 0) {
 			result = resource;
-		else {
+		} else {
 			result = this.resourceRepository.findOne(resource.getId());
 
 			result.setName(resource.getName());

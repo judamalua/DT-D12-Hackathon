@@ -10,9 +10,6 @@
 
 package controllers.designer;
 
-import java.util.Collection;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,29 +27,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.DesignerService;
 import services.EventService;
 import controllers.AbstractController;
 import domain.Actor;
-import domain.Barrack;
 import domain.Configuration;
 import domain.Designer;
 import domain.Event;
-import domain.Manager;
-import domain.Product;
-import domain.RoomDesign;
-import forms.ActorForm;
 
 @Controller
 @RequestMapping("/event/designer")
 public class EventDesignerController extends AbstractController {
 
 	@Autowired
-	private ActorService	actorService;
+	private ActorService			actorService;
 	@Autowired
-	private EventService	eventService;
+	private EventService			eventService;
 	@Autowired
-	private ConfigurationService configurationService;
+	private ConfigurationService	configurationService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -60,7 +51,7 @@ public class EventDesignerController extends AbstractController {
 	public EventDesignerController() {
 		super();
 	}
-	
+
 	@RequestMapping(value = "/list-final")
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
@@ -92,7 +83,6 @@ public class EventDesignerController extends AbstractController {
 		return result;
 	}
 
-	
 	@RequestMapping(value = "/list")
 	public ModelAndView listDraftMode(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
@@ -120,7 +110,7 @@ public class EventDesignerController extends AbstractController {
 
 		return result;
 	}
-	
+
 	// Creating ---------------------------------------------------------
 	/**
 	 * 
@@ -141,15 +131,13 @@ public class EventDesignerController extends AbstractController {
 			event = this.eventService.create();
 			result = this.createEditModelAndView(event);
 
-
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
 
 		return result;
 	}
-	
-	
+
 	//Edit an Event
 	/**
 	 * That method edits a event
@@ -159,21 +147,22 @@ public class EventDesignerController extends AbstractController {
 	 * @author Alejandro
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView editEvent(@RequestParam Integer eventId) {
+	public ModelAndView editEvent(@RequestParam final Integer eventId) {
 		ModelAndView result;
 		Designer designer;
 		Event event;
+		try {
+			designer = (Designer) this.actorService.findActorByPrincipal();
+			Assert.notNull(designer);
 
-		designer = (Designer) this.actorService.findActorByPrincipal();
-		Assert.notNull(designer);
-		
-		
-		event = eventService.findOne(eventId);
-		Assert.notNull(event);
-		Assert.isTrue(!event.getFinalMode());
+			event = this.eventService.findOne(eventId);
+			Assert.notNull(event);
+			Assert.isTrue(!event.getFinalMode());
 
-		result = this.createEditModelAndView(event);
-
+			result = this.createEditModelAndView(event);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
 		return result;
 	}
 
@@ -189,20 +178,21 @@ public class EventDesignerController extends AbstractController {
 	public ModelAndView updateEvent(@ModelAttribute("event") Event event, final BindingResult binding) {
 		ModelAndView result;
 		event = this.eventService.reconstruct(event, binding);
-	
-		if (binding.hasErrors())
+
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(event, "event.params.error");
-		else
+		} else {
 			try {
 				this.eventService.save(event);
 				result = new ModelAndView("redirect:/event/designer/list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(event, "event.commit.error");
 			}
+		}
 
 		return result;
 	}
-	
+
 	/**
 	 * This method deletes a Event
 	 * 

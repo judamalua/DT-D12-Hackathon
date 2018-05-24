@@ -63,9 +63,10 @@
 		<div class="row">
 			<div class="input-field col s9">
 				<form:textarea path="text" class="widgEditor" required="true"/>
-				<form:errors path="text" cssClass="error" />
+				<div class="error"><jstl:out  value="${errorMessage}"/></div>
 			</div>
 		</div>
+		
 	</div>
 
 		<acme:submit name="save" code="message.save" />
