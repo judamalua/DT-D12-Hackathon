@@ -189,14 +189,8 @@
 					<li><a href="map/player/display.do"><spring:message
 								code="master.page.map" /></a></li>
 					<li class="divider"></li>
-					<li><a href="refuge/player/list.do"><spring:message
-								code="master.page.knowRefuge" /></a></li>
-					<li class="divider"></li>
 					<li><a href="refuge/player/display.do"><spring:message
 								code="master.page.myRefuge" /></a></li>
-					<li class="divider"></li>
-					<li><a href="inventory/player/display.do"><spring:message
-								code="master.page.myInventory" /></a></li>
 					<li class="divider"></li>
 					<li><a href="notification/player/list.do"><spring:message
 								code="master.page.myNotifications" /></a></li>

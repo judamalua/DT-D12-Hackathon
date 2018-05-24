@@ -43,21 +43,19 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPositive() {
 		int refugeId;
 		Attack attack, saved;
-		final Player player;
 
 		super.authenticate("player1"); //The player knows the Refuge
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
-		//player = (Player) this.actorService.findActorByPrincipal();
-
-		//attack.setPlayer(player);
 
 		saved = this.attackService.saveToAttack(attack);
 
 		this.attackService.flush();
 
 		Assert.notNull(saved);
+
+		this.attackService.delete(saved);
 
 		super.unauthenticate();
 	}
@@ -80,7 +78,7 @@ public class AttackServiceTest extends AbstractTest {
 
 		attack.setPlayer(player);
 
-		saved = this.attackService.save(attack);
+		saved = this.attackService.saveToAttack(attack);
 
 		this.attackService.flush();
 
@@ -105,7 +103,7 @@ public class AttackServiceTest extends AbstractTest {
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		attack.setPlayer(player);
-		saved = this.attackService.save(attack);
+		saved = this.attackService.saveToAttack(attack);
 
 		this.attackService.flush();
 
@@ -121,25 +119,49 @@ public class AttackServiceTest extends AbstractTest {
 	public void testAttackPlayerIsAlreadyAttacking() {
 		int refugeId;
 		Attack attack, attack2, saved, saved2;
-		final Player player;
 
 		super.authenticate("player1"); //The player knows the Refuge and attacks it.
 
 		refugeId = super.getEntityId("Refuge2");
 		attack = this.attackService.create(refugeId);
-		//player = (Player) this.actorService.findActorByPrincipal();
-
-		//attack.setPlayer(player);
-		saved = this.attackService.save(attack);
+		saved = this.attackService.saveToAttack(attack);
 
 		this.attackService.flush();
 
 		Assert.notNull(saved);
 
 		attack2 = this.attackService.create(refugeId);
-		saved2 = this.attackService.save(attack2);
+		saved2 = this.attackService.saveToAttack(attack2);
 
 		Assert.notNull(saved2);
+
+		super.unauthenticate();
+	}
+
+	/**
+	 * This test checks that the Player can not Attack a Refuge that has been Attacked recently.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testAttackRefugeNotAttackable() {
+		int refugeId;
+		Attack attack, saved;
+
+		super.authenticate("player1"); //The player knows the Refuge
+
+		refugeId = super.getEntityId("Refuge2");
+		attack = this.attackService.create(refugeId);
+
+		saved = this.attackService.saveToAttack(attack);
+
+		this.attackService.flush();
+
+		Assert.notNull(saved);
+
+		this.attackService.delete(saved);
+
+		attack = this.attackService.create(refugeId);
+
+		saved = this.attackService.saveToAttack(attack);
 
 		super.unauthenticate();
 	}

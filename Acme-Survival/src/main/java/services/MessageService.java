@@ -140,7 +140,6 @@ public class MessageService {
 			result = this.messageRepository.findOne(message.getId());
 
 			result.setText(message.getText());
-			result.setImage(message.getImage());
 
 		}
 		this.validator.validate(result, binding);

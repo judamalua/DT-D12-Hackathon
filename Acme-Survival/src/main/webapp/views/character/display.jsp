@@ -169,9 +169,11 @@
 	<spring:message code="room.resourceRoom"></spring:message>
 </jstl:if>
 
-
-<acme:button url="room/player/list.do?characterId=${character.id}"
-	code="character.changeRoom" />
+<jstl:if
+	test="${!isAttacking and character.currentHealth>0  and !character.currentlyInGatheringMission}">
+	<acme:button url="room/player/list.do?characterId=${character.id}"
+		code="character.changeRoom" />
+</jstl:if>
 
 <br>
 
@@ -183,14 +185,16 @@
 		<img style="height: 200px; width: 200px;"
 			src=" ${character.item.tool.imageUrl}" />
 	</div>
-	<jstl:if test="${character.currentHealth>0}">
+	<jstl:if
+		test="${!isAttacking and character.currentHealth>0  and !character.currentlyInGatheringMission}">
 		<acme:button
 			url="character/player/display.do?characterId=${character.id}&discard=true"
 			code="item.discard" />
 	</jstl:if>
 </jstl:if>
 
-<jstl:if test="${character.currentHealth>0}">
+<jstl:if
+	test="${!isAttacking and character.currentHealth>0 and !character.currentlyInGatheringMission}">
 	<acme:button url="item/player/list.do?characterId=${character.id} "
 		code="item.equip" />
 

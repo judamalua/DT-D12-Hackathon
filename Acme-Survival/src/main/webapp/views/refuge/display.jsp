@@ -33,7 +33,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.food" />
 		:
 		<div id="food">
-			<jstl:out value="${inventory.food}" />
+			<jstl:out value="${inventory.food}" />/<jstl:out value="${inventory.foodCapacity}"></jstl:out>
 		</div>
 	</div>
 	<div class="inventoryElm">
@@ -41,7 +41,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.water" />
 		:
 		<div id="water">
-			<jstl:out value="${inventory.water}" />
+			<jstl:out value="${inventory.water}" />/<jstl:out value="${inventory.waterCapacity}"/>
 		</div>
 	</div>
 	<div class="inventoryElm">
@@ -49,7 +49,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.metal" />
 		:
 		<div id="metal">
-			<jstl:out value="${inventory.metal}" />
+			<jstl:out value="${inventory.metal}" />/<jstl:out value="${inventory.metalCapacity}"/>
 		</div>
 	</div>
 	<div class="inventoryElm">
@@ -57,7 +57,7 @@ $(document).ready(function(){
 		<spring:message code="inventory.wood" />
 		:
 		<div id="wood">
-			<jstl:out value="${inventory.wood}" />
+			<jstl:out value="${inventory.wood}" />/<jstl:out value="${inventory.woodCapacity}"/>
 		</div>
 	</div>
 </div>
@@ -160,12 +160,35 @@ $(document).ready(function(){
 				<br />
 				<jstl:out value="${room.roomDesign.description[lang]}" />
 			</display:column>
+			
+			<display:column title="">
+				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
+					<jstl:if test="${room.roomDesign.food>0}">
+						<spring:message code="inventory.food" />: +${room.roomDesign.food}
+					</jstl:if>	
+					<jstl:if test="${room.roomDesign.water>0}">
+						<spring:message code="inventory.water" />: +${room.roomDesign.water}
+					</jstl:if>	
+					<jstl:if test="${room.roomDesign.metal>0}">
+						<spring:message code="inventory.metal" />: +${room.roomDesign.metal}
+					</jstl:if>	
+					<jstl:if test="${room.roomDesign.wood>0}">
+						<spring:message code="inventory.wood" />: +${room.roomDesign.wood}
+					</jstl:if>		
+				</jstl:if>
+				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"Barrack\"}">
+					<spring:message code="inventory.capacity" />: +${room.roomDesign.characterCapacity}
+				</jstl:if>
+				<jstl:if test="${room.roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
+					<spring:message code="room.itemCapacity" />: +${room.roomDesign.itemCapacity}
+				</jstl:if>
+			</display:column>
 
 			<spring:message code="refuge.room.resistance"
 				var="resistanceRoomTitle" />
 			<display:column title="${resistanceRoomTitle}">
 				<jstl:out
-					value="${(room.resistance/room.roomDesign.maxResistance)*100}%" />
+					value="${(room.resistance/room.roomDesign.maxResistance)*10}%" />
 				<div class="ratio element">
 					<div class="progress progress-striped active" aria-valuemin="0">
 						<div class="bar"

@@ -190,7 +190,7 @@
 		<property name="kmPerSecond" value="50000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
-		<property name="refugeRecoverTime" value="1" />
+		<property name="refugeRecoverTime" value="2" />
 		<property name="waterFactorSteal" value="0.25" />
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
@@ -431,6 +431,7 @@
 		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="currentlyInGatheringMission" value="false" />
+		<property name="gatherNotificated" value="true" />
 
 	</bean>
 
@@ -465,6 +466,39 @@
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
+
+
+	<bean id="Room7" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room8" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room9" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room10" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room11" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+	<bean id="Room12" class="domain.Room">
+		<property name="resistance" value="100" />
+		<property name="refuge" ref="Refuge2" />
+		<property name="RoomDesign" ref="RoomDesign4" />
+	</bean>
+
 
 	<!-- %%%%%% domain.Item %%%%%% -->
 	<bean id="Item1" class="domain.Item">
@@ -1505,13 +1539,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Colecciona a los personajes de tu juego favorito.</value>
+					<value>Collect the characters of your favorite game.</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Collect the characters of your favorite game.</value>
+					<value>Colecciona a los personajes de tu juego favorito.</value>
 				</entry>
 			</map>
 		</property>
@@ -2372,10 +2406,6 @@
 	<!-- %%%% Configuration %%%% -->
 
 	<bean id="Configuration1" class="domain.Configuration">
-		<property name="cookies_eng"
-			value="This page uses cookies for its internal operations, by continuing, we will assume that you accept these cookies." />
-		<property name="cookies_es"
-			value="Esta pagina usa cookies para realizar su correcto funcionamiento, si continúa navegando, asumiremos que acepta estas cookies." />
 		<property name="businessNameFirst" value="Acme" />
 		<property name="businessNameLast" value="Survival" />
 		<property name="pageSize" value="5" />

@@ -23,7 +23,7 @@
 			<form:hidden path="id" />
 			<form:hidden path="version" />
 
-			<acme:textbox code="product.pictureUrl" path="pictureUrl"
+			<acme:imageUpload code="product.pictureUrl" path="pictureUrl"
 				required="true" />
 
 			<jstl:forEach items="${languages}" var="lang">

@@ -25,4 +25,7 @@ public interface CharacterRepository extends JpaRepository<Character, Integer> {
 
 	@Query("select c from Character c where c.refuge.id=?1 and c.currentlyInGatheringMission = true")
 	Collection<Character> findCharactersCurrentlyInMission(int refugeId);
+
+	@Query("select c from Character c where c.refuge.id=?1 and c.gatherNotificated = false")
+	Collection<Character> findCharactersNotNotificatedOfGather(int refugeId);
 }

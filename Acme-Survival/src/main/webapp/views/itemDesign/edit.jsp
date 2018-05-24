@@ -39,7 +39,7 @@
 			required="true" />
 	</jstl:forEach>
 	
-	<acme:textbox code="itemDesign.imageUrl" path="imageUrl"
+	<acme:imageUpload code="itemDesign.imageUrl" path="imageUrl"
 		required="true" />
 
 	<jstl:if test="${tool}">

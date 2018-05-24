@@ -3,12 +3,14 @@ package domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
-import org.hibernate.validator.constraints.URL;
+
+import annotations.ExtendedURL;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -66,7 +68,8 @@ public class Slider extends DomainEntity {
 	}
 
 	@NotBlank
-	@URL
+	@ExtendedURL(admitData = true)
+	@Column(columnDefinition = "longtext")
 	@SafeHtml
 	public String getPictureUrl() {
 		return this.pictureUrl;
