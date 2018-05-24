@@ -317,6 +317,8 @@ public class GatherService {
 		List<ItemDesign> itemsDuringMission = new ArrayList<ItemDesign>();
 		Long missionMillis;
 		Integer experience;
+		Random randomItemIndex;
+		Integer itemIndex;
 		Integer missionMinutes;
 		Notification notification;
 		DesignerConfiguration designerConfiguration;
@@ -388,8 +390,13 @@ public class GatherService {
 							this.characterService.save(newCharacter);
 						}
 
-						if (event.getItemDesign() != null)
+						if (event.getItemDesign() != null) {
+							randomItemIndex = new Random();
+							itemIndex = randomItemIndex.nextInt(itemsDuringMission.size());
+
+							itemsDuringMission.remove(itemIndex);
 							itemsDuringMission.add(event.getItemDesign());
+						}
 
 					}
 
