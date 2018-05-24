@@ -41,9 +41,6 @@ public class NotificationService {
 	private AttackService			attackService;
 
 	@Autowired
-	private GatherService			gatherService;
-
-	@Autowired
 	private Validator				validator;
 
 

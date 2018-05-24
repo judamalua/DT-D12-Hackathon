@@ -157,6 +157,29 @@ public class NotificationPlayerController extends AbstractController {
 		return result;
 	}
 
+	//Delete -----------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int notificationId) {
+		ModelAndView result;
+		Notification notification;
+
+		try {
+			notification = this.notificationService.findOne(notificationId);
+
+			this.notificationService.delete(notification);
+
+			result = new ModelAndView("redirect:/notification/player/list.do");
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+
+	}
+
+	//Ancilliary methods ------------------------------------------------
+
 	public ArrayList<String> splitBodyNotification(final String body) {
 		ArrayList<String> result;
 
