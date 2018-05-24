@@ -21,7 +21,7 @@ public interface AttackRepository extends JpaRepository<Attack, Integer> {
 	@Query("select a from Attack a where a.defendant.id=?1")
 	Collection<Attack> findAttacksByDefendant(int refugeId);
 
-	@Query("select sum(c.strength) from Character c where c.refuge.id = ?1")
+	@Query("select sum(c.strength) from Character c where c.refuge.id = ?1 and c.currentlyInGatheringMission = FALSE")
 	Integer getStrengthSumByRefuge(int refugeId);
 
 	//Query("select a from Attack a where a.endMoment > ?1 and a.attacker.id = ?2")

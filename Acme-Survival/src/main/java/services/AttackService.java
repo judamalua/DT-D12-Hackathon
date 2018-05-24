@@ -146,6 +146,7 @@ public class AttackService {
 
 		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()), "Player is already attacking");
 		Assert.isTrue(attack.getPlayer().equals(player));
+		Assert.isTrue(!this.attackerHasNoCharactersToAttack(attack.getAttacker().getId()), "Attacker doesn't have characters to attack");
 
 		result = this.attackRepository.save(attack);
 		refuge.setLastAttackReceived(result.getEndMoment());
@@ -366,6 +367,8 @@ public class AttackService {
 		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
 		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
 
+		Assert.isTrue(strengthSumAttacker != null && strengthSumAttacker > 0, "Attacker doesn't have characters to attack");
+
 		if (strengthSumDefendant == null)
 			strengthSumDefendant = 1;
 
@@ -535,4 +538,20 @@ public class AttackService {
 
 		return result;
 	}
+
+	public boolean attackerHasNoCharactersToAttack(final int refugeId) {
+		Boolean result;
+		Integer strengthInRefuge;
+
+		strengthInRefuge = this.getStrengthSumByRefuge(refugeId);
+
+		if (strengthInRefuge == null || strengthInRefuge <= 0)
+			result = true;
+		else
+			result = false;
+
+		return result;
+
+	}
+
 }
