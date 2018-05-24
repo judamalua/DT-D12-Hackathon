@@ -67,7 +67,7 @@ public class EventService {
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
 		// Checking that the user trying to modify/create a product is a designer.
-		Assert.isTrue(actor instanceof Designer || actor instanceof Admin);
+		Assert.isTrue(actor instanceof Designer);
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findNotFinal(pageable);
 		Assert.notNull(result);
@@ -79,7 +79,7 @@ public class EventService {
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
 		// Checking that the user trying to modify/create a product is a designer.
-		Assert.isTrue(actor instanceof Designer || actor instanceof Admin);
+		Assert.isTrue(actor instanceof Designer);
 		Assert.notNull(this.eventRepository);
 		result = this.eventRepository.findFinal(pageable);	
 		Assert.notNull(result);
@@ -107,7 +107,9 @@ public class EventService {
 	public Event save(final Event event) {
 
 		assert event != null;
-
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		Event result;
 
 		result = this.eventRepository.save(event);
@@ -129,7 +131,11 @@ public class EventService {
 
 		assert event != null;
 		assert event.getId() != 0;
-
+		assert event != null;
+		Assert.isTrue(!event.getFinalMode());
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		Assert.isTrue(this.eventRepository.exists(event.getId()));
 
 		this.eventRepository.delete(event);
