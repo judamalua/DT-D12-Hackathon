@@ -70,7 +70,7 @@
       	<b><spring:message code = "notification.modal.event.desc"/></b>
       	<jstl:out value="${event.description[currentLang]}"></jstl:out>
       	<br/>
-      	<spring:message code = "notification.modal.event.health"/> <jstl:out value="${event.health}"/>, <spring:message code = "notification.modal.event.food"/> <jstl:out value="${event.food}"/> <spring:message code = "notification.modal.event.water"/> <jstl:out value="${event.water}"/>
+      	<spring:message code = "notification.modal.event.health"/> <jstl:out value="${event.health}"/>, <spring:message code = "notification.modal.event.food"/> <jstl:out value="${event.food}"/> <spring:message code = "notification.modal.event.water"/> <jstl:out value="${event.water}"/><br/>
       	<jstl:if test="${event.findCharacter}">
       	<br/>
       		<spring:message code = "notification.modal.event.findChar"/>
