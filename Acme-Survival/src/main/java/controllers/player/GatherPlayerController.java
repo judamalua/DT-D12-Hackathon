@@ -216,27 +216,7 @@ public class GatherPlayerController extends AbstractController {
 						final Item saveditem = this.itemService.save(item);
 						tools.add(saveditem);
 					} else {
-						final Double currentWaterCapacity = inventory.getWaterCapacity() - inventory.getWater();
-						final Double currentFoodCapacity = inventory.getFoodCapacity() - inventory.getFood();
-						final Double currentWoodCapacity = inventory.getWoodCapacity() - inventory.getWood();
-						final Double currentMetalCapacity = inventory.getMetalCapacity() - inventory.getMetal();
 						final Resource resource = (Resource) itemDesign;
-						if (currentWaterCapacity - resource.getWater() > 0)
-							inventory.setWater(inventory.getWater() + resource.getWater());
-						if (currentWaterCapacity - resource.getWater() < 0)
-							inventory.setWater(inventory.getWaterCapacity());
-						if (currentWoodCapacity - resource.getWood() > 0)
-							inventory.setWood(inventory.getWood() + resource.getWood());
-						if (currentWoodCapacity - resource.getWood() < 0)
-							inventory.setWood(inventory.getWoodCapacity());
-						if (currentFoodCapacity - resource.getFood() > 0)
-							inventory.setFood(inventory.getFood() + resource.getFood());
-						if (currentFoodCapacity - resource.getFood() < 0)
-							inventory.setFood(inventory.getFoodCapacity());
-						if (currentMetalCapacity - resource.getMetal() > 0)
-							inventory.setMetal(inventory.getMetal() + resource.getMetal());
-						if (currentMetalCapacity - resource.getMetal() < 0)
-							inventory.setMetal(inventory.getMetalCapacity());
 
 						resources.add(resource);
 
@@ -245,12 +225,6 @@ public class GatherPlayerController extends AbstractController {
 					}
 				currentCapacityRefuge = this.refugeService.getCurrentCapacity(refuge);
 				totalTools = tools.size();
-
-				if (currentCapacityRefuge > totalTools)
-					for (final Item tool : tools) {
-						tool.setRefuge(refuge);
-						this.itemService.save(tool);
-					}
 
 				result.addObject("failedSelection", failedSelection);
 				result.addObject("items", tools);
@@ -281,6 +255,7 @@ public class GatherPlayerController extends AbstractController {
 
 		itemsSelected = itemsSelected.substring(1, itemsSelected.length() - 1);
 		itemsNotSelected = itemsNotSelected.substring(1, itemsNotSelected.length() - 1);
+		Collection<ItemDesign> resources;
 
 		itemsIds = itemsSelected.split(",");
 		notItemsIds = itemsNotSelected.split(",");
@@ -291,6 +266,8 @@ public class GatherPlayerController extends AbstractController {
 			refuge = this.refugeService.findRefugeByPlayer(player.getId());
 			currentCapacity = this.refugeService.getCurrentCapacity(refuge);
 			notification = this.notificationService.findOne(notificationId);
+			resources = notification.getItemDesigns();
+			final Inventory inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
 			gather = notification.getGather();
 			result = "notification/player/list.do";
 
@@ -308,6 +285,33 @@ public class GatherPlayerController extends AbstractController {
 				}
 
 			if (itemsToSave.size() <= currentCapacity) {
+
+				for (final ItemDesign i : resources) {
+					final Double currentWaterCapacity = inventory.getWaterCapacity() - inventory.getWater();
+					final Double currentFoodCapacity = inventory.getFoodCapacity() - inventory.getFood();
+					final Double currentWoodCapacity = inventory.getWoodCapacity() - inventory.getWood();
+					final Double currentMetalCapacity = inventory.getMetalCapacity() - inventory.getMetal();
+					if (i instanceof Resource) {
+						final Resource resource = (Resource) i;
+						if (currentWaterCapacity - resource.getWater() > 0)
+							inventory.setWater(inventory.getWater() + resource.getWater());
+						if (currentWaterCapacity - resource.getWater() < 0)
+							inventory.setWater(inventory.getWaterCapacity());
+						if (currentWoodCapacity - resource.getWood() > 0)
+							inventory.setWood(inventory.getWood() + resource.getWood());
+						if (currentWoodCapacity - resource.getWood() < 0)
+							inventory.setWood(inventory.getWoodCapacity());
+						if (currentFoodCapacity - resource.getFood() > 0)
+							inventory.setFood(inventory.getFood() + resource.getFood());
+						if (currentFoodCapacity - resource.getFood() < 0)
+							inventory.setFood(inventory.getFoodCapacity());
+						if (currentMetalCapacity - resource.getMetal() > 0)
+							inventory.setMetal(inventory.getMetal() + resource.getMetal());
+						if (currentMetalCapacity - resource.getMetal() < 0)
+							inventory.setMetal(inventory.getMetalCapacity());
+					}
+
+				}
 				for (int i = 0; i < itemsToSave.size(); i++) {
 					final Item item = this.itemService.findOne(new Integer(itemsToSave.get(i)));
 					item.setRefuge(refuge);
