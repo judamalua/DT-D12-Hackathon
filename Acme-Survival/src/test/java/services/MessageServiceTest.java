@@ -1,7 +1,9 @@
 
 package services;
 
-import java.util.HashSet;
+import java.util.Date;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +13,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import utilities.AbstractTest;
-import domain.Forum;
+import domain.Actor;
 import domain.Player;
+import domain.Thread;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -23,165 +26,106 @@ public class MessageServiceTest extends AbstractTest {
 
 	//Service under test ---------------------------------------
 	@Autowired
-	private ForumService	forumService;
+	private ThreadService	threadService;
 
 	@Autowired
-	private ThreadService	threadService;
+	private MessageService	messageService;
 
 	@Autowired
 	private ActorService	actorService;
 
 
-	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
-	 */
 	@Test
-	public void testSaveThreadPositive() {
-		domain.Thread thread;
-		Forum forum;
+	public void testSaveMessagePositive() {
+		domain.Message message;
+		Thread thread;
 		Player player;
-		int forumId;
+		int threadId;
 
 		super.authenticate("player1"); //The player knows the Refuge
 
-		forumId = super.getEntityId("Forum1");
-		forum = this.forumService.findOne(forumId);
-		thread = this.threadService.create();
+		threadId = super.getEntityId("Thread1");
+		thread = this.threadService.findOne(threadId);
+		message = this.messageService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
-		thread.setTags(new HashSet<String>());
-		thread.setForum(forum);
-		thread.setActor(player);
+		message.setActor(player);
+		message.setMoment(new Date(System.currentTimeMillis() - 1));
+		message.setText("Test text");
+		message.setThread(thread);
 
-		this.threadService.save(thread);
+		this.messageService.save(message);
 
 		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testSaveThreadNotOwnerNegative() {
-		domain.Thread thread;
-		Forum forum;
+	public void testSaveMessageNotOwnerNegative() {
+		domain.Message message;
+		Thread thread;
 		Player player;
-		int forumId;
+		int threadId;
 
-		super.authenticate("player2"); //The player knows the Refuge
+		super.authenticate("player2");
 
-		forumId = super.getEntityId("Forum1");
-		forum = this.forumService.findOne(forumId);
-		thread = this.threadService.create();
+		threadId = super.getEntityId("Thread1");
+		thread = this.threadService.findOne(threadId);
+		message = this.messageService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
+		super.unauthenticate();
+		super.authenticate("Player1");
+		message.setActor(player);
+		message.setMoment(new Date(System.currentTimeMillis() - 1));
+		message.setText("Test text");
+		message.setThread(thread);
 
-		thread.setName("Test");
-		thread.setTags(new HashSet<String>());
-		thread.setForum(forum);
-		thread.setActor(player);
-
-		this.threadService.save(thread);
+		this.messageService.save(message);
 
 		super.unauthenticate();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveThreadNotAuthenticatedNegative() {
-		domain.Thread thread;
-		Forum forum;
-		Player player;
-		int forumId;
+		domain.Message message;
+		Thread thread;
+		Actor player;
+		int threadId;
 
-		forumId = super.getEntityId("Forum1");
-		forum = this.forumService.findOne(forumId);
-		thread = this.threadService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		super.unauthenticate();
+		threadId = super.getEntityId("Thread1");
+		thread = this.threadService.findOne(threadId);
+		message = this.messageService.create();
+		player = this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
-		thread.setTags(new HashSet<String>());
-		thread.setForum(forum);
-		thread.setActor(player);
+		message.setActor(player);
+		message.setMoment(new Date(System.currentTimeMillis() - 1));
+		message.setText("Test text");
+		message.setThread(thread);
 
-		this.threadService.save(thread);
+		this.messageService.save(message);
 
 	}
 
-	@Test
-	public void testDeleteThreadPositive() {
-		domain.Thread thread, savedThread;
-		Forum forum;
+	@Test(expected = ConstraintViolationException.class)
+	public void testSaveBlankMessageNegative() {
+		domain.Message message;
+		Thread thread;
 		Player player;
-		int forumId;
+		int threadId;
 
-		super.authenticate("player1"); //The player knows the Refuge
-
-		forumId = super.getEntityId("Forum1");
-		forum = this.forumService.findOne(forumId);
-		thread = this.threadService.create();
+		super.authenticate("player1");
+		threadId = super.getEntityId("Thread1");
+		thread = this.threadService.findOne(threadId);
+		message = this.messageService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
-		thread.setTags(new HashSet<String>());
-		thread.setForum(forum);
-		thread.setActor(player);
+		message.setActor(player);
+		message.setMoment(new Date(System.currentTimeMillis() - 1));
+		message.setText("");
+		message.setThread(thread);
 
-		savedThread = this.threadService.save(thread);
-
-		this.threadService.delete(savedThread);
-
-		super.unauthenticate();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testDeleteThreadNotLoggedNegative() {
-		domain.Thread thread, savedThread;
-		Forum forum;
-		Player player;
-		int forumId;
-
-		super.authenticate("player1"); //The player knows the Refuge
-
-		forumId = super.getEntityId("Forum1");
-		forum = this.forumService.findOne(forumId);
-		thread = this.threadService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
-
-		thread.setName("Test");
-		thread.setTags(new HashSet<String>());
-		thread.setForum(forum);
-		thread.setActor(player);
-
-		savedThread = this.threadService.save(thread);
-		super.unauthenticate();
-
-		this.threadService.delete(savedThread);
-
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testDeleteThreadNotOwnerNegative() {
-		domain.Thread thread, savedThread;
-		Forum forum;
-		Player player;
-		int forumId;
-
-		super.authenticate("player1"); //The player knows the Refuge
-
-		forumId = super.getEntityId("Forum1");
-		forum = this.forumService.findOne(forumId);
-		thread = this.threadService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
-
-		thread.setName("Test");
-		thread.setTags(new HashSet<String>());
-		thread.setForum(forum);
-		thread.setActor(player);
-
-		savedThread = this.threadService.save(thread);
-		super.unauthenticate();
-
-		super.authenticate("Player2");
-
-		this.threadService.delete(savedThread);
-
+		this.messageService.save(message);
+		this.messageService.flush();
 		super.unauthenticate();
 
 	}

@@ -94,26 +94,33 @@ public class MoveService {
 		final Move result;
 		long time;
 		this.actorService.checkActorLogin();
-		Refuge refuge;
+		Refuge refuge, ownRefuge;
 		final Collection<Player> playersKnowsRefuge;
 		Inventory inventory;
 		DesignerConfiguration designerConfiguration;
+		Actor actor;
 
 		move.setStartDate(new Date(System.currentTimeMillis() - 1));
 		time = this.timeBetweenLocations(move.getRefuge().getLocation(), move.getLocation());
 		move.setEndDate(new Date(System.currentTimeMillis() + time));
 		refuge = move.getRefuge();
 
-		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+		if (move.getId() == 0) {
+			actor = this.actorService.findActorByPrincipal();
+			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
+			Assert.isTrue(refuge.equals(ownRefuge));
 
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+			designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-		inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
-		inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
-		inventory.setWood(inventory.getMetal() - designerConfiguration.getMovingMetal());
-		inventory.setWood(inventory.getFood() - designerConfiguration.getMovingFood());
+			inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
 
-		this.inventoryService.save(inventory);
+			inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
+			inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
+			inventory.setWood(inventory.getMetal() - designerConfiguration.getMovingMetal());
+			inventory.setWood(inventory.getFood() - designerConfiguration.getMovingFood());
+
+			this.inventoryService.save(inventory);
+		}
 
 		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
 
@@ -159,10 +166,11 @@ public class MoveService {
 
 		resultList = this.moveRepository.findMostRecentMoveByRefuge(refugeId, pageable).getContent();
 
-		if (resultList.size() > 0)
+		if (resultList.size() > 0) {
 			result = resultList.get(0);
-		else
+		} else {
 			result = null;
+		}
 
 		return result;
 	}

@@ -118,6 +118,9 @@ public class RoomPlayerController extends AbstractController {
 			if (oops.getMessage().contains("You not have space")) {
 				result = new ModelAndView("redirect:refuge/player/display.do");
 				result.addObject("message", "refuge.capacity.error");
+			} else if (oops.getMessage().contains("You have a lot of objects")) {
+				result = new ModelAndView("redirect:refuge/player/display.do");
+				result.addObject("message", "refuge.objects.error");
 			} else {
 				result = new ModelAndView("redirect:misc/403");
 			}

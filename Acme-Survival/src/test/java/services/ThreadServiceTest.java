@@ -66,7 +66,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player2"); //The player knows the Refuge
+		super.authenticate("Player2");
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -77,7 +77,8 @@ public class ThreadServiceTest extends AbstractTest {
 		thread.setTags(new HashSet<String>());
 		thread.setForum(forum);
 		thread.setActor(player);
-
+		super.unauthenticate();
+		super.authenticate("Player1");
 		this.threadService.save(thread);
 
 		super.unauthenticate();
@@ -118,7 +119,7 @@ public class ThreadServiceTest extends AbstractTest {
 		thread = this.threadService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
+		thread.setName("Test name");
 		thread.setTags(new HashSet<String>());
 		thread.setForum(forum);
 		thread.setActor(player);
@@ -170,7 +171,7 @@ public class ThreadServiceTest extends AbstractTest {
 		thread = this.threadService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
+		thread.setName("Test name");
 		thread.setTags(new HashSet<String>());
 		thread.setForum(forum);
 		thread.setActor(player);

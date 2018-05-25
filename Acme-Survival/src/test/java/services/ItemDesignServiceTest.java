@@ -366,8 +366,8 @@ public class ItemDesignServiceTest extends AbstractTest {
 			}, {
 				// This test checks that authenticated designers cannot edit a tool in finalMode
 				"Tool1", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */true,
-				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
-				/* food */0., /* metal */-1., /* wood */0.,
+				/* strength */0,/* luck */0, /* capacity */0, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
 				/* Class<?> expected */IllegalArgumentException.class
 			}
 
@@ -390,8 +390,14 @@ public class ItemDesignServiceTest extends AbstractTest {
 	public void driverDeleteRoomDesigns() {
 		final Object testingData[][] = {
 			{
+				// This test checks that unauthenticated users cannot delete a draft mode tool
+				null, "Tool7", IllegalArgumentException.class
+			}, {
 				// This test checks that designers can delete a draft mode tool
 				"Designer1", "Tool7", null
+			}, {
+				// This test checks that unauthenticated users cannot delete a draft mode resource
+				null, "Resource3", IllegalArgumentException.class
 			}, {
 				// This test checks that designers can delete a draft mode tool
 				"Designer1", "Resource3", null
@@ -399,14 +405,8 @@ public class ItemDesignServiceTest extends AbstractTest {
 				// This test checks that managers cannot delete a final mode tool
 				"Designer1", "Tool3", IllegalArgumentException.class
 			}, {
-				// This test checks that unauthenticated users cannot delete a draft mode tool
-				null, "Tool7", IllegalArgumentException.class
-			}, {
 				// This test checks that designers cannot delete a final mode resource
 				"Designer1", "Resource1", IllegalArgumentException.class
-			}, {
-				// This test checks that unauthenticated users cannot delete a draft mode resource
-				null, "Resource3", IllegalArgumentException.class
 			}
 
 		};
@@ -560,8 +560,6 @@ public class ItemDesignServiceTest extends AbstractTest {
 			itemDesignId = super.getEntityId(itemDesignPopulate);
 
 			itemDesign = this.itemDesignService.findOne(itemDesignId);
-
-			super.authenticate(username);
 
 			nameMap.put("en", nameEn);
 			nameMap.put("es", nameEs);

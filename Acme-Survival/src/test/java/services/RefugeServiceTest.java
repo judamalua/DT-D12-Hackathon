@@ -64,11 +64,12 @@ public class RefugeServiceTest extends AbstractTest {
 		Player player;
 		Location location;
 
+		super.unauthenticate();
 		refuge = this.refugeService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		location = this.refugeService.getRandomLocation();
-		refuge.setName("Test");
+		refuge.setName("Test name");
 		refuge.setCode(this.refugeService.generateCode());
 		refuge.setLocation(location);
 		refuge.setGpsCoordinates(this.refugeService.generateRandomCoordinates(location));

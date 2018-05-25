@@ -21,6 +21,7 @@ import domain.Player;
 import domain.Refuge;
 import domain.ResourceRoom;
 import domain.Room;
+import domain.Warehouse;
 
 @Service
 @Transactional
@@ -140,18 +141,16 @@ public class RoomService {
 		currentCapacity = this.refugeService.getCurrentCharacterCapacity(room.getRefuge());
 
 		if (!(room.getRoomDesign() instanceof Barrack)) {
+			if (room.getRoomDesign() instanceof Warehouse) {
+				Assert.isTrue(this.refugeService.getCurrentCapacity(room.getRefuge()) > 0, "You have a lot of objects");
+			}
 			for (final domain.Character character : characters) {
 				character.setRoom(null);
 				this.characterService.save(character);
 			}
+
 		} else {
 			Assert.isTrue(characters.size() > (currentCapacity - ((Barrack) room.getRoomDesign()).getCharacterCapacity()), "You not have space");
-
-			//				for (int i = 0; i < (charactersInRefuge.size() - (currentCapacity + ((Barrack) room.getRoomDesign()).getCharacterCapacity())); i++) {
-			//					deleteCharacter = (domain.Character) charactersInRefuge.toArray()[(int) Math.round(Math.random() * charactersInRefuge.size())];
-			//					this.characterService.characterRIP(deleteCharacter);
-			//				}
-			//			}
 		}
 
 		this.roomRepository.delete(room);
