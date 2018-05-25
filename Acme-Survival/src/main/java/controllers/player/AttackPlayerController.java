@@ -65,6 +65,8 @@ public class AttackPlayerController extends AbstractController {
 			result.addObject("attack", attack);
 			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
 			result.addObject("isAttackable", this.attackService.refugeIsAttackable(refugeId));
+			result.addObject("attackerHasNoCharacters", this.attackService.attackerHasNoCharactersToAttack(attack.getAttacker().getId()));
+
 			if (move == null)
 				result.addObject("isMoving", true);
 
@@ -101,7 +103,9 @@ public class AttackPlayerController extends AbstractController {
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				if (oops.getMessage() == "Refuge can't be attacked")
-					result = this.createAttackToRefuge(attack.getId());
+					result = this.createAttackToRefuge(attack.getDefendant().getId());
+				else if (oops.getMessage() == "Attacker doesn't have characters to attack")
+					result = this.createAttackToRefuge(attack.getDefendant().getId());
 				else
 					result = new ModelAndView("redirect:/misc/403");
 

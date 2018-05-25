@@ -190,7 +190,7 @@
 		<property name="kmPerSecond" value="50000" />
 		<property name="foodWastedPerSecond" value="1" />
 		<property name="waterWastedPerSecond" value="1" />
-		<property name="refugeRecoverTime" value="2" />
+		<property name="refugeRecoverTime" value="1" />
 		<property name="waterFactorSteal" value="0.25" />
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
@@ -430,6 +430,23 @@
 		<property name="experience" value="325" />
 		<property name="male" value="true" />
 		<property name="refuge" ref="Refuge1" />
+		<property name="currentlyInGatheringMission" value="false" />
+		<property name="gatherNotificated" value="true" />
+
+	</bean>
+	
+	<bean id="Character2" class="domain.Character">
+		<property name="capacity" value="12" />
+		<property name="luck" value="7" />
+		<property name="strength" value="15" />
+		<property name="currentHealth" value="50" />
+		<property name="currentWater" value="100" />
+		<property name="currentFood" value="100" />
+		<property name="fullName" value="Tyrion Lannister" />
+		<property name="level" value="1" />
+		<property name="experience" value="325" />
+		<property name="male" value="true" />
+		<property name="refuge" ref="Refuge2" />
 		<property name="currentlyInGatheringMission" value="false" />
 		<property name="gatherNotificated" value="true" />
 
@@ -1019,6 +1036,47 @@
 		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
+	
+	<bean id="Event5" class="domain.Event">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>You found the legendary Legolas´ Bow</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Encontraste el arco legendario de Legolas</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>You have found one of the best guns in this game, it is the Legendary Legolas´Bow</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Has encontrado una de las armas más mortíferas del juego, El Arco de Legolas.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="health" value="-7" />
+		<property name="water" value="-2" />
+		<property name="food" value="-1" />
+		<property name="finalMode" value="true" />
+		<property name="findCharacter" value="false" />
+		<property name="itemDesign" ref="Tool12" />
+	</bean>
 	<!-- %%%%% Tools %%%%% -->
 	<bean id="Tool1" class="domain.Tool">
 		<property name="name">
@@ -1135,8 +1193,7 @@
 				</entry>
 			</map>
 		</property>
-		<property name="imageUrl"
-			value="https://cdn.pixabay.com/photo/2016/01/15/11/51/axe-1141489_960_720.png" />
+		<property name="imageUrl" value="https://i.pinimg.com/originals/fb/65/02/fb6502ed75c54f6966c803cd258e326a.png" />
 		<property name="finalMode" value="true" />
 		<property name="strength" value="4" />
 		<property name="luck" value="0" />
@@ -1391,7 +1448,131 @@
 		<property name="luck" value="2" />
 		<property name="capacity" value="0" />
 	</bean>
-
+	
+	<bean id="Tool10" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>AK-47</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>AK-47</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>AK-47 gun for pro players of CSGO</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>AK-47, destructiva, potente y letal.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://vignette.wikia.nocookie.net/cswikia/images/6/66/Ak47go.png/revision/latest?cb=20130813201911" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="15" />
+		<property name="luck" value="2" />
+		<property name="capacity" value="0" />
+	</bean>
+	
+	<bean id="Tool11" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>M4A1</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>M4A1</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>M4A1 gun for pro players of CSGO</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>M4A1,destructiva, potente y letal.</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="http://www.icsbb.com/wp-content/uploads/2016/02/ICS-Airsoft-Gun-M4A1-ICS-41-2.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="14" />
+		<property name="luck" value="3" />
+		<property name="capacity" value="0" />
+	</bean>
+	
+	<bean id="Tool12" class="domain.Tool">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Bow of Legolas</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Arco de Legolas</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Epic and strong bow that the Hero Legolas carry in Lord Of The Rings filsm</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Arco élfico de Legolas, protagonista y heroe de la saga del Señor de los Anillos</value>
+				</entry>
+			</map>
+		</property>
+		<property name="imageUrl"
+			value="https://cuernavilla.com/8089-large_default/arco-corto-de-legolas-con-flecha-de-united-cutlery.jpg" />
+		<property name="finalMode" value="true" />
+		<property name="strength" value="30" />
+		<property name="luck" value="5" />
+		<property name="capacity" value="1" />
+	</bean>
+	
+	
 
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">

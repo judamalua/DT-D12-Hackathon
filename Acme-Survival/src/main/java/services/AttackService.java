@@ -15,12 +15,12 @@ import org.springframework.validation.Validator;
 
 import repositories.AttackRepository;
 import domain.Attack;
+import domain.Character;
 import domain.DesignerConfiguration;
 import domain.Inventory;
 import domain.Notification;
 import domain.Player;
 import domain.Refuge;
-import domain.Room;
 
 @Service
 @Transactional
@@ -55,7 +55,7 @@ public class AttackService {
 	private InventoryService				inventoryService;
 
 	@Autowired
-	private RoomService						roomService;
+	private CharacterService				characterService;
 
 
 	// Simple CRUD methods --------------------------------------------------
@@ -146,6 +146,7 @@ public class AttackService {
 
 		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()), "Player is already attacking");
 		Assert.isTrue(attack.getPlayer().equals(player));
+		Assert.isTrue(!this.attackerHasNoCharactersToAttack(attack.getAttacker().getId()), "Attacker doesn't have characters to attack");
 
 		result = this.attackRepository.save(attack);
 		refuge.setLastAttackReceived(result.getEndMoment());
@@ -270,9 +271,9 @@ public class AttackService {
 		Integer foodStolen;
 		Integer metalStolen;
 		Integer woodStolen;
-		Integer attackResults, roomResistance;
+		Integer attackResults;
 		Inventory attackerInventory, defendantInventory;
-		Collection<Room> rooms;
+		Collection<Character> attackerCharacters, defendantCharacters;
 
 		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
 		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
@@ -296,21 +297,55 @@ public class AttackService {
 		this.inventoryService.save(defendantInventory);
 
 		attackResults = this.getResourcesOfAttack(attack);
+
+		attackerCharacters = this.findCharactersForAttackMission(attack.getAttacker().getId());
+		defendantCharacters = this.findCharactersForAttackMission(attack.getDefendant().getId());
 		if (attackResults > 0) {
-			rooms = this.roomService.findRoomsByRefuge(attack.getDefendant().getId());
 
-			for (final Room r : rooms) {
-				roomResistance = r.getResistance();
-				if (roomResistance > 0) {
-					r.setResistance(roomResistance - 1); //TODO Add default roomDamage in DesignerConfiguration
+			for (final Character c : attackerCharacters)
+				this.updateCharacterHealth(c, attackResults, true);
 
-					if (r.getResistance() < 0)
+			for (final Character c : defendantCharacters)
+				this.updateCharacterHealth(c, attackResults, false);
 
-						r.setResistance(0);
-					this.roomService.saveRoomByAttack(r);
-				}
-			}
+		} else {
+			for (final Character c : attackerCharacters)
+				this.updateCharacterHealth(c, attackResults, false);
+
+			for (final Character c : defendantCharacters)
+				this.updateCharacterHealth(c, attackResults, true);
 		}
+
+	}
+
+	/**
+	 * This method gets a character and updates its Health depending on the results of the attack.
+	 * 
+	 * @param c
+	 *            , the character
+	 * @param attackResults
+	 * @param winner
+	 *            , if the character won the attack or not
+	 */
+	private void updateCharacterHealth(final Character c, final Integer attackResults, final boolean winner) {
+		int damage, currentHealth;
+
+		currentHealth = c.getCurrentHealth();
+
+		if (attackResults > 0) {
+			if (!winner) //defendant lost
+				damage = attackResults * (3 / 2);
+			else
+				damage = (int) (attackResults * 0.5); //attacker won
+
+		} else if (winner) //defendant won
+			damage = c.getLevel() * 2;
+		else
+			// attacker lost
+			damage = c.getLevel() * 4;
+
+		c.setCurrentHealth(currentHealth - damage);
+		this.characterService.save(c);
 
 	}
 	/**
@@ -365,6 +400,8 @@ public class AttackService {
 
 		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
 		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
+
+		Assert.isTrue(strengthSumAttacker != null && strengthSumAttacker > 0, "Attacker doesn't have characters to attack");
 
 		if (strengthSumDefendant == null)
 			strengthSumDefendant = 1;
@@ -535,4 +572,28 @@ public class AttackService {
 
 		return result;
 	}
+
+	public boolean attackerHasNoCharactersToAttack(final int refugeId) {
+		Boolean result;
+		Integer strengthInRefuge;
+
+		strengthInRefuge = this.getStrengthSumByRefuge(refugeId);
+
+		if (strengthInRefuge == null || strengthInRefuge <= 0)
+			result = true;
+		else
+			result = false;
+
+		return result;
+
+	}
+
+	public Collection<Character> findCharactersForAttackMission(final int refugeId) {
+		Collection<Character> result;
+
+		result = this.attackRepository.findCharactersForAttackMission(refugeId);
+
+		return result;
+	}
+
 }
