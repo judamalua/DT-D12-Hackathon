@@ -60,6 +60,13 @@
 				code="forum.edit" />
 		</jstl:if>
 	</display:column>
+	
+	<display:column>
+		<security:authorize access="hasRole('DESIGNER')">
+			<acme:button url="forum/actor/delete.do?forumId=${forum.id}"
+				code="forum.delete" />
+		</security:authorize>
+	</display:column>
 
 </display:table>
 
@@ -84,6 +91,13 @@
 			<acme:button url="thread/actor/edit.do?threadId=${thread.id}"
 				code="thread.edit" />
 		</jstl:if>
+	</display:column>
+	
+	<display:column>
+		<security:authorize access="hasRole('DESIGNER')">
+			<acme:button url="thread/actor/delete.do?forumId=${forum.id}"
+				code="forum.delete" />
+		</security:authorize>
 	</display:column>
 
 </display:table>

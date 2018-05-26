@@ -21,8 +21,6 @@ public class DesignerConfiguration extends DomainEntity {
 	private double	movingFood;
 	private double	movingWater;
 	private double	kmPerSecond;
-	private double	foodWastedPerSecond;
-	private double	waterWastedPerSecond;
 	private double	refugeRecoverTime;
 	private double	waterFactorSteal;
 	private double	foodFactorSteal;
@@ -88,24 +86,6 @@ public class DesignerConfiguration extends DomainEntity {
 
 	public void setKmPerSecond(final double kmPerSecond) {
 		this.kmPerSecond = kmPerSecond;
-	}
-
-	@Min(0)
-	public double getFoodWastedPerSecond() {
-		return this.foodWastedPerSecond;
-	}
-
-	public void setFoodWastedPerSecond(final double foodWastedPerSecond) {
-		this.foodWastedPerSecond = foodWastedPerSecond;
-	}
-
-	@Min(0)
-	public double getWaterWastedPerSecond() {
-		return this.waterWastedPerSecond;
-	}
-
-	public void setWaterWastedPerSecond(final double waterWastedPerSecond) {
-		this.waterWastedPerSecond = waterWastedPerSecond;
 	}
 
 	@Min(0)

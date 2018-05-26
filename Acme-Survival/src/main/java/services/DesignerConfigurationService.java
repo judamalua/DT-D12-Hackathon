@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.DesignerConfigurationRepository;
+import domain.Actor;
+import domain.Designer;
 import domain.DesignerConfiguration;
 
 @Service
@@ -20,6 +22,9 @@ public class DesignerConfigurationService {
 
 	@Autowired
 	private DesignerConfigurationRepository	designerConfigurationRepository;
+
+	@Autowired
+	private ActorService					actorService;
 
 
 	// Supporting services --------------------------------------------------
@@ -58,22 +63,34 @@ public class DesignerConfigurationService {
 
 	public DesignerConfiguration save(final DesignerConfiguration designerConfiguration) {
 
-		assert designerConfiguration != null;
+		Assert.notNull(designerConfiguration);
+		Assert.isTrue(designerConfiguration.getFoodLostGatherFactor() > designerConfiguration.getWaterLostGatherFactor());
+		Assert.isTrue(designerConfiguration.getRefugeDefaultCapacity() >= designerConfiguration.getNumInitialCharacters());
 
 		DesignerConfiguration result;
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		Assert.isTrue(actor instanceof Designer);
 
 		result = this.designerConfigurationRepository.save(designerConfiguration);
 
 		return result;
 
 	}
-
 	public void delete(final DesignerConfiguration designerConfiguration) {
 
-		assert designerConfiguration != null;
-		assert designerConfiguration.getId() != 0;
+		Assert.notNull(designerConfiguration);
+		Assert.isTrue(designerConfiguration.getId() != 0);
 
 		Assert.isTrue(this.designerConfigurationRepository.exists(designerConfiguration.getId()));
+
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		Assert.isTrue(actor instanceof Designer);
 
 		this.designerConfigurationRepository.delete(designerConfiguration);
 
@@ -85,5 +102,9 @@ public class DesignerConfigurationService {
 		result = this.designerConfigurationRepository.findDesignerConfiguration();
 
 		return result;
+	}
+
+	public void flush() {
+		this.designerConfigurationRepository.flush();
 	}
 }
