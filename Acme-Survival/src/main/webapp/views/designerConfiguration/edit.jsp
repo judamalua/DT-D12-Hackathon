@@ -52,23 +52,18 @@
 			path="metalFactorSteal" />
 		<acme:textbox code="configuration.woodFactorSteal"
 			path="woodFactorSteal" />
-
-	</div>
-	<div class="config2">
 		<acme:textbox code="configuration.foodLostGatherFactor"
 			path="foodLostGatherFactor" />
+	</div>
+	<div class="config2">
 		<acme:textbox code="configuration.waterLostGatherFactor"
 			path="waterLostGatherFactor" />
 		<acme:textbox code="configuration.experiencePerMinute"
 			path="experiencePerMinute" />
-		<acme:textbox code="configuration.initialFood"
-			path="initialFood" />
-		<acme:textbox code="configuration.initialWater"
-			path="initialWater" />
-		<acme:textbox code="configuration.initialWood"
-			path="initialWood" />
-		<acme:textbox code="configuration.initialMetal"
-			path="initialMetal" />
+		<acme:textbox code="configuration.initialFood" path="initialFood" />
+		<acme:textbox code="configuration.initialWater" path="initialWater" />
+		<acme:textbox code="configuration.initialWood" path="initialWood" />
+		<acme:textbox code="configuration.initialMetal" path="initialMetal" />
 		<acme:textbox code="configuration.maxInventoryFood"
 			path="maxInventoryFood" />
 		<acme:textbox code="configuration.maxInventoryWater"
@@ -79,6 +74,11 @@
 			path="maxInventoryMetal" />
 		<acme:textbox code="configuration.numInitialCharacters"
 			path="numInitialCharacters" />
+		<acme:textbox code="configuration.refugeFindingProbability"
+			path="refugeFindingProbability" />
+		<acme:textbox
+			code="configuration.refugeFindingMinuteAugmentProbability"
+			path="refugeFindingMinuteAugmentProbability" />
 	</div>
 
 	<acme:submit name="save" code="configuration.save" />

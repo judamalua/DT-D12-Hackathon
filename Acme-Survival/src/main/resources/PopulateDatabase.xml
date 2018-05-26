@@ -922,13 +922,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>You found a wild Corchuelo.</value>
+					<value>You found a wild tiger.</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Te encontraste un Corchuelo salvaje.</value>
+					<value>Te encontraste un tigre salvaje.</value>
 				</entry>
 			</map>
 		</property>
@@ -938,15 +938,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>You boss would not be happy with you, but your grand mother
-						yes :D</value>
+					<value>Run Run!</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Su jefe no estaría muy contento con usted, pero su abuela si
-						:D</value>
+					<value>¡Corre , Corre!</value>
 				</entry>
 			</map>
 		</property>

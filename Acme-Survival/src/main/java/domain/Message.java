@@ -28,7 +28,6 @@ public class Message extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private String	text;
 	private Date	moment;
-	private String	image;
 
 
 	@Column(columnDefinition = "longtext")

@@ -110,4 +110,12 @@
 	<strong><spring:message code="configuration.numInitialCharacters" /></strong>
 	<jstl:out value="${designerConfiguration.numInitialCharacters}" />
 </p>
+<p>
+	<strong><spring:message code="configuration.refugeFindingProbability" /></strong>
+	<jstl:out value="${designerConfiguration.refugeFindingProbability}" />
+</p>
+<p>
+	<strong><spring:message code="configuration.refugeFindingMinuteAugmentProbability" /></strong>
+	<jstl:out value="${designerConfiguration.refugeFindingMinuteAugmentProbability}" />
+</p>
 <acme:button url="designerConfiguration/designer/edit.do" code="configuration.edit"/>

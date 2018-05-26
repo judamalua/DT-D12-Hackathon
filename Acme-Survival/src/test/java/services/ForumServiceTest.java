@@ -57,6 +57,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum forum;
 		Player player;
 
+		super.unauthenticate();
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
@@ -76,7 +77,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum forum, savedForum;
 		Player player;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1");
 
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
@@ -90,7 +91,7 @@ public class ForumServiceTest extends AbstractTest {
 
 		savedForum = this.forumService.save(forum);
 		savedForum.setForum(savedForum);
-		this.forumService.save(forum);
+		this.forumService.save(savedForum);
 
 		super.unauthenticate();
 	}
@@ -175,8 +176,8 @@ public class ForumServiceTest extends AbstractTest {
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		forum.setName("Test");
-		forum.setDescription("Test");
+		forum.setName("Test name");
+		forum.setDescription("Test description");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
 		forum.setOwner(player);
 		forum.setSupport(false);
@@ -196,7 +197,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum father, savedForum;
 		int forumId;
 
-		super.authenticate("moderator1"); //The player knows the Refuge
+		super.authenticate("Player1");
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
@@ -215,7 +216,7 @@ public class ForumServiceTest extends AbstractTest {
 		savedForum = this.forumService.save(forum);
 		super.unauthenticate();
 
-		super.authenticate("player1");
+		super.authenticate("Moderator1");
 
 		this.forumService.delete(savedForum);
 
@@ -237,8 +238,8 @@ public class ForumServiceTest extends AbstractTest {
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		forum.setName("Test");
-		forum.setDescription("Test");
+		forum.setName("Test name");
+		forum.setDescription("Test description");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
 		forum.setOwner(player);
 		forum.setSupport(false);

@@ -78,8 +78,9 @@ public class MessageService {
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
-		if (!(actor instanceof Moderator))
+		if (!(actor instanceof Moderator)) {
 			Assert.isTrue(message.getActor().equals(actor));
+		}
 
 		message.setMoment(new Date(System.currentTimeMillis() - 1));
 		result = this.messageRepository.save(message);
@@ -95,8 +96,9 @@ public class MessageService {
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
-		if (!(actor instanceof Moderator))
+		if (!(actor instanceof Moderator)) {
 			Assert.isTrue(message.getActor().equals(actor));
+		}
 
 		Assert.isTrue(this.messageRepository.exists(message.getId()));
 
@@ -146,5 +148,9 @@ public class MessageService {
 		this.messageRepository.flush();
 
 		return result;
+	}
+
+	public void flush() {
+		this.messageRepository.flush();
 	}
 }
