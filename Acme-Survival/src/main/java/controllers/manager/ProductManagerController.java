@@ -172,6 +172,9 @@ public class ProductManagerController {
 			result = this.createEditModelAndView(product, "product.params.error");
 		else
 			try {
+
+				this.configurationService.checkSystemLanguages(product.getName());
+
 				this.productService.save(product);
 				result = new ModelAndView("redirect:list.do");
 

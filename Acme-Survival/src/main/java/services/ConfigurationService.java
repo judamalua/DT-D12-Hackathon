@@ -2,6 +2,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -127,5 +128,20 @@ public class ConfigurationService {
 
 		return result;
 
+	}
+
+	/**
+	 * Checks that languages introduced are the ones in configuration
+	 * 
+	 * @param nameMap
+	 * 
+	 * @author Juanmi
+	 */
+	public void checkSystemLanguages(final Map<String, String> nameMap) {
+		Configuration configuration;
+
+		configuration = this.findConfiguration();
+
+		Assert.isTrue(configuration.getLanguages().containsAll(nameMap.keySet()));
 	}
 }

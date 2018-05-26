@@ -265,6 +265,9 @@ public class RoomDesignDesignerController {
 			result = this.createEditModelAndView(barrack, "roomDesign.params.error");
 		else
 			try {
+
+				this.configurationService.checkSystemLanguages(barrack.getName());
+
 				this.roomDesignService.save(barrack);
 				result = new ModelAndView("redirect:list.do");
 
@@ -292,6 +295,9 @@ public class RoomDesignDesignerController {
 			result = this.createEditModelAndView(warehouse, "roomDesign.params.error");
 		else
 			try {
+
+				this.configurationService.checkSystemLanguages(warehouse.getName());
+
 				this.roomDesignService.save(warehouse);
 				result = new ModelAndView("redirect:list.do");
 
@@ -319,6 +325,9 @@ public class RoomDesignDesignerController {
 			result = this.createEditModelAndView(restorationRoom, "roomDesign.params.error");
 		else
 			try {
+
+				this.configurationService.checkSystemLanguages(restorationRoom.getName());
+
 				this.roomDesignService.save(restorationRoom);
 				result = new ModelAndView("redirect:list.do");
 
@@ -346,6 +355,9 @@ public class RoomDesignDesignerController {
 			result = this.createEditModelAndView(resourceRoom, "roomDesign.params.error");
 		else
 			try {
+
+				this.configurationService.checkSystemLanguages(resourceRoom.getName());
+
 				this.roomDesignService.save(resourceRoom);
 				result = new ModelAndView("redirect:list.do");
 
