@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import annotations.MapNotBlank;
@@ -31,12 +32,14 @@ public class Event extends DomainEntity {
 	private boolean				findCharacter;
 
 
+	@Length(min = 5, max = 50)
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getName() {
 		return this.name;
 	}
 
+	@Length(min = 5, max = 1000)
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getDescription() {

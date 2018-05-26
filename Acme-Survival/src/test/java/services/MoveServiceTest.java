@@ -25,9 +25,6 @@ public class MoveServiceTest extends AbstractTest {
 	private MoveService		moveService;
 
 	@Autowired
-	private MessageService	messageService;
-
-	@Autowired
 	private ActorService	actorService;
 
 	@Autowired
@@ -35,7 +32,7 @@ public class MoveServiceTest extends AbstractTest {
 
 
 	@Test
-	public void testSaveMessagePositive() {
+	public void testSaveMovePositive() {
 		Move move;
 		final Refuge refuge;
 		Player player;

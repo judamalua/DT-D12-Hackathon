@@ -27,7 +27,7 @@ public class Forum extends DomainEntity {
 	private boolean	support;
 
 
-	@Length(min = 5, max = 100)
+	@Length(min = 5, max = 50)
 	@NotBlank
 	@SafeHtml
 	public String getName() {

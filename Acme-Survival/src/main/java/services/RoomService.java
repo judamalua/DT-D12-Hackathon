@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RoomRepository;
+import domain.Actor;
 import domain.Barrack;
 import domain.Inventory;
 import domain.Player;
@@ -89,20 +90,25 @@ public class RoomService {
 		Room result;
 		Collection<domain.Character> characters;
 		Refuge refuge;
-		Player actor;
+		Actor actor;
 		Inventory inventory;
 
-		actor = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+		actor = this.actorService.findActorByPrincipal();
 
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
-		if (room.getId() == 0) {
-			Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
-			inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
-			inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
+		if (actor instanceof Player) {
+
+			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+			Assert.notNull(refuge);
+			Assert.isTrue(room.getRefuge().equals(refuge));
+
+			inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+			if (room.getId() == 0) {
+				Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
+				inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
+				inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
+			}
+			this.inventoryService.save(inventory);
 		}
-		this.inventoryService.save(inventory);
-
 		result = this.roomRepository.save(room);
 
 		if (room.getId() != 0) {
@@ -132,13 +138,19 @@ public class RoomService {
 
 		Assert.isTrue(this.roomRepository.exists(room.getId()));
 		Collection<domain.Character> characters;
-		//		Collection<domain.Character> charactersInRefuge;
 		Integer currentCapacity;
-		//		final domain.Character deleteCharacter;
+		Actor actor;
+		Refuge refuge;
 
 		characters = this.characterService.findCharactersByRoom(room.getId());
-		//		charactersInRefuge = this.characterService.findCharactersByRefuge(room.getRefuge().getId());
 		currentCapacity = this.refugeService.getCurrentCharacterCapacity(room.getRefuge());
+		actor = this.actorService.findActorByPrincipal();
+
+		if (actor instanceof Player) {
+			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+			Assert.notNull(refuge);
+			Assert.isTrue(room.getRefuge().equals(refuge));
+		}
 
 		if (!(room.getRoomDesign() instanceof Barrack)) {
 			if (room.getRoomDesign() instanceof Warehouse) {
@@ -204,7 +216,6 @@ public class RoomService {
 			result = room;
 			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
 
-			result.setResistance(result.getRoomDesign().getMaxResistance());
 			result.setRefuge(refuge);
 		}
 

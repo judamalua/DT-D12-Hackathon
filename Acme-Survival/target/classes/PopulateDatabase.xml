@@ -210,7 +210,7 @@
 		<property name="numInitialCharacters" value="3" />
 		<property name="refugeFindingProbability" value="0.1" />
 		<property name="refugeFindingMinuteAugmentProbability" value="90" />
-		
+
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
@@ -434,7 +434,7 @@
 		<property name="gatherNotificated" value="true" />
 
 	</bean>
-	
+
 	<bean id="Character2" class="domain.Character">
 		<property name="capacity" value="12" />
 		<property name="luck" value="7" />
@@ -782,7 +782,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="LootTable4" class="domain.LootTable">
 		<property name="name" value="Pantano" />
 		<property name="finalMode" value="true" />
@@ -1042,7 +1042,8 @@
 						<value>es</value>
 					</key>
 					<value>Es dificil pero te encuentras un almacén con un montón de
-						cosas.</value>
+						cosas.
+					</value>
 				</entry>
 			</map>
 		</property>
@@ -1052,7 +1053,7 @@
 		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
-	
+
 	<bean id="Event5" class="domain.Event">
 		<property name="name">
 			<map>
@@ -1076,13 +1077,15 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>You have found one of the best guns in this game, it is the Legendary Legolas´Bow</value>
+					<value>You have found one of the best guns in this game, it is the
+						Legendary Legolas´Bow</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Has encontrado una de las armas más mortíferas del juego, El Arco de Legolas.</value>
+					<value>Has encontrado una de las armas más mortíferas del juego, El
+						Arco de Legolas.</value>
 				</entry>
 			</map>
 		</property>
@@ -1249,7 +1252,8 @@
 				</entry>
 			</map>
 		</property>
-		<property name="imageUrl" value="https://i.pinimg.com/originals/fb/65/02/fb6502ed75c54f6966c803cd258e326a.png" />
+		<property name="imageUrl"
+			value="https://i.pinimg.com/originals/fb/65/02/fb6502ed75c54f6966c803cd258e326a.png" />
 		<property name="finalMode" value="true" />
 		<property name="strength" value="4" />
 		<property name="luck" value="0" />
@@ -1504,7 +1508,7 @@
 		<property name="luck" value="2" />
 		<property name="capacity" value="0" />
 	</bean>
-	
+
 	<bean id="Tool10" class="domain.Tool">
 		<property name="name">
 			<map>
@@ -1545,7 +1549,7 @@
 		<property name="luck" value="2" />
 		<property name="capacity" value="0" />
 	</bean>
-	
+
 	<bean id="Tool11" class="domain.Tool">
 		<property name="name">
 			<map>
@@ -1586,7 +1590,7 @@
 		<property name="luck" value="3" />
 		<property name="capacity" value="0" />
 	</bean>
-	
+
 	<bean id="Tool12" class="domain.Tool">
 		<property name="name">
 			<map>
@@ -1610,13 +1614,15 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Epic and strong bow that the Hero Legolas carry in Lord Of The Rings filsm</value>
+					<value>Epic and strong bow that the Hero Legolas carry in Lord Of
+						The Rings filsm</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Arco élfico de Legolas, protagonista y heroe de la saga del Señor de los Anillos</value>
+					<value>Arco élfico de Legolas, protagonista y heroe de la saga del
+						Señor de los Anillos</value>
 				</entry>
 			</map>
 		</property>
@@ -1627,8 +1633,8 @@
 		<property name="luck" value="5" />
 		<property name="capacity" value="1" />
 	</bean>
-	
-	
+
+
 
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">

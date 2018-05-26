@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
@@ -29,6 +31,7 @@ public abstract class RoomDesign extends DomainEntity {
 	private Integer				maxCapacityCharacters;
 
 
+	@Length(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -41,6 +44,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.name = name;
 	}
 
+	@Length(min = 5, max = 1000)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml

@@ -69,6 +69,12 @@
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/moderator/edit.do"
 			access="hasRole('MODERATOR')" requires-channel="https" />
+			<security:intercept-url pattern="/forum/moderator/**"
+			access="hasRole('MODERATOR')" requires-channel="https" />
+			<security:intercept-url pattern="/thread/moderator/**"
+			access="hasRole('MODERATOR')" requires-channel="https" />
+			<security:intercept-url pattern="/message/moderator/**"
+			access="hasRole('MODERATOR')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/manager/edit.do"
 			access="hasRole('MANAGER')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/designer/edit.do"

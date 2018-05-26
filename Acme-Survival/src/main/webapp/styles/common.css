@@ -62,8 +62,13 @@
 
 .inventoryElm{
 	float:left;
+	text-align: center;
+	margin-right: 15px;
 }
 
+.displayRefuge{
+	margin-left: 200px;
+}
 .error {
 	color: red;
 	font-weight: bolder;

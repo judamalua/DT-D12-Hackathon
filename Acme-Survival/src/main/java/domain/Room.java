@@ -15,17 +15,6 @@ public class Room extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private int	resistance;
-
-
-	public int getResistance() {
-		return this.resistance;
-	}
-
-	public void setResistance(final int resistance) {
-		this.resistance = resistance;
-	}
-
 
 	// Relationships ----------------------------------------------------------
 	private Refuge		refuge;

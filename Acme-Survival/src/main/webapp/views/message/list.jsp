@@ -44,6 +44,13 @@
 				code="message.edit" />
 		</jstl:if>
 	</display:column>
+	
+	<display:column>
+		<security:authorize access="hasRole('DESIGNER')">
+			<acme:button url="message/actor/delete.do?forumId=${forum.id}"
+				code="message.delete" />
+		</security:authorize>
+	</display:column>
 
 </display:table>
 
