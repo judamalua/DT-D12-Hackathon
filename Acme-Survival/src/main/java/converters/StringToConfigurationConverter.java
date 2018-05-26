@@ -6,25 +6,25 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import repositories.SystemConfigurationRepository;
-import domain.SystemConfiguration;
+import repositories.ConfigurationRepository;
+import domain.Configuration;
 
 @Component
 @Transactional
-public class StringToSystemConfigurationConverter implements Converter<String, SystemConfiguration> {
+public class StringToConfigurationConverter implements Converter<String, Configuration> {
 
 	@Autowired
-	SystemConfigurationRepository	systemConfigurationRepository;
+	ConfigurationRepository	configurationRepository;
 
 
 	@Override
-	public SystemConfiguration convert(final String text) {
-		SystemConfiguration result;
+	public Configuration convert(final String text) {
+		Configuration result;
 		int id;
 
 		try {
 			id = Integer.valueOf(text);
-			result = this.systemConfigurationRepository.findOne(id);
+			result = this.configurationRepository.findOne(id);
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);
 		}

@@ -11,8 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.SafeHtml;
+import org.hibernate.validator.constraints.Range;
 
 import annotations.MapNotBlank;
 
@@ -23,35 +22,36 @@ public class Event extends DomainEntity {
 	// Constructors -----------------------------------------------------------
 
 	// Attributes -------------------------------------------------------------
-	private Map<String, String>  name;
-    private Map<String, String>  description;
-	private Integer	health;
-	private Integer	water;
-	private Integer food;
-	private boolean	finalMode;
-	private boolean	findCharacter;
+	private Map<String, String>	name;
+	private Map<String, String>	description;
+	private Integer				health;
+	private Integer				water;
+	private Integer				food;
+	private boolean				finalMode;
+	private boolean				findCharacter;
 
 
 	@MapNotBlank
 	@ElementCollection
-	public Map<String,String> getName(){
+	public Map<String, String> getName() {
 		return this.name;
 	}
 
 	@MapNotBlank
 	@ElementCollection
-	public Map<String,String> getDescription(){
+	public Map<String, String> getDescription() {
 		return this.description;
 	}
-	
-	public void setName(final Map<String,String> name) {
+
+	public void setName(final Map<String, String> name) {
 		this.name = name;
 	}
-	
-	public void setDescription(final Map<String,String> description) {
+
+	public void setDescription(final Map<String, String> description) {
 		this.description = description;
 	}
 
+	@Range(min = -100, max = 100)
 	@NotNull
 	public Integer getHealth() {
 		return this.health;
@@ -61,6 +61,7 @@ public class Event extends DomainEntity {
 		this.health = health;
 	}
 
+	@Range(min = -100, max = 100)
 	@NotNull
 	public Integer getWater() {
 		return this.water;
@@ -70,6 +71,7 @@ public class Event extends DomainEntity {
 		this.water = water;
 	}
 
+	@Range(min = -100, max = 100)
 	@NotNull
 	public Integer getFood() {
 		return this.food;

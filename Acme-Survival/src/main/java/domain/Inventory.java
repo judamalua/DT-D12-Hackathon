@@ -6,6 +6,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -23,6 +24,7 @@ public class Inventory extends DomainEntity {
 	private Double	metalCapacity;
 
 
+	@Min(0)
 	@NotNull
 	public Double getWater() {
 		return this.water;
@@ -32,6 +34,7 @@ public class Inventory extends DomainEntity {
 		this.water = water;
 	}
 
+	@Min(0)
 	@NotNull
 	public Double getFood() {
 		return this.food;
@@ -41,6 +44,7 @@ public class Inventory extends DomainEntity {
 		this.food = food;
 	}
 
+	@Min(0)
 	@NotNull
 	public Double getWood() {
 		return this.wood;
@@ -50,6 +54,7 @@ public class Inventory extends DomainEntity {
 		this.wood = wood;
 	}
 
+	@Min(0)
 	@NotNull
 	public Double getMetal() {
 		return this.metal;
@@ -59,6 +64,7 @@ public class Inventory extends DomainEntity {
 		this.metal = metal;
 	}
 
+	@Min(1)
 	@NotNull
 	public Double getWaterCapacity() {
 		return this.waterCapacity;
@@ -68,6 +74,7 @@ public class Inventory extends DomainEntity {
 		this.waterCapacity = waterCapacity;
 	}
 
+	@Min(1)
 	@NotNull
 	public Double getFoodCapacity() {
 		return this.foodCapacity;
@@ -77,6 +84,7 @@ public class Inventory extends DomainEntity {
 		this.foodCapacity = foodCapacity;
 	}
 
+	@Min(1)
 	@NotNull
 	public Double getWoodCapacity() {
 		return this.woodCapacity;
@@ -86,6 +94,7 @@ public class Inventory extends DomainEntity {
 		this.woodCapacity = woodCapacity;
 	}
 
+	@Min(1)
 	@NotNull
 	public Double getMetalCapacity() {
 		return this.metalCapacity;

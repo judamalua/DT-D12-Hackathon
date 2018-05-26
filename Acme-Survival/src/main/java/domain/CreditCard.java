@@ -62,6 +62,7 @@ public class CreditCard extends DomainEntity {
 		this.number = number;
 	}
 
+	@NotNull
 	@Range(min = 1, max = 12)
 	public Integer getExpirationMonth() {
 		return this.expirationMonth;
@@ -71,6 +72,7 @@ public class CreditCard extends DomainEntity {
 		this.expirationMonth = expirationMonth;
 	}
 
+	@NotNull
 	@Range(min = 0, max = 99)
 	public Integer getExpirationYear() {
 		return this.expirationYear;
@@ -80,6 +82,7 @@ public class CreditCard extends DomainEntity {
 		this.expirationYear = expirationYear;
 	}
 
+	@NotNull
 	@Range(min = 100, max = 999)
 	public Integer getCvv() {
 		return this.cvv;

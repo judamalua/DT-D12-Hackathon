@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -21,6 +22,7 @@ public class Player extends Actor {
 	private Collection<Refuge>	refuges;
 
 
+	@NotNull
 	@Valid
 	@ManyToMany
 	public Collection<Refuge> getRefuges() {

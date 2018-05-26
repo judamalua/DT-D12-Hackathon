@@ -43,8 +43,6 @@ public class Character extends DomainEntity {
 	private Date	roomEntrance;
 
 
-	//private boolean	male;
-
 	public boolean getMale() {
 		return this.male;
 	}
@@ -200,7 +198,7 @@ public class Character extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = true)
 	public Room getRoom() {
 		return this.room;
 	}

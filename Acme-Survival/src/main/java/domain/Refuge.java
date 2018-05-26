@@ -93,6 +93,7 @@ public class Refuge extends DomainEntity {
 		this.lastView = lastView;
 	}
 
+	@Past
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
 	public Date getLastAttackReceived() {

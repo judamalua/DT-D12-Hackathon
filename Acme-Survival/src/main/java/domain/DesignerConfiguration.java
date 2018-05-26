@@ -45,6 +45,7 @@ public class DesignerConfiguration extends DomainEntity {
 	private Integer	refugeFindingMinuteAugmentProbability;
 
 
+	@Min(0)
 	public double getMovingWood() {
 		return this.movingWood;
 	}
@@ -53,6 +54,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingWood = movingWood;
 	}
 
+	@Min(0)
 	public double getMovingMetal() {
 		return this.movingMetal;
 	}
@@ -61,6 +63,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingMetal = movingMetal;
 	}
 
+	@Min(0)
 	public double getMovingFood() {
 		return this.movingFood;
 	}
@@ -69,6 +72,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingFood = movingFood;
 	}
 
+	@Min(0)
 	public double getMovingWater() {
 		return this.movingWater;
 	}
@@ -77,6 +81,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingWater = movingWater;
 	}
 
+	@Min(0)
 	public double getKmPerSecond() {
 		return this.kmPerSecond;
 	}
@@ -85,6 +90,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.kmPerSecond = kmPerSecond;
 	}
 
+	@Min(0)
 	public double getFoodWastedPerSecond() {
 		return this.foodWastedPerSecond;
 	}
@@ -93,6 +99,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.foodWastedPerSecond = foodWastedPerSecond;
 	}
 
+	@Min(0)
 	public double getWaterWastedPerSecond() {
 		return this.waterWastedPerSecond;
 	}
@@ -101,6 +108,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.waterWastedPerSecond = waterWastedPerSecond;
 	}
 
+	@Min(0)
 	public double getRefugeRecoverTime() {
 		return this.refugeRecoverTime;
 	}
@@ -109,6 +117,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.refugeRecoverTime = refugeRecoverTime;
 	}
 
+	@Min(0)
 	public double getWaterFactorSteal() {
 		return this.waterFactorSteal;
 	}
@@ -117,6 +126,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.waterFactorSteal = waterFactorSteal;
 	}
 
+	@Min(0)
 	public double getFoodFactorSteal() {
 		return this.foodFactorSteal;
 	}
@@ -125,6 +135,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.foodFactorSteal = foodFactorSteal;
 	}
 
+	@Min(0)
 	public double getMetalFactorSteal() {
 		return this.metalFactorSteal;
 	}
@@ -133,6 +144,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.metalFactorSteal = metalFactorSteal;
 	}
 
+	@Min(0)
 	public double getWoodFactorSteal() {
 		return this.woodFactorSteal;
 	}
