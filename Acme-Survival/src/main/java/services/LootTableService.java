@@ -72,7 +72,6 @@ public class LootTableService {
 		assert lootTable != null;
 
 		LootTable result;
-
 		result = this.lootTableRepository.save(lootTable);
 
 		return result;
