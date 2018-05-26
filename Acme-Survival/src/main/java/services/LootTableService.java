@@ -117,5 +117,10 @@ public class LootTableService {
 		result = this.lootTableRepository.findAll(pageable);
 		return result;
 	}
+	
+	public void flush() {
+		this.lootTableRepository.flush();
+
+	}
 
 }
