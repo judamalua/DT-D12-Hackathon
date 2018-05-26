@@ -76,7 +76,7 @@ public class EventDesignerController extends AbstractController {
 			result.addObject("designerDraftModeView", false);
 			result.addObject("events", eventsFinal.getContent());
 			result.addObject("page", page);
-			result.addObject("requestURI", "event/designer/list.do");
+			result.addObject("requestURI", "event/designer/list-final.do");
 			result.addObject("pageNum", eventsFinal.getTotalPages());
 
 		} catch (final Throwable oops) {

@@ -38,9 +38,9 @@
 	
 	<script>
 	$( document ).ready(function() {
-		if(event){
+		if("${event}" != "" && "${event.itemDesign}" != ""){
 			var nID = 0;
-			nID= ${event.itemDesign.id};
+			nID=parseInt("${event.itemDesign.id}");
 		   selectItem("${event.itemDesign.name[currentLang]}", "${event.itemDesign.imageUrl}", nID);
 		};
 		});
@@ -49,9 +49,13 @@
 	$('#itemId').val(id);
 	$('#itemName')[0].innerHTML = name;
 	$('#itemImage')[0].src = image;
-	$('#modalItemSelector').modal('close');
 	};
 	
+	function deleteItem(){
+		$('#itemId').val(0);
+		$('#itemName')[0].innerHTML = "";
+		$('#itemImage')[0].src = "";
+	}
 	
 	
 	</script>
@@ -60,7 +64,7 @@
 	
 	<form:hidden path="id"/>
 	<form:hidden path="version"/>
-	<form:hidden id="itemId" path="itemDesign"/>
+	<form:hidden id="itemId" path="itemDesign" value="0"/>
 	<acme:textboxMap code="event.name_en" path="name[en]" errorPath="name" required = "true"/>
 	<acme:textboxMap code="event.name_es" path="name[es]" errorPath ="name" required = "true"/>
 	
@@ -75,6 +79,7 @@
 	<label id="itemName"></label>
 	<br>
 	<a class="waves-effect waves-light btn modal-trigger" href="#modal1"><spring:message code='event.selectItem'/></a>
+	<a class="waves-effect waves-light btn" onclick="deleteItem()"><spring:message code='event.delete'/></a>
 	<acme:checkbox id="findCharacter" code="event.findCharacter" path="findCharacter" />
 	<acme:checkbox id="finalMode" code="event.finalMode" path="finalMode" />
 	
