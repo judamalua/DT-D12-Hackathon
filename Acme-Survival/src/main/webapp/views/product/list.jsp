@@ -48,7 +48,7 @@
 	<jstl:if test="${!managerDraftModeView && product.finalMode && !product.discontinued}">
 		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
 		<display:column>
-			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.discontinue"/>	
+			<acme:button url="product/manager/discontinue.do?productId=${product.id}&page=${page}" code="product.discontinue"/>	
 		</display:column>
 	</jstl:if>
 	</security:authorize>
@@ -57,7 +57,7 @@
 	<jstl:if test="${!managerDraftModeView && product.finalMode && product.discontinued}">
 		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
 		<display:column>
-			<acme:button url="product/manager/discontinue.do?productId=${product.id}" code="product.continue"/>	
+			<acme:button url="product/manager/discontinue.do?productId=${product.id}&page=${page}" code="product.continue"/>	
 		</display:column>
 	</jstl:if>
 	</security:authorize>
@@ -75,7 +75,7 @@
 	<jstl:if test="${managerDraftModeView && !product.finalMode}">
 		<!-- Checking if the principal is a manager and this is the view of the draft mode products, if so, he or she can set the products to final mode -->
 		<display:column>
-			<acme:button url="product/manager/final-mode.do?productId=${product.id}" code="product.mark.final.mode"/>
+			<acme:button url="product/manager/final-mode.do?productId=${product.id}&page=${page}" code="product.mark.final.mode"/>
 		</display:column>
 	</jstl:if>
 	</security:authorize>

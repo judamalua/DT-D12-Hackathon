@@ -125,7 +125,7 @@ public class ProductManagerController {
 	// Discontinuing ---------------------------------------------------------
 
 	@RequestMapping(value = "/discontinue", method = RequestMethod.GET)
-	public ModelAndView discontinue(@RequestParam final int productId) {
+	public ModelAndView discontinue(@RequestParam final int productId, @RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
 		Product product;
 
@@ -133,7 +133,7 @@ public class ProductManagerController {
 			product = this.productService.findOne(productId);
 
 			this.productService.discontinueProduct(product);
-			result = new ModelAndView("redirect:/product/list.do");
+			result = new ModelAndView("redirect:/product/list.do?page=" + page);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
