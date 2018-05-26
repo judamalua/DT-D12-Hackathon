@@ -123,9 +123,6 @@
 		<bean class="converters.SliderToStringConverter" />
 		<bean class="converters.StringToSliderConverter" />
 
-		<bean class="converters.SystemConfigurationToStringConverter" />
-		<bean class="converters.StringToSystemConfigurationConverter" />
-
 		<bean class="converters.ThreadToStringConverter" />
 		<bean class="converters.StringToThreadConverter" />
 

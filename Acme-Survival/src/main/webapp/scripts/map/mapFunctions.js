@@ -86,8 +86,13 @@ function pointInTriange(P, A, B, C) {
 
 function getRemainingTime(time) {
 	var language = getLanguageToUse();
+	var timeInMin = Math.floor((time / 1000) / 60);
 	if (time > 0) {
-		return Math.floor((time / 1000) / 60) + ' ' + mapTranslations.attack.minutes[language];
+		if (timeInMin < 1) {
+			return mapTranslations.attack.secondsRemaining[language];
+		} else {
+			return timeInMin + ' ' + mapTranslations.attack.minutes[language];
+		}
 	} else {
 		return mapTranslations.attack.done[language];
 	}

@@ -30,6 +30,10 @@ var mapTranslations = {
 		done : {
 			es : "Misión cumplida, vaya a notificaciones para ver el resultado",
 			en : "Mission acomplished, go to notifications to see the results"
+		},
+		secondsRemaining : {
+			es : "Algunos segundos restantes",
+			en : "Few seconds remaining"
 		}
 	},
 	gather : {
