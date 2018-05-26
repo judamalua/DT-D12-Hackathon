@@ -48,7 +48,6 @@ public class ToolDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@ModelAttribute("itemDesign") Tool itemDesign, final BindingResult binding) {
 		ModelAndView result;
-		Configuration configuration;
 
 		try {
 			itemDesign = this.toolService.reconstruct(itemDesign, binding);
@@ -59,9 +58,7 @@ public class ToolDesignerController extends AbstractController {
 		else
 			try {
 
-				configuration = this.configurationService.findConfiguration();
-
-				Assert.isTrue(configuration.getLanguages().containsAll(itemDesign.getName().keySet()));
+				this.configurationService.checkSystemLanguages(itemDesign.getName());
 				this.toolService.save(itemDesign);
 
 				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "&finalMode=" + itemDesign.getFinalMode());
