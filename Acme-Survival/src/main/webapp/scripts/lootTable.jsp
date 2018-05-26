@@ -55,25 +55,44 @@ $(document).ready(function() {
 	 var tableName = document.getElementById("lootTableName").innerText;
 	 if (tableName != ""){
 	var data = {};
+	var error = false;
 	$("#table-item tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+			if (parseFloat($(this).find("td:eq(3)").text()) > 1  || parseFloat($(this).find("td:eq(3)").text() < 0  )){
+				//Probabilidad fuera de rango
+				 var emptyName="<spring:message code="lootTable.errorProb"/>";
+			 	Materialize.toast(emptyName, 3000);
+				error = true;
+				return;
+			}else{	
 	    data["item" +$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
 		}
+		};
 	});
 	
 		$("#table-event tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
-	    data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
-		}
+			if (parseFloat($(this).find("td:eq(2)").text()) > 1  || parseFloat($(this).find("td:eq(2)").text() < 0  )){
+				//Probabilidad fuera de rango
+				 var emptyName="<spring:message code="lootTable.errorProb"/>";
+		 		Materialize.toast(emptyName, 3000);
+		 		error = true;
+				return;
+			} else{
+	   		 data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
+			}
+		};
 	});
+		if (!error){
 	data["name"] = tableName;
 	data["finalMode"] = document.getElementById("finalMode").checked;
 	data["save"] = ""; //Needed for spring save
 	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
+		}
 	
 	 }else{
 		 var emptyName="<spring:message code="lootTable.emptyName"/>";
-		 Materialize.toast(emptyName);
+		 Materialize.toast(emptyName, 3000);
 	 }
 
   });
