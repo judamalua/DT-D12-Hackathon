@@ -82,7 +82,7 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("notifications", notifications.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", notifications.getTotalPages());
-			result.addObject("requestUri", "notification/player/list.do");
+			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("You don't have refuge"))
