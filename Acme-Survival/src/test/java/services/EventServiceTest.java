@@ -230,19 +230,19 @@ public class EventServiceTest extends AbstractTest {
 				"Designer1", "Event1", IllegalArgumentException.class
 			}, {
 				// This test checks that unauthenticated users cannot delete a draft mode event
-				null, "Event5", IllegalArgumentException.class
+				null, "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated players cannot delete a draft mode event
-				"Player1", "Event5", IllegalArgumentException.class
+				"Player1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated designers cannot delete a draft mode event
-				"Manager1", "Event5", IllegalArgumentException.class
+				"Manager1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated moderators cannot delete a draft mode event
-				"Moderator1", "Event5", IllegalArgumentException.class
+				"Moderator1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated admins cannot delete a draft mode event
-				"Admin1", "Event5", IllegalArgumentException.class
+				"Admin1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that unauthenticated users cannot delete a final mode event
 				null, "Event1", IllegalArgumentException.class
@@ -261,7 +261,7 @@ public class EventServiceTest extends AbstractTest {
 			},
 			{
 				// This test checks that designers can delete a draft mode event
-				"Designer1", "Event5", null
+				"Designer1", "Event6", null
 			}
 		};
 

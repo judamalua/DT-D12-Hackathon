@@ -1080,6 +1080,46 @@
 		<property name="findCharacter" value="false" />
 		<property name="itemDesign" ref="Tool12" />
 	</bean>
+	<bean id="Event6" class="domain.Event">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Healer plant</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Planta curativa</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>You found a healer plant
+					</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Encontraste una planta curativa</value>
+				</entry>
+			</map>
+		</property>
+		<property name="health" value="10" />
+		<property name="water" value="1" />
+		<property name="food" value="2" />
+		<property name="finalMode" value="false" />
+		<property name="findCharacter" value="false" />
+	</bean>
 	<!-- %%%%% Tools %%%%% -->
 	<bean id="Tool1" class="domain.Tool">
 		<property name="name">

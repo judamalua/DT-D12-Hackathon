@@ -192,10 +192,14 @@ public class CreditCardService {
 		else
 			savedCard = creditCard;
 		order = this.orderService.create();
-		order.setMoment(new Date());
+		order.setMoment(new Date(System.currentTimeMillis() - 3000));
 		order.setCreditCard(savedCard);
 		order.setPlayer((Player) this.actorService.findActorByPrincipal());
 		order.setProduct(product);
 		this.orderService.save(order);
+	}
+
+	public void flush() {
+		this.creditCardRepository.flush();
 	}
 }
