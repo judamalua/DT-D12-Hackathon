@@ -1,7 +1,10 @@
 package services;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -33,6 +36,10 @@ public class LootTableServiceTest extends AbstractTest {
 	public LootTableService		lootTableService;
 	@Autowired
 	public ConfigurationService	configurationService;
+	@Autowired
+	public ProbabilityItemService probabilityItemService;
+	@Autowired
+	public ProbabilityEventService	probabilityEventService;
 
 
 	//******************************************Positive Methods*******************************************************************
@@ -47,48 +54,30 @@ public class LootTableServiceTest extends AbstractTest {
 
 		final Object testingData[][] = {
 
-			{
-				// This test checks that authenticated designers can create a lootTable
-				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, null
-			}, {
-				// This test checks that authenticated designers can create a lootTable with price 0.0
-				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, null
-			}, {
-				// This test checks that unauthenticated users cannot create a lootTable
-				null, "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
-			}, {
-				// This test checks that authenticated designers cannot create a lootTable with a blank name in English
-				"Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot create a lootTable with a blank name in Spanish
-				"Designer1", "Test name", "", "Test description", "Descripción prueba", 5, 10, 8, true,  javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot create a lootTable with a blank description in English
-				"Designer1", "Test name", "Nombre prueba", "", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot create a lootTable with a blank description in Spanish
-				"Designer1", "Test name", "Nombre prueba", "Test description", "", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot create a lootTable
-				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated players cannot create a lootTable
-				"Player1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
-			}, {
-				// This test checks that authenticated designers cannot create a lootTable
-				"Manager1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
-			}, {
-				// This test checks that authenticated moderator cannot create a lootTable
-				"Moderator1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
-			}, {
-				// This test checks that authenticated moderator cannot create a lootTable
-				"Admin1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
-			}
+				{
+					// This test checks that authenticated designers can edit a draft mode lootTable
+					"Designer1", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, null
+				}, {
+					// This test checks that authenticated designers cannot edit a draft mode lootTable inserting a blank English name
+					"Designer1", "", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, javax.validation.ConstraintViolationException.class
+				},{
+					// This test checks that unauthenticated users cannot edit a draft mode lootTable
+					null, "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
+				}, {
+					// This test checks that authenticated players cannot edit a draft mode lootTable
+					"Player1", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
+				}, {
+					// This test checks that authenticated moderators cannot edit a draft mode lootTable
+					"Moderator1", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
+				}, {
+					// This test checks that authenticated admins can edit a draft mode lootTable
+					"Admin1", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
+				}
 
 		};
 
 		for (int i = 0; i < testingData.length; i++){
-			this.templateCreateLootTables((String) testingData[i][0], (String) testingData[i][1], (Collection<ProbabilityItem>) testingData[i][2], (Collection<ProbabilityEvent>) testingData[i][3], (Boolean) testingData[i][4], (Class<?>) testingData[i][5]);
+			this.templateCreateLootTables((String) testingData[i][0], (String) testingData[i][1], (Collection<String>) testingData[i][2], (Collection<String>) testingData[i][3], (Boolean) testingData[i][4], (Class<?>) testingData[i][5]);
 			System.out.println("TEST-F-" + i); 
 		}
 		}
@@ -100,7 +89,7 @@ public class LootTableServiceTest extends AbstractTest {
 	 * @author Ale
 	 */
 	@Test
-	public void driverListFinalModeLootTables() {
+	public void driverListLootTables() {
 		final Object testingData[][] = {
 			{
 				// This test checks that unauthenticated users can not list lootTables
@@ -145,37 +134,28 @@ public class LootTableServiceTest extends AbstractTest {
 
 			{
 				// This test checks that authenticated designers can edit a draft mode lootTable
-				"Designer1", "LootTable3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 2, 8, true, null
+				"Designer1", "LootTable3", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, null
 			}, {
 				// This test checks that authenticated designers cannot edit a draft mode lootTable inserting a blank English name
-				"Designer1", "LootTable3", "", "Nombre prueba", "Test description", "Descripción prueba", 1, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a draft mode lootTable inserting a blank Spanish name
-				"Designer1", "LootTable3", "Test name", "", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a draft mode lootTable inserting a blank English description
-				"Designer1", "LootTable3", "Test name", "Nombre prueba", "", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a draft mode lootTable inserting a blank Spanish description
-				"Designer1", "LootTable3", "Test name", "Nombre prueba", "Test description", "", 5, -10, 8, true, javax.validation.ConstraintViolationException.class
+				"Designer1", "LootTable3", "", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, javax.validation.ConstraintViolationException.class
 			},{
 				// This test checks that unauthenticated users cannot edit a draft mode lootTable
-				null, "LootTable3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 3, 10, 8, true, IllegalArgumentException.class
+				null, "LootTable3", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated players cannot edit a draft mode lootTable
-				"Player1", "LootTable3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
+				"Player1", "LootTable3", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated moderators cannot edit a draft mode lootTable
-				"Moderator1", "LootTable3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 0, 10, 8, true, IllegalArgumentException.class
+				"Moderator1", "LootTable3", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated admins can edit a draft mode lootTable
-				"Admin1", "LootTable3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 2, 8, true, IllegalArgumentException.class
+				"Admin1", "LootTable3", "Test name", Arrays.asList("ProbabilityItem1", "ProbabilityItem2"), Arrays.asList("ProbabilityEvent1", "ProbabilityEvent2"), true, IllegalArgumentException.class
 			}
 
 		};
 
 		for (int i = 0; i < testingData.length; i++){
-			this.templateEditLootTables((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Collection<ProbabilityItem>) testingData[i][3], (Collection<ProbabilityEvent>) testingData[i][4], (Boolean) testingData[i][5], (Class<?>) testingData[i][6]);
+			this.templateEditLootTables((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (List<String>) testingData[i][3], (List<String>) testingData[i][4], (Boolean) testingData[i][5], (Class<?>) testingData[i][6]);
 		System.out.println("TEST-B-" + i); 
 		}
 	}
@@ -191,10 +171,7 @@ public class LootTableServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 			
 			
-			{
-				// This test checks that designers cannot delete a final mode lootTable
-				"Designer1", "LootTable1", IllegalArgumentException.class
-			}, {
+			 {
 				// This test checks that unauthenticated users cannot delete a draft mode lootTable
 				null, "LootTable5", IllegalArgumentException.class
 			}, {
@@ -211,7 +188,7 @@ public class LootTableServiceTest extends AbstractTest {
 				"Admin1", "LootTable5", IllegalArgumentException.class
 			}, {
 				// This test checks that unauthenticated users cannot delete a final mode lootTable
-				null, "LootTable1", IllegalArgumentException.class
+				null, "LootTable5", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated players cannot delete a final mode lootTable
 				"Player1", "LootTable1", IllegalArgumentException.class
@@ -240,23 +217,32 @@ public class LootTableServiceTest extends AbstractTest {
 
 	// Ancillary methods ---------------------------------------------------------------------------------------
 
-	protected void templateCreateLootTables(final String username, final String name, final Collection<ProbabilityItem> items, final Collection<ProbabilityEvent> events, final Boolean finalMode,
+	protected void templateCreateLootTables(final String username, final String name, final Collection<String> items, final Collection<String> events, final Boolean finalMode,
 		final Class<?> expected) {
 		Class<?> caught;
 		LootTable result;
-		final Map<String, String> nameMap = new HashMap<String, String>();
-		final Map<String, String> descriptionMap = new HashMap<String, String>();
-
 		caught = null;
 
 		try {
 			super.authenticate(username);
 
 			result = this.lootTableService.create();
+			
+			Collection<ProbabilityItem> probItems = new HashSet<ProbabilityItem>();
+			Collection<ProbabilityEvent> probEvents = new HashSet<ProbabilityEvent>();
+			
+			for (String pItem : items){
+				Integer itemId = super.getEntityId(pItem);
+				probItems.add(this.probabilityItemService.findOne(itemId));
+			}
+			for (String pEvent: events){
+				Integer itemId = super.getEntityId(pEvent);
+				probEvents.add(this.probabilityEventService.findOne(itemId));
+			}
 
 			result.setName(name);
-			result.setProbabilityEvents(events);
-			result.setProbabilityItems(items);
+			result.setProbabilityEvents(probEvents);
+			result.setProbabilityItems(probItems);
 			result.setFinalMode(finalMode);
 
 			this.lootTableService.save(result);
@@ -298,14 +284,11 @@ public class LootTableServiceTest extends AbstractTest {
 	}
 
 
-	protected void templateEditLootTables(final String username, final String lootTablePopulateName, final String name, final Collection<ProbabilityItem> items, final Collection<ProbabilityEvent> events, final Boolean finalMode,
+	protected void templateEditLootTables(final String username, final String lootTablePopulateName, final String name, final Collection<String> items, final Collection<String> events, final Boolean finalMode,
 		final Class<?> expected) {
 		Class<?> caught;
 		int lootTableId;
 		LootTable lootTable;
-		final Map<String, String> nameMap = new HashMap<String, String>();
-		final Map<String, String> descriptionMap = new HashMap<String, String>();
-
 		caught = null;
 
 		try {
@@ -314,9 +297,23 @@ public class LootTableServiceTest extends AbstractTest {
 			lootTableId = super.getEntityId(lootTablePopulateName);
 
 			lootTable = this.lootTableService.findOne(lootTableId);
+			
+			Collection<ProbabilityItem> probItems = new HashSet<ProbabilityItem>();
+			Collection<ProbabilityEvent> probEvents = new HashSet<ProbabilityEvent>();
+			
+			for (String pItem : items){
+				Integer itemId = super.getEntityId(pItem);
+				probItems.add(this.probabilityItemService.findOne(itemId));
+			}
+			for (String pEvent: events){
+				Integer itemId = super.getEntityId(pEvent);
+				probEvents.add(this.probabilityEventService.findOne(itemId));
+			}
+			
+			
 			lootTable.setName(name);
-			lootTable.setProbabilityEvents(events);
-			lootTable.setProbabilityItems(items);
+			lootTable.setProbabilityEvents(probEvents);
+			lootTable.setProbabilityItems(probItems);
 			lootTable.setFinalMode(finalMode);
 
 			this.lootTableService.save(lootTable);

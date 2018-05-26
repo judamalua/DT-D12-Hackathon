@@ -798,6 +798,22 @@
 			</list>
 		</property>
 	</bean>
+	
+		<bean id="LootTable5" class="domain.LootTable">
+		<property name="name" value="Mazmorra" />
+		<property name="finalMode" value="false" />
+		<property name="probabilityEvents">
+			<list>
+				<ref bean="ProbabilityEvent4" />
+			</list>
+		</property>
+		<property name="probabilityItems">
+			<list>
+				<ref bean="ProbabilityItem6" />
+				<ref bean="ProbabilityItem7" />
+			</list>
+		</property>
+	</bean>
 
 	<!-- %%%%%% domain.ProbabilityEvent -->
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
