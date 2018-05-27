@@ -63,16 +63,14 @@ public class DesignerConfigurationService {
 
 	public DesignerConfiguration save(final DesignerConfiguration designerConfiguration) {
 
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		Assert.notNull(designerConfiguration);
 		Assert.isTrue(designerConfiguration.getFoodLostGatherFactor() > designerConfiguration.getWaterLostGatherFactor());
 		Assert.isTrue(designerConfiguration.getRefugeDefaultCapacity() >= designerConfiguration.getNumInitialCharacters());
 
 		DesignerConfiguration result;
-		Actor actor;
-
-		actor = this.actorService.findActorByPrincipal();
-
-		Assert.isTrue(actor instanceof Designer);
 
 		result = this.designerConfigurationRepository.save(designerConfiguration);
 

@@ -428,7 +428,7 @@
 		<property name="refuge" ref="Refuge1" />
 		<property name="currentlyInGatheringMission" value="false" />
 		<property name="gatherNotificated" value="true" />
-
+		<property name="item" ref="Item6" />
 	</bean>
 
 	<bean id="Character2" class="domain.Character">
@@ -530,7 +530,7 @@
 		<property name="refuge" ref="Refuge1" />
 	</bean>
 	<bean id="Item6" class="domain.Item">
-		<property name="equipped" value="false" />
+		<property name="equipped" value="true" />
 		<property name="tool" ref="Tool6" />
 		<property name="refuge" ref="Refuge1" />
 	</bean>
@@ -782,6 +782,19 @@
 			</list>
 		</property>
 	</bean>
+	
+		<bean id="LootTable5" class="domain.LootTable">
+		<property name="name" value="Mazmorra" />
+		<property name="finalMode" value="false" />
+		<property name="probabilityEvents">
+			<list>
+			</list>	
+		</property>
+		<property name="probabilityItems">
+			<list>
+			</list>
+		</property>
+	</bean>
 
 	<!-- %%%%%% domain.ProbabilityEvent -->
 	<bean id="ProbabilityEvent1" class="domain.ProbabilityEvent">
@@ -798,6 +811,14 @@
 	</bean>
 	<bean id="ProbabilityEvent4" class="domain.ProbabilityEvent">
 		<property name="value" value="0.6" />
+		<property name="event" ref="Event4" />
+	</bean>
+	<bean id="ProbabilityEventTest1" class="domain.ProbabilityEvent">
+		<property name="value" value="0.4" />
+		<property name="event" ref="Event4" />
+	</bean>
+		<bean id="ProbabilityEventTest2" class="domain.ProbabilityEvent">
+		<property name="value" value="0.4" />
 		<property name="event" ref="Event4" />
 	</bean>
 
@@ -857,6 +878,14 @@
 	<bean id="ProbabilityItem14" class="domain.ProbabilityItem">
 		<property name="value" value="0.4" />
 		<property name="itemDesign" ref="Tool9" />
+	</bean>
+	<bean id="ProbabilityItemTest1" class="domain.ProbabilityItem">
+		<property name="value" value="0.4" />
+		<property name="itemDesign" ref="Resource6" />
+	</bean>
+		<bean id="ProbabilityItemTest2" class="domain.ProbabilityItem">
+		<property name="value" value="1" />
+		<property name="itemDesign" ref="Resource6" />
 	</bean>
 
 	<bean id="Event1" class="domain.Event">
