@@ -990,7 +990,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				resultBarrack.setName(nameMap);
 				resultBarrack.setDescription(descriptionMap);
-				resultBarrack.setMaxResistance(maxResistance);
+				//resultBarrack.setMaxResistance(maxResistance);
 				resultBarrack.setCostWood(costWood);
 				resultBarrack.setCostMetal(costMetal);
 				resultBarrack.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1006,7 +1006,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				resultWarehouse.setName(nameMap);
 				resultWarehouse.setDescription(descriptionMap);
-				resultWarehouse.setMaxResistance(maxResistance);
+				//resultWarehouse.setMaxResistance(maxResistance);
 				resultWarehouse.setCostWood(costWood);
 				resultWarehouse.setCostMetal(costMetal);
 				resultWarehouse.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1021,7 +1021,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				resultRestorationRoom.setName(nameMap);
 				resultRestorationRoom.setDescription(descriptionMap);
-				resultRestorationRoom.setMaxResistance(maxResistance);
+				//resultRestorationRoom.setMaxResistance(maxResistance);
 				resultRestorationRoom.setCostWood(costWood);
 				resultRestorationRoom.setCostMetal(costMetal);
 				resultRestorationRoom.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1041,7 +1041,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				resultResourceRoom.setName(nameMap);
 				resultResourceRoom.setDescription(descriptionMap);
-				resultResourceRoom.setMaxResistance(maxResistance);
+				//resultResourceRoom.setMaxResistance(maxResistance);
 				resultResourceRoom.setCostWood(costWood);
 				resultResourceRoom.setCostMetal(costMetal);
 				resultResourceRoom.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1159,7 +1159,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				roomDesign.setName(nameMap);
 				roomDesign.setDescription(descriptionMap);
-				roomDesign.setMaxResistance(maxResistance);
+				//roomDesign.setMaxResistance(maxResistance);
 				roomDesign.setCostWood(costWood);
 				roomDesign.setCostMetal(costMetal);
 				roomDesign.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1174,7 +1174,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				roomDesign.setName(nameMap);
 				roomDesign.setDescription(descriptionMap);
-				roomDesign.setMaxResistance(maxResistance);
+				//roomDesign.setMaxResistance(maxResistance);
 				roomDesign.setCostWood(costWood);
 				roomDesign.setCostMetal(costMetal);
 				roomDesign.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1187,7 +1187,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				roomDesign.setName(nameMap);
 				roomDesign.setDescription(descriptionMap);
-				roomDesign.setMaxResistance(maxResistance);
+				//roomDesign.setMaxResistance(maxResistance);
 				roomDesign.setCostWood(costWood);
 				roomDesign.setCostMetal(costMetal);
 				roomDesign.setMaxCapacityCharacters(maxCapacityCharacters);
@@ -1205,7 +1205,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 				roomDesign.setName(nameMap);
 				roomDesign.setDescription(descriptionMap);
-				roomDesign.setMaxResistance(maxResistance);
+				//roomDesign.setMaxResistance(maxResistance);
 				roomDesign.setCostWood(costWood);
 				roomDesign.setCostMetal(costMetal);
 				roomDesign.setMaxCapacityCharacters(maxCapacityCharacters);

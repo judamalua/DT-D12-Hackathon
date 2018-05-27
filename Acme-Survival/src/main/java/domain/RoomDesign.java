@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
@@ -24,14 +22,13 @@ public abstract class RoomDesign extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private Map<String, String>	name;
 	private Map<String, String>	description;
-	private Integer				maxResistance;
 	private Double				costWood;
 	private Double				costMetal;
 	private boolean				finalMode;
 	private Integer				maxCapacityCharacters;
 
 
-	@Length(min = 5, max = 50)
+	//TODO: @Length(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -44,7 +41,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.name = name;
 	}
 
-	@Length(min = 5, max = 1000)
+	//TODO: @Length(min = 5, max = 1000)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -55,16 +52,6 @@ public abstract class RoomDesign extends DomainEntity {
 
 	public void setDescription(final Map<String, String> description) {
 		this.description = description;
-	}
-
-	@Min(0)
-	@NotNull
-	public Integer getMaxResistance() {
-		return this.maxResistance;
-	}
-
-	public void setMaxResistance(final Integer maxResistance) {
-		this.maxResistance = maxResistance;
 	}
 
 	@Min(0)

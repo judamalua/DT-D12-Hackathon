@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
@@ -34,7 +33,7 @@ public class Location extends DomainEntity {
 	private boolean				finalMode;
 
 
-	@Length(min = 5, max = 50)
+	//TODO: @Length(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml

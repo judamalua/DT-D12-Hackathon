@@ -10,7 +10,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
@@ -31,7 +30,7 @@ public abstract class ItemDesign extends DomainEntity {
 	private boolean				finalMode;
 
 
-	@Length(min = 5, max = 50)
+	//TODO: @Length(min = 5, max = 50)
 	@MapNotBlank
 	@MapSafeHtml
 	@ElementCollection
@@ -44,7 +43,7 @@ public abstract class ItemDesign extends DomainEntity {
 		this.name = name;
 	}
 
-	@Length(min = 5, max = 1000)
+	//TODO: @Length(min = 5, max = 1000)
 	@MapNotBlank
 	@MapSafeHtml
 	@ElementCollection

@@ -188,8 +188,6 @@
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
 		<property name="kmPerSecond" value="50000" />
-		<property name="foodWastedPerSecond" value="1" />
-		<property name="waterWastedPerSecond" value="1" />
 		<property name="refugeRecoverTime" value="1" />
 		<property name="waterFactorSteal" value="0.25" />
 		<property name="foodFactorSteal" value="0.25" />
@@ -309,7 +307,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="0" />
 		<property name="maxCapacityCharacters" value="1" />
@@ -349,7 +346,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="0" />
 		<property name="maxCapacityCharacters" value="1" />
@@ -454,64 +450,52 @@
 
 	<!-- %%%%%% domain.Room %%%%%% -->
 	<bean id="Room1" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room2" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room3" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room4" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room5" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room6" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 
 
 	<bean id="Room7" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room8" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room9" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room10" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room11" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room12" class="domain.Room">
-		<property name="resistance" value="100" />
 		<property name="refuge" ref="Refuge2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
@@ -786,22 +770,6 @@
 	<bean id="LootTable4" class="domain.LootTable">
 		<property name="name" value="Pantano" />
 		<property name="finalMode" value="true" />
-		<property name="probabilityEvents">
-			<list>
-				<ref bean="ProbabilityEvent4" />
-			</list>
-		</property>
-		<property name="probabilityItems">
-			<list>
-				<ref bean="ProbabilityItem6" />
-				<ref bean="ProbabilityItem7" />
-			</list>
-		</property>
-	</bean>
-	
-		<bean id="LootTable5" class="domain.LootTable">
-		<property name="name" value="Mazmorra" />
-		<property name="finalMode" value="false" />
 		<property name="probabilityEvents">
 			<list>
 				<ref bean="ProbabilityEvent4" />
@@ -2260,7 +2228,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="5" />
 		<property name="costMetal" value="5" />
 		<property name="finalMode" value="true" />
@@ -2303,7 +2270,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="1" />
 		<property name="finalMode" value="true" />
@@ -2345,7 +2311,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="3" />
 		<property name="finalMode" value="true" />
@@ -2389,7 +2354,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="4" />
 		<property name="finalMode" value="true" />
@@ -2430,7 +2394,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="2" />
 		<property name="costMetal" value="2" />
 		<property name="finalMode" value="true" />
@@ -2470,7 +2433,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="4" />
 		<property name="costMetal" value="4" />
 		<property name="finalMode" value="true" />
@@ -2511,7 +2473,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
@@ -2551,7 +2512,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
@@ -2591,7 +2551,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
@@ -2633,7 +2592,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
