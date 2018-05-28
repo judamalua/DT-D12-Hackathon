@@ -19,43 +19,50 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@ taglib prefix="acme" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <form:form action="configuration/admin/edit.do"
 	modelAttribute="configuration">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
-	
-	<p><em><spring:message code = "configuration.all.fields.required"/></em></p>
-	
-	<acme:textbox code="configuration.pagesize" path="pageSize"/>
-	
-	
-    <div class="row">
-    <div class="col s6">
-      <div class="row">
-        <div class="input-field col s3">
-          <form:input id="businessNameFirst" type="text" path="businessNameFirst"/>
-          <label for="businessNameFirst"><spring:message code="configuration.businessName" /></label>
-        </div>
-        <div class="input-field col s3">
-          <i class="material-icons prefix">people</i>
-          <form:input id="businessNameLast" type="text" path="businessNameLast"/>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-		<form:errors path="businessNameFirst" cssClass="error" />
-		<br/>
-		<form:errors path="businessNameLast" cssClass="error" />
-		<br/>
-		<br/>
-	
-	<acme:submit name="save" code="configuration.save"/>
 
-	<acme:cancel url="configuration/admin/list.do" code="configuration.cancel"/>
+	<p>
+		<em><spring:message code="configuration.all.fields.required" /></em>
+	</p>
+
+	<acme:textbox code="configuration.pagesize" path="pageSize" />
+	
+	<acme:textarea code="configuration.languages" path="languages" />
+
+	<div class="row">
+		<div class="col s6">
+			<div class="row">
+				<div class="input-field col s3">
+					<form:input id="businessNameFirst" type="text"
+						path="businessNameFirst" />
+					<label for="businessNameFirst"><spring:message
+							code="configuration.businessName" /></label>
+				</div>
+				<div class="input-field col s3">
+					<i class="material-icons prefix">people</i>
+					<form:input id="businessNameLast" type="text"
+						path="businessNameLast" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<form:errors path="businessNameFirst" cssClass="error" />
+	<br />
+	<form:errors path="businessNameLast" cssClass="error" />
+	<br />
+	<br />
+
+	<acme:submit name="save" code="configuration.save" />
+
+	<acme:cancel url="configuration/admin/list.do"
+		code="configuration.cancel" />
 
 
 </form:form>

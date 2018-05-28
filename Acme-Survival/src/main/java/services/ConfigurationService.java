@@ -87,7 +87,7 @@ public class ConfigurationService {
 	 */
 	public Configuration save(final Configuration configuration) {
 
-		assert configuration != null;
+		Assert.notNull(configuration != null);
 
 		Configuration result;
 
