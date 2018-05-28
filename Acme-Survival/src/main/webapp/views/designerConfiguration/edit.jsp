@@ -36,10 +36,10 @@
 		<acme:textarea code="configuration.movingMetal" path="movingMetal" />
 		<acme:textbox code="configuration.movingFood" path="movingFood" />
 		<acme:textbox code="configuration.kmPerSecond" path="kmPerSecond" />
-		<acme:textbox code="configuration.foodWastedPerSecond"
-			path="foodWastedPerSecond" />
-		<acme:textbox code="configuration.waterWastedPerSecond"
-			path="waterWastedPerSecond" />
+<%-- 		<acme:textbox code="configuration.foodWastedPerSecond"
+			path="foodWastedPerSecond" /> --%>
+<%-- 		<acme:textbox code="configuration.waterWastedPerSecond"
+			path="waterWastedPerSecond" /> --%>
 		<acme:textbox code="configuration.refugeDefaultCapacity"
 			path="refugeDefaultCapacity" />
 		<acme:textbox code="configuration.refugeRecoverTime"

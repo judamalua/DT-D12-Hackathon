@@ -30,14 +30,14 @@
 	<strong><spring:message code="configuration.kmPerSecond" /></strong>
 	<jstl:out value="${designerConfiguration.kmPerSecond}" /> (Km/s)
 </p>
-<p>
+<%-- <p>
 	<strong><spring:message code="configuration.foodWastedPerSecond" /></strong>
 	<jstl:out value="${designerConfiguration.foodWastedPerSecond}" />
-</p>
-<p>
+</p> --%>
+<%-- <p>
 	<strong><spring:message code="configuration.waterWastedPerSecond" /></strong>
 	<jstl:out value="${designerConfiguration.waterWastedPerSecond}" />
-</p>
+</p> --%>
 <p>
 	<strong><spring:message code="configuration.refugeRecoverTime" /></strong>
 	<jstl:out value="${designerConfiguration.refugeRecoverTime}" />
