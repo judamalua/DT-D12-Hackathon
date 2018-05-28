@@ -48,7 +48,7 @@ public class ToolDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@ModelAttribute("itemDesign") Tool itemDesign, final BindingResult binding) {
 		ModelAndView result;
-
+		Assert.isTrue(this.toolService.findOne(itemDesign.getId()) == null || !this.toolService.findOne(itemDesign.getId()).getFinalMode());
 		try {
 			itemDesign = this.toolService.reconstruct(itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete

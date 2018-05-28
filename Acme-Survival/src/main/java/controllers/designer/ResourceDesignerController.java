@@ -48,6 +48,7 @@ public class ResourceDesignerController extends AbstractController {
 	public ModelAndView edit(@ModelAttribute("itemDesign") Resource itemDesign, final BindingResult binding) {
 		ModelAndView result;
 		Configuration configuration;
+		Assert.isTrue(this.resourceService.findOne(itemDesign.getId()) == null || !this.resourceService.findOne(itemDesign.getId()).getFinalMode());
 		try {
 			itemDesign = this.resourceService.reconstruct(itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete

@@ -21,9 +21,10 @@
 		<put-attribute name="body" value="/views/designerConfiguration/list.jsp" />
 	</definition>
 	
-	<definition name="desginerConfiguration/edit" extends="master.page">	
-		<put-attribute name="title" value="Edit configuration" />
+	<definition name="designerConfiguration/edit" extends="master.page">	
+		<put-attribute name="title" value="Configuration edit" />
 		<put-attribute name="body" value="/views/designerConfiguration/edit.jsp" />
 	</definition>
+	
 	
 </tiles-definitions>
