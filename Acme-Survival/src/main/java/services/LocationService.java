@@ -149,4 +149,8 @@ public class LocationService {
 		this.validator.validate(result, binding);
 		return result;
 	}
+
+	public void flush() {
+		this.locationRepository.flush();
+	}
 }
