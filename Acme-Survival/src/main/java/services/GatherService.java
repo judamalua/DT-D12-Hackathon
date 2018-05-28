@@ -463,6 +463,9 @@ public class GatherService {
 
 		augmentProbability = missionMinutes / augmentProbabilityDesigner;
 
+		if (augmentProbability == 0 && missionMinutes != 0)
+			augmentProbability = 1;
+
 		random = new Random();
 
 		randomDouble = random.nextDouble() / 0.9;
