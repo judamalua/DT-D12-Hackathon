@@ -46,7 +46,7 @@ public class EventDesignerController extends AbstractController {
 	@Autowired
 	private ConfigurationService	configurationService;
 	@Autowired
-	private ItemDesignService itemDesignService;
+	private ItemDesignService		itemDesignService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -161,10 +161,9 @@ public class EventDesignerController extends AbstractController {
 			event = this.eventService.findOne(eventId);
 			Assert.notNull(event);
 			Assert.isTrue(!event.getFinalMode());
-			
 
 			result = this.createEditModelAndView(event);
-			
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
@@ -184,16 +183,18 @@ public class EventDesignerController extends AbstractController {
 		ModelAndView result;
 		event = this.eventService.reconstruct(event, binding);
 
-		if (binding.hasErrors()) {
+		if (binding.hasErrors())
 			result = this.createEditModelAndView(event, "event.params.error");
-		} else {
+		else
 			try {
 				this.eventService.save(event);
-				result = new ModelAndView("redirect:/event/designer/list.do");
+				if (event.getFinalMode())
+					result = new ModelAndView("redirect:/event/designer/list-final.do");
+				else
+					result = new ModelAndView("redirect:/event/designer/list.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(event, "event.commit.error");
 			}
-		}
 
 		return result;
 	}
@@ -239,7 +240,7 @@ public class EventDesignerController extends AbstractController {
 		result = new ModelAndView("event/edit");
 		result.addObject("message", messageCode);
 		result.addObject("event", event);
-		result.addObject("items", itemDesignService.findFinal());
+		result.addObject("items", this.itemDesignService.findFinal());
 
 		return result;
 
