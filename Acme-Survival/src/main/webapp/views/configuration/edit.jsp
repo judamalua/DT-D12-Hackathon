@@ -29,10 +29,6 @@
 	
 	<p><em><spring:message code = "configuration.all.fields.required"/></em></p>
 	
-	<acme:textarea code="configuration.cookies_eng" path="cookies_eng"/>
-	
-	<acme:textarea code="configuration.cookies_es" path="cookies_es"/>
-	
 	<acme:textbox code="configuration.pagesize" path="pageSize"/>
 	
 	
