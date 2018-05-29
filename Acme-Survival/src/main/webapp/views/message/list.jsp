@@ -32,7 +32,7 @@
 	<display:column>
 		${row.text}
 		<br />
-		<fmt:formatDate value="${row.moment}" pattern="${format}" />
+		<a href="actor/display.do?actorId=${message.actor.id}">${message.actor.name}</a><fmt:formatDate value="${row.moment}" pattern="${format}" />
 	</display:column>
 
 	<spring:message code="message.thread" var="thread"/>

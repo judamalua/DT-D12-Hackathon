@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Range;
 
+import annotations.MapLength;
 import annotations.MapNotBlank;
 
 @Entity
@@ -31,14 +32,14 @@ public class Event extends DomainEntity {
 	private boolean				findCharacter;
 
 
-	//TODO: @Length(min = 5, max = 50)
+	@MapLength(min = 5, max = 50)
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getName() {
 		return this.name;
 	}
 
-	//TODO: @Length(min = 5, max = 1000)
+	@MapLength(min = 5, max = 1000)
 	@MapNotBlank
 	@ElementCollection
 	public Map<String, String> getDescription() {

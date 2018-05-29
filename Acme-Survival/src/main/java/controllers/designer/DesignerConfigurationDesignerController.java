@@ -69,7 +69,13 @@ public class DesignerConfigurationDesignerController extends AbstractController 
 				result = new ModelAndView("redirect:/designerConfiguration/designer/list.do");
 
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(configuration, "configuration.commit.error");
+				if (oops.getMessage().contains("CharacterCapacityError")) {
+					result = this.createEditModelAndView(configuration, "configuration.capacity.error");
+				} else if (oops.getMessage().contains("FoodWaterGatherError")) {
+					result = this.createEditModelAndView(configuration, "configuration.foodLostGatherWaterGather.error");
+				} else {
+					result = this.createEditModelAndView(configuration, "configuration.commit.error");
+				}
 			}
 		}
 

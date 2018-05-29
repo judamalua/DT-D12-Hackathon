@@ -19,4 +19,9 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 
 	@Query("select r from Room r where r.refuge.id=?1")
 	Page<Room> findRoomsByRefuge(int refugeId, Pageable pageable);
+
+	// Dashboard queries
+
+	@Query("select r.refuge.name, count(r) from Room r group by r.refuge")
+	Collection<String> findNumRoomsByRefuge();
 }

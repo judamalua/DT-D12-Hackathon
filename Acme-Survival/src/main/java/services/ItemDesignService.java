@@ -37,7 +37,7 @@ public class ItemDesignService {
 		Assert.notNull(result);
 		return result;
 	}
-	
+
 	public Collection<ItemDesign> findFinal() {
 		Collection<ItemDesign> result;
 		Assert.notNull(this.itemDesignRepository);
@@ -45,7 +45,7 @@ public class ItemDesignService {
 		Assert.notNull(result);
 		return result;
 	}
-	
+
 	public Collection<ItemDesign> findNotFinal() {
 		Collection<ItemDesign> result;
 		Assert.notNull(this.itemDesignRepository);
@@ -125,6 +125,16 @@ public class ItemDesignService {
 		result = this.itemDesignRepository.findFinal(pageable);
 
 		return result;
+	}
+
+	public String findNumItemDesigns() {
+
+		String result;
+
+		result = this.itemDesignRepository.findNumItemDesigns();
+
+		return result;
+
 	}
 
 	public void flush() {

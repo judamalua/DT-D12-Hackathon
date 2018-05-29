@@ -1223,13 +1223,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Axe</value>
+					<value>Common Axe</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Hacha</value>
+					<value>Hacha común</value>
 				</entry>
 			</map>
 		</property>
@@ -1472,13 +1472,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Saw</value>
+					<value>Saw of a gardener</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Sierra</value>
+					<value>Sierra de un jardinero</value>
 				</entry>
 			</map>
 		</property>
@@ -1554,13 +1554,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>M4A1</value>
+					<value>M4A1 weapon</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>M4A1</value>
+					<value>M4A1 weapon</value>
 				</entry>
 			</map>
 		</property>

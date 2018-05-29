@@ -20,4 +20,9 @@ public interface PlayerRepository extends JpaRepository<Player, Integer> {
 
 	@Query("select r from Player p join p.refuges r where p.id=?1")
 	Page<Refuge> findKnowRefugesByPlayer(int playerId, Pageable pageable);
+
+	// Dashboard queries
+	@Query("select count(p) from Player p")
+	String findNumPlayers();
+
 }

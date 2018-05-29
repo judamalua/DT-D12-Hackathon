@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import annotations.ExtendedURL;
+import annotations.MapLength;
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
@@ -30,7 +31,7 @@ public abstract class ItemDesign extends DomainEntity {
 	private boolean				finalMode;
 
 
-	//TODO: @Length(min = 5, max = 50)
+	@MapLength(min = 5, max = 50)
 	@MapNotBlank
 	@MapSafeHtml
 	@ElementCollection
@@ -43,7 +44,7 @@ public abstract class ItemDesign extends DomainEntity {
 		this.name = name;
 	}
 
-	//TODO: @Length(min = 5, max = 1000)
+	@MapLength(min = 5, max = 1000)
 	@MapNotBlank
 	@MapSafeHtml
 	@ElementCollection
