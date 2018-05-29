@@ -22,7 +22,7 @@
 </p>
 
 <p>
-	<strong><spring:message code="configuration.laguages" /></strong>
+	<strong><spring:message code="configuration.languages" /></strong>
 	<ul>
 	<jstl:forEach items="${configuration.languages}" var="language">
 		<li><jstl:out value="${language}"/></li>
