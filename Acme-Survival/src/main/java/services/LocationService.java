@@ -132,9 +132,9 @@ public class LocationService {
 	public Location reconstruct(final Location location, final BindingResult binding) {
 		Location result;
 
-		if (location.getId() == 0)
+		if (location.getId() == 0) {
 			result = location;
-		else {
+		} else {
 			result = this.locationRepository.findOne(location.getId());
 			if (!result.getFinalMode()) {
 				result.setFinalMode(location.getFinalMode());
@@ -147,6 +147,14 @@ public class LocationService {
 			result.setLootTable(location.getLootTable());
 		}
 		this.validator.validate(result, binding);
+		return result;
+	}
+
+	public String findNumLocations() {
+		String result;
+
+		result = this.locationRepository.findNumLocations();
+
 		return result;
 	}
 

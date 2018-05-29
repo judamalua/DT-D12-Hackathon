@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import annotations.MapLength;
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
@@ -28,7 +29,7 @@ public abstract class RoomDesign extends DomainEntity {
 	private Integer				maxCapacityCharacters;
 
 
-	//TODO: @Length(min = 5, max = 50)
+	@MapLength(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -41,7 +42,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.name = name;
 	}
 
-	//TODO: @Length(min = 5, max = 1000)
+	@MapLength(min = 5, max = 1000)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml

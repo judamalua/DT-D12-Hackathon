@@ -15,6 +15,7 @@ import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import annotations.ExtendedURL;
+import annotations.MapLength;
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
@@ -33,6 +34,7 @@ public class Product extends DomainEntity {
 	private boolean				discontinued;
 
 
+	@MapLength(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -45,6 +47,7 @@ public class Product extends DomainEntity {
 		this.name = name;
 	}
 
+	@MapLength(min = 5, max = 1000)
 	@MapSafeHtml
 	@NotNull
 	@MapNotBlank

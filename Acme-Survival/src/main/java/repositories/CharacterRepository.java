@@ -28,4 +28,10 @@ public interface CharacterRepository extends JpaRepository<Character, Integer> {
 
 	@Query("select c from Character c where c.refuge.id=?1 and c.gatherNotificated = false")
 	Collection<Character> findCharactersNotNotificatedOfGather(int refugeId);
+
+	//Dashboard queries
+
+	@Query("select count(c) from Character c")
+	String findNumCharacters();
+
 }

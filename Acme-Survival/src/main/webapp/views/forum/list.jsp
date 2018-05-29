@@ -43,7 +43,9 @@
 						value="${forum.name}" /></a>
 			</div>
 			<br />
-			<div class="forumDescrition"><jstl:out value="${forum.description}" /></div>
+			<div class="forumDescrition">
+				<jstl:out value="${forum.description}" />
+			</div>
 		</div>
 	</display:column>
 
@@ -60,7 +62,7 @@
 				code="forum.edit" />
 		</jstl:if>
 	</display:column>
-	
+
 	<display:column>
 		<security:authorize access="hasRole('DESIGNER')">
 			<acme:button url="forum/actor/delete.do?forumId=${forum.id}"
@@ -92,7 +94,7 @@
 				code="thread.edit" />
 		</jstl:if>
 	</display:column>
-	
+
 	<display:column>
 		<security:authorize access="hasRole('DESIGNER')">
 			<acme:button url="thread/actor/delete.do?forumId=${forum.id}"
@@ -104,9 +106,13 @@
 
 <security:authorize access="isAuthenticated() and !hasRole('PLAYER')">
 	<acme:button url="forum/actor/create.do" code="forum.create" />
-	<br/>
+	<br />
 	<jstl:if test="${fatherForum!=null}">
-		<acme:button url="thread/actor/create.do?forumId=${fatherForum.id}"
-			code="thread.create" />
+		<acme:button url="forum/actor/create.do?forumId=${fatherForum.id}"
+			code="forum.create" />
 	</jstl:if>
+
+	<acme:button
+		url="forum/actor/list.do?staff=true&forumId=${fatherForum.id}"
+		code="forum.staff" />
 </security:authorize>

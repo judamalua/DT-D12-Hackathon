@@ -84,8 +84,9 @@ public class ThreadService {
 		actor = this.actorService.findActorByPrincipal();
 
 		Assert.notNull(thread);
-		if (!(actor instanceof Moderator))
+		if (!(actor instanceof Moderator)) {
 			Assert.isTrue(thread.getActor().equals(actor));
+		}
 
 		result = this.threadRepository.save(thread);
 
@@ -112,13 +113,15 @@ public class ThreadService {
 
 		actor = this.actorService.findActorByPrincipal();
 
-		if (!(actor instanceof Moderator))
+		if (!(actor instanceof Moderator)) {
 			Assert.isTrue(thread.getActor().equals(actor));
+		}
 
 		messages = this.messageService.findMessagesByThread(thread.getId());
 
-		for (final Message message : messages)
+		for (final Message message : messages) {
 			this.messageService.delete(message);
+		}
 
 		this.threadRepository.delete(thread);
 	}
@@ -137,6 +140,14 @@ public class ThreadService {
 		Assert.notNull(pageable);
 
 		result = this.threadRepository.findThreadsByForum(forumId, pageable);
+
+		return result;
+	}
+
+	public Collection<String> findNumThreadsByActor() {
+		Collection<String> result;
+
+		result = this.threadRepository.findNumThreadsByActor();
 
 		return result;
 	}

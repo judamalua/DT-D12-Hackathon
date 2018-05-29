@@ -1,12 +1,22 @@
 
 package controllers.admin;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.AttackService;
+import services.CharacterService;
+import services.EventService;
+import services.ItemDesignService;
+import services.LocationService;
+import services.OrderService;
 import services.PlayerService;
+import services.RoomService;
+import services.ThreadService;
 import controllers.AbstractController;
 
 @Controller
@@ -16,7 +26,25 @@ public class DashboardAdminController extends AbstractController {
 	// Services -------------------------------------------------------
 
 	@Autowired
-	PlayerService	userService;
+	private PlayerService		playerService;
+	@Autowired
+	private CharacterService	characterService;
+	@Autowired
+	private LocationService		locationService;
+	@Autowired
+	private ItemDesignService	itemDesignService;
+	@Autowired
+	private ItemDesignService	roomDesignService;
+	@Autowired
+	private EventService		eventService;
+	@Autowired
+	private ThreadService		threadService;
+	@Autowired
+	private OrderService		orderService;
+	@Autowired
+	private AttackService		attackService;
+	@Autowired
+	private RoomService			roomService;
 
 
 	// Listing ---------------------------------------------------------------		
@@ -24,53 +52,34 @@ public class DashboardAdminController extends AbstractController {
 	@RequestMapping("/list")
 	public ModelAndView list() {
 		final ModelAndView result;
-		//		final String rendezvousesInfoFromUsers, ratioCreatedRendezvouses, usersInfoFromRendezvous, announcementsInfoFromRendezvous, questionsInfoFromRendezvous, repliesInfoFromComment, RSVPedInfoFromRendezvous, answersInfoFromQuestion;
-		//		final Collection<Rendezvous> topTenRendezvouses, rendezvousesWithAnnouncementAboveSeventyFivePercent, rendezvousesMostLinked;
-		//
-		//		rendezvousesInfoFromUsers = this.userService.getRendezvousesInfoFromUsers();
-		//		ratioCreatedRendezvouses = this.userService.getRatioCreatedRendezvouses();
-		//
-		//		usersInfoFromRendezvous = this.rendezvousService.getUsersInfoFromRendezvous();
-		//		RSVPedInfoFromRendezvous = this.userService.getRSVPedInfoFromRendezvous();
-		//		topTenRendezvouses = this.rendezvousService.getTopTenRendezvouses();
-		//
-		//		announcementsInfoFromRendezvous = this.rendezvousService.getAnnouncementsInfoFromRendezvous();
-		//		rendezvousesWithAnnouncementAboveSeventyFivePercent = this.rendezvousService.getRendezvousesWithAnnouncementAboveSeventyFivePercent();
-		//		rendezvousesMostLinked = this.rendezvousService.getRendezvousesMostLinked();
-		//
-		//		questionsInfoFromRendezvous = this.rendezvousService.getQuestionsInfoFromRendezvous();
-		//		answersInfoFromQuestion = this.questionService.getAnswersInfoFromQuestion();
-		//
-		//		repliesInfoFromComment = this.commentService.getRepliesInfoFromComment();
-		//
+		final String numPlayers, numCharacters, numLocations, numItemDesigns, numRoomDesigns, numEvents;
+		final Collection<String> threadsByActor, ordersByPlayer, attacksByRefuge, defensesByRefuge, roomsPerRefuge;
+
+		numPlayers = this.playerService.findNumPlayers();
+		numCharacters = this.characterService.findNumCharacters();
+		numLocations = this.locationService.findNumLocations();
+		numItemDesigns = this.itemDesignService.findNumItemDesigns();
+		numEvents = this.eventService.findNumEvents();
+		numRoomDesigns = this.roomDesignService.findNumItemDesigns();
+		threadsByActor = this.threadService.findNumThreadsByActor();
+		ordersByPlayer = this.orderService.findNumOrdersByActor();
+		attacksByRefuge = this.attackService.findNumAttacksByRefuge();
+		defensesByRefuge = this.attackService.findNumDefensesByRefuge();
+		roomsPerRefuge = this.roomService.findNumRoomsByRefuge();
+
 		result = new ModelAndView("dashboard/list");
-		//		result.addObject("rendezvousUserAverage", rendezvousesInfoFromUsers.split(",")[0]);
-		//		result.addObject("rendezvousUserStandardDeviation", rendezvousesInfoFromUsers.split(",")[1]);
-		//
-		//		result.addObject("ratioCreatedRendezvouses", ratioCreatedRendezvouses);
-		//
-		//		result.addObject("userRendezvousAverage", usersInfoFromRendezvous.split(",")[0]);
-		//		result.addObject("userRendezvousStandardDeviation", usersInfoFromRendezvous.split(",")[1]);
-		//
-		//		result.addObject("averageRSVPedPerUser", RSVPedInfoFromRendezvous.split(",")[0]);
-		//		result.addObject("standardDeviationRSVPedPerUser", RSVPedInfoFromRendezvous.split(",")[1]);
-		//
-		//		result.addObject("topTenRendezvouses", topTenRendezvouses);
-		//
-		//		result.addObject("announcementsRendezvousAverage", announcementsInfoFromRendezvous.split(",")[0]);
-		//		result.addObject("announcementsRendezvousStandardDeviation", announcementsInfoFromRendezvous.split(",")[1]);
-		//
-		//		result.addObject("rendezvousesWithAnnouncementAboveSeventyFivePercent", rendezvousesWithAnnouncementAboveSeventyFivePercent);
-		//		result.addObject("rendezvousesMostLinked", rendezvousesMostLinked);
-		//
-		//		result.addObject("questionsRendezvousAverage", questionsInfoFromRendezvous.split(",")[0]);
-		//		result.addObject("questionsRendezvousStandardDeviation", questionsInfoFromRendezvous.split(",")[1]);
-		//
-		//		result.addObject("averageAnswersPerRendezvous", answersInfoFromQuestion.split(",")[0]);
-		//		result.addObject("standardDeviationAnswersPerRendezvous", answersInfoFromQuestion.split(",")[1]);
-		//
-		//		result.addObject("repliesCommentAverage", repliesInfoFromComment.split(",")[0]);
-		//		result.addObject("repliesCommentStandardDeviation", repliesInfoFromComment.split(",")[1]);
+
+		result.addObject("numPlayers", numPlayers);
+		result.addObject("numCharacters", numCharacters);
+		result.addObject("numLocations", numLocations);
+		result.addObject("numItemDesigns", numItemDesigns);
+		result.addObject("numEvents", numEvents);
+		result.addObject("numRoomDesigns", numRoomDesigns);
+		result.addObject("threadsByActor", threadsByActor);
+		result.addObject("ordersByPlayer", ordersByPlayer);
+		result.addObject("attacksByRefuge", attacksByRefuge);
+		result.addObject("defensesByRefuge", defensesByRefuge);
+		result.addObject("roomsPerRefuge", roomsPerRefuge);
 
 		return result;
 	}

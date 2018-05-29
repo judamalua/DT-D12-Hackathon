@@ -123,7 +123,7 @@
 		<security:intercept-url pattern="/message/list.do"
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/forum/actor/**"
-			access="isAuthenticated()" requires-channel="https" />
+			access="isAuthenticated() and !hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/thread/actor/**"
 			access="isAuthenticated()" requires-channel="https" />
 		<security:intercept-url pattern="/message/actor/**"

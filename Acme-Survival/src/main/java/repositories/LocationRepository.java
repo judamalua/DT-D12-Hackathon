@@ -18,4 +18,8 @@ public interface LocationRepository extends JpaRepository<Location, Integer> {
 	@Query("select l from Location l where l.finalMode=false")
 	Collection<Location> findAllLocationsByNotFinal();
 
+	//Dashboard queries
+
+	@Query("select count(l) from Location l where l.finalMode=true")
+	String findNumLocations();
 }

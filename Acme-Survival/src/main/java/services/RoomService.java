@@ -226,4 +226,12 @@ public class RoomService {
 
 		return result;
 	}
+
+	public Collection<String> findNumRoomsByRefuge() {
+		Collection<String> result;
+
+		result = this.roomRepository.findNumRoomsByRefuge();
+
+		return result;
+	}
 }

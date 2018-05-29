@@ -98,11 +98,13 @@ public class PlayerService {
 		assert player != null;
 		Actor actor = null;
 
-		if (player.getId() != 0)
+		if (player.getId() != 0) {
 			actor = this.actorService.findActorByPrincipal();
+		}
 
-		if (actor instanceof Player && player.getId() != 0)
+		if (actor instanceof Player && player.getId() != 0) {
 			Assert.isTrue(player.equals(actor));
+		}
 
 		Player result;
 
@@ -194,6 +196,14 @@ public class PlayerService {
 		Collection<Player> result;
 
 		result = this.playerRepository.findPlayersKnowsRefuge(refugeId);
+
+		return result;
+	}
+
+	public String findNumPlayers() {
+		String result;
+
+		result = this.playerRepository.findNumPlayers();
 
 		return result;
 	}

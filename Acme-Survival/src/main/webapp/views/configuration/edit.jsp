@@ -31,9 +31,10 @@
 		<em><spring:message code="configuration.all.fields.required" /></em>
 	</p>
 
-	<acme:textbox code="configuration.pagesize" path="pageSize" />
+	<acme:textbox code="configuration.pagesize" path="pageSize" required="true"/>
 	
-	<acme:textarea code="configuration.languages" path="languages" />
+	<spring:message code="master.page.commas.parameter" />
+	<acme:textarea code="configuration.languages" path="languages" required="true"/>
 
 	<div class="row">
 		<div class="col s6">
@@ -42,7 +43,7 @@
 					<form:input id="businessNameFirst" type="text"
 						path="businessNameFirst" />
 					<label for="businessNameFirst"><spring:message
-							code="configuration.businessName" /></label>
+							code="configuration.businessName" />*</label>
 				</div>
 				<div class="input-field col s3">
 					<i class="material-icons prefix">people</i>

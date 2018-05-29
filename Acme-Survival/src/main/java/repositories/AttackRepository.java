@@ -32,4 +32,12 @@ public interface AttackRepository extends JpaRepository<Attack, Integer> {
 
 	//@Query("select a from Attack a where a.attacker.id = ?1 or a.defendant.id = ?1")
 	//Page<Attack> findAllAttacksByPlayer(int refugeId, Pageable pageable);
+
+	//Dashboard queries
+
+	@Query("select a.attacker.name, count(a) from Attack a group by a.attacker")
+	Collection<String> findNumAttacksByRefuge();
+
+	@Query("select a.defendant.name, count(a) from Attack a group by a.defendant")
+	Collection<String> findNumDefensesByRefuge();
 }

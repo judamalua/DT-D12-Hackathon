@@ -1,139 +1,201 @@
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="security"	uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<ul class="collapsible popout" data-collapsible="accordion">
+
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.players.number" />
+		</div>
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out value="${numPlayers == \"null\" ? 0 : numPlayers}"/>
+				</p>
+			</span>
+		</div>
+	</li>
+
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.characters.number" />
+		</div>
+
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out value="${numCharacters == \"null\" ? 0 : numCharacters}"/>
+				</p>
+			</span>
+		</div>
+	</li>
+
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.roomDesign.number" />
+		</div>
+
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out value="${numRoomDesigns == \"null\" ? 0 : numRoomDesigns}"/>
+				</p>
+			</span>
+		</div>
+	</li>
 
 
-<h1>Not yet implemented</h1>
 
-<%-- <ul class="collapsible popout" data-collapsible="accordion">
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.location.number" />
+		</div>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.rendezvous.user"/></div>
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out value="${numLocations == \"null\" ? 0 : numLocations}"/>
+				</p>
+			</span>
+		</div>
+	</li>
 
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${rendezvousUserAverage == \"null\" ? 0 : rendezvousUserAverage}"></jstl:out></p>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.itemDesign.number" />
+		</div>
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out
+						value="${numItemDesigns == \"null\" ? 0 : numItemDesigns}"/>
+				</p>
+			</span>
+		</div>
+	</li>
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${rendezvousUserStandardDeviation == \"null\" ? 0 : rendezvousUserStandardDeviation}"></jstl:out></p>
-</span></div>
-</li>
-
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.users.create.ratio"/></div>
-
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.ratio"/>:</b> <jstl:out value="${ratioCreatedRendezvouses == \"null\" ? 0 : ratioCreatedRendezvouses}"></jstl:out></p>
-<div class = "ratio element">
-<div class="progress progress-striped
-     active" aria-valuemin="0">
-  <div class="bar"
-       style="width: ${ratioCreatedRendezvouses*100}%;"><jstl:out value="${ratioCreatedRendezvouses*100}%" /></div>
-</div>
-</div>
-</span></div>
-</li>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.event.number" />
+		</div>
+		<div class="collapsible-body">
+			<span>
+				<p class="element">
+					<jstl:out value="${numEvents == \"null\" ? 0 : numEvents}" />
+				</p>
+			</span>
+		</div>
+	</li>
 
 
+	</li>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.user.rendezvous.info"/></div>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.threadsByActor" />
+		</div>
 
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${userRendezvousAverage == \"null\" ? 0 : userRendezvousAverage}"></jstl:out></p>
+		<div class="collapsible-body">
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${userRendezvousStandardDeviation == \"null\" ? 0 : userRendezvousStandardDeviation}"></jstl:out></p>
-</span></div>
-</li>
+			<span> <display:table id="threadByActor" name="threadsByActor"
+					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
+					<jstl:set var="string" value="${fn:split(threadByActor, ',')}" />
+					<spring:message var="titleActor" code="dashboard.actor.title" />
+					<display:column title="${titleActor}">${threadByActor.toString()}</display:column>
+					<spring:message var="titleNumThreads" code="dashboard.numThreads" />
+					<display:column title="${titleNumThreads}">${string}</display:column>
+				</display:table>
+			</span>
+		</div>
+	</li>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.RSVP.user"/></div>
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${averageRSVPedPerUser == \"null\" ? 0 : averageRSVPedPerUser}"></jstl:out></p>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.ordersByPlayer" />
+		</div>
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${standardDeviationRSVPedPerUser == \"null\" ? 0 : standardDeviationRSVPedPerUser}"></jstl:out></p>
-</span></div>
-</li>
+		<div class="collapsible-body">
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.top.ten.rendezvouses"/></div>
-	
-<div class="collapsible-body"><span>	
-	<display:table id = "rendezvous" name = "topTenRendezvouses" requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-		<spring:message var = "titleRendezvous" code = "dashboard.rendezvous.title"/>
-		<display:column title = "${titleRendezvous}">${rendezvous.name}</display:column>
-		<spring:message var = "titleNumRSVP" code = "dashboard.rendezvous.numRSVP"/>
-		<display:column title = "${titleNumRSVP}">${fn:length(rendezvous.users)}</display:column>
-	
-	</display:table>
-</span></div>
-</li>
+			<span> <display:table id="orderByPlayer" name="ordersByPlayer"
+					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
+					<jstl:set var="string" value="${fn:split(orderByPlayer, ',')}" />
+					<spring:message var="titleActor" code="dashboard.actor.title" />
+					<display:column title="${titleActor}">${string[0]}</display:column>
+					<spring:message var="titleNumOrders" code="dashboard.numOrders" />
+					<display:column title="${titleNumOrders}">${string[1]}</display:column>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.announcements.rendezvous"/></div>
-<div class="collapsible-body"><span>	
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${announcementsRendezvousAverage == \"null\" ? 0 : announcementsRendezvousAverage}"></jstl:out></p>
+				</display:table>
+			</span>
+		</div>
+	</li>
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${announcementsRendezvousStandardDeviation == \"null\" ? 0 : announcementsRendezvousStandardDeviation}"></jstl:out></p>
-</span></div>
-</li>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.attacksByRefuge" />
+		</div>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.rendezvouses.above.seventyfive"/></div>
-	<div class="collapsible-body"><span>
-	<display:table id = "row" name = "rendezvousesWithAnnouncementAboveSeventyFivePercent" requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-		
-		<spring:message var = "titleRendezvous" code = "dashboard.rendezvous.title"/>
-		<display:column title = "${titleRendezvous}">${row.name}</display:column>
-	
-	</display:table>
-</span></div>
-</li>
+		<div class="collapsible-body">
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.rendezvous.most.linked"/></div>
-	
-	<div class="collapsible-body"><span>
-	<display:table id = "row" name = "rendezvousesMostLinked" requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-		
-		<spring:message var = "titleRendezvous" code = "dashboard.rendezvous.title"/>
-		<display:column title = "${titleRendezvous}">${row.name}</display:column>
-	
-	</display:table>
-</span></div>
-</li>
+			<span> <display:table id="attackByRefuge"
+					name="attacksByRefuge" requestURI="dashboard/admin/list.do"
+					pagesize="${pagesize}">
+					<jstl:set var="string" value="${fn:split(attackByRefuge, ',')}" />
+					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
+					<display:column title="${titleRefuge}">${string[0]}</display:column>
+					<spring:message var="titleNumAttacks" code="dashboard.numAttacks" />
+					<display:column title="${titleNumAttacks}">${string[1]}</display:column>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.questions.rendezvous"/></div>
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${questionsRendezvousAverage == \"null\" ? 0 : questionsRendezvousAverage}"></jstl:out></p>
+				</display:table>
+			</span>
+		</div>
+	</li>
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${questionsRendezvousStandardDeviation == \"null\" ? 0 : questionsRendezvousStandardDeviation}"></jstl:out></p>
-</span></div>
-</li>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.defensesByRefuge" />
+		</div>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.answers.rendezvous"/></div>
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${averageAnswersPerRendezvous == \"null\" ? 0 : averageAnswersPerRendezvous}"></jstl:out></p>
+		<div class="collapsible-body">
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${standardDeviationAnswersPerRendezvous == \"null\" ? 0 : standardDeviationAnswersPerRendezvous}"></jstl:out></p>
-</span></div>
-</li>
+			<span> <display:table id="defenseByRefuge"
+					name="defensesByRefuge" requestURI="dashboard/admin/list.do"
+					pagesize="${pagesize}">
+					<jstl:set var="string" value="${fn:split(defenseByRefuge, ',')}" />
+					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
+					<display:column title="${titleRefuge}">${string[0]}</display:column>
+					<spring:message var="titleNumDefenses" code="dashboard.numDefenses" />
+					<display:column title="${titleNumDefenses}">${string[1]}</display:column>
+				</display:table>
+			</span>
+		</div>
+	</li>
 
-<li class = "dashboard-expander">
-<div class="collapsible-header"><spring:message code="dashboard.replies.comment"/></div>
-<div class="collapsible-body"><span>
-<p class = "element"><b><spring:message code="dashboard.average"/>:</b> <jstl:out value="${repliesCommentAverage == \"null\" ? 0 : repliesCommentAverage}"></jstl:out></p>
+	<li class="dashboard-expander">
+		<div class="collapsible-header">
+			<spring:message code="dashboard.roomsByRefuge" />
+		</div>
 
-<p class = "element"><b><spring:message code="dashboard.standardDeviation"/>:</b> <jstl:out value="${repliesCommentStandardDeviation == \"null\" ? 0 : repliesCommentStandardDeviation}"></jstl:out></p>
-</span></div>
-</li>
+		<div class="collapsible-body">
 
+			<span> <display:table id="roomPerRefuge" name="roomsPerRefuge"
+					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
+					<jstl:set var="string" value="${fn:split(roomPerRefuge, ',')}" />
+					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
+					<display:column title="${titleRefuge}">${string[0]}</display:column>
+					<spring:message var="titleNumRooms" code="dashboard.numRooms" />
+					<display:column title="${titleNumRooms}">${string[1]}</display:column>
+				</display:table>
+			</span>
+		</div>
+	</li>
 </ul>
- --%>

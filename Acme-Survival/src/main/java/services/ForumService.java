@@ -92,7 +92,14 @@ public class ForumService {
 		if (forum.getStaff()) {
 			Assert.isTrue(!(actor instanceof Player));
 			if (forum.getForum() != null) {
-				Assert.isTrue(forum.getForum().getStaff());
+				Assert.isTrue(forum.getForum().getStaff(), "The father must be staff");
+			}
+		}
+
+		if (forum.getSupport()) {
+			Assert.isTrue(!(actor instanceof Player));
+			if (forum.getForum() != null) {
+				Assert.isTrue(forum.getForum().getSupport(), "The father must be support");
 			}
 		}
 
