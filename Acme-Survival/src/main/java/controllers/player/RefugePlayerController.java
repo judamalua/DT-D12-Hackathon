@@ -100,7 +100,9 @@ public class RefugePlayerController extends AbstractController {
 		Inventory inventory;
 		final Collection<domain.Character> characters, charactersUpdated;
 		Integer capacity;
+		long time;
 		try {
+			time = System.currentTimeMillis();
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
 
@@ -145,6 +147,7 @@ public class RefugePlayerController extends AbstractController {
 			result.addObject("owner", owner);
 			result.addObject("characterCapacity", capacity);
 
+			System.out.println(System.currentTimeMillis() - time);
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have refuge")) {
 				result = new ModelAndView("redirect:/refuge/player/create.do");

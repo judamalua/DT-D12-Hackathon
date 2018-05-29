@@ -497,33 +497,34 @@ public class RefugeService {
 			difference = currentDate.getTime() - refuge.getLastView().getTime();
 
 			minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
-
-			for (final Room room : resourceRooms) {
-				if ((((ResourceRoom) room.getRoomDesign()).getFood() + inventory.getFood()) < inventory.getFoodCapacity()) {
-					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * minutes);
-				} else {
-					inventory.setFood(inventory.getFoodCapacity());
-				}
-
-				if ((((ResourceRoom) room.getRoomDesign()).getWater() + inventory.getWater()) < inventory.getWaterCapacity()) {
-					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * minutes);
-				} else {
-					inventory.setWater(inventory.getWaterCapacity());
-				}
-				if ((((ResourceRoom) room.getRoomDesign()).getWood() + inventory.getWood()) < inventory.getWoodCapacity()) {
-					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * minutes);
-				} else {
-					inventory.setWood(inventory.getWoodCapacity());
-				}
-
-				if ((((ResourceRoom) room.getRoomDesign()).getMetal() + inventory.getMetal()) < inventory.getMetalCapacity()) {
-					inventory.setMetal(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * minutes);
-				} else {
-					inventory.setMetal(inventory.getMetalCapacity());
-				}
-			}
-			result = this.inventoryService.save(inventory);
 			if (minutes > 0) {
+				for (final Room room : resourceRooms) {
+					if ((((ResourceRoom) room.getRoomDesign()).getFood() + inventory.getFood()) < inventory.getFoodCapacity()) {
+						inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * minutes);
+					} else {
+						inventory.setFood(inventory.getFoodCapacity());
+					}
+
+					if ((((ResourceRoom) room.getRoomDesign()).getWater() + inventory.getWater()) < inventory.getWaterCapacity()) {
+						inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * minutes);
+					} else {
+						inventory.setWater(inventory.getWaterCapacity());
+					}
+					if ((((ResourceRoom) room.getRoomDesign()).getWood() + inventory.getWood()) < inventory.getWoodCapacity()) {
+						inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * minutes);
+					} else {
+						inventory.setWood(inventory.getWoodCapacity());
+					}
+
+					if ((((ResourceRoom) room.getRoomDesign()).getMetal() + inventory.getMetal()) < inventory.getMetalCapacity()) {
+						inventory.setMetal(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * minutes);
+					} else {
+						inventory.setMetal(inventory.getMetalCapacity());
+					}
+				}
+
+				result = this.inventoryService.save(inventory);
+
 				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 			}
 		} else {
