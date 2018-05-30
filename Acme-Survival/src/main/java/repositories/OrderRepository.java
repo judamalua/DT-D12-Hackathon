@@ -13,5 +13,5 @@ import domain.Order;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
 	@Query("select o.player.name ,count(o) from Order o group by o.player")
-	Collection<String> findNumOrdersByActor();
+	Collection<Collection<String>> findNumOrdersByActor();
 }

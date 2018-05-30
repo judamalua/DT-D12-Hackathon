@@ -36,8 +36,8 @@ public interface AttackRepository extends JpaRepository<Attack, Integer> {
 	//Dashboard queries
 
 	@Query("select a.attacker.name, count(a) from Attack a group by a.attacker")
-	Collection<String> findNumAttacksByRefuge();
+	Collection<Collection<String>> findNumAttacksByRefuge();
 
 	@Query("select a.defendant.name, count(a) from Attack a group by a.defendant")
-	Collection<String> findNumDefensesByRefuge();
+	Collection<Collection<String>> findNumDefensesByRefuge();
 }

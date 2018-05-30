@@ -68,8 +68,8 @@ public class OrderService {
 
 	}
 
-	public Collection<String> findNumOrdersByActor() {
-		Collection<String> result;
+	public Collection<Collection<String>> findNumOrdersByActor() {
+		Collection<Collection<String>> result;
 
 		result = this.orderRepository.findNumOrdersByActor();
 

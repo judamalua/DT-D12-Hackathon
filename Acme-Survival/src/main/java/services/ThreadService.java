@@ -144,8 +144,8 @@ public class ThreadService {
 		return result;
 	}
 
-	public Collection<String> findNumThreadsByActor() {
-		Collection<String> result;
+	public Collection<Collection<String>> findNumThreadsByActor() {
+		Collection<Collection<String>> result;
 
 		result = this.threadRepository.findNumThreadsByActor();
 

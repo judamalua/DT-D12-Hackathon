@@ -20,7 +20,7 @@
 		<div class="collapsible-body">
 			<span>
 				<p class="element">
-					<jstl:out value="${numPlayers == \"null\" ? 0 : numPlayers}"/>
+					<jstl:out value="${numPlayers == \"null\" ? 0 : numPlayers}" />
 				</p>
 			</span>
 		</div>
@@ -34,7 +34,7 @@
 		<div class="collapsible-body">
 			<span>
 				<p class="element">
-					<jstl:out value="${numCharacters == \"null\" ? 0 : numCharacters}"/>
+					<jstl:out value="${numCharacters == \"null\" ? 0 : numCharacters}" />
 				</p>
 			</span>
 		</div>
@@ -48,7 +48,8 @@
 		<div class="collapsible-body">
 			<span>
 				<p class="element">
-					<jstl:out value="${numRoomDesigns == \"null\" ? 0 : numRoomDesigns}"/>
+					<jstl:out
+						value="${numRoomDesigns == \"null\" ? 0 : numRoomDesigns}" />
 				</p>
 			</span>
 		</div>
@@ -64,7 +65,7 @@
 		<div class="collapsible-body">
 			<span>
 				<p class="element">
-					<jstl:out value="${numLocations == \"null\" ? 0 : numLocations}"/>
+					<jstl:out value="${numLocations == \"null\" ? 0 : numLocations}" />
 				</p>
 			</span>
 		</div>
@@ -78,7 +79,7 @@
 			<span>
 				<p class="element">
 					<jstl:out
-						value="${numItemDesigns == \"null\" ? 0 : numItemDesigns}"/>
+						value="${numItemDesigns == \"null\" ? 0 : numItemDesigns}" />
 				</p>
 			</span>
 		</div>
@@ -96,10 +97,6 @@
 			</span>
 		</div>
 	</li>
-
-
-	</li>
-
 	<li class="dashboard-expander">
 		<div class="collapsible-header">
 			<spring:message code="dashboard.threadsByActor" />
@@ -109,11 +106,10 @@
 
 			<span> <display:table id="threadByActor" name="threadsByActor"
 					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-					<jstl:set var="string" value="${fn:split(threadByActor, ',')}" />
 					<spring:message var="titleActor" code="dashboard.actor.title" />
-					<display:column title="${titleActor}">${threadByActor.toString()}</display:column>
+					<display:column title="${titleActor}">${threadByActor[0]}</display:column>
 					<spring:message var="titleNumThreads" code="dashboard.numThreads" />
-					<display:column title="${titleNumThreads}">${string}</display:column>
+					<display:column title="${titleNumThreads}">${threadByActor[1]}</display:column>
 				</display:table>
 			</span>
 		</div>
@@ -128,11 +124,10 @@
 
 			<span> <display:table id="orderByPlayer" name="ordersByPlayer"
 					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-					<jstl:set var="string" value="${fn:split(orderByPlayer, ',')}" />
 					<spring:message var="titleActor" code="dashboard.actor.title" />
-					<display:column title="${titleActor}">${string[0]}</display:column>
+					<display:column title="${titleActor}">${orderByPlayer[0]}</display:column>
 					<spring:message var="titleNumOrders" code="dashboard.numOrders" />
-					<display:column title="${titleNumOrders}">${string[1]}</display:column>
+					<display:column title="${titleNumOrders}">${orderByPlayer[1]}</display:column>
 
 				</display:table>
 			</span>
@@ -149,11 +144,10 @@
 			<span> <display:table id="attackByRefuge"
 					name="attacksByRefuge" requestURI="dashboard/admin/list.do"
 					pagesize="${pagesize}">
-					<jstl:set var="string" value="${fn:split(attackByRefuge, ',')}" />
 					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
-					<display:column title="${titleRefuge}">${string[0]}</display:column>
+					<display:column title="${titleRefuge}">${attackByRefuge[0]}</display:column>
 					<spring:message var="titleNumAttacks" code="dashboard.numAttacks" />
-					<display:column title="${titleNumAttacks}">${string[1]}</display:column>
+					<display:column title="${titleNumAttacks}">${attackByRefuge[1]}</display:column>
 
 				</display:table>
 			</span>
@@ -170,11 +164,10 @@
 			<span> <display:table id="defenseByRefuge"
 					name="defensesByRefuge" requestURI="dashboard/admin/list.do"
 					pagesize="${pagesize}">
-					<jstl:set var="string" value="${fn:split(defenseByRefuge, ',')}" />
 					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
-					<display:column title="${titleRefuge}">${string[0]}</display:column>
+					<display:column title="${titleRefuge}">${defenseByRefuge[0]}</display:column>
 					<spring:message var="titleNumDefenses" code="dashboard.numDefenses" />
-					<display:column title="${titleNumDefenses}">${string[1]}</display:column>
+					<display:column title="${titleNumDefenses}">${defenseByRefuge[1]}</display:column>
 				</display:table>
 			</span>
 		</div>
@@ -189,11 +182,10 @@
 
 			<span> <display:table id="roomPerRefuge" name="roomsPerRefuge"
 					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-					<jstl:set var="string" value="${fn:split(roomPerRefuge, ',')}" />
 					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
-					<display:column title="${titleRefuge}">${string[0]}</display:column>
+					<display:column title="${titleRefuge}">${roomPerRefuge[0]}</display:column>
 					<spring:message var="titleNumRooms" code="dashboard.numRooms" />
-					<display:column title="${titleNumRooms}">${string[1]}</display:column>
+					<display:column title="${titleNumRooms}">${roomPerRefuge[1]}</display:column>
 				</display:table>
 			</span>
 		</div>

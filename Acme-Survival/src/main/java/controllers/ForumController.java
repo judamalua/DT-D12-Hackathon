@@ -69,8 +69,8 @@ public class ForumController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "false") final Boolean staff, @RequestParam(required = false) final Integer forumId, @RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(
-		required = false, defaultValue = "0") final int pageThread) {
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "false") final Boolean staff, @RequestParam(required = false, defaultValue = "false") final Boolean support, @RequestParam(required = false) final Integer forumId, @RequestParam(
+		required = false, defaultValue = "0") final int page, @RequestParam(required = false, defaultValue = "0") final int pageThread) {
 		ModelAndView result;
 		Page<Forum> forums;
 		Forum forum;
@@ -96,9 +96,9 @@ public class ForumController extends AbstractController {
 			}
 
 			if (forumId == null) {
-				forums = this.forumService.findRootForums(staff, pageable);
+				forums = this.forumService.findRootForums(staff, support, pageable);
 			} else {
-				forums = this.forumService.findSubForums(forumId, staff, pageable);
+				forums = this.forumService.findSubForums(forumId, staff, support, pageable);
 				threads = this.threadsService.findThreadsByForum(forumId, threadPageable);
 				forum = this.forumService.findOne(forumId);
 

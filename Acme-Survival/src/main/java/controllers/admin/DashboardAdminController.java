@@ -53,7 +53,7 @@ public class DashboardAdminController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView result;
 		final String numPlayers, numCharacters, numLocations, numItemDesigns, numRoomDesigns, numEvents;
-		final Collection<String> threadsByActor, ordersByPlayer, attacksByRefuge, defensesByRefuge, roomsPerRefuge;
+		Collection<Collection<String>> threadsByActor, ordersByPlayer, attacksByRefuge, defensesByRefuge, roomsPerRefuge;
 
 		numPlayers = this.playerService.findNumPlayers();
 		numCharacters = this.characterService.findNumCharacters();

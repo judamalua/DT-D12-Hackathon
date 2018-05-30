@@ -227,8 +227,8 @@ public class RoomService {
 		return result;
 	}
 
-	public Collection<String> findNumRoomsByRefuge() {
-		Collection<String> result;
+	public Collection<Collection<String>> findNumRoomsByRefuge() {
+		Collection<Collection<String>> result;
 
 		result = this.roomRepository.findNumRoomsByRefuge();
 

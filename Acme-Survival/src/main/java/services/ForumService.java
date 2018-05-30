@@ -188,11 +188,11 @@ public class ForumService {
 		this.forumRepository.delete(forum);
 	}
 
-	public Page<Forum> findRootForums(final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findRootForums(final Boolean staff, final Boolean support, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.notNull(pageable);
 
-		result = this.forumRepository.findForums(staff, pageable);
+		result = this.forumRepository.findForums(staff, support, pageable);
 
 		return result;
 	}
@@ -237,11 +237,11 @@ public class ForumService {
 		return result;
 	}
 
-	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Boolean support, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.isTrue(forumId != 0);
 
-		result = this.forumRepository.findSubForums(forumId, staff, pageable);
+		result = this.forumRepository.findSubForums(forumId, staff, support, pageable);
 
 		return result;
 	}

@@ -613,16 +613,16 @@ public class AttackService {
 		return result;
 	}
 
-	public Collection<String> findNumAttacksByRefuge() {
-		Collection<String> result;
+	public Collection<Collection<String>> findNumAttacksByRefuge() {
+		Collection<Collection<String>> result;
 
 		result = this.attackRepository.findNumAttacksByRefuge();
 
 		return result;
 	}
 
-	public Collection<String> findNumDefensesByRefuge() {
-		Collection<String> result;
+	public Collection<Collection<String>> findNumDefensesByRefuge() {
+		Collection<Collection<String>> result;
 
 		result = this.attackRepository.findNumDefensesByRefuge();
 
