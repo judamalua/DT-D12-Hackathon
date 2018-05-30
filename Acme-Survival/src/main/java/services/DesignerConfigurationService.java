@@ -68,7 +68,7 @@ public class DesignerConfigurationService {
 		Assert.isTrue(actor instanceof Designer);
 		Assert.notNull(designerConfiguration);
 		Assert.isTrue(designerConfiguration.getFoodLostGatherFactor() > designerConfiguration.getWaterLostGatherFactor(), "FoodWaterGatherError");
-		Assert.isTrue(designerConfiguration.getRefugeDefaultCapacity() >= designerConfiguration.getNumInitialCharacters(), "CharacterCapacityError");
+		Assert.isTrue(designerConfiguration.getShelterDefaultCapacity() >= designerConfiguration.getNumInitialCharacters(), "CharacterCapacityError");
 
 		DesignerConfiguration result;
 

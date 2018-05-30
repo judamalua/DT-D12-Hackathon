@@ -51,7 +51,7 @@
 	height: 250px;
 }
 
-.refugeRooms{
+.shelterRooms{
 	float:left;
 	clear: both;
 	width: 100%;
@@ -66,7 +66,7 @@
 	margin-right: 15px;
 }
 
-.displayRefuge{
+.displayShelter{
 	margin-left: 200px;
 }
 .error {

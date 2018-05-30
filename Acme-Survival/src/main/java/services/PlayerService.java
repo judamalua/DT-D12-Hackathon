@@ -19,7 +19,7 @@ import security.Authority;
 import security.UserAccount;
 import domain.Actor;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 import forms.ActorForm;
 
 @Service
@@ -48,9 +48,9 @@ public class PlayerService {
 		final UserAccount userAccount;
 		final Collection<Authority> auth;
 		final Authority authority;
-		Collection<Refuge> knownRefuges;
+		Collection<Shelter> knownShelters;
 
-		knownRefuges = new HashSet<Refuge>();
+		knownShelters = new HashSet<Shelter>();
 		//TODO orders = new HashSet<Order>();
 
 		result = new Player();
@@ -64,7 +64,7 @@ public class PlayerService {
 
 		result.setUserAccount(userAccount);
 
-		result.setRefuges(knownRefuges);
+		result.setShelters(knownShelters);
 
 		return result;
 	}
@@ -98,13 +98,11 @@ public class PlayerService {
 		assert player != null;
 		Actor actor = null;
 
-		if (player.getId() != 0) {
+		if (player.getId() != 0)
 			actor = this.actorService.findActorByPrincipal();
-		}
 
-		if (actor instanceof Player && player.getId() != 0) {
+		if (actor instanceof Player && player.getId() != 0)
 			Assert.isTrue(player.equals(actor));
-		}
 
 		Player result;
 
@@ -132,9 +130,9 @@ public class PlayerService {
 		Actor actor;
 
 		if (userAdminForm.getId() == 0) {
-			Collection<Refuge> knownRefuges;
+			Collection<Shelter> knownShelters;
 
-			knownRefuges = new HashSet<Refuge>();
+			knownShelters = new HashSet<Shelter>();
 
 			result = this.create();
 
@@ -147,7 +145,7 @@ public class PlayerService {
 			result.setEmail(userAdminForm.getEmail());
 			result.setBirthDate(userAdminForm.getBirthDate());
 
-			result.setRefuges(knownRefuges);
+			result.setShelters(knownShelters);
 
 		} else {
 			actor = this.actorService.findActorByPrincipal();
@@ -184,18 +182,18 @@ public class PlayerService {
 
 	}
 
-	public Page<Refuge> findKnowRefugesByPlayer(final int playerId, final Pageable pageable) {
-		Page<Refuge> result;
+	public Page<Shelter> findKnowSheltersByPlayer(final int playerId, final Pageable pageable) {
+		Page<Shelter> result;
 
-		result = this.playerRepository.findKnowRefugesByPlayer(playerId, pageable);
+		result = this.playerRepository.findKnowSheltersByPlayer(playerId, pageable);
 
 		return result;
 	}
 
-	public Collection<Player> findPlayersKnowsRefuge(final int refugeId) {
+	public Collection<Player> findPlayersKnowsShelter(final int shelterId) {
 		Collection<Player> result;
 
-		result = this.playerRepository.findPlayersKnowsRefuge(refugeId);
+		result = this.playerRepository.findPlayersKnowsShelter(shelterId);
 
 		return result;
 	}

@@ -15,9 +15,9 @@ var mapTranslations = {
 			es : "Ataque en proceso",
 			en : "On going attack"
 		},
-		refuge : {
+		shelter : {
 			es : "Refugio al que atacas",
-			en : "Attacked refuge"
+			en : "Attacked shelter"
 		},
 		time : {
 			es : "Tiempo restante",
@@ -71,37 +71,37 @@ var mapTranslations = {
 		},
 		moveStartLink : {
 			es : "Mover tu refugio a esta zona",
-			en : "Move your refuge to this location"
+			en : "Move your shelter to this location"
 		},
 		editLocation : {
 			es : "Editar esta zona",
 			en : "Edit this location"
 		}
 	},
-	refuge : {
-		refugeMine : {
+	shelter : {
+		shelterMine : {
 			es : "Mi refugio",
-			en : "My refuge"
+			en : "My shelter"
 		},
-		refugeEnemy : {
+		shelterEnemy : {
 			es : "Refugio enemigo",
-			en : "Enemy refuge"
+			en : "Enemy shelter"
 		},
 		name : {
 			es : "Nombre del refugio",
-			en : "Refuge name"
+			en : "Shelter name"
 		},
 		playerName : {
 			es : "Dueño del refugio",
-			en : "Refuge owner"
+			en : "Shelter owner"
 		},
-		enterInRefuge : {
+		enterInShelter : {
 			es : "Entrar en el refugio",
-			en : "Enter in the refuge"
+			en : "Enter in the shelter"
 		},
-		attackRefuge : {
+		attackShelter : {
 			es : "Atacar este refugio",
-			en : "Attack this refuge"
+			en : "Attack this shelter"
 		}
 	}
 };

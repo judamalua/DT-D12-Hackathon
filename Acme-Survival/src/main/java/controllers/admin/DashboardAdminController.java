@@ -53,7 +53,7 @@ public class DashboardAdminController extends AbstractController {
 	public ModelAndView list() {
 		final ModelAndView result;
 		final String numPlayers, numCharacters, numLocations, numItemDesigns, numRoomDesigns, numEvents;
-		final Collection<String> threadsByActor, ordersByPlayer, attacksByRefuge, defensesByRefuge, roomsPerRefuge;
+		final Collection<String> threadsByActor, ordersByPlayer, attacksByShelter, defensesByShelter, roomsPerShelter;
 
 		numPlayers = this.playerService.findNumPlayers();
 		numCharacters = this.characterService.findNumCharacters();
@@ -63,9 +63,9 @@ public class DashboardAdminController extends AbstractController {
 		numRoomDesigns = this.roomDesignService.findNumItemDesigns();
 		threadsByActor = this.threadService.findNumThreadsByActor();
 		ordersByPlayer = this.orderService.findNumOrdersByActor();
-		attacksByRefuge = this.attackService.findNumAttacksByRefuge();
-		defensesByRefuge = this.attackService.findNumDefensesByRefuge();
-		roomsPerRefuge = this.roomService.findNumRoomsByRefuge();
+		attacksByShelter = this.attackService.findNumAttacksByShelter();
+		defensesByShelter = this.attackService.findNumDefensesByShelter();
+		roomsPerShelter = this.roomService.findNumRoomsByShelter();
 
 		result = new ModelAndView("dashboard/list");
 
@@ -77,9 +77,9 @@ public class DashboardAdminController extends AbstractController {
 		result.addObject("numRoomDesigns", numRoomDesigns);
 		result.addObject("threadsByActor", threadsByActor);
 		result.addObject("ordersByPlayer", ordersByPlayer);
-		result.addObject("attacksByRefuge", attacksByRefuge);
-		result.addObject("defensesByRefuge", defensesByRefuge);
-		result.addObject("roomsPerRefuge", roomsPerRefuge);
+		result.addObject("attacksByShelter", attacksByShelter);
+		result.addObject("defensesByShelter", defensesByShelter);
+		result.addObject("roomsPerShelter", roomsPerShelter);
 
 		return result;
 	}

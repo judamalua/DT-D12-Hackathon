@@ -17,29 +17,29 @@ public class Attack extends Mission {
 	// Attributes -------------------------------------------------------------
 
 	// Relationships ----------------------------------------------------------
-	private Refuge	attacker;
-	private Refuge	defendant;
+	private Shelter	attacker;
+	private Shelter	defendant;
 
 
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getAttacker() {
+	public Shelter getAttacker() {
 		return this.attacker;
 	}
 
-	public void setAttacker(final Refuge attacker) {
+	public void setAttacker(final Shelter attacker) {
 		this.attacker = attacker;
 
 	}
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getDefendant() {
+	public Shelter getDefendant() {
 		return this.defendant;
 	}
 
-	public void setDefendant(final Refuge defendant) {
+	public void setDefendant(final Shelter defendant) {
 		this.defendant = defendant;
 
 	}

@@ -188,7 +188,7 @@
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
 		<property name="kmPerSecond" value="50000" />
-		<property name="refugeRecoverTime" value="1" />
+		<property name="shelterRecoverTime" value="1" />
 		<property name="waterFactorSteal" value="0.25" />
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
@@ -196,7 +196,7 @@
 		<property name="foodLostGatherFactor" value="2" />
 		<property name="waterLostGatherFactor" value="1" />
 		<property name="experiencePerMinute" value="20" />
-		<property name="refugeDefaultCapacity" value="4" />
+		<property name="shelterDefaultCapacity" value="4" />
 		<property name="initialFood" value="4" />
 		<property name="initialWater" value="4" />
 		<property name="initialWood" value="4" />
@@ -206,8 +206,8 @@
 		<property name="maxInventoryWood" value="20" />
 		<property name="maxInventoryMetal" value="20" />
 		<property name="numInitialCharacters" value="3" />
-		<property name="refugeFindingProbability" value="0.1" />
-		<property name="refugeFindingMinuteAugmentProbability" value="90" />
+		<property name="shelterFindingProbability" value="0.1" />
+		<property name="shelterFindingMinuteAugmentProbability" value="90" />
 
 	</bean>
 
@@ -220,9 +220,9 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
-				<ref bean="Refuge2" />
+				<ref bean="Shelter2" />
 			</list>
 		</property>
 		<property name="userAccount" ref="UserAccount6" />
@@ -236,7 +236,7 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
 			</list>
 		</property>
@@ -251,7 +251,7 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
 			</list>
 		</property>
@@ -266,7 +266,7 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="666555222" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
 			</list>
 		</property>
@@ -394,8 +394,8 @@
 		<property name="owner" ref="Admin2" />
 	</bean>
 
-	<!-- %%%%%% domain.Refuge %%%%%% -->
-	<bean id="Refuge1" class="domain.Refuge">
+	<!-- %%%%%% domain.Shelter %%%%%% -->
+	<bean id="Shelter1" class="domain.Shelter">
 		<property name="code" value="WDJjfy6D02" />
 		<property name="name" value="Reguge 1" />
 		<property name="momentOfCreation" value="2018/04/12 00:00" />
@@ -404,9 +404,9 @@
 		<property name="gpsCoordinates" value="41.18837169235602,-4.973904414537174" />
 	</bean>
 
-	<bean id="Refuge2" class="domain.Refuge">
+	<bean id="Shelter2" class="domain.Shelter">
 		<property name="code" value="WDJj786D02" />
-		<property name="name" value="Refuge 101" />
+		<property name="name" value="Shelter 101" />
 		<property name="momentOfCreation" value="2018/04/12 00:00" />
 		<property name="player" ref="Player3" />
 		<property name="location" ref="Location2" />
@@ -425,7 +425,7 @@
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
 		<property name="male" value="true" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="currentlyInGatheringMission" value="false" />
 		<property name="gatherNotificated" value="true" />
 		<property name="item" ref="Item6" />
@@ -442,7 +442,7 @@
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
 		<property name="male" value="true" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="currentlyInGatheringMission" value="false" />
 		<property name="gatherNotificated" value="true" />
 
@@ -450,53 +450,53 @@
 
 	<!-- %%%%%% domain.Room %%%%%% -->
 	<bean id="Room1" class="domain.Room">
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room2" class="domain.Room">
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room3" class="domain.Room">
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room4" class="domain.Room">
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room5" class="domain.Room">
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room6" class="domain.Room">
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 
 
 	<bean id="Room7" class="domain.Room">
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room8" class="domain.Room">
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room9" class="domain.Room">
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room10" class="domain.Room">
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room11" class="domain.Room">
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room12" class="domain.Room">
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 
@@ -504,35 +504,35 @@
 	<!-- %%%%%% domain.Item %%%%%% -->
 	<bean id="Item1" class="domain.Item">
 		<property name="equipped" value="false" />
-		<property name="tool" ref="Tool1" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="tool" ref="Tool2" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<bean id="Item2" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool2" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<bean id="Item3" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool3" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 	<bean id="Item4" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool4" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 	<bean id="Item5" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool5" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 	<bean id="Item6" class="domain.Item">
 		<property name="equipped" value="true" />
 		<property name="tool" ref="Tool6" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<!-- %%%%%% domain.Inventory %%%%%% -->
@@ -545,7 +545,7 @@
 		<property name="foodCapacity" value="30" />
 		<property name="woodCapacity" value="30" />
 		<property name="metalCapacity" value="30" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<bean id="Inventory2" class="domain.Inventory">
@@ -557,7 +557,7 @@
 		<property name="foodCapacity" value="30" />
 		<property name="woodCapacity" value="30" />
 		<property name="metalCapacity" value="30" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 	</bean>
 
 	<!-- %%%%%% domain.Location %%%%%% -->
@@ -825,7 +825,7 @@
 	<!-- %%%%%% domain.ProbabilityItem -->
 	<bean id="ProbabilityItem1" class="domain.ProbabilityItem">
 		<property name="value" value="0.4" />
-		<property name="itemDesign" ref="Tool1" />
+		<property name="itemDesign" ref="Tool2" />
 	</bean>
 	<bean id="ProbabilityItem2" class="domain.ProbabilityItem">
 		<property name="value" value="0.4" />

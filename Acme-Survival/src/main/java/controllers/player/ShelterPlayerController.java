@@ -32,23 +32,23 @@ import services.CharacterService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.PlayerService;
-import services.RefugeService;
 import services.RoomService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Configuration;
 import domain.Inventory;
 import domain.Player;
-import domain.Refuge;
 import domain.RestorationRoom;
 import domain.Room;
+import domain.Shelter;
 
 @Controller
-@RequestMapping("/refuge/player")
-public class RefugePlayerController extends AbstractController {
+@RequestMapping("/shelter/player")
+public class ShelterPlayerController extends AbstractController {
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private PlayerService			playerService;
@@ -71,17 +71,17 @@ public class RefugePlayerController extends AbstractController {
 
 	// Constructors -----------------------------------------------------------
 
-	public RefugePlayerController() {
+	public ShelterPlayerController() {
 		super();
 	}
 
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the refuge display
+	 * That method returns a model and view with the shelter display
 	 * 
 	 * @param pageRoom
-	 * @param refugeId
+	 * @param shelterId
 	 *            (Optional)
 	 * 
 	 * @return ModelandView
@@ -90,13 +90,13 @@ public class RefugePlayerController extends AbstractController {
 	@RequestMapping("/display")
 	public ModelAndView display(@RequestParam(required = false, defaultValue = "0") final int pageRoom) {
 		ModelAndView result;
-		final Refuge refuge, ownRefuge;
+		final Shelter shelter, ownShelter;
 		Configuration configuration;
 		Actor actor;
 		Pageable pageable;
 		Page<Room> rooms;
 		boolean owner = false;
-		boolean knowRefuge = false;
+		boolean knowShelter = false;
 		Inventory inventory;
 		final Collection<domain.Character> characters, charactersUpdated;
 		Integer capacity;
@@ -106,42 +106,40 @@ public class RefugePlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
 
-			result = new ModelAndView("refuge/display");
+			result = new ModelAndView("shelter/display");
 
 			actor = this.actorService.findActorByPrincipal();
 
 			Assert.isTrue((actor instanceof Player));
 
-			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
+			ownShelter = this.shelterService.findShelterByPlayer(actor.getId());
 
-			refuge = ownRefuge;
-			Assert.notNull(refuge, "Not have refuge");
+			shelter = ownShelter;
+			Assert.notNull(shelter, "Not have shelter");
 
-			characters = this.characterService.findCharactersByRefuge(refuge.getId());
+			characters = this.characterService.findCharactersByShelter(shelter.getId());
 			charactersUpdated = new HashSet<>();
-			for (final domain.Character character : characters) {
-				if (character.getRoom() != null && (character.getRoom().getRoomDesign() instanceof RestorationRoom)) {
+			for (final domain.Character character : characters)
+				if (character.getRoom() != null && (character.getRoom().getRoomDesign() instanceof RestorationRoom))
 					charactersUpdated.add(this.characterService.updateStats(character));
-				} else {
+				else
 					charactersUpdated.add(character);
-				}
-			}
 
-			inventory = this.refugeService.updateInventory(refuge);
+			inventory = this.shelterService.updateInventory(shelter);
 			this.gatherService.updateGatheringMissions();
 
-			knowRefuge = ((Player) actor).getRefuges().contains(refuge);
-			owner = ownRefuge != null && ownRefuge.equals(refuge);
-			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
+			knowShelter = ((Player) actor).getShelters().contains(shelter);
+			owner = ownShelter != null && ownShelter.equals(shelter);
+			rooms = this.roomService.findRoomsByShelter(shelter.getId(), pageable);
 
-			capacity = this.refugeService.getCurrentCharacterCapacity(ownRefuge);
-			//Assert.isTrue(refuge.equals(ownRefuge) || player.getRefuges().contains(refuge));
+			capacity = this.shelterService.getCurrentCharacterCapacity(ownShelter);
+			//Assert.isTrue(shelter.equals(ownShelter) || player.getShelters().contains(shelter));
 
-			result.addObject("refuge", refuge);
+			result.addObject("shelter", shelter);
 			result.addObject("rooms", rooms.getContent());
 			result.addObject("pageRoom", pageRoom);
 			result.addObject("pageNumRoom", rooms.getTotalPages());
-			result.addObject("knowRefuge", knowRefuge);
+			result.addObject("knowShelter", knowShelter);
 			result.addObject("characters", charactersUpdated);
 			result.addObject("inventory", inventory);
 			result.addObject("owner", owner);
@@ -149,11 +147,10 @@ public class RefugePlayerController extends AbstractController {
 
 			System.out.println(System.currentTimeMillis() - time);
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge")) {
-				result = new ModelAndView("redirect:/refuge/player/create.do");
-			} else {
+			if (oops.getMessage().contains("Not have shelter"))
+				result = new ModelAndView("redirect:/shelter/player/create.do");
+			else
 				result = new ModelAndView("redirect:/misc/403");
-			}
 		}
 		return result;
 	}
@@ -161,21 +158,20 @@ public class RefugePlayerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit() {
 		ModelAndView result;
-		Refuge ownRefuge;
+		Shelter ownShelter;
 		Player actor;
 
 		try {
 			actor = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(actor.getId());
-			Assert.notNull(ownRefuge, "Not have refuge");
-			result = this.createEditModelAndView(ownRefuge);
+			ownShelter = this.shelterService.findShelterByPlayer(actor.getId());
+			Assert.notNull(ownShelter, "Not have shelter");
+			result = this.createEditModelAndView(ownShelter);
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge")) {
-				result = new ModelAndView("redirect:/refuge/player/create.do");
-			} else {
+			if (oops.getMessage().contains("Not have shelter"))
+				result = new ModelAndView("redirect:/shelter/player/create.do");
+			else
 				result = new ModelAndView("redirect:/misc/403");
-			}
 		}
 		return result;
 	}
@@ -183,16 +179,16 @@ public class RefugePlayerController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		final Refuge refuge;
+		final Shelter shelter;
 		Actor actor;
 
 		try {
 			actor = this.actorService.findActorByPrincipal();
 			Assert.isTrue(actor instanceof Player);
 
-			refuge = this.refugeService.create();
+			shelter = this.shelterService.create();
 
-			result = this.createEditModelAndView(refuge);
+			result = this.createEditModelAndView(shelter);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:misc/403");
@@ -203,61 +199,58 @@ public class RefugePlayerController extends AbstractController {
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(@ModelAttribute("refuge") Refuge refuge, final BindingResult binding) {
+	public ModelAndView edit(@ModelAttribute("shelter") Shelter shelter, final BindingResult binding) {
 		ModelAndView result;
-		Refuge sendedRefuge = null;
+		Shelter sendedShelter = null;
 		Player player;
-		Refuge ownRefuge;
+		Shelter ownShelter;
 
 		try {
-			sendedRefuge = refuge;
-			refuge = this.refugeService.reconstruct(refuge, binding);
+			sendedShelter = shelter;
+			shelter = this.shelterService.reconstruct(shelter, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 
-		if (binding.hasErrors()) {
-			result = this.createEditModelAndView(sendedRefuge, "refuge.params.error");
-		} else {
+		if (binding.hasErrors())
+			result = this.createEditModelAndView(sendedShelter, "shelter.params.error");
+		else
 			try {
 				player = (Player) this.actorService.findActorByPrincipal();
-				ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
-				if (refuge.getId() != 0) {
-					Assert.isTrue(ownRefuge.equals(refuge));
-				} else {
-					Assert.isTrue(ownRefuge == null, "Not have refuge");
-				}
-				this.refugeService.save(refuge);
-				result = new ModelAndView("redirect:/refuge/player/display.do");
+				ownShelter = this.shelterService.findShelterByPlayer(player.getId());
+				if (shelter.getId() != 0)
+					Assert.isTrue(ownShelter.equals(shelter));
+				else
+					Assert.isTrue(ownShelter == null, "Not have shelter");
+				this.shelterService.save(shelter);
+				result = new ModelAndView("redirect:/shelter/player/display.do");
 
 			} catch (final DataIntegrityViolationException oops) {
-				result = this.createEditModelAndView(refuge, "refuge.name.error");
+				result = this.createEditModelAndView(shelter, "shelter.name.error");
 			} catch (final Throwable oops) {
-				if (oops.getMessage().contains("Not have refuge")) {
-					result = new ModelAndView("redirect:/refuge/player/create.do");
-				} else {
-					result = this.createEditModelAndView(refuge, "refuge.commit.error");
-				}
+				if (oops.getMessage().contains("Not have shelter"))
+					result = new ModelAndView("redirect:/shelter/player/create.do");
+				else
+					result = this.createEditModelAndView(shelter, "shelter.commit.error");
 			}
-		}
 
 		return result;
 	}
 
 	// Ancillary methods --------------------------------------------------
 
-	protected ModelAndView createEditModelAndView(final Refuge refuge) {
+	protected ModelAndView createEditModelAndView(final Shelter shelter) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(refuge, null);
+		result = this.createEditModelAndView(shelter, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final Refuge refuge, final String message) {
+	protected ModelAndView createEditModelAndView(final Shelter shelter, final String message) {
 		ModelAndView result;
 
-		result = new ModelAndView("refuge/edit");
-		result.addObject("refuge", refuge);
+		result = new ModelAndView("shelter/edit");
+		result.addObject("shelter", shelter);
 		result.addObject("message", message);
 
 		return result;

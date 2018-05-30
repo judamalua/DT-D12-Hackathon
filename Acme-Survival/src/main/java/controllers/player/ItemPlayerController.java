@@ -26,21 +26,21 @@ import services.ActorService;
 import services.CharacterService;
 import services.ConfigurationService;
 import services.ItemService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Character;
 import domain.Configuration;
 import domain.Item;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/item/player")
 public class ItemPlayerController extends AbstractController {
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private CharacterService		characterService;
@@ -75,7 +75,7 @@ public class ItemPlayerController extends AbstractController {
 	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int characterId) {
 		ModelAndView result;
 		Page<Item> items;
-		Refuge refuge;
+		Shelter shelter;
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
@@ -85,8 +85,8 @@ public class ItemPlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			items = this.itemService.findItemsByShelter(shelter.getId(), pageable);
 
 			result.addObject("items", items.getContent());
 			result.addObject("page", page);
@@ -114,14 +114,14 @@ public class ItemPlayerController extends AbstractController {
 		Character character;
 		Item item;
 		Collection<Character> charactersInMission;
-		Refuge refuge;
+		Shelter shelter;
 
 		try {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-			charactersInMission = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+			charactersInMission = this.characterService.findCharactersCurrentlyInMission(shelter.getId());
 
 			Assert.isTrue((player instanceof Player));
 			character = this.characterService.findOne(characterId);
@@ -139,7 +139,7 @@ public class ItemPlayerController extends AbstractController {
 	}
 
 	/**
-	 * That method remove a item from your refuge
+	 * That method remove a item from your shelter
 	 * 
 	 * @param characterId
 	 * 
@@ -177,7 +177,7 @@ public class ItemPlayerController extends AbstractController {
 	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page) {
 		ModelAndView result;
 		Page<Item> items;
-		Refuge refuge;
+		Shelter shelter;
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
@@ -187,16 +187,15 @@ public class ItemPlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
-			if (this.refugeService.findRefugeByPlayer(player.getId()) != null) {
-				refuge = this.refugeService.findRefugeByPlayer(player.getId());
-				items = this.itemService.findItemsByRefuge(refuge.getId(), pageable);
+			if (this.shelterService.findShelterByPlayer(player.getId()) != null) {
+				shelter = this.shelterService.findShelterByPlayer(player.getId());
+				items = this.itemService.findItemsByShelter(shelter.getId(), pageable);
 
 				result.addObject("items", items.getContent());
 				result.addObject("page", page);
 				result.addObject("pageNum", items.getTotalPages());
-			} else {
-				result = new ModelAndView("redirect:/refuge/player/create.do");
-			}
+			} else
+				result = new ModelAndView("redirect:/shelter/player/create.do");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");

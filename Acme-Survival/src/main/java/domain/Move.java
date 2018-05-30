@@ -52,7 +52,7 @@ public class Move extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Location	location;
-	private Refuge		refuge;
+	private Shelter		shelter;
 
 
 	@Valid
@@ -69,12 +69,12 @@ public class Move extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getRefuge() {
-		return this.refuge;
+	public Shelter getShelter() {
+		return this.shelter;
 	}
 
-	public void setRefuge(final Refuge refuge) {
-		this.refuge = refuge;
+	public void setShelter(final Shelter shelter) {
+		this.shelter = shelter;
 
 	}
 }

@@ -79,12 +79,12 @@ public class InventoryService {
 
 	}
 
-	public Inventory findInventoryByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Inventory findInventoryByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Inventory result;
 
-		result = this.inventoryRepository.findInventoryByRefuge(refugeId);
+		result = this.inventoryRepository.findInventoryByShelter(shelterId);
 
 		return result;
 	}

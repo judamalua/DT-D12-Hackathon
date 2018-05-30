@@ -135,13 +135,13 @@
 		<security:intercept-url pattern="/move/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
-		<security:intercept-url pattern="/refuge/list.do"
+		<security:intercept-url pattern="/shelter/list.do"
 			access="permitAll" requires-channel="https" />
 
-		<security:intercept-url pattern="/refuge/display.do"
+		<security:intercept-url pattern="/shelter/display.do"
 			access="permitAll" requires-channel="https" />
 
-		<security:intercept-url pattern="/refuge/player/**"
+		<security:intercept-url pattern="/shelter/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/room/player/**"

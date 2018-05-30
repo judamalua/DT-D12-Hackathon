@@ -54,7 +54,7 @@ public class ResourceDesignerController extends AbstractController {
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(itemDesign, "refuge.params.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.params.error");
 		else
 			try {
 				configuration = this.configurationService.findConfiguration();
@@ -85,7 +85,7 @@ public class ResourceDesignerController extends AbstractController {
 			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode());
 
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(itemDesign, "refuge.commit.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.commit.error");
 		}
 
 		return result;

@@ -12,11 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ItemRepository;
-import domain.Event;
 import domain.Actor;
 import domain.Item;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Service
 @Transactional
@@ -32,7 +31,7 @@ public class ItemService {
 	@Autowired
 	private ActorService		actorService;
 	@Autowired
-	private RefugeService		refugeService;
+	private ShelterService		shelterService;
 	@Autowired
 	private CharacterService	characterService;
 
@@ -59,7 +58,7 @@ public class ItemService {
 		return result;
 
 	}
-	
+
 	public Collection<Item> saveAll(final Collection<Item> item) {
 
 		assert item != null;
@@ -82,22 +81,22 @@ public class ItemService {
 	}
 
 	/**
-	 * Save a item in a refuge
+	 * Save a item in a shelter
 	 * 
 	 * @Luis
 	 */
-	public Item keepInRefuge(final Item item, final int refugeId) {
+	public Item keepInShelter(final Item item, final int shelterId) {
 		Assert.isTrue(item != null);
 		Item result;
-		Refuge refuge;
+		Shelter shelter;
 		Actor principal;
-		refuge = this.refugeService.findOne(refugeId);
+		shelter = this.shelterService.findOne(shelterId);
 		principal = this.actorService.findActorByPrincipal();
 
 		//Guardamos Items que van destinados a un refugio
 		Assert.isTrue(this.actorService.findActorByPrincipal() instanceof Player);
-		Assert.isTrue(this.refugeService.findRefugeByPlayer(principal.getId()) == refuge);
-		Assert.isTrue(this.refugeService.getCurrentCapacity(item.getRefuge()) > 0);
+		Assert.isTrue(this.shelterService.findShelterByPlayer(principal.getId()) == shelter);
+		Assert.isTrue(this.shelterService.getCurrentCapacity(item.getShelter()) > 0);
 
 		result = this.itemRepository.save(item);
 
@@ -200,21 +199,21 @@ public class ItemService {
 
 	}
 
-	public Collection<Item> findItemsByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Collection<Item> findItemsByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Collection<Item> result;
 
-		result = this.itemRepository.findItemsByRefuge(refugeId);
+		result = this.itemRepository.findItemsByShelter(shelterId);
 
 		return result;
 	}
-	public Page<Item> findItemsByRefuge(final int refugeId, final Pageable pageable) {
-		Assert.isTrue(refugeId != 0);
+	public Page<Item> findItemsByShelter(final int shelterId, final Pageable pageable) {
+		Assert.isTrue(shelterId != 0);
 
 		Page<Item> result;
 
-		result = this.itemRepository.findItemsByRefuge(refugeId, pageable);
+		result = this.itemRepository.findItemsByShelter(shelterId, pageable);
 
 		return result;
 	}

@@ -54,7 +54,7 @@ public class ToolDesignerController extends AbstractController {
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(itemDesign, "refuge.params.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.params.error");
 		else
 			try {
 

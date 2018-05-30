@@ -21,7 +21,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="refuge/player/edit.do" modelAttribute="refuge">
+<form:form action="shelter/player/edit.do" modelAttribute="shelter">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
@@ -30,10 +30,10 @@
 		<em><spring:message code="form.required.params" /></em>
 	</p>
 
-	<acme:textbox code="refuge.name" path="name" required="true" />
+	<acme:textbox code="shelter.name" path="name" required="true" />
 
-	<acme:submit name="save" code="refuge.save" />
+	<acme:submit name="save" code="shelter.save" />
 
-	<acme:cancel url="/" code="refuge.cancel" />
+	<acme:cancel url="/" code="shelter.cancel" />
 
 </form:form>
