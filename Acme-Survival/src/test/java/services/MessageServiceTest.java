@@ -42,7 +42,7 @@ public class MessageServiceTest extends AbstractTest {
 		Player player;
 		int threadId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		threadId = super.getEntityId("Thread1");
 		thread = this.threadService.findOne(threadId);

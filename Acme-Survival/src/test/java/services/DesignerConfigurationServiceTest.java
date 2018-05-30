@@ -24,7 +24,7 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test checks that the Player can Attack a Shelter that he already knows.
 	 */
 	@Test
 	public void testEditDesignerConfigurationPositive() {
@@ -74,7 +74,7 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 		designerConfiguration.setNumInitialCharacters(3);
-		designerConfiguration.setRefugeDefaultCapacity(2);
+		designerConfiguration.setShelterDefaultCapacity(2);
 
 		this.designerConfigurationService.save(designerConfiguration);
 

@@ -20,7 +20,7 @@ import domain.DesignerConfiguration;
 import domain.Inventory;
 import domain.Notification;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Service
 @Transactional
@@ -37,7 +37,7 @@ public class AttackService {
 	private MoveService						moveService;
 
 	@Autowired
-	private RefugeService					refugeService;
+	private ShelterService					shelterService;
 
 	@Autowired
 	private ActorService					actorService;
@@ -60,23 +60,23 @@ public class AttackService {
 
 	// Simple CRUD methods --------------------------------------------------
 
-	public Attack create(final int refugeId) {
+	public Attack create(final int shelterId) {
 		Attack result;
-		Refuge defendant, attacker;
+		Shelter defendant, attacker;
 		Date startMoment, endMoment;
 		Long time;
 		Player player;
 
-		defendant = this.refugeService.findOne(refugeId);
+		defendant = this.shelterService.findOne(shelterId);
 
-		Assert.isTrue(this.playerKnowsRefugee(defendant));
-		//Assert.isTrue(this.refugeIsAttackable(defendant.getId()), "Refuge can't be attacked");
+		Assert.isTrue(this.playerKnowsSheltere(defendant));
+		//Assert.isTrue(this.shelterIsAttackable(defendant.getId()), "Shelter can't be attacked");
 
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		//Assert.isTrue(!this.playerAlreadyAttacking(player.getId()));
 
-		attacker = this.refugeService.findRefugeByPlayer(player.getId());
+		attacker = this.shelterService.findShelterByPlayer(player.getId());
 
 		startMoment = new Date(System.currentTimeMillis() - 10);
 		time = this.moveService.timeBetweenLocations(attacker.getLocation(), defendant.getLocation());
@@ -134,24 +134,24 @@ public class AttackService {
 	public Attack saveToAttack(final Attack attack) {
 
 		Assert.notNull(attack);
-		Assert.isTrue(this.playerKnowsRefugee(attack.getDefendant()), "Player doesn't know the Refuge");
-		Assert.isTrue(this.refugeIsAttackable(attack.getDefendant().getId()), "Refuge can't be attacked");
+		Assert.isTrue(this.playerKnowsSheltere(attack.getDefendant()), "Player doesn't know the Shelter");
+		Assert.isTrue(this.shelterIsAttackable(attack.getDefendant().getId()), "Shelter can't be attacked");
 
 		Attack result;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = attack.getDefendant();
+		shelter = attack.getDefendant();
 
 		Assert.isTrue(!this.playerAlreadyAttacking(player.getId()), "Player is already attacking");
 		Assert.isTrue(attack.getPlayer().equals(player));
 		Assert.isTrue(!this.attackerHasNoCharactersToAttack(attack.getAttacker().getId()), "Attacker doesn't have characters to attack");
 
 		result = this.attackRepository.save(attack);
-		refuge.setLastAttackReceived(result.getEndMoment());
+		shelter.setLastAttackReceived(result.getEndMoment());
 
-		this.refugeService.saveToUpdateLastTimeAttacked(refuge);
+		this.shelterService.saveToUpdateLastTimeAttacked(shelter);
 
 		return result;
 
@@ -195,8 +195,8 @@ public class AttackService {
 		Inventory attackerInventory, defendantInventory;
 
 		resourcesStolen = this.getCollectionResourcesOfAttack(resources);
-		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
-		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
+		attackerInventory = this.inventoryService.findInventoryByShelter(attack.getAttacker().getId());
+		defendantInventory = this.inventoryService.findInventoryByShelter(attack.getDefendant().getId());
 
 		waterStolen = 1.0 * resourcesStolen.get(0);
 		foodStolen = 1.0 * resourcesStolen.get(1);
@@ -279,8 +279,8 @@ public class AttackService {
 		Inventory attackerInventory, defendantInventory;
 		Collection<Character> attackerCharacters, defendantCharacters;
 
-		attackerInventory = this.inventoryService.findInventoryByRefuge(attack.getAttacker().getId());
-		defendantInventory = this.inventoryService.findInventoryByRefuge(attack.getDefendant().getId());
+		attackerInventory = this.inventoryService.findInventoryByShelter(attack.getAttacker().getId());
+		defendantInventory = this.inventoryService.findInventoryByShelter(attack.getDefendant().getId());
 
 		waterStolen = resourcesArray.get(0);
 		foodStolen = resourcesArray.get(1);
@@ -360,20 +360,20 @@ public class AttackService {
 	}
 	/**
 	 * This method checks that the player who is connected (the principal)
-	 * knows the refuge passed as a param
+	 * knows the shelter passed as a param
 	 * 
-	 * @param refuge
-	 * @return true if the player knows the refuge
+	 * @param shelter
+	 * @return true if the player knows the shelter
 	 * @author antrodart
 	 */
-	public boolean playerKnowsRefugee(final Refuge refuge) {
+	public boolean playerKnowsSheltere(final Shelter shelter) {
 		Boolean result;
 		Player player;
 
 		result = false;
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		if (player.getRefuges().contains(refuge)) {
+		if (player.getShelters().contains(shelter)) {
 			result = true;
 		}
 
@@ -410,8 +410,8 @@ public class AttackService {
 		Integer strengthSumAttacker, strengthSumDefendant;
 		Integer result;
 
-		strengthSumAttacker = this.getStrengthSumByRefuge(attack.getAttacker().getId());
-		strengthSumDefendant = this.getStrengthSumByRefuge(attack.getDefendant().getId());
+		strengthSumAttacker = this.getStrengthSumByShelter(attack.getAttacker().getId());
+		strengthSumDefendant = this.getStrengthSumByShelter(attack.getDefendant().getId());
 
 		Assert.isTrue(strengthSumAttacker != null && strengthSumAttacker > 0, "Attacker doesn't have characters to attack");
 
@@ -458,12 +458,12 @@ public class AttackService {
 
 		return result;
 	}
-	public Attack findAttacksByAttacker(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Attack findAttacksByAttacker(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Attack result;
 
-		result = this.attackRepository.findAttacksByAttacker(refugeId);
+		result = this.attackRepository.findAttacksByAttacker(shelterId);
 
 		return result;
 	}
@@ -478,20 +478,20 @@ public class AttackService {
 		return result;
 	}
 
-	public Collection<Attack> findAttacksByDefendant(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Collection<Attack> findAttacksByDefendant(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Collection<Attack> result;
 
-		result = this.attackRepository.findAttacksByDefendant(refugeId);
+		result = this.attackRepository.findAttacksByDefendant(shelterId);
 
 		return result;
 	}
 
-	public Integer getStrengthSumByRefuge(final int refugeId) {
+	public Integer getStrengthSumByShelter(final int shelterId) {
 		Integer result;
 
-		result = this.attackRepository.getStrengthSumByRefuge(refugeId);
+		result = this.attackRepository.getStrengthSumByShelter(shelterId);
 
 		return result;
 	}
@@ -501,14 +501,14 @@ public class AttackService {
 		Date startMoment, endMoment;
 		Long time;
 		Player player;
-		Refuge attacker;
+		Shelter attacker;
 
 		if (attack.getId() == 0) {
 			result = attack;
 
 			player = (Player) this.actorService.findActorByPrincipal();
 
-			attacker = this.refugeService.findRefugeByPlayer(player.getId());
+			attacker = this.shelterService.findShelterByPlayer(player.getId());
 
 			startMoment = new Date(System.currentTimeMillis() - 10);
 			time = this.moveService.timeBetweenLocations(attacker.getLocation(), result.getDefendant().getLocation());
@@ -529,12 +529,12 @@ public class AttackService {
 	}
 
 	/*
-	 * public Page<Attack> findAllAttacksByPlayer(final int refugeId, final Pageable pageable) {
+	 * public Page<Attack> findAllAttacksByPlayer(final int shelterId, final Pageable pageable) {
 	 * Page<Attack> result;
 	 * 
 	 * Assert.notNull(pageable);
 	 * 
-	 * result = this.attackRepository.findAllAttacksByPlayer(refugeId, pageable);
+	 * result = this.attackRepository.findAllAttacksByPlayer(shelterId, pageable);
 	 * 
 	 * return result;
 	 * }
@@ -560,26 +560,26 @@ public class AttackService {
 		return result;
 	}
 
-	public boolean refugeIsAttackable(final int refugeId) {
+	public boolean shelterIsAttackable(final int shelterId) {
 		boolean result;
-		Refuge refuge;
-		Double refugeRecoverTime;
+		Shelter shelter;
+		Double shelterRecoverTime;
 		Integer integerRecoverTime;
 		Date attackableTime, now;
 		Long miliseconds;
 
-		refuge = this.refugeService.findOne(refugeId);
+		shelter = this.shelterService.findOne(shelterId);
 
-		if (refuge.getLastAttackReceived() == null) {
+		if (shelter.getLastAttackReceived() == null) {
 			result = true;
 		} else {
 			result = false;
 			now = new Date();
-			refugeRecoverTime = this.designerConfigurationService.findDesignerConfiguration().getRefugeRecoverTime();
-			integerRecoverTime = refugeRecoverTime.intValue();
+			shelterRecoverTime = this.designerConfigurationService.findDesignerConfiguration().getShelterRecoverTime();
+			integerRecoverTime = shelterRecoverTime.intValue();
 			miliseconds = (long) (integerRecoverTime * 60000);
 
-			attackableTime = new Date(refuge.getLastAttackReceived().getTime() + miliseconds);
+			attackableTime = new Date(shelter.getLastAttackReceived().getTime() + miliseconds);
 
 			if (attackableTime.before(now)) {
 				result = true;
@@ -589,13 +589,13 @@ public class AttackService {
 		return result;
 	}
 
-	public boolean attackerHasNoCharactersToAttack(final int refugeId) {
+	public boolean attackerHasNoCharactersToAttack(final int shelterId) {
 		Boolean result;
-		Integer strengthInRefuge;
+		Integer strengthInShelter;
 
-		strengthInRefuge = this.getStrengthSumByRefuge(refugeId);
+		strengthInShelter = this.getStrengthSumByShelter(shelterId);
 
-		if (strengthInRefuge == null || strengthInRefuge <= 0) {
+		if (strengthInShelter == null || strengthInShelter <= 0) {
 			result = true;
 		} else {
 			result = false;
@@ -605,26 +605,26 @@ public class AttackService {
 
 	}
 
-	public Collection<Character> findCharactersForAttackMission(final int refugeId) {
+	public Collection<Character> findCharactersForAttackMission(final int shelterId) {
 		Collection<Character> result;
 
-		result = this.attackRepository.findCharactersForAttackMission(refugeId);
+		result = this.attackRepository.findCharactersForAttackMission(shelterId);
 
 		return result;
 	}
 
-	public Collection<Collection<String>> findNumAttacksByRefuge() {
+	public Collection<Collection<String>> findNumAttacksByShelter() {
 		Collection<Collection<String>> result;
 
-		result = this.attackRepository.findNumAttacksByRefuge();
+		result = this.attackRepository.findNumAttacksByShelter();
 
 		return result;
 	}
 
-	public Collection<Collection<String>> findNumDefensesByRefuge() {
+	public Collection<Collection<String>> findNumDefensesByShelter() {
 		Collection<Collection<String>> result;
 
-		result = this.attackRepository.findNumDefensesByRefuge();
+		result = this.attackRepository.findNumDefensesByShelter();
 
 		return result;
 	}

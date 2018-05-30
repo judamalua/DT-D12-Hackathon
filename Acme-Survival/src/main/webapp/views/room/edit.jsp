@@ -203,7 +203,7 @@
 					<acme:delete clickCode="room.delete.message" name="delete"
 						code="room.delete" />
 				</jstl:if>
-				<acme:cancel url="refuge/player/display.do" code="room.cancel" />
+				<acme:cancel url="shelter/player/display.do" code="room.cancel" />
 			</div>
 		</form:form>
 	</div>

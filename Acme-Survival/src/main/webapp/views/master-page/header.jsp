@@ -189,8 +189,8 @@
 					<li><a href="map/player/display.do"><spring:message
 								code="master.page.map" /></a></li>
 					<li class="divider"></li>
-					<li><a href="refuge/player/display.do"><spring:message
-								code="master.page.myRefuge" /></a></li>
+					<li><a href="shelter/player/display.do"><spring:message
+								code="master.page.myShelter" /></a></li>
 					<li class="divider"></li>
 					<li><a href="notification/player/list.do"><spring:message
 								code="master.page.myNotifications" /></a></li>

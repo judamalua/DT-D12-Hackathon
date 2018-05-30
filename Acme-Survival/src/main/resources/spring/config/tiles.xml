@@ -35,7 +35,7 @@
 		<value>/views/thread/tiles.xml</value>
 		<value>/views/message/tiles.xml</value>
 		<value>/views/inventory/tiles.xml</value>
-		<value>/views/refuge/tiles.xml</value>
+		<value>/views/shelter/tiles.xml</value>
 		<value>/views/room/tiles.xml</value>
 		<value>/views/event/tiles.xml</value>
 		<value>/views/itemDesign/tiles.xml</value>

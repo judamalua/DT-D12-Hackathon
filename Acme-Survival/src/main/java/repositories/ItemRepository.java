@@ -14,10 +14,10 @@ import domain.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-	@Query("select i from Item i where i.refuge.id=?1")
-	Collection<Item> findItemsByRefuge(int refugeId);
+	@Query("select i from Item i where i.shelter.id=?1")
+	Collection<Item> findItemsByShelter(int shelterId);
 
-	@Query("select i from Item i where i.refuge.id=?1")
-	Page<Item> findItemsByRefuge(int refugeId, Pageable pageable);
+	@Query("select i from Item i where i.shelter.id=?1")
+	Page<Item> findItemsByShelter(int shelterId, Pageable pageable);
 
 }

@@ -40,10 +40,10 @@
 <display:table name="${attacks}" id="attackList"
 	requestURI="${requestUri}page=${page}">
 
-	<jstl:if test="${attackList.attacker.id == myRefugeId}">
+	<jstl:if test="${attackList.attacker.id == myShelterId}">
 		<jstl:set var="attackRowColor" value ="ATTACKER"/>
 	</jstl:if>
-	<jstl:if test="${attackList.attacker.id != myRefugeId}">
+	<jstl:if test="${attackList.attacker.id != myShelterId}">
 		<jstl:set var="attackRowColor" value ="DEFENDANT"/>
 	</jstl:if>
 

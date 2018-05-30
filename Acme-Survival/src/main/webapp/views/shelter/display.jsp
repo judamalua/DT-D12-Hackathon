@@ -73,26 +73,26 @@
 <br />
 <br />
 <h2>
-	<jstl:out value="${refuge.name}" />
+	<jstl:out value="${shelter.name}" />
 </h2>
 <br />
-<strong> <spring:message code="refuge.player" />: <a
-	href="actor/display.do?actorId=${refuge.player.id}"><jstl:out
-			value="${refuge.player.name}" /></a>
+<strong> <spring:message code="shelter.player" />: <a
+	href="actor/display.do?actorId=${shelter.player.id}"><jstl:out
+			value="${shelter.player.name}" /></a>
 </strong>
 <br />
-<strong> <spring:message code="refuge.momentOfCreation" />: <fmt:formatDate
-		value="${refuge.momentOfCreation}" pattern="${format}" />
+<strong> <spring:message code="shelter.momentOfCreation" />: <fmt:formatDate
+		value="${shelter.momentOfCreation}" pattern="${format}" />
 </strong>
 <br />
 
-<!-- Only a player who knows the refugee can display this information -->
+<!-- Only a player who knows the sheltere can display this information -->
 <security:authorize access="hasRole('PLAYER')">
 	<div class="characterContainer">
 		<h3>
-			<spring:message code="refuge.character.list" />
+			<spring:message code="shelter.character.list" />
 		</h3>
-		<spring:message code="refuge.capacity" />
+		<spring:message code="shelter.capacity" />
 		:
 		<jstl:out
 			value="${fn:length(characters)}/${characterCapacity+fn:length(characters)}" />
@@ -109,39 +109,39 @@
 				<jstl:if test="${character.currentlyInGatheringMission}">
 					<i class="material-icons"> directions_walk </i>
 
-					<spring:message code="refuge.character.gather" />
+					<spring:message code="shelter.character.gather" />
 				</jstl:if>
 				<br />
 				<jstl:if
 					test="${character.roomEntrance!=null and !character.currentlyInGatheringMission}">
 					<i class="material-icons"> hotel </i>
-					<spring:message code="refuge.in" />: ${character.room.roomDesign.name[lang]}
+					<spring:message code="shelter.in" />: ${character.room.roomDesign.name[lang]}
 				</jstl:if>
 				<jstl:if test="${character.currentWater<10}">
 					<div class="error">
-						<spring:message code="refuge.thirsty" />
+						<spring:message code="shelter.thirsty" />
 					</div>
 				</jstl:if>
 				<jstl:if test="${character.currentFood<10}">
 					<div class="error">
-						<spring:message code="refuge.hungry" />
+						<spring:message code="shelter.hungry" />
 					</div>
 				</jstl:if>
 				<jstl:if
 					test="${character.currentHealth<100 and character.currentHealth>=50}">
 					<div class="error">
-						<spring:message code="refuge.wounded" />
+						<spring:message code="shelter.wounded" />
 					</div>
 				</jstl:if>
 				<jstl:if
 					test="${character.currentHealth<50 and character.currentHealth>=25}">
 					<div class="error">
-						<spring:message code="refuge.agonizing" />
+						<spring:message code="shelter.agonizing" />
 					</div>
 				</jstl:if>
 				<jstl:if test="${character.currentHealth<25}">
 					<div class="error">
-						<spring:message code="refuge.ligth" />
+						<spring:message code="shelter.ligth" />
 					</div>
 				</jstl:if>
 				<div class="characterGenre" hidden="true">
@@ -152,15 +152,15 @@
 		</jstl:forEach>
 	</div>
 	<br />
-	<div class="refugeRooms">
-		<strong> <spring:message code="refuge.room" />
+	<div class="shelterRooms">
+		<strong> <spring:message code="shelter.room" />
 		</strong> <br />
 		<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
-			requestURI="refuge/player/display.do?refugeId=${refuge.id}&pageRoom=" />
+			requestURI="shelter/player/display.do?shelterId=${shelter.id}&pageRoom=" />
 		<display:table name="${rooms}" id="room"
-			requestURI="refuge/display.do?refugeId=${refuge.id}">
+			requestURI="shelter/display.do?shelterId=${shelter.id}">
 
-			<spring:message code="refuge.room.name" var="nameRoomTitle" />
+			<spring:message code="shelter.room.name" var="nameRoomTitle" />
 			<display:column title="${nameRoomTitle}">
 				<jstl:out value="${room.roomDesign.name[lang]}" />
 				<br />
@@ -193,7 +193,7 @@
 				</jstl:if>
 			</display:column>
 
-			<%-- 			<spring:message code="refuge.room.resistance" --%>
+			<%-- 			<spring:message code="shelter.room.resistance" --%>
 			<%-- 				var="resistanceRoomTitle" /> --%>
 			<%-- 			<display:column title="${resistanceRoomTitle}"> --%>
 			<%-- 				<jstl:out --%>
@@ -213,15 +213,15 @@
 				<jstl:if test="${owner}">
 					<a href="room/player/delete.do?roomId=${room.id}">
 						<button class="btn"
-							onclick="return confirm('<spring:message code="refuge.room.delete.confirm"/>')">
-							<spring:message code="refuge.room.delete" />
+							onclick="return confirm('<spring:message code="shelter.room.delete.confirm"/>')">
+							<spring:message code="shelter.room.delete" />
 						</button>
 					</a>
 				</jstl:if>
 			</display:column>
 		</display:table>
 		<jstl:if test="${owner}">
-			<acme:button url="room/player/create.do" code="refuge.room.create" />
+			<acme:button url="room/player/create.do" code="shelter.room.create" />
 		</jstl:if>
 	</div>
 </security:authorize>

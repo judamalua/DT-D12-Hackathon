@@ -29,21 +29,21 @@ import services.DesignerConfigurationService;
 import services.InventoryService;
 import services.LocationService;
 import services.MoveService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.DesignerConfiguration;
 import domain.Inventory;
 import domain.Location;
 import domain.Move;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/move/player")
 public class MovePlayerController extends AbstractController {
 
 	@Autowired
-	private RefugeService					refugeService;
+	private ShelterService					shelterService;
 
 	@Autowired
 	private MoveService						moveService;
@@ -79,7 +79,7 @@ public class MovePlayerController extends AbstractController {
 	public ModelAndView edit(@RequestParam final Integer locationId) {
 		ModelAndView result;
 		Player player;
-		Refuge ownRefuge;
+		Shelter ownShelter;
 		Location location;
 		Move move = null, currentMove;
 		DesignerConfiguration designerConfiguration;
@@ -90,21 +90,21 @@ public class MovePlayerController extends AbstractController {
 
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
+			ownShelter = this.shelterService.findShelterByPlayer(player.getId());
 
-			Assert.notNull(ownRefuge, "Not have refuge");
+			Assert.notNull(ownShelter, "Not have shelter");
 
 			location = this.locationService.findOne(locationId);
 			designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-			inventory = this.inventoryService.findInventoryByRefuge(ownRefuge.getId());
+			inventory = this.inventoryService.findInventoryByShelter(ownShelter.getId());
 
 			move = this.moveService.create();
 			move.setLocation(location);
-			currentMove = this.moveService.findCurrentMoveByRefuge(ownRefuge.getId());
+			currentMove = this.moveService.findCurrentMoveByShelter(ownShelter.getId());
 			isAttacking = this.attackService.playerAlreadyAttacking(player.getId());
 
-			characters = this.characterService.findCharactersByRefuge(ownRefuge.getId());
+			characters = this.characterService.findCharactersByShelter(ownShelter.getId());
 
 			for (final domain.Character character : characters) {
 				isInMission = character.getCurrentlyInGatheringMission();
@@ -129,8 +129,8 @@ public class MovePlayerController extends AbstractController {
 			}
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge"))
-				result = new ModelAndView("redirect:/refuge/player/create.do");
+			if (oops.getMessage().contains("Not have shelter"))
+				result = new ModelAndView("redirect:/shelter/player/create.do");
 			else
 				result = new ModelAndView("redirect:/misc/403");
 		}
@@ -141,7 +141,7 @@ public class MovePlayerController extends AbstractController {
 	public ModelAndView confirm(@ModelAttribute("move") Move move, final BindingResult binding) {
 		ModelAndView result;
 		Player player;
-		Refuge ownRefuge;
+		Shelter ownShelter;
 		DesignerConfiguration designerConfiguration;
 		Inventory inventory;
 
@@ -152,24 +152,24 @@ public class MovePlayerController extends AbstractController {
 
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
-			ownRefuge = this.refugeService.findRefugeByPlayer(player.getId());
+			ownShelter = this.shelterService.findShelterByPlayer(player.getId());
 
 			designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-			inventory = this.inventoryService.findInventoryByRefuge(ownRefuge.getId());
+			inventory = this.inventoryService.findInventoryByShelter(ownShelter.getId());
 
-			Assert.notNull(ownRefuge, "Not have refuge");
+			Assert.notNull(ownShelter, "Not have shelter");
 			Assert.isTrue(inventory.getFood() >= designerConfiguration.getMovingFood() && inventory.getMetal() >= designerConfiguration.getMovingMetal() && inventory.getWater() >= designerConfiguration.getMovingWater()
 				&& inventory.getWood() >= designerConfiguration.getMovingWood());
 			Assert.isTrue(!this.attackService.playerAlreadyAttacking(player.getId()));
 
 			this.moveService.save(move);
 
-			result = new ModelAndView("redirect:/refuge/player/display.do");
+			result = new ModelAndView("redirect:/shelter/player/display.do");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have refuge"))
-				result = new ModelAndView("redirect:/refuge/player/create.do");
+			if (oops.getMessage().contains("Not have shelter"))
+				result = new ModelAndView("redirect:/shelter/player/create.do");
 			else
 				result = new ModelAndView("redirect:/misc/403");
 		}

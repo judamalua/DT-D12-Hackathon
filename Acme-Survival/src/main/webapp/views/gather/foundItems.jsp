@@ -122,7 +122,7 @@
 </div>
 <br>
 
-<jstl:if test="${currentCapacityRefuge>=totalTools}">
+<jstl:if test="${currentCapacityShelter>=totalTools}">
 	<h4>
 		<spring:message code="founditems"></spring:message>
 	</h4>
@@ -136,7 +136,7 @@
 </jstl:if>
 
 
-<jstl:if test="${currentCapacityRefuge<totalTools && currentCapacityRefuge == 0}">
+<jstl:if test="${currentCapacityShelter<totalTools && currentCapacityShelter == 0}">
 
 
 	<h4>
@@ -155,9 +155,9 @@
 
 
 
-<jstl:if test="${currentCapacityRefuge<totalTools && currentCapacityRefuge>0}">
+<jstl:if test="${currentCapacityShelter<totalTools && currentCapacityShelter>0}">
 	<p><spring:message code="item.message1"></spring:message><br></p>
-	<p><spring:message code="item.message2"></spring:message><b>  <jstl:out value="${currentCapacityRefuge}"></jstl:out></b></p><br>
+	<p><spring:message code="item.message2"></spring:message><b>  <jstl:out value="${currentCapacityShelter}"></jstl:out></b></p><br>
 	<p><spring:message code="item.message3"></spring:message></p>
 <jstl:if test="${failedSelection}">	
 	<p style="color=#F00;"><spring:message code="error.message"></spring:message>!!!</p>

@@ -32,7 +32,7 @@
 				<acme:submit name="confirm" code="move.save" />
 			</jstl:if>
 
-			<acme:cancel url="refuge/player/display.do" code="move.cancel" />
+			<acme:cancel url="shelter/player/display.do" code="move.cancel" />
 		</form:form>
 	</div>
 </div>

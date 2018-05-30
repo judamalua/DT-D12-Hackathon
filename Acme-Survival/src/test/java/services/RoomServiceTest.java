@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import utilities.AbstractTest;
 import domain.Player;
-import domain.Refuge;
 import domain.Room;
 import domain.RoomDesign;
+import domain.Shelter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -29,24 +29,24 @@ public class RoomServiceTest extends AbstractTest {
 	private RoomDesignService	roomDesignService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private ShelterService		shelterService;
 
 	@Autowired
 	private ActorService		actorService;
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test checks that the Player can Attack a Shelter that he already knows.
 	 */
 	@Test
 	public void testSaveRoomPositive() {
 		Room room;
-		Refuge refuge;
+		Shelter shelter;
 		RoomDesign roomDesign;
 		Player player;
 		int roomDesignId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		roomDesignId = super.getEntityId("RoomDesign1");
 
@@ -54,9 +54,9 @@ public class RoomServiceTest extends AbstractTest {
 		roomDesign = this.roomDesignService.findOne(roomDesignId);
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		room.setRefuge(refuge);
+		room.setShelter(shelter);
 		room.setRoomDesign(roomDesign);
 
 		this.roomService.save(room);
@@ -67,7 +67,7 @@ public class RoomServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveRoomNotLoggedNegative() {
 		Room room;
-		Refuge refuge;
+		Shelter shelter;
 		RoomDesign roomDesign;
 		Player player;
 		int roomDesignId;
@@ -80,9 +80,9 @@ public class RoomServiceTest extends AbstractTest {
 		roomDesign = this.roomDesignService.findOne(roomDesignId);
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		room.setRefuge(refuge);
+		room.setShelter(shelter);
 		room.setRoomDesign(roomDesign);
 
 		this.roomService.save(room);
@@ -90,9 +90,9 @@ public class RoomServiceTest extends AbstractTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testSaveRoomNotRefugeNegative() {
+	public void testSaveRoomNotShelterNegative() {
 		Room room;
-		Refuge refuge;
+		Shelter shelter;
 		RoomDesign roomDesign;
 		Player player;
 		int roomDesignId;
@@ -105,9 +105,9 @@ public class RoomServiceTest extends AbstractTest {
 		roomDesign = this.roomDesignService.findOne(roomDesignId);
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		room.setRefuge(refuge);
+		room.setShelter(shelter);
 		room.setRoomDesign(roomDesign);
 
 		this.roomService.save(room);
@@ -116,9 +116,9 @@ public class RoomServiceTest extends AbstractTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testSaveRoomNotOwnRefugeNegative() {
+	public void testSaveRoomNotOwnShelterNegative() {
 		Room room;
-		Refuge refuge;
+		Shelter shelter;
 		RoomDesign roomDesign;
 		Player player;
 		int roomDesignId;
@@ -131,9 +131,9 @@ public class RoomServiceTest extends AbstractTest {
 		roomDesign = this.roomDesignService.findOne(roomDesignId);
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		room.setRefuge(refuge);
+		room.setShelter(shelter);
 		room.setRoomDesign(roomDesign);
 		super.unauthenticate();
 

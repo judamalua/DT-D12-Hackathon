@@ -136,9 +136,9 @@
        <jstl:if test="${fn:length(notification.events) eq 0}">
        	<spring:message code = "notification.modal.event.noEvent"/>
        </jstl:if>
-       <jstl:if test="${notification.foundRefuge}">
+       <jstl:if test="${notification.foundShelter}">
        <br/>
-       <spring:message code = "notification.modal.foundRefuge"/>
+       <spring:message code = "notification.modal.foundShelter"/>
        </jstl:if>
     </div>
     <div class="modal-footer">

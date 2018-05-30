@@ -34,7 +34,7 @@ public class Notification extends DomainEntity {
 	private Map<String, String>	body;
 	private Date				moment;
 	private Integer				characterId;
-	private boolean				foundRefuge;
+	private boolean				foundShelter;
 
 
 	@NotNull
@@ -83,12 +83,12 @@ public class Notification extends DomainEntity {
 		this.characterId = characterId;
 	}
 
-	public boolean isFoundRefuge() {
-		return this.foundRefuge;
+	public boolean isFoundShelter() {
+		return this.foundShelter;
 	}
 
-	public void setFoundRefuge(final boolean foundRefuge) {
-		this.foundRefuge = foundRefuge;
+	public void setFoundShelter(final boolean foundShelter) {
+		this.foundShelter = foundShelter;
 	}
 
 

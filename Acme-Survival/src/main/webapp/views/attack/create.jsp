@@ -52,13 +52,13 @@
 	<jstl:choose >
 		<jstl:when test="${!isAttackable}">
 		<div class="error">
-			<spring:message code="attack.refuge.no.attackable"/>
+			<spring:message code="attack.shelter.no.attackable"/>
 		</div>
 		</jstl:when>
 		
 		<jstl:when test="${attackerHasNoCharacters}">
 		<div class="error">
-			<spring:message code="attack.refuge.attacker.no.characters"/>
+			<spring:message code="attack.shelter.attacker.no.characters"/>
 		</div>
 		</jstl:when>
 	</jstl:choose>

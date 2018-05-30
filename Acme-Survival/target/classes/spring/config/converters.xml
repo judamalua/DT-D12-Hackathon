@@ -102,8 +102,8 @@
 		<bean class="converters.GatherToStringConverter" />
 		<bean class="converters.StringToGatherConverter" />
 
-		<bean class="converters.RefugeToStringConverter" />
-		<bean class="converters.StringToRefugeConverter" />
+		<bean class="converters.ShelterToStringConverter" />
+		<bean class="converters.StringToShelterConverter" />
 
 		<bean class="converters.ResourceRoomToStringConverter" />
 		<bean class="converters.StringToResourceRoomConverter" />

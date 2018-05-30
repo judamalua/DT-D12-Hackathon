@@ -17,19 +17,19 @@ public class Room extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 
 	// Relationships ----------------------------------------------------------
-	private Refuge		refuge;
+	private Shelter		shelter;
 	private RoomDesign	roomDesign;
 
 
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getRefuge() {
-		return this.refuge;
+	public Shelter getShelter() {
+		return this.shelter;
 	}
 
-	public void setRefuge(final Refuge refuge) {
-		this.refuge = refuge;
+	public void setShelter(final Shelter shelter) {
+		this.shelter = shelter;
 
 	}
 	@Valid

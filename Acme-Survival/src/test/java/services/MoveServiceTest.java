@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import utilities.AbstractTest;
 import domain.Move;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -28,23 +28,23 @@ public class MoveServiceTest extends AbstractTest {
 	private ActorService	actorService;
 
 	@Autowired
-	private RefugeService	refugeService;
+	private ShelterService	shelterService;
 
 
 	@Test
 	public void testSaveMovePositive() {
 		Move move;
-		final Refuge refuge;
+		final Shelter shelter;
 		Player player;
 
 		super.authenticate("player1");
 
 		move = this.moveService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		move.setLocation(this.refugeService.getRandomLocation());
-		move.setRefuge(refuge);
+		move.setLocation(this.shelterService.getRandomLocation());
+		move.setShelter(shelter);
 
 		this.moveService.save(move);
 
@@ -54,34 +54,34 @@ public class MoveServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveMoveNotAuthenticatedNegative() {
 		domain.Move move;
-		Refuge refuge;
+		Shelter shelter;
 		Player player;
 
 		move = this.moveService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		move.setLocation(this.refugeService.getRandomLocation());
-		move.setRefuge(refuge);
+		move.setLocation(this.shelterService.getRandomLocation());
+		move.setShelter(shelter);
 
 		this.moveService.save(move);
 
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testSaveMoveNotOwnRefugeNegative() {
+	public void testSaveMoveNotOwnShelterNegative() {
 		domain.Move move;
-		Refuge refuge;
+		Shelter shelter;
 		Player player;
 
 		super.authenticate("Player1");
 		move = this.moveService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 		super.unauthenticate();
 
-		move.setLocation(this.refugeService.getRandomLocation());
-		move.setRefuge(refuge);
+		move.setLocation(this.shelterService.getRandomLocation());
+		move.setShelter(shelter);
 
 		super.authenticate("Player2");
 		this.moveService.save(move);

@@ -18,13 +18,13 @@ import services.ActorService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.NotificationService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Attack;
 import domain.Configuration;
 import domain.Notification;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/notification/player")
@@ -43,7 +43,7 @@ public class NotificationPlayerController extends AbstractController {
 	private GatherService			gatherService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -60,14 +60,14 @@ public class NotificationPlayerController extends AbstractController {
 		final Configuration configuration;
 		Pageable pageable;
 		Page<Notification> notifications;
-		Refuge refuge;
+		Shelter shelter;
 
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
 
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-			Assert.notNull(refuge, "You don't have refuge");
+			Assert.notNull(shelter, "You don't have shelter");
 
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
@@ -85,8 +85,8 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("You don't have refuge"))
-				result = new ModelAndView("redirect:/refuge/player/create.do");
+			if (oops.getMessage().contains("You don't have shelter"))
+				result = new ModelAndView("redirect:/shelter/player/create.do");
 			else
 				result = new ModelAndView("redirect:/misc/403");
 		}

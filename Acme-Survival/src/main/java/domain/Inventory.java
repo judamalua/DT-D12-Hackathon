@@ -106,18 +106,18 @@ public class Inventory extends DomainEntity {
 
 
 	// Relationships ----------------------------------------------------------
-	private Refuge	refuge;
+	private Shelter	shelter;
 
 
 	@NotNull
 	@Valid
 	@OneToOne
-	public Refuge getRefuge() {
-		return this.refuge;
+	public Shelter getShelter() {
+		return this.shelter;
 	}
 
-	public void setRefuge(final Refuge refuge) {
-		this.refuge = refuge;
+	public void setShelter(final Shelter shelter) {
+		this.shelter = shelter;
 	}
 
 }

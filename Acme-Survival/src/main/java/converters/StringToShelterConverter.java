@@ -6,25 +6,25 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import repositories.RefugeRepository;
-import domain.Refuge;
+import repositories.ShelterRepository;
+import domain.Shelter;
 
 @Component
 @Transactional
-public class StringToRefugeConverter implements Converter<String, Refuge> {
+public class StringToShelterConverter implements Converter<String, Shelter> {
 
 	@Autowired
-	RefugeRepository	refugeRepository;
+	ShelterRepository	shelterRepository;
 
 
 	@Override
-	public Refuge convert(final String text) {
-		Refuge result;
+	public Shelter convert(final String text) {
+		Shelter result;
 		int id;
 
 		try {
 			id = Integer.valueOf(text);
-			result = this.refugeRepository.findOne(id);
+			result = this.shelterRepository.findOne(id);
 		} catch (final Throwable oops) {
 			throw new IllegalArgumentException(oops);
 		}

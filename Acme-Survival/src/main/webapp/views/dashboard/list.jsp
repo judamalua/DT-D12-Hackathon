@@ -136,16 +136,16 @@
 
 	<li class="dashboard-expander">
 		<div class="collapsible-header">
-			<spring:message code="dashboard.attacksByRefuge" />
+			<spring:message code="dashboard.attacksByShelter" />
 		</div>
 
 		<div class="collapsible-body">
 
-			<span> <display:table id="attackByRefuge"
-					name="attacksByRefuge" requestURI="dashboard/admin/list.do"
+			<span> <display:table id="attackByShelter"
+					name="attacksByShelter" requestURI="dashboard/admin/list.do"
 					pagesize="${pagesize}">
-					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
-					<display:column title="${titleRefuge}">${attackByRefuge[0]}</display:column>
+					<spring:message var="titleShelter" code="dashboard.shelter.title" />
+					<display:column title="${titleShelter}">${attackByShelter[0]}</display:column>
 					<spring:message var="titleNumAttacks" code="dashboard.numAttacks" />
 					<display:column title="${titleNumAttacks}">${attackByRefuge[1]}</display:column>
 
@@ -156,16 +156,16 @@
 
 	<li class="dashboard-expander">
 		<div class="collapsible-header">
-			<spring:message code="dashboard.defensesByRefuge" />
+			<spring:message code="dashboard.defensesByShelter" />
 		</div>
 
 		<div class="collapsible-body">
 
-			<span> <display:table id="defenseByRefuge"
-					name="defensesByRefuge" requestURI="dashboard/admin/list.do"
+			<span> <display:table id="defenseByShelter"
+					name="defensesByShelter" requestURI="dashboard/admin/list.do"
 					pagesize="${pagesize}">
-					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
-					<display:column title="${titleRefuge}">${defenseByRefuge[0]}</display:column>
+					<spring:message var="titleShelter" code="dashboard.shelter.title" />
+					<display:column title="${titleShelter}">${defenseByRefuge[0]}</display:column>
 					<spring:message var="titleNumDefenses" code="dashboard.numDefenses" />
 					<display:column title="${titleNumDefenses}">${defenseByRefuge[1]}</display:column>
 				</display:table>
@@ -175,15 +175,16 @@
 
 	<li class="dashboard-expander">
 		<div class="collapsible-header">
-			<spring:message code="dashboard.roomsByRefuge" />
+			<spring:message code="dashboard.roomsByShelter" />
 		</div>
 
 		<div class="collapsible-body">
 
-			<span> <display:table id="roomPerRefuge" name="roomsPerRefuge"
+			<span> <display:table id="roomPerShelter" name="roomsPerShelter"
 					requestURI="dashboard/admin/list.do" pagesize="${pagesize}">
-					<spring:message var="titleRefuge" code="dashboard.refuge.title" />
-					<display:column title="${titleRefuge}">${roomPerRefuge[0]}</display:column>
+
+					<spring:message var="titleShelter" code="dashboard.shelter.title" />
+					<display:column title="${titleShelter}">${roomPerShelter[0]}</display:column>
 					<spring:message var="titleNumRooms" code="dashboard.numRooms" />
 					<display:column title="${titleNumRooms}">${roomPerRefuge[1]}</display:column>
 				</display:table>

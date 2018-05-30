@@ -58,7 +58,7 @@ public class NotificationService {
 		result.setGather(null);
 		result.setAttack(null);
 		result.setCharacterId(null);
-		result.setFoundRefuge(false);
+		result.setFoundShelter(false);
 		result.setPlayer(player);
 		result.setEvents(new ArrayList<Event>());
 		result.setItemDesigns(new ArrayList<ItemDesign>());
