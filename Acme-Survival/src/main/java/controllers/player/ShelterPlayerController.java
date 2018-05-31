@@ -100,9 +100,7 @@ public class ShelterPlayerController extends AbstractController {
 		Inventory inventory;
 		final Collection<domain.Character> characters, charactersUpdated;
 		Integer capacity;
-		long time;
 		try {
-			time = System.currentTimeMillis();
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(pageRoom, configuration.getPageSize());
 
