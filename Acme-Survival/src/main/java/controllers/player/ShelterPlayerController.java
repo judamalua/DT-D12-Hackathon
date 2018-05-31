@@ -145,7 +145,6 @@ public class ShelterPlayerController extends AbstractController {
 			result.addObject("owner", owner);
 			result.addObject("characterCapacity", capacity);
 
-			System.out.println(System.currentTimeMillis() - time);
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("Not have shelter"))
 				result = new ModelAndView("redirect:/shelter/player/create.do");
