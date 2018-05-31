@@ -13,6 +13,7 @@ import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -21,6 +22,9 @@ import org.hibernate.validator.constraints.SafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "finalMode")
+})
 public class LootTable extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------

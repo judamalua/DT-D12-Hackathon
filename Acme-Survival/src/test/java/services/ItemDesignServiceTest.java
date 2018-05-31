@@ -357,18 +357,6 @@ public class ItemDesignServiceTest extends AbstractTest {
 				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
 				/* food */0., /* metal */-1., /* wood */0.,
 				/* Class<?> expected */ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a resource in finalMode
-				"Resource1", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */true,
-				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
-				/* food */0., /* metal */-1., /* wood */0.,
-				/* Class<?> expected */IllegalArgumentException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a tool in finalMode
-				"Tool1", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */true,
-				/* strength */0,/* luck */0, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalArgumentException.class
 			}
 
 		};

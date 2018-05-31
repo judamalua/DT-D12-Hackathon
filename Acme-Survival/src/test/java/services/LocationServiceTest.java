@@ -42,15 +42,16 @@ public class LocationServiceTest extends AbstractTest {
 				"Sahara desert", "Desierto del sahara", "19.67134517234259,9.388784847476245", true, "LootTable1", null
 			}, {
 				//A loot table must be final
-				"Sahara desert", "Desierto del sahara", "19.67134517234259,9.388784847476245", true, "LootTable3", IllegalArgumentException.class
+				"Sahara desert", "Desierto del sahara", "19.67134517234259,9.388784847476245", true, "LootTable5", IllegalArgumentException.class
 			}, {
 				//The patron must work
 				"Sahara desert", "Desierto del sahara", "19.67134517234259-9.388784847476245", true, "LootTable1", javax.validation.ConstraintViolationException.class
 			}
 		};
 
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.template((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Boolean) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
+		}
 
 	}
 

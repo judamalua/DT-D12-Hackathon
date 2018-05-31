@@ -1210,7 +1210,7 @@
 		</property>
 		<property name="imageUrl"
 			value="http://www.myiconfinder.com/uploads/iconsets/256-256-d074a5a83cb693e59484ec9cf62953ee-helmet.png" />
-		<property name="finalMode" value="false" />
+		<property name="finalMode" value="true" />
 		<property name="strength" value="5" />
 		<property name="luck" value="2" />
 		<property name="capacity" value="1" />

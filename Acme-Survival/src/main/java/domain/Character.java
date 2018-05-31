@@ -22,7 +22,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = "`character`")
+@Table(name = "`character`", indexes = {
+	@javax.persistence.Index(columnList = "currentlyInGatheringMission,gatherNotificated,roomEntrance")
+})
 public class Character extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------

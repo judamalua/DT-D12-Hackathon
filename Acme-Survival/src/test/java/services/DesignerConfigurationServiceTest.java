@@ -43,7 +43,7 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveDesignerConfigurationNotLoggedNegative() {
 		DesignerConfiguration designerConfiguration;
-
+		super.unauthenticate();
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 		designerConfiguration.setExperiencePerMinute(2);
 

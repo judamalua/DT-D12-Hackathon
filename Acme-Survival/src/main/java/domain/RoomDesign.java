@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +17,9 @@ import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "finalMode")
+})
 public abstract class RoomDesign extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------

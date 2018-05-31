@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -20,6 +21,9 @@ import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "finalMode")
+})
 public abstract class ItemDesign extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
