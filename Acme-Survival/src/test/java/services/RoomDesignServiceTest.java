@@ -55,7 +55,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.6: An actor who is authenticated as a designer must be able to
 	 * create room designs (barracks, warehouses, restoration rooms and resource rooms), every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -446,7 +446,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 				(Double) testingData[i][15], (Double) testingData[i][16], (Double) testingData[i][17], (Double) testingData[i][18], (Class<?>) testingData[i][19]);
 	}
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as designer must
+	 * This driver checks several tests regarding functional requirement number 19.9: A user who is authenticated as designer must
 	 * be able to list the room designs set to final mode
 	 * 
 	 * @author Juanmi
@@ -471,7 +471,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An authenticated designer must be able to list draft mode room designs
+	 * This driver checks several tests regarding functional requirement number 19.9: An authenticated designer must be able to list draft mode room designs
 	 * 
 	 * @author Juanmi
 	 */
@@ -495,7 +495,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.6: An actor who is authenticated as a designer must be able to
 	 * edit draft mode room designs, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -872,7 +872,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.6: An actor who is authenticated as a designer must be able to
 	 * delete draft mode room designs, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -925,7 +925,7 @@ public class RoomDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.8: An actor who is authenticated as a designer must be able to
 	 * set draft mode room designs as final mode, every test is explained inside.
 	 * 
 	 * @author Juanmi
