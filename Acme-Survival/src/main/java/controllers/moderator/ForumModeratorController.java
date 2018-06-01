@@ -49,7 +49,7 @@ public class ForumModeratorController extends AbstractController {
 		try {
 
 			actor = this.actorService.findActorByPrincipal();
-			Assert.isTrue(!(actor instanceof Moderator));
+			Assert.isTrue(actor instanceof Moderator);
 			forum = this.forumService.findOne(forumId);
 
 			this.forumService.delete(forum);

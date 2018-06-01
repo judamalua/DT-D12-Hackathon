@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import security.Authority;
@@ -58,13 +59,17 @@ public class ActorController extends AbstractController {
 	 * @author Luis
 	 */
 	@RequestMapping("/display")
-	public ModelAndView display() {
+	public ModelAndView display(@RequestParam(required = false) final Integer actorId) {
 		ModelAndView result;
 		Actor actor;
 
 		try {
 			result = new ModelAndView("actor/display");
-			actor = this.actorService.findActorByPrincipal();
+			if (actorId == null) {
+				actor = this.actorService.findActorByPrincipal();
+			} else {
+				actor = this.actorService.findOne(actorId);
+			}
 
 			result.addObject("actor", actor);
 		} catch (final Throwable oops) {
@@ -115,9 +120,9 @@ public class ActorController extends AbstractController {
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndViewRegister(actor, "player.params.error");
-		else
+		} else {
 			try {
 				auth = new Authority();
 				auth.setAuthority(Authority.PLAYER);
@@ -128,11 +133,13 @@ public class ActorController extends AbstractController {
 			} catch (final DataIntegrityViolationException oops) {
 				result = this.createEditModelAndViewRegister(actor, "player.username.error");
 			} catch (final Throwable oops) {
-				if (oops.getMessage().contains("Passwords do not match"))
+				if (oops.getMessage().contains("Passwords do not match")) {
 					result = this.createEditModelAndViewRegister(actor, "player.password.error");
-				else
+				} else {
 					result = this.createEditModelAndViewRegister(actor, "player.commit.error");
+				}
 			}
+		}
 
 		return result;
 	}

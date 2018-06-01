@@ -186,7 +186,7 @@
 					<spring:message var="titleShelter" code="dashboard.shelter.title" />
 					<display:column title="${titleShelter}">${roomPerShelter[0]}</display:column>
 					<spring:message var="titleNumRooms" code="dashboard.numRooms" />
-					<display:column title="${titleNumRooms}">${roomPerRefuge[1]}</display:column>
+					<display:column title="${titleNumRooms}">${roomPerShelter[1]}</display:column>
 				</display:table>
 			</span>
 		</div>

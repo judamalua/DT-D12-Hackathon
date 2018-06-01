@@ -24,8 +24,7 @@
 </h4>
 <br />
 
-<strong><spring:message code="actor.avatar" />:</strong>
-<img src="<jstl:out value="${actor.avatar}"/>"/>
+<img src="<jstl:out value="${actor.avatar}"/>" class="forumImg"/>
 <br />
 <strong><spring:message code="actor.phoneNumber" />:</strong>
 <jstl:out value="${actor.phoneNumber}" />

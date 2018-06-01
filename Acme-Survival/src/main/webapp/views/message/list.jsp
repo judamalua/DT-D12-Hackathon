@@ -32,7 +32,7 @@
 	<display:column>
 		${row.text}
 		<br />
-		<a href="actor/display.do?actorId=${message.actor.id}">${row.actor.name}</a> <fmt:formatDate value="${row.moment}" pattern="${format}" />
+		<a href="actor/display.do?actorId=${row.actor.id}">${row.actor.name}</a> <fmt:formatDate value="${row.moment}" pattern="${format}" />
 	</display:column>
 
 	<spring:message code="message.thread" var="thread"/>
@@ -82,5 +82,5 @@
 
 </security:authorize>
 <security:authorize access="isAnonymous()">
-	<spring:message code="message.login" />
+	<div class="message"><spring:message code="message.login" /></div>
 </security:authorize>

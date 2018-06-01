@@ -162,27 +162,31 @@ public class ForumService {
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
-		Assert.isTrue(actor.equals(forum.getOwner()));
 
 		subForums = this.findSubForums(forum.getId());
 
 		//Iterate in every subForum to delete it
-		for (final Forum subForum : subForums) {
+		for (final Forum subForum : new HashSet<Forum>(subForums)) {
 			subsubForums = this.findSubForums(subForum.getId());
 
 			if (subsubForums.size() == 0) {
 				if (subForum.getStaff() || subForum.getStaff()) {
 					Assert.isTrue(!(actor instanceof Player));
 				}
-				this.forumRepository.delete(subForum);
 				threads = this.threadService.findThreadsByForum(subForum.getId());
 				for (final Thread thread : threads) {
 					this.threadService.delete(thread);
 				}
+				this.forumRepository.delete(subForum);
 			} else {
 				//In other case then call again the method
 				this.deleteRecursive(subForum);
 			}
+		}
+
+		threads = this.threadService.findThreadsByForum(forum.getId());
+		for (final Thread thread : threads) {
+			this.threadService.delete(thread);
 		}
 		//Finally delete the forum
 		this.forumRepository.delete(forum);

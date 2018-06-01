@@ -99,7 +99,10 @@ public class ForumActorController extends AbstractController {
 		} else {
 			try {
 				Assert.notNull(forum);
+				Assert.isTrue(!forum.getStaff() || !forum.getSupport(), "Not both");
+
 				savedForum = this.forumService.save(forum);
+
 				if (savedForum.getForum() != null) {
 					result = new ModelAndView("redirect:/forum/list.do?forumId=" + savedForum.getForum().getId() + "&staff=" + savedForum.getStaff());
 				} else {
@@ -111,6 +114,8 @@ public class ForumActorController extends AbstractController {
 					result = this.createEditModelAndView(forum, "forum.staff.error");
 				} else if (oops.getMessage().contains("The father must be support")) {
 					result = this.createEditModelAndView(forum, "forum.support.error");
+				} else if (oops.getMessage().contains("Not both")) {
+					result = this.createEditModelAndView(forum, "forum.both.error");
 				} else {
 					result = this.createEditModelAndView(forum, "forum.commit.error");
 				}

@@ -243,8 +243,9 @@ public class MapPlayerController {
 		jsonLocation.put("point_c", location.getPoint_c());
 		jsonLocation.put("point_d", location.getPoint_d());
 		final JSONObject name = new JSONObject();
-		for (final String language : location.getName().keySet())
+		for (final String language : location.getName().keySet()) {
 			name.put(language, location.getName().get(language));
+		}
 		jsonLocation.put("name", name);
 		return jsonLocation;
 	}
