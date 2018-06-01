@@ -172,11 +172,6 @@
 
 		</jstl:forEach>
 	</div>
-
-	
-
-
-
 </jstl:if>
 <br><br><br>
 <button class="btn" onclick="save();">

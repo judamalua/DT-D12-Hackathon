@@ -212,8 +212,7 @@
 			<display:column>
 				<jstl:if test="${owner}">
 					<a href="room/player/delete.do?roomId=${room.id}">
-						<button class="btn"
-							onclick="return confirm('<spring:message code="shelter.room.delete.confirm"/>')">
+						<button class="btn"><!--TODO: onclick="return confirm('<spring:message code="shelter.room.delete.confirm"/>')" -->
 							<spring:message code="shelter.room.delete" />
 						</button>
 					</a>

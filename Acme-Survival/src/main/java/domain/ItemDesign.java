@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
 import annotations.ExtendedURL;
@@ -61,7 +60,6 @@ public abstract class ItemDesign extends DomainEntity {
 		this.description = description;
 	}
 
-	@NotBlank
 	@ExtendedURL(admitData = true)
 	@Column(columnDefinition = "longtext")
 	@SafeHtml

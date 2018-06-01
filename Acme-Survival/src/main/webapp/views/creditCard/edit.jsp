@@ -65,10 +65,10 @@
 			<acme:textbox code="request.creditcard.number"
 				path="number" required="true" />
 
-			<acme:textbox code="request.creditcard.expirationMonth"
+			<acme:textbox code="request.creditcard.expirationYear"
 				path="expirationMonth" required="true" placeholder="MM" />
 
-			<acme:textbox code="request.creditcard.expirationYear"
+			<acme:textbox code="request.creditcard.expirationMonth"
 				path="expirationYear" required="true"
 				placeholder="${expirationYearPlaceholder}" />
 
