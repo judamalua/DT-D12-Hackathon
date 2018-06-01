@@ -7,8 +7,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- User accounts -->
 
@@ -207,7 +206,8 @@
 		<property name="maxInventoryMetal" value="20" />
 		<property name="numInitialCharacters" value="3" />
 		<property name="shelterFindingProbability" value="0.1" />
-		<property name="shelterFindingMinuteAugmentProbability" value="90" />
+		<property name="shelterFindingMinuteAugmentProbability"
+			value="90" />
 
 	</bean>
 
@@ -365,8 +365,8 @@
 	</bean>
 
 	<bean id="Forum2" class="domain.Forum">
-		<property name="name" value="Forum 2" />
-		<property name="description" value="Description Forum 2" />
+		<property name="name" value="Support forum" />
+		<property name="description" value="Support forum, write here your suggestions" />
 		<property name="image"
 			value="http://4.bp.blogspot.com/-YoA65hHHuqA/VV_aIDXFdgI/AAAAAAAAAUg/1CzS4dKqn54/s1600/foro.jpg" />
 		<property name="staff" value="true" />
@@ -375,12 +375,12 @@
 	</bean>
 
 	<bean id="Forum3" class="domain.Forum">
-		<property name="name" value="Forum 3" />
-		<property name="description" value="Description Forum 3" />
+		<property name="name" value="Staff forum" />
+		<property name="description" value="Staff forum 3, only personal" />
 		<property name="image"
 			value="https://pbs.twimg.com/profile_images/796057953359032320/eMJZCPTE.jpg" />
-		<property name="staff" value="false" />
-		<property name="support" value="true" />
+		<property name="staff" value="true" />
+		<property name="support" value="false" />
 		<property name="owner" ref="Admin2" />
 	</bean>
 
@@ -392,6 +392,51 @@
 		<property name="staff" value="false" />
 		<property name="support" value="false" />
 		<property name="owner" ref="Admin2" />
+	</bean>
+	<bean id="Forum5" class="domain.Forum">
+		<property name="name" value="Forum 5" />
+		<property name="description" value="Description Forum 5" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum6" class="domain.Forum">
+		<property name="name" value="Forum 6" />
+		<property name="description" value="Description Forum 6" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum7" class="domain.Forum">
+		<property name="name" value="Forum 7" />
+		<property name="description" value="Description Forum 7" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum8" class="domain.Forum">
+		<property name="name" value="Forum 8" />
+		<property name="description" value="Description Forum 8" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum9" class="domain.Forum">
+		<property name="name" value="Forum 9" />
+		<property name="description" value="Description Forum 9" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
 	</bean>
 
 	<!-- %%%%%% domain.Shelter %%%%%% -->
@@ -659,6 +704,38 @@
 		<property name="actor" ref="Admin2" />
 		<property name="forum" ref="Forum2" />
 	</bean>
+	<bean id="Thread5" class="domain.Thread">
+		<property name="name" value="Thread 5" />
+		<property name="tags">
+			<list>
+				<value>Tag1</value>
+				<value>Tag2</value>
+				<value>Tag3</value>
+				<value>Tag4</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
+	<bean id="Thread6" class="domain.Thread">
+		<property name="name" value="Thread 6" />
+		<property name="tags">
+			<list>
+				<value>Tag2</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
+	<bean id="Thread7" class="domain.Thread">
+		<property name="name" value="Thread 7" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
 
 	<!-- %%%%%% domain.Message %%%%%% -->
 	<bean id="Message1" class="domain.Message">
@@ -693,30 +770,22 @@
 	<bean id="Slider1" class="domain.Slider">
 		<property name="title_en" value="Welcome to Acme Survival!" />
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
-		<property name="text_en" value="Example text 1" />
-		<property name="text_es" value="Texto de ejemplo 1" />
-		<property name="pictureUrl" value="https://i.imgur.com/tC3fSO1.png" />
+		<property name="text_en" value="Test yourself and survive" />
+		<property name="text_es" value="Pruebate y sobrevive" />
+		<property name="pictureUrl"
+			value="https://www.walldevil.com/wallpapers/w04/140775-apocalypse-city-post-apocalyptic-ruins.jpg" />
 		<property name="align" value="left" />
 	</bean>
 	<bean id="Slider2" class="domain.Slider">
 		<property name="title_en" value="Welcome to Acme Survival!" />
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
-		<property name="text_en" value="Example text 2" />
-		<property name="text_es" value="Texto de ejemplo 2" />
-		<property name="pictureUrl"
-			value="https://c402277.ssl.cf1.rackcdn.com/photos/1579/images/hero_full/HI_115201.jpg?1345598092" />
+		<property name="text_en" value="Explore the world" />
+		<property name="text_es" value="Explora el mundo" />
+		<property name="pictureUrl" value="https://i.imgur.com/tC3fSO1.png" />
 		<property name="align" value="right" />
 	</bean>
-	<bean id="Slider3" class="domain.Slider">
-		<property name="title_en" value="Welcome to Acme Survival!" />
-		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
-		<property name="text_en" value="Example text 3" />
-		<property name="text_es" value="Texto de ejemplo 3" />
-		<property name="pictureUrl"
-			value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
-		<property name="align" value="center" />
-	</bean>
 
+	<!-- %%%%%% domain.LootTable %%%%%% -->
 	<bean id="LootTable1" class="domain.LootTable">
 		<property name="name" value="Bosque" />
 		<property name="finalMode" value="true" />
@@ -782,13 +851,13 @@
 			</list>
 		</property>
 	</bean>
-	
-		<bean id="LootTable5" class="domain.LootTable">
+
+	<bean id="LootTable5" class="domain.LootTable">
 		<property name="name" value="Mazmorra" />
 		<property name="finalMode" value="false" />
 		<property name="probabilityEvents">
 			<list>
-			</list>	
+			</list>
 		</property>
 		<property name="probabilityItems">
 			<list>
@@ -817,7 +886,7 @@
 		<property name="value" value="0.4" />
 		<property name="event" ref="Event4" />
 	</bean>
-		<bean id="ProbabilityEventTest2" class="domain.ProbabilityEvent">
+	<bean id="ProbabilityEventTest2" class="domain.ProbabilityEvent">
 		<property name="value" value="0.4" />
 		<property name="event" ref="Event4" />
 	</bean>
@@ -883,7 +952,7 @@
 		<property name="value" value="0.4" />
 		<property name="itemDesign" ref="Resource6" />
 	</bean>
-		<bean id="ProbabilityItemTest2" class="domain.ProbabilityItem">
+	<bean id="ProbabilityItemTest2" class="domain.ProbabilityItem">
 		<property name="value" value="1" />
 		<property name="itemDesign" ref="Resource6" />
 	</bean>
@@ -1075,14 +1144,16 @@
 						<value>en</value>
 					</key>
 					<value>You have found one of the best guns in this game, it is the
-						Legendary Legolas´Bow</value>
+						Legendary Legolas´Bow
+					</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
 					<value>Has encontrado una de las armas más mortíferas del juego, El
-						Arco de Legolas.</value>
+						Arco de Legolas.
+					</value>
 				</entry>
 			</map>
 		</property>
@@ -1612,14 +1683,16 @@
 						<value>en</value>
 					</key>
 					<value>Epic and strong bow that the Hero Legolas carry in Lord Of
-						The Rings filsm</value>
+						The Rings filsm
+					</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
 					<value>Arco élfico de Legolas, protagonista y heroe de la saga del
-						Señor de los Anillos</value>
+						Señor de los Anillos
+					</value>
 				</entry>
 			</map>
 		</property>
@@ -1749,7 +1822,7 @@
 			</map>
 		</property>
 		<property name="pictureUrl"
-			value="http://www.mimontevideo.com/wp-content/uploads/2016/07/Cara-Feliz.fw_.png" />
+			value="https://www.w3schools.com/howto/img_fjords.jpg" />
 		<property name="price" value="99399.00" />
 		<property name="finalMode" value="false" />
 		<property name="discontinued" value="false" />

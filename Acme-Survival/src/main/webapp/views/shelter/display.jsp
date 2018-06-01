@@ -118,29 +118,29 @@
 					<spring:message code="shelter.in" />: ${character.room.roomDesign.name[lang]}
 				</jstl:if>
 				<jstl:if test="${character.currentWater<10}">
-					<div class="error">
+					<div class="message">
 						<spring:message code="shelter.thirsty" />
 					</div>
 				</jstl:if>
 				<jstl:if test="${character.currentFood<10}">
-					<div class="error">
+					<div class="message">
 						<spring:message code="shelter.hungry" />
 					</div>
 				</jstl:if>
 				<jstl:if
 					test="${character.currentHealth<100 and character.currentHealth>=50}">
-					<div class="error">
+					<div class="message">
 						<spring:message code="shelter.wounded" />
 					</div>
 				</jstl:if>
 				<jstl:if
 					test="${character.currentHealth<50 and character.currentHealth>=25}">
-					<div class="error">
+					<div class="message">
 						<spring:message code="shelter.agonizing" />
 					</div>
 				</jstl:if>
 				<jstl:if test="${character.currentHealth<25}">
-					<div class="error">
+					<div class="message">
 						<spring:message code="shelter.ligth" />
 					</div>
 				</jstl:if>

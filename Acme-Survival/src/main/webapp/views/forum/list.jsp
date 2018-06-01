@@ -67,8 +67,8 @@
 		</display:column>
 
 		<display:column>
-			<security:authorize access="hasRole('DESIGNER')">
-				<acme:button url="forum/actor/delete.do?forumId=${forum.id}"
+			<security:authorize access="hasRole('MODERATOR')">
+				<acme:button url="forum/moderator/delete.do?forumId=${forum.id}"
 					code="forum.delete" />
 			</security:authorize>
 		</display:column>
@@ -100,8 +100,8 @@
 		</display:column>
 
 		<display:column>
-			<security:authorize access="hasRole('DESIGNER')">
-				<acme:button url="thread/actor/delete.do?forumId=${forum.id}"
+			<security:authorize access="hasRole('MODERATOR')">
+				<acme:button url="thread/moderator/delete.do?forumId=${forum.id}"
 					code="forum.delete" />
 			</security:authorize>
 		</display:column>
@@ -115,9 +115,9 @@
 		<acme:button url="forum/actor/create.do?forumId=${fatherForum.id}"
 			code="forum.create" />
 	</jstl:if>
-
+	<br />
 	<acme:button url="forum/list.do?staff=true" code="forum.staff" />
-
+	<br />
 </security:authorize>
 <security:authorize access="isAuthenticated()">
 	<acme:button url="forum/list.do?support=true" code="forum.support" />

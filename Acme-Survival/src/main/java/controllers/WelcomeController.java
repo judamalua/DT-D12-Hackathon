@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActorService;
 import services.ConfigurationService;
 import services.SliderService;
+import domain.Player;
 import domain.Slider;
 
 @Controller
@@ -36,10 +38,13 @@ public class WelcomeController extends AbstractController {
 
 
 	@Autowired
-	ConfigurationService	configurationService;
+	private ConfigurationService	configurationService;
 
 	@Autowired
-	SliderService			sliderService;
+	private SliderService			sliderService;
+
+	@Autowired
+	private ActorService			actorService;
 
 
 	// Index ------------------------------------------------------------------		
@@ -49,25 +54,30 @@ public class WelcomeController extends AbstractController {
 		ModelAndView result;
 		SimpleDateFormat formatter;
 		String moment;
-
-		formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		moment = formatter.format(new Date());
-
-		result = new ModelAndView("welcome/index");
-		result.addObject("name", name);
-		result.addObject("moment", moment);
+		final Collection<Slider> sliders;
 		try {
-			final Collection<Slider> sliders = this.sliderService.findAll();
-			if (sliders.size() == 0)
-				sliders.add(this.generateSampleSlider());
-			result.addObject("sliders", sliders);
+			if (this.actorService.getLogged() && (this.actorService.findActorByPrincipal() instanceof Player)) {
+				result = new ModelAndView("map/display");
+			} else {
+				formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+				moment = formatter.format(new Date());
 
+				result = new ModelAndView("welcome/index");
+				result.addObject("name", name);
+				result.addObject("moment", moment);
+
+				sliders = this.sliderService.findAll();
+				if (sliders.size() == 0) {
+					sliders.add(this.generateSampleSlider());
+				}
+				result.addObject("sliders", sliders);
+
+			}
 		} catch (final Throwable e) {
+			result = new ModelAndView("redirect:/misc/403");
 		}
-
 		return result;
 	}
-
 	/**
 	 * This method generates a sample slider in the case the admin haven't add any slider
 	 * 

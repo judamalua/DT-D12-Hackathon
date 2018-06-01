@@ -43,13 +43,10 @@
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/security/loginFailure.do"
 			access="permitAll" requires-channel="https" />
-
 		<security:intercept-url pattern="/welcome/index.do"
 			access="permitAll" requires-channel="https" />
-
 		<security:intercept-url pattern="/actor/display.do"
-			access="isAuthenticated()" requires-channel="https" />
-
+			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/edit.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/**"
@@ -60,7 +57,6 @@
 			access="hasRole('ADMIN')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/list-actors.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
-
 		<security:intercept-url pattern="/actor/registerAsPlayer.do"
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/player/list.do"

@@ -72,6 +72,8 @@
 .error {
 	color: red;
 	font-weight: bolder;
+	background-color: #FFDCDC;
+	padding: 1%;
 }
 
 .lang{
@@ -80,7 +82,10 @@
 
 .message {
 	color: red;
-	font-weight: bolder;
+	font-weight: bold;
+	padding: 1%;
+	background-color: #FFDCDC;
+	text-align: center;
 }
 
 .dropdown-menu > li > a:hover {
@@ -272,13 +277,16 @@ nav{
 }
 
 .red.darken-4 {
-    background-color: #023F02 !important;
+    background-color: black !important;
 }
 
 .dropdown-content {
     overflow-y:auto !important;
 }
-
+.chip{
+	background-color: black;
+	color:white;
+}
 .dropdown-content > li{
    background-color: #232323;
    color: white;

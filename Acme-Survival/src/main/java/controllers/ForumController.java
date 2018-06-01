@@ -94,6 +94,9 @@ public class ForumController extends AbstractController {
 				actor = this.actorService.findActorByPrincipal();
 				Assert.isTrue(!(actor instanceof Player));
 			}
+			if (support) {
+				this.actorService.checkActorLogin();
+			}
 
 			if (forumId == null) {
 				forums = this.forumService.findRootForums(staff, support, pageable);
@@ -101,7 +104,9 @@ public class ForumController extends AbstractController {
 				forums = this.forumService.findSubForums(forumId, staff, support, pageable);
 				threads = this.threadsService.findThreadsByForum(forumId, threadPageable);
 				forum = this.forumService.findOne(forumId);
-
+				if (forum.getStaff() || forum.getSupport()) {
+					this.actorService.checkActorLogin();
+				}
 				result.addObject("fatherForum", forum);
 			}
 
