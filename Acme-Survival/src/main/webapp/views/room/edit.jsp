@@ -31,8 +31,8 @@
 					$('#resourceError').show();
 					$('#resources').hide();
 				} else if (result.length > 0) {
-					$('#wood').html(result.split(',')[0]);
-					$('#metal').html(result.split(',')[1]);
+					$('#wood').html(' - '+result.split(',')[0]);
+					$('#metal').html(' - '+result.split(',')[1]);
 					if (result.split(',')[2] > 0) {
 						$('#resourceHealth').show();
 						$('#plusHealth').html(result.split(',')[2]+'/min');
@@ -100,7 +100,7 @@
 			<div id="resources">
 				<div class="plusLabel">
 					<spring:message code="room.wood" />
-					:
+					:&nbsp;
 				</div>
 				<div class="plusElm">
 					<div id="wood"></div>
@@ -108,7 +108,7 @@
 				<br />
 				<div class="plusLabel">
 					<spring:message code="room.metal" />
-					:
+					:&nbsp; 
 				</div>
 				<div class="plusElm">
 					<div id="metal"></div>
@@ -192,6 +192,7 @@
 
 			<acme:select id="roomDesign" items="${roomDesigns}"
 				itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
+			<br />
 			<br />
 			<div class="cleared-div">
 				<acme:submit name="save" code="room.save" />

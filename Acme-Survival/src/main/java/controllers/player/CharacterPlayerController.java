@@ -130,8 +130,9 @@ public class CharacterPlayerController extends AbstractController {
 			shelter = this.shelterService.findShelterByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
 
-			if (discard)
+			if (discard) {
 				this.itemService.UpdateDiscard(character);
+			}
 			Assert.isTrue(character.getShelter().getId() == shelter.getId());
 
 			character = this.characterService.findOne(characterId);
@@ -179,6 +180,7 @@ public class CharacterPlayerController extends AbstractController {
 				numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
 				Assert.isTrue(numCharacter < room.getRoomDesign().getMaxCapacityCharacters());
 				character.setRoomEntrance(new Date(System.currentTimeMillis() - 1));
+				Assert.isTrue(room.getShelter().equals(shelter));
 			} else {
 				room = null;
 				character.setRoomEntrance(null);

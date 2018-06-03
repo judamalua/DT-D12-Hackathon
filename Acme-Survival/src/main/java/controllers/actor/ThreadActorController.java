@@ -28,6 +28,7 @@ import services.ThreadService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Forum;
+import domain.Player;
 import domain.Thread;
 
 @Controller
@@ -75,15 +76,19 @@ public class ThreadActorController extends AbstractController {
 		ModelAndView result;
 		final Thread thread;
 		Forum forum;
+		Actor actor;
 
 		try {
-			this.actorService.checkActorLogin();
+			actor = this.actorService.findActorByPrincipal();
 
 			thread = this.threadService.create();
 			if (forumId != null) {
 				forum = this.forumService.findOne(forumId);
 				Assert.notNull(forum);
 				thread.setForum(forum);
+				if (actor instanceof Player) {
+					Assert.isTrue(!thread.getForum().getStaff());
+				}
 			}
 
 			result = this.createEditModelAndView(thread);
@@ -98,25 +103,33 @@ public class ThreadActorController extends AbstractController {
 	public ModelAndView updateUser(@ModelAttribute("thread") Thread thread, final BindingResult binding) {
 		ModelAndView result;
 		Thread savedThread, sendedThread = null;
+		Actor actor;
 		try {
 			sendedThread = thread;
 			thread = this.threadService.reconstruct(thread, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(sendedThread, "thread.params.error");
-		else
+		} else {
 			try {
+				actor = this.actorService.findActorByPrincipal();
+
+				if (actor instanceof Player) {
+					Assert.isTrue(!thread.getForum().getStaff());
+				}
 				savedThread = this.threadService.save(thread);
 
-				if (savedThread.getForum() != null)
+				if (savedThread.getForum() != null) {
 					result = new ModelAndView("redirect:/forum/list.do?forumId=" + savedThread.getForum().getId());
-				else
+				} else {
 					result = new ModelAndView("redirect:/forum/list.do");
+				}
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(thread, "thread.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -129,10 +142,11 @@ public class ThreadActorController extends AbstractController {
 			thread = this.threadService.findOne(thread.getId());
 			this.threadService.delete(thread);
 
-			if (thread.getForum() != null)
+			if (thread.getForum() != null) {
 				result = new ModelAndView("redirect:/forum/list.do?forumId=" + thread.getForum().getId());
-			else
+			} else {
 				result = new ModelAndView("redirect:/forum/list.do");
+			}
 
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(thread, "thread.commit.error");

@@ -38,6 +38,7 @@
 
 .plusLabel{
 	float:left;
+	font-weight: bold;
 }
 
 .plusElm{
@@ -58,6 +59,7 @@
 }
 .characterName{
 	text-align: center;
+	font-weight: bold;
 }
 
 .inventoryElm{
@@ -74,6 +76,8 @@
 	font-weight: bolder;
 	background-color: #FFDCDC;
 	padding: 1%;
+	display:block;
+	text-align: center;
 }
 
 .lang{

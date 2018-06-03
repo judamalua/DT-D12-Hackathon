@@ -85,10 +85,11 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("You don't have shelter"))
+			if (oops.getMessage().contains("You don't have shelter")) {
 				result = new ModelAndView("redirect:/shelter/player/create.do");
-			else
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 
 		return result;
@@ -100,15 +101,21 @@ public class NotificationPlayerController extends AbstractController {
 	public ModelAndView displayGatherNotification(final int notificationId) {
 		ModelAndView result;
 		Notification notification;
+		Player player;
 
 		try {
+
+			player = (Player) this.actorService.findActorByPrincipal();
+
 			notification = this.notificationService.findOne(notificationId);
 			result = new ModelAndView("notification/displayGatherNotification");
+			Assert.isTrue(notification.getPlayer().equals(player));
 
 			result.addObject("notification", notification);
 
-			if (notification.getGather() != null)
+			if (notification.getGather() != null) {
 				result.addObject("gatherId", notification.getGather().getId());
+			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -123,9 +130,13 @@ public class NotificationPlayerController extends AbstractController {
 		Notification notification;
 		String bodyEn, titleEn;
 		ArrayList<String> resources;
+		Player player;
 
 		try {
+			player = (Player) this.actorService.findActorByPrincipal();
 			notification = this.notificationService.findOne(notificationId);
+
+			Assert.isTrue(notification.getPlayer().equals(player));
 			result = new ModelAndView("notification/display");
 			bodyEn = notification.getBody().get("en");
 			titleEn = notification.getTitle().get("en");
@@ -140,16 +151,19 @@ public class NotificationPlayerController extends AbstractController {
 				result.addObject("notificationWood", resources.get(4));
 
 				result.addObject("attackWon", true);
-			} else
+			} else {
 				result.addObject("attackWon", false);
+			}
 
 			result.addObject("notification", notification);
 
-			if (notification.getAttack() != null)
-				if (notification.getAttack() instanceof Attack)
+			if (notification.getAttack() != null) {
+				if (notification.getAttack() instanceof Attack) {
 					result.addObject("attackId", notification.getAttack().getId());
-				else
+				} else {
 					result.addObject("gatherId", notification.getGather().getId());
+				}
+			}
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
@@ -163,9 +177,12 @@ public class NotificationPlayerController extends AbstractController {
 	public ModelAndView delete(final int notificationId) {
 		ModelAndView result;
 		Notification notification;
+		Player player;
 
 		try {
+			player = (Player) this.actorService.findActorByPrincipal();
 			notification = this.notificationService.findOne(notificationId);
+			Assert.isTrue(notification.getPlayer().equals(player));
 
 			this.notificationService.delete(notification);
 

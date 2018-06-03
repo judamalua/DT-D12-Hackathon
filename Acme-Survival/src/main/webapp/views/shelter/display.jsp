@@ -96,7 +96,7 @@
 		:
 		<jstl:out
 			value="${fn:length(characters)}/${characterCapacity+fn:length(characters)}" />
-		<br />
+		<br /> <br />
 		<jstl:forEach items="${characters}" var="character">
 			<div class="character">
 				<div class="characterName">
@@ -152,77 +152,81 @@
 		</jstl:forEach>
 	</div>
 	<br />
+
 	<div class="shelterRooms">
-		<strong> <spring:message code="shelter.room" />
-		</strong> <br />
-		<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
-			requestURI="shelter/player/display.do?shelterId=${shelter.id}&pageRoom=" />
-		<display:table name="${rooms}" id="room"
-			requestURI="shelter/display.do?shelterId=${shelter.id}">
+		<jstl:if test="${fn:length(rooms)>0}">
+			<h3>
+				<spring:message code="shelter.room" />
+			</h3>
+			<br />
+			<acme:pagination page="${pageRoom}" pageNum="${pageNumRoom}"
+				requestURI="shelter/player/display.do?shelterId=${shelter.id}&pageRoom=" />
+			<display:table name="${rooms}" id="room"
+				requestURI="shelter/display.do?shelterId=${shelter.id}">
 
-			<spring:message code="shelter.room.name" var="nameRoomTitle" />
-			<display:column title="${nameRoomTitle}">
-				<jstl:out value="${room.roomDesign.name[lang]}" />
-				<br />
-				<jstl:out value="${room.roomDesign.description[lang]}" />
-			</display:column>
+				<spring:message code="shelter.room.name" var="nameRoomTitle" />
+				<display:column title="${nameRoomTitle}">
+					<jstl:out value="${room.roomDesign.name[lang]}" />
+					<br />
+					<jstl:out value="${room.roomDesign.description[lang]}" />
+				</display:column>
 
-			<display:column title="">
-				<jstl:if
-					test="${room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
-					<jstl:if test="${room.roomDesign.food>0}">
-						<spring:message code="inventory.food" />: +${room.roomDesign.food}
-					</jstl:if>
-					<jstl:if test="${room.roomDesign.water>0}">
-						<spring:message code="inventory.water" />: +${room.roomDesign.water}
-					</jstl:if>
-					<jstl:if test="${room.roomDesign.metal>0}">
-						<spring:message code="inventory.metal" />: +${room.roomDesign.metal}
-					</jstl:if>
-					<jstl:if test="${room.roomDesign.wood>0}">
-						<spring:message code="inventory.wood" />: +${room.roomDesign.wood}
-					</jstl:if>
+				<display:column title="">
+					<jstl:if
+						test="${room.roomDesign[\"class\"].simpleName eq \"Barrack\"}">
+						<spring:message code="inventory.capacity" />: +${room.roomDesign.characterCapacity}
 				</jstl:if>
-				<jstl:if
-					test="${room.roomDesign[\"class\"].simpleName eq \"Barrack\"}">
-					<spring:message code="inventory.capacity" />: +${room.roomDesign.characterCapacity}
+					<jstl:if
+						test="${room.roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
+						<spring:message code="room.itemCapacity" />: +${room.roomDesign.itemCapacity}
 				</jstl:if>
-				<jstl:if
-					test="${room.roomDesign[\"class\"].simpleName eq \"Warehouse\"}">
-					<spring:message code="room.itemCapacity" />: +${room.roomDesign.itemCapacity}
-				</jstl:if>
-			</display:column>
+					<jstl:if
+						test="${room.roomDesign[\"class\"].simpleName eq \"ResourceRoom\"}">
+						<jstl:if test="${room.roomDesign.food>0}">
+							<spring:message code="room.food" />: +${room.roomDesign.food}/min
+						</jstl:if>
+						<jstl:if test="${room.roomDesign.water>0}">
+							<spring:message code="room.water" />: +${room.roomDesign.water}/min
+						</jstl:if>
+						<jstl:if test="${room.roomDesign.metal>0}">
+							<spring:message code="room.metal" />: +${room.roomDesign.metal}/min
+						</jstl:if>
+						<jstl:if test="${room.roomDesign.wood>0}">
+							<spring:message code="room.wood" />: +${room.roomDesign.wood}/min
+						</jstl:if>
+					</jstl:if>
+					<jstl:if
+						test="${room.roomDesign[\"class\"].simpleName eq \"RestorationRoom\"}">
+						<jstl:if test="${room.roomDesign.health>0}">
+							<spring:message code="room.health" />: +${room.roomDesign.health}/min
+						</jstl:if>
+						<jstl:if test="${room.roomDesign.food>0}">
+							<spring:message code="room.restored.food" />: +${room.roomDesign.food}/min
+						</jstl:if>
+						<jstl:if test="${room.roomDesign.water>0}">
+							<spring:message code="room.restored.water" />: +${room.roomDesign.water}/min
+						</jstl:if>
+					</jstl:if>
+				</display:column>
 
-			<%-- 			<spring:message code="shelter.room.resistance" --%>
-			<%-- 				var="resistanceRoomTitle" /> --%>
-			<%-- 			<display:column title="${resistanceRoomTitle}"> --%>
-			<%-- 				<jstl:out --%>
-			<%-- 					value="${(room.resistance/room.roomDesign.maxResistance)*10}%" /> --%>
-			<!-- 				<div class="ratio element"> -->
-			<!-- 					<div class="progress progress-striped active" aria-valuemin="0"> -->
-			<!-- 						<div class="bar" -->
-			<%-- 							style="width: ${(room.resistance/room.roomDesign.maxResistance)*100}%;"> --%>
-			<%-- 							<jstl:out --%>
-			<%-- 								value="${(room.resistance/room.roomDesign.maxResistance)*100}%" /> --%>
-			<!-- 						</div> -->
-			<!-- 					</div> -->
-			<!-- 				</div> -->
-			<%-- 			</display:column> --%>
-
-			<display:column>
-				<jstl:if test="${owner}">
-					<a href="room/player/delete.do?roomId=${room.id}">
-						<button class="btn"
-							onclick="return confirm('<spring:message code="shelter.room.delete.confirm"/>')">
-							<spring:message code="shelter.room.delete" />
-						</button>
-					</a>
-				</jstl:if>
-			</display:column>
-		</display:table>
+				<display:column>
+					<jstl:if test="${owner}">
+						<a href="room/player/delete.do?roomId=${room.id}">
+							<button class="btn"
+								onclick="return confirm('<spring:message code="shelter.room.delete.confirm"/>')">
+								<spring:message code="shelter.room.delete" />
+							</button>
+						</a>
+					</jstl:if>
+				</display:column>
+			</display:table>
+		</jstl:if>
+		<br />
 		<jstl:if test="${owner}">
 			<acme:button url="room/player/create.do" code="shelter.room.create" />
 		</jstl:if>
 	</div>
+
+
 </security:authorize>
 
