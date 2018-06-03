@@ -108,31 +108,42 @@ public class MovePlayerController extends AbstractController {
 
 			for (final domain.Character character : characters) {
 				isInMission = character.getCurrentlyInGatheringMission();
-				if (isInMission)
+				if (isInMission) {
 					break;
+				}
 			}
 
 			if (inventory.getFood() >= designerConfiguration.getMovingFood() && inventory.getMetal() >= designerConfiguration.getMovingMetal() && inventory.getWater() >= designerConfiguration.getMovingWater()
-				&& inventory.getWood() >= designerConfiguration.getMovingWood() && currentMove == null && !isAttacking && !isInMission)
+				&& inventory.getWood() >= designerConfiguration.getMovingWood() && currentMove == null && !isAttacking && !isInMission) {
 				result = this.createEditModelAndView(move, "move.confirm");
-			else {
-				if (currentMove != null)
+				result.addObject("requiredFood", designerConfiguration.getMovingFood());
+				result.addObject("requiredWater", designerConfiguration.getMovingWater());
+				result.addObject("requiredMetal", designerConfiguration.getMovingMetal());
+				result.addObject("requiredWood", designerConfiguration.getMovingWood());
+			} else {
+				if (currentMove != null) {
 					result = this.createEditModelAndView(move, "move.moving.error");
-				else if (isAttacking)
+				} else if (isAttacking) {
 					result = this.createEditModelAndView(move, "move.attacking.error");
-				else if (isInMission)
+				} else if (isInMission) {
 					result = this.createEditModelAndView(move, "move.mission.error");
-				else
+				} else {
 					result = this.createEditModelAndView(move, "move.resources.error");
 
+					result.addObject("requiredFood", designerConfiguration.getMovingFood());
+					result.addObject("requiredWater", designerConfiguration.getMovingWater());
+					result.addObject("requiredMetal", designerConfiguration.getMovingMetal());
+					result.addObject("requiredWood", designerConfiguration.getMovingWood());
+				}
 				result.addObject("error", true);
 			}
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have shelter"))
+			if (oops.getMessage().contains("Not have shelter")) {
 				result = new ModelAndView("redirect:/shelter/player/create.do");
-			else
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 
 		return result;
@@ -168,10 +179,11 @@ public class MovePlayerController extends AbstractController {
 			result = new ModelAndView("redirect:/shelter/player/display.do");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("Not have shelter"))
+			if (oops.getMessage().contains("Not have shelter")) {
 				result = new ModelAndView("redirect:/shelter/player/create.do");
-			else
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 
 		return result;

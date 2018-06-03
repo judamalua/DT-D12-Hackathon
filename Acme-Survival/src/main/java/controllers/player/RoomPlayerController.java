@@ -121,8 +121,9 @@ public class RoomPlayerController extends AbstractController {
 			} else if (oops.getMessage().contains("You have a lot of objects")) {
 				result = new ModelAndView("redirect:shelter/player/display.do");
 				result.addObject("message", "shelter.objects.error");
-			} else
-				result = new ModelAndView("redirect:misc/403");
+			} else {
+				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 		return result;
 	}
@@ -145,18 +146,21 @@ public class RoomPlayerController extends AbstractController {
 			roomDesign = this.roomDesignService.findOne(Integer.parseInt(roomDesignId));
 			if (roomDesign.getCostMetal() <= inventory.getMetal() && roomDesign.getCostWood() <= inventory.getWood()) {
 				result = roomDesign.getCostWood() + "," + roomDesign.getCostMetal();
-				if (roomDesign instanceof Barrack)
+				if (roomDesign instanceof Barrack) {
 					result += ",0,0,0,0,0," + ((Barrack) roomDesign).getCharacterCapacity() + ",0";
-				else if (roomDesign instanceof RestorationRoom)
+				} else if (roomDesign instanceof RestorationRoom) {
 					result += "," + ((RestorationRoom) roomDesign).getHealth() + "," + ((RestorationRoom) roomDesign).getFood() + "," + ((RestorationRoom) roomDesign).getWater() + ",0,0,0,0";
-				else if (roomDesign instanceof ResourceRoom)
+				} else if (roomDesign instanceof ResourceRoom) {
 					result += ",0," + ((ResourceRoom) roomDesign).getFood() + "," + ((ResourceRoom) roomDesign).getWater() + "," + ((ResourceRoom) roomDesign).getMetal() + "," + ((ResourceRoom) roomDesign).getWood() + ",0,0";
-				else if (roomDesign instanceof Warehouse)
+				} else if (roomDesign instanceof Warehouse) {
 					result += ",0,0,0,0,0,0," + ((Warehouse) roomDesign).getItemCapacity();
-			} else
+				}
+			} else {
 				result = "error";
-		} else
+			}
+		} else {
 			result = "";
+		}
 		return result;
 	}
 
@@ -187,9 +191,11 @@ public class RoomPlayerController extends AbstractController {
 			shelter = this.shelterService.findShelterByPlayer(player.getId());
 			rooms = this.roomService.findRoomsByShelter(shelter.getId(), pageable);
 
-			for (final Room r : rooms.getContent())
-				if (this.characterService.findCharactersByRoom(r.getId()).size() > r.getRoomDesign().getMaxCapacityCharacters())
+			for (final Room r : rooms.getContent()) {
+				if (this.characterService.findCharactersByRoom(r.getId()).size() > r.getRoomDesign().getMaxCapacityCharacters()) {
 					rooms.getContent().remove(r);
+				}
+			}
 
 			result.addObject("rooms", rooms.getContent());
 			result.addObject("page", page);
@@ -212,20 +218,22 @@ public class RoomPlayerController extends AbstractController {
 			room = this.roomService.reconstruct(room, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(sendedRoom, "room.params.error");
-		else
+		} else {
 			try {
 				Assert.notNull(room.getRoomDesign());
 				this.roomService.save(room);
 				result = new ModelAndView("redirect:/shelter/player/display.do");
 
 			} catch (final Throwable oops) {
-				if (oops.getMessage().contains("Not enough resources"))
+				if (oops.getMessage().contains("Not enough resources")) {
 					result = this.createEditModelAndView(room, "room.resources.error");
-				else
+				} else {
 					result = this.createEditModelAndView(room, "room.commit.error");
+				}
 			}
+		}
 
 		return result;
 	}

@@ -26,6 +26,7 @@ import services.MessageService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Message;
+import domain.Player;
 
 @Controller
 @RequestMapping("/message/actor")
@@ -86,6 +87,7 @@ public class MessageActorController extends AbstractController {
 	public ModelAndView updateUser(@ModelAttribute("messageForm") Message messageForm, final BindingResult binding, final RedirectAttributes redirect) {
 		ModelAndView result;
 		Message savedMessage, sendedMessage = null;
+		Actor actor;
 		try {
 			sendedMessage = messageForm;
 			messageForm = this.messageService.reconstruct(messageForm, binding);
@@ -99,6 +101,12 @@ public class MessageActorController extends AbstractController {
 			redirect.addFlashAttribute("message", "message.params.error");
 		} else {
 			try {
+				actor = this.actorService.findActorByPrincipal();
+
+				if (actor instanceof Player) {
+					Assert.isTrue(!messageForm.getThread().getForum().getStaff());
+				}
+
 				Assert.notNull(messageForm);
 				savedMessage = this.messageService.save(messageForm);
 				result = new ModelAndView("redirect:/message/list.do?threadId=" + savedMessage.getThread().getId());
