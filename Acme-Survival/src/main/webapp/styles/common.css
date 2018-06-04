@@ -38,6 +38,7 @@
 
 .plusLabel{
 	float:left;
+	font-weight: bold;
 }
 
 .plusElm{
@@ -51,22 +52,32 @@
 	height: 250px;
 }
 
-.refugeRooms{
+.shelterRooms{
 	float:left;
 	clear: both;
 	width: 100%;
 }
 .characterName{
 	text-align: center;
+	font-weight: bold;
 }
 
 .inventoryElm{
 	float:left;
+	text-align: center;
+	margin-right: 15px;
 }
 
+.displayShelter{
+	margin-left: 200px;
+}
 .error {
 	color: red;
 	font-weight: bolder;
+	background-color: #FFDCDC;
+	padding: 1%;
+	display:block;
+	text-align: center;
 }
 
 .lang{
@@ -75,7 +86,10 @@
 
 .message {
 	color: red;
-	font-weight: bolder;
+	font-weight: bold;
+	padding: 1%;
+	background-color: #FFDCDC;
+	text-align: center;
 }
 
 .dropdown-menu > li > a:hover {
@@ -267,13 +281,16 @@ nav{
 }
 
 .red.darken-4 {
-    background-color: #023F02 !important;
+    background-color: black !important;
 }
 
 .dropdown-content {
     overflow-y:auto !important;
 }
-
+.chip{
+	background-color: black;
+	color:white;
+}
 .dropdown-content > li{
    background-color: #232323;
    color: white;

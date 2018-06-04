@@ -28,14 +28,14 @@ public class ForumServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test checks that the Player can Attack a Shelter that he already knows.
 	 */
 	@Test
 	public void testSaveForumPositive() {
 		Forum forum;
 		Player player;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
@@ -101,7 +101,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum forum;
 		int forumId;
 
-		super.authenticate("player2"); //The player knows the Refuge
+		super.authenticate("player2"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -116,7 +116,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum forum;
 		Player player;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
@@ -140,7 +140,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum father;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
@@ -168,7 +168,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum father, savedForum;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
@@ -230,7 +230,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum father, savedForum;
 		int forumId;
 
-		super.authenticate("player2"); //The player knows the Refuge
+		super.authenticate("player2"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);

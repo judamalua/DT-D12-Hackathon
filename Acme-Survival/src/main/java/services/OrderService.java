@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -67,6 +68,15 @@ public class OrderService {
 
 	}
 
+	public Collection<Collection<String>> findNumOrdersByActor() {
+		Collection<Collection<String>> result;
+
+		result = this.orderRepository.findNumOrdersByActor();
+
+		return result;
+
+	}
+
 	public void delete(final Order order) {
 
 		assert order != null;
@@ -78,4 +88,3 @@ public class OrderService {
 
 	}
 }
-

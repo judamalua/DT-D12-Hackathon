@@ -1,4 +1,3 @@
-
 <%--
  * display.jsp
  *
@@ -8,10 +7,8 @@
  * TDG Licence, a copy of which you may download from 
  * http://www.tdg-seville.info/License.html
  --%>
-
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -80,9 +77,9 @@
        <jstl:if test="${fn:length(notification.events) eq 0}">
        	<spring:message code = "notification.modal.event.noEvent"/>
        </jstl:if>
-       <jstl:if test="${notification.foundRefuge}">
+       <jstl:if test="${notification.foundShelter}">
        <br/>
-       <spring:message code = "notification.modal.foundRefuge"/>
+       <spring:message code = "notification.modal.foundShelter"/>
        </jstl:if>
     </div>
     <div class="modal-footer">

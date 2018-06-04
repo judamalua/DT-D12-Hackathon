@@ -19,4 +19,7 @@ public interface ThreadRepository extends JpaRepository<Thread, Integer> {
 
 	@Query("select t from Thread t where t.forum.id=?1")
 	Page<Thread> findThreadsByForum(int forumId, Pageable pageable);
+
+	@Query("select t.actor.name  ,count(t) from Thread t group by t.actor")
+	Collection<Collection<String>> findNumThreadsByActor();
 }

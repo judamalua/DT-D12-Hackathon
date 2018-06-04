@@ -7,8 +7,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	">
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- User accounts -->
 
@@ -188,9 +187,7 @@
 		<property name="movingFood" value="5" />
 		<property name="movingWater" value="5" />
 		<property name="kmPerSecond" value="50000" />
-		<property name="foodWastedPerSecond" value="1" />
-		<property name="waterWastedPerSecond" value="1" />
-		<property name="refugeRecoverTime" value="1" />
+		<property name="shelterRecoverTime" value="1" />
 		<property name="waterFactorSteal" value="0.25" />
 		<property name="foodFactorSteal" value="0.25" />
 		<property name="metalFactorSteal" value="0.25" />
@@ -198,7 +195,7 @@
 		<property name="foodLostGatherFactor" value="2" />
 		<property name="waterLostGatherFactor" value="1" />
 		<property name="experiencePerMinute" value="20" />
-		<property name="refugeDefaultCapacity" value="4" />
+		<property name="shelterDefaultCapacity" value="4" />
 		<property name="initialFood" value="4" />
 		<property name="initialWater" value="4" />
 		<property name="initialWood" value="4" />
@@ -208,9 +205,10 @@
 		<property name="maxInventoryWood" value="20" />
 		<property name="maxInventoryMetal" value="20" />
 		<property name="numInitialCharacters" value="3" />
-		<property name="refugeFindingProbability" value="0.1" />
-		<property name="refugeFindingMinuteAugmentProbability" value="90" />
-		
+		<property name="shelterFindingProbability" value="0.1" />
+		<property name="shelterFindingMinuteAugmentProbability"
+			value="90" />
+
 	</bean>
 
 	<!-- %%%% Payers %%%% -->
@@ -222,9 +220,9 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
-				<ref bean="Refuge2" />
+				<ref bean="Shelter2" />
 			</list>
 		</property>
 		<property name="userAccount" ref="UserAccount6" />
@@ -238,7 +236,7 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
 			</list>
 		</property>
@@ -253,7 +251,7 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="657894123" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
 			</list>
 		</property>
@@ -268,7 +266,7 @@
 		<property name="avatar"
 			value="https://image.freepik.com/free-icon/male-user-shadow_318-34042.jpg" />
 		<property name="phoneNumber" value="666555222" />
-		<property name="refuges">
+		<property name="shelters">
 			<list>
 			</list>
 		</property>
@@ -309,7 +307,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="0" />
 		<property name="maxCapacityCharacters" value="1" />
@@ -349,7 +346,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="0" />
 		<property name="maxCapacityCharacters" value="1" />
@@ -369,22 +365,22 @@
 	</bean>
 
 	<bean id="Forum2" class="domain.Forum">
-		<property name="name" value="Forum 2" />
-		<property name="description" value="Description Forum 2" />
+		<property name="name" value="Support forum" />
+		<property name="description" value="Support forum, write here your suggestions" />
 		<property name="image"
 			value="http://4.bp.blogspot.com/-YoA65hHHuqA/VV_aIDXFdgI/AAAAAAAAAUg/1CzS4dKqn54/s1600/foro.jpg" />
-		<property name="staff" value="true" />
-		<property name="support" value="false" />
+		<property name="staff" value="false" />
+		<property name="support" value="true" />
 		<property name="owner" ref="Admin1" />
 	</bean>
 
 	<bean id="Forum3" class="domain.Forum">
-		<property name="name" value="Forum 3" />
-		<property name="description" value="Description Forum 3" />
+		<property name="name" value="Staff forum" />
+		<property name="description" value="Staff forum 3, only personal" />
 		<property name="image"
 			value="https://pbs.twimg.com/profile_images/796057953359032320/eMJZCPTE.jpg" />
-		<property name="staff" value="false" />
-		<property name="support" value="true" />
+		<property name="staff" value="true" />
+		<property name="support" value="false" />
 		<property name="owner" ref="Admin2" />
 	</bean>
 
@@ -397,9 +393,54 @@
 		<property name="support" value="false" />
 		<property name="owner" ref="Admin2" />
 	</bean>
+	<bean id="Forum5" class="domain.Forum">
+		<property name="name" value="Forum 5" />
+		<property name="description" value="Description Forum 5" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum6" class="domain.Forum">
+		<property name="name" value="Forum 6" />
+		<property name="description" value="Description Forum 6" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum7" class="domain.Forum">
+		<property name="name" value="Forum 7" />
+		<property name="description" value="Description Forum 7" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum8" class="domain.Forum">
+		<property name="name" value="Forum 8" />
+		<property name="description" value="Description Forum 8" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
+	<bean id="Forum9" class="domain.Forum">
+		<property name="name" value="Forum 9" />
+		<property name="description" value="Description Forum 9" />
+		<property name="image"
+			value="https://tecnologia.love/wp-content/uploads/2014/05/foro.jpg" />
+		<property name="staff" value="false" />
+		<property name="support" value="false" />
+		<property name="owner" ref="Admin1" />
+	</bean>
 
-	<!-- %%%%%% domain.Refuge %%%%%% -->
-	<bean id="Refuge1" class="domain.Refuge">
+	<!-- %%%%%% domain.Shelter %%%%%% -->
+	<bean id="Shelter1" class="domain.Shelter">
 		<property name="code" value="WDJjfy6D02" />
 		<property name="name" value="Reguge 1" />
 		<property name="momentOfCreation" value="2018/04/12 00:00" />
@@ -408,9 +449,9 @@
 		<property name="gpsCoordinates" value="41.18837169235602,-4.973904414537174" />
 	</bean>
 
-	<bean id="Refuge2" class="domain.Refuge">
+	<bean id="Shelter2" class="domain.Shelter">
 		<property name="code" value="WDJj786D02" />
-		<property name="name" value="Refuge 101" />
+		<property name="name" value="Shelter 101" />
 		<property name="momentOfCreation" value="2018/04/12 00:00" />
 		<property name="player" ref="Player3" />
 		<property name="location" ref="Location2" />
@@ -429,12 +470,12 @@
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
 		<property name="male" value="true" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="currentlyInGatheringMission" value="false" />
 		<property name="gatherNotificated" value="true" />
-
+		<property name="item" ref="Item6" />
 	</bean>
-	
+
 	<bean id="Character2" class="domain.Character">
 		<property name="capacity" value="12" />
 		<property name="luck" value="7" />
@@ -446,7 +487,7 @@
 		<property name="level" value="1" />
 		<property name="experience" value="325" />
 		<property name="male" value="true" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="currentlyInGatheringMission" value="false" />
 		<property name="gatherNotificated" value="true" />
 
@@ -454,65 +495,53 @@
 
 	<!-- %%%%%% domain.Room %%%%%% -->
 	<bean id="Room1" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room2" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room3" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room4" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room5" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room6" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 
 
 	<bean id="Room7" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room8" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room9" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room10" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room11" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 	<bean id="Room12" class="domain.Room">
-		<property name="resistance" value="100" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 		<property name="RoomDesign" ref="RoomDesign4" />
 	</bean>
 
@@ -520,35 +549,35 @@
 	<!-- %%%%%% domain.Item %%%%%% -->
 	<bean id="Item1" class="domain.Item">
 		<property name="equipped" value="false" />
-		<property name="tool" ref="Tool1" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="tool" ref="Tool2" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<bean id="Item2" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool2" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<bean id="Item3" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool3" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 	<bean id="Item4" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool4" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 	<bean id="Item5" class="domain.Item">
 		<property name="equipped" value="false" />
 		<property name="tool" ref="Tool5" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 	<bean id="Item6" class="domain.Item">
-		<property name="equipped" value="false" />
+		<property name="equipped" value="true" />
 		<property name="tool" ref="Tool6" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<!-- %%%%%% domain.Inventory %%%%%% -->
@@ -561,7 +590,7 @@
 		<property name="foodCapacity" value="30" />
 		<property name="woodCapacity" value="30" />
 		<property name="metalCapacity" value="30" />
-		<property name="refuge" ref="Refuge1" />
+		<property name="shelter" ref="Shelter1" />
 	</bean>
 
 	<bean id="Inventory2" class="domain.Inventory">
@@ -573,7 +602,7 @@
 		<property name="foodCapacity" value="30" />
 		<property name="woodCapacity" value="30" />
 		<property name="metalCapacity" value="30" />
-		<property name="refuge" ref="Refuge2" />
+		<property name="shelter" ref="Shelter2" />
 	</bean>
 
 	<!-- %%%%%% domain.Location %%%%%% -->
@@ -675,6 +704,38 @@
 		<property name="actor" ref="Admin2" />
 		<property name="forum" ref="Forum2" />
 	</bean>
+	<bean id="Thread5" class="domain.Thread">
+		<property name="name" value="Thread 5" />
+		<property name="tags">
+			<list>
+				<value>Tag1</value>
+				<value>Tag2</value>
+				<value>Tag3</value>
+				<value>Tag4</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
+	<bean id="Thread6" class="domain.Thread">
+		<property name="name" value="Thread 6" />
+		<property name="tags">
+			<list>
+				<value>Tag2</value>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
+	<bean id="Thread7" class="domain.Thread">
+		<property name="name" value="Thread 7" />
+		<property name="tags">
+			<list>
+			</list>
+		</property>
+		<property name="actor" ref="Admin2" />
+		<property name="forum" ref="Forum2" />
+	</bean>
 
 	<!-- %%%%%% domain.Message %%%%%% -->
 	<bean id="Message1" class="domain.Message">
@@ -709,30 +770,22 @@
 	<bean id="Slider1" class="domain.Slider">
 		<property name="title_en" value="Welcome to Acme Survival!" />
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
-		<property name="text_en" value="Example text 1" />
-		<property name="text_es" value="Texto de ejemplo 1" />
-		<property name="pictureUrl" value="https://i.imgur.com/tC3fSO1.png" />
+		<property name="text_en" value="Test yourself and survive" />
+		<property name="text_es" value="Pruebate y sobrevive" />
+		<property name="pictureUrl"
+			value="https://www.walldevil.com/wallpapers/w04/140775-apocalypse-city-post-apocalyptic-ruins.jpg" />
 		<property name="align" value="left" />
 	</bean>
 	<bean id="Slider2" class="domain.Slider">
 		<property name="title_en" value="Welcome to Acme Survival!" />
 		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
-		<property name="text_en" value="Example text 2" />
-		<property name="text_es" value="Texto de ejemplo 2" />
-		<property name="pictureUrl"
-			value="https://c402277.ssl.cf1.rackcdn.com/photos/1579/images/hero_full/HI_115201.jpg?1345598092" />
+		<property name="text_en" value="Explore the world" />
+		<property name="text_es" value="Explora el mundo" />
+		<property name="pictureUrl" value="https://i.imgur.com/tC3fSO1.png" />
 		<property name="align" value="right" />
 	</bean>
-	<bean id="Slider3" class="domain.Slider">
-		<property name="title_en" value="Welcome to Acme Survival!" />
-		<property name="title_es" value="¡Bienvenid@ a Acme Survival!" />
-		<property name="text_en" value="Example text 3" />
-		<property name="text_es" value="Texto de ejemplo 3" />
-		<property name="pictureUrl"
-			value="https://i.ytimg.com/vi/bv7ogWz7zGQ/maxresdefault.jpg" />
-		<property name="align" value="center" />
-	</bean>
 
+	<!-- %%%%%% domain.LootTable %%%%%% -->
 	<bean id="LootTable1" class="domain.LootTable">
 		<property name="name" value="Bosque" />
 		<property name="finalMode" value="true" />
@@ -782,7 +835,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="LootTable4" class="domain.LootTable">
 		<property name="name" value="Pantano" />
 		<property name="finalMode" value="true" />
@@ -795,6 +848,19 @@
 			<list>
 				<ref bean="ProbabilityItem6" />
 				<ref bean="ProbabilityItem7" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="LootTable5" class="domain.LootTable">
+		<property name="name" value="Mazmorra" />
+		<property name="finalMode" value="false" />
+		<property name="probabilityEvents">
+			<list>
+			</list>
+		</property>
+		<property name="probabilityItems">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -816,11 +882,19 @@
 		<property name="value" value="0.6" />
 		<property name="event" ref="Event4" />
 	</bean>
+	<bean id="ProbabilityEventTest1" class="domain.ProbabilityEvent">
+		<property name="value" value="0.4" />
+		<property name="event" ref="Event4" />
+	</bean>
+	<bean id="ProbabilityEventTest2" class="domain.ProbabilityEvent">
+		<property name="value" value="0.4" />
+		<property name="event" ref="Event4" />
+	</bean>
 
 	<!-- %%%%%% domain.ProbabilityItem -->
 	<bean id="ProbabilityItem1" class="domain.ProbabilityItem">
 		<property name="value" value="0.4" />
-		<property name="itemDesign" ref="Tool1" />
+		<property name="itemDesign" ref="Tool2" />
 	</bean>
 	<bean id="ProbabilityItem2" class="domain.ProbabilityItem">
 		<property name="value" value="0.4" />
@@ -873,6 +947,14 @@
 	<bean id="ProbabilityItem14" class="domain.ProbabilityItem">
 		<property name="value" value="0.4" />
 		<property name="itemDesign" ref="Tool9" />
+	</bean>
+	<bean id="ProbabilityItemTest1" class="domain.ProbabilityItem">
+		<property name="value" value="0.4" />
+		<property name="itemDesign" ref="Resource6" />
+	</bean>
+	<bean id="ProbabilityItemTest2" class="domain.ProbabilityItem">
+		<property name="value" value="1" />
+		<property name="itemDesign" ref="Resource6" />
 	</bean>
 
 	<bean id="Event1" class="domain.Event">
@@ -1026,7 +1108,8 @@
 						<value>es</value>
 					</key>
 					<value>Es dificil pero te encuentras un almacén con un montón de
-						cosas.</value>
+						cosas.
+					</value>
 				</entry>
 			</map>
 		</property>
@@ -1036,7 +1119,7 @@
 		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 	</bean>
-	
+
 	<bean id="Event5" class="domain.Event">
 		<property name="name">
 			<map>
@@ -1060,13 +1143,17 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>You have found one of the best guns in this game, it is the Legendary Legolas´Bow</value>
+					<value>You have found one of the best guns in this game, it is the
+						Legendary Legolas´Bow
+					</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Has encontrado una de las armas más mortíferas del juego, El Arco de Legolas.</value>
+					<value>Has encontrado una de las armas más mortíferas del juego, El
+						Arco de Legolas.
+					</value>
 				</entry>
 			</map>
 		</property>
@@ -1076,6 +1163,46 @@
 		<property name="finalMode" value="true" />
 		<property name="findCharacter" value="false" />
 		<property name="itemDesign" ref="Tool12" />
+	</bean>
+	<bean id="Event6" class="domain.Event">
+		<property name="name">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>Healer plant</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Planta curativa</value>
+				</entry>
+			</map>
+		</property>
+		<property name="description">
+			<map>
+				<entry>
+					<key>
+						<value>en</value>
+					</key>
+					<value>You found a healer plant
+					</value>
+				</entry>
+				<entry>
+					<key>
+						<value>es</value>
+					</key>
+					<value>Encontraste una planta curativa</value>
+				</entry>
+			</map>
+		</property>
+		<property name="health" value="10" />
+		<property name="water" value="1" />
+		<property name="food" value="2" />
+		<property name="finalMode" value="false" />
+		<property name="findCharacter" value="false" />
 	</bean>
 	<!-- %%%%% Tools %%%%% -->
 	<bean id="Tool1" class="domain.Tool">
@@ -1154,7 +1281,7 @@
 		</property>
 		<property name="imageUrl"
 			value="http://www.myiconfinder.com/uploads/iconsets/256-256-d074a5a83cb693e59484ec9cf62953ee-helmet.png" />
-		<property name="finalMode" value="false" />
+		<property name="finalMode" value="true" />
 		<property name="strength" value="5" />
 		<property name="luck" value="2" />
 		<property name="capacity" value="1" />
@@ -1167,13 +1294,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Axe</value>
+					<value>Common Axe</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Hacha</value>
+					<value>Hacha común</value>
 				</entry>
 			</map>
 		</property>
@@ -1193,7 +1320,8 @@
 				</entry>
 			</map>
 		</property>
-		<property name="imageUrl" value="https://i.pinimg.com/originals/fb/65/02/fb6502ed75c54f6966c803cd258e326a.png" />
+		<property name="imageUrl"
+			value="https://i.pinimg.com/originals/fb/65/02/fb6502ed75c54f6966c803cd258e326a.png" />
 		<property name="finalMode" value="true" />
 		<property name="strength" value="4" />
 		<property name="luck" value="0" />
@@ -1415,13 +1543,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Saw</value>
+					<value>Saw of a gardener</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Sierra</value>
+					<value>Sierra de un jardinero</value>
 				</entry>
 			</map>
 		</property>
@@ -1448,7 +1576,7 @@
 		<property name="luck" value="2" />
 		<property name="capacity" value="0" />
 	</bean>
-	
+
 	<bean id="Tool10" class="domain.Tool">
 		<property name="name">
 			<map>
@@ -1489,7 +1617,7 @@
 		<property name="luck" value="2" />
 		<property name="capacity" value="0" />
 	</bean>
-	
+
 	<bean id="Tool11" class="domain.Tool">
 		<property name="name">
 			<map>
@@ -1497,13 +1625,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>M4A1</value>
+					<value>M4A1 weapon</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>M4A1</value>
+					<value>M4A1 weapon</value>
 				</entry>
 			</map>
 		</property>
@@ -1530,7 +1658,7 @@
 		<property name="luck" value="3" />
 		<property name="capacity" value="0" />
 	</bean>
-	
+
 	<bean id="Tool12" class="domain.Tool">
 		<property name="name">
 			<map>
@@ -1554,13 +1682,17 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Epic and strong bow that the Hero Legolas carry in Lord Of The Rings filsm</value>
+					<value>Epic and strong bow that the Hero Legolas carry in Lord Of
+						The Rings filsm
+					</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Arco élfico de Legolas, protagonista y heroe de la saga del Señor de los Anillos</value>
+					<value>Arco élfico de Legolas, protagonista y heroe de la saga del
+						Señor de los Anillos
+					</value>
 				</entry>
 			</map>
 		</property>
@@ -1571,8 +1703,8 @@
 		<property name="luck" value="5" />
 		<property name="capacity" value="1" />
 	</bean>
-	
-	
+
+
 
 	<!-- %%%%%% domain.Product %%%%%% -->
 	<bean id="Product1" class="domain.Product">
@@ -1690,7 +1822,7 @@
 			</map>
 		</property>
 		<property name="pictureUrl"
-			value="http://www.mimontevideo.com/wp-content/uploads/2016/07/Cara-Feliz.fw_.png" />
+			value="https://www.w3schools.com/howto/img_fjords.jpg" />
 		<property name="price" value="99399.00" />
 		<property name="finalMode" value="false" />
 		<property name="discontinued" value="false" />
@@ -1869,13 +2001,13 @@
 					<key>
 						<value>en</value>
 					</key>
-					<value>Agua con mala pinta</value>
+					<value>Water with bad looking</value>
 				</entry>
 				<entry>
 					<key>
 						<value>es</value>
 					</key>
-					<value>Water with bad looking</value>
+					<value>Agua con mala pinta</value>
 				</entry>
 			</map>
 		</property>
@@ -2198,7 +2330,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="5" />
 		<property name="costMetal" value="5" />
 		<property name="finalMode" value="true" />
@@ -2221,7 +2352,7 @@
 					<key>
 						<value>es</value>
 					</key>
-					<value>Little bed</value>
+					<value>Cama pequeña</value>
 				</entry>
 			</map>
 		</property>
@@ -2241,7 +2372,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="1" />
 		<property name="finalMode" value="true" />
@@ -2283,7 +2413,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="3" />
 		<property name="finalMode" value="true" />
@@ -2327,7 +2456,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="1" />
 		<property name="costMetal" value="4" />
 		<property name="finalMode" value="true" />
@@ -2368,7 +2496,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="2" />
 		<property name="costMetal" value="2" />
 		<property name="finalMode" value="true" />
@@ -2408,7 +2535,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="4" />
 		<property name="costMetal" value="4" />
 		<property name="finalMode" value="true" />
@@ -2449,7 +2575,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
@@ -2489,7 +2614,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
@@ -2529,7 +2653,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />
@@ -2571,7 +2694,6 @@
 				</entry>
 			</map>
 		</property>
-		<property name="maxResistance" value="10" />
 		<property name="costWood" value="0" />
 		<property name="costMetal" value="0" />
 		<property name="finalMode" value="false" />

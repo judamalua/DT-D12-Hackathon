@@ -27,12 +27,33 @@
 			<form:hidden path="id" />
 			<form:hidden path="version" />
 			<form:hidden path="location" />
-
+			<br />
+			<br />
+			<jstl:if
+				test="${(message eq \"move.confirm\") or (message eq \"move.resources.error\")}">
+				<div>
+					<b><spring:message code="move.requiredFood" /></b>: <strong><jstl:out
+							value="${requiredFood}" /></strong>
+				</div>
+				<div>
+					<b><spring:message code="move.requiredWater" /></b>: <strong><jstl:out
+							value="${requiredWater}" /></strong>
+				</div>
+				<div>
+					<b><spring:message code="move.requiredMetal" /></b>: <strong><jstl:out
+							value="${requiredMetal}" /></strong>
+				</div>
+				<div>
+					<b><spring:message code="move.requiredWood" /></b>: <strong><jstl:out
+							value="${requiredWood}" /></strong>
+				</div>
+			</jstl:if>
+			<br />
 			<jstl:if test="${!error and !isAttacking}">
 				<acme:submit name="confirm" code="move.save" />
 			</jstl:if>
 
-			<acme:cancel url="refuge/player/display.do" code="move.cancel" />
+			<acme:cancel url="shelter/player/display.do" code="move.cancel" />
 		</form:form>
 	</div>
 </div>

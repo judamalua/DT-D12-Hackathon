@@ -35,7 +35,7 @@ public class ItemServiceTest extends AbstractTest {
 	public ActorService		actorService;
 
 	@Autowired
-	public RefugeService	refugeService;
+	public ShelterService	shelterService;
 
 	@Autowired
 	public ItemService		itemService;

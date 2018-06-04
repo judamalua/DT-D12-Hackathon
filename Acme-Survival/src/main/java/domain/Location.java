@@ -8,6 +8,7 @@ import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -15,11 +16,15 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 
+import annotations.MapLength;
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "finalMode")
+})
 public class Location extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
@@ -33,6 +38,7 @@ public class Location extends DomainEntity {
 	private boolean				finalMode;
 
 
+	@MapLength(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml

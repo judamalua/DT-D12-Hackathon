@@ -32,12 +32,6 @@
 	
 	<acme:textbox code="player.phoneNumber" path="phoneNumber"/>
 	
-
-
-	
-	
-	
-	
 	<acme:textbox code="player.username" path="userAccount.username" required="true"/>
 
 	<acme:password code="player.password" path="userAccount.password" required="true"/>

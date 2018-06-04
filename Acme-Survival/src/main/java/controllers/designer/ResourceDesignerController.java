@@ -48,12 +48,13 @@ public class ResourceDesignerController extends AbstractController {
 	public ModelAndView edit(@ModelAttribute("itemDesign") Resource itemDesign, final BindingResult binding) {
 		ModelAndView result;
 		Configuration configuration;
+		Assert.isTrue(this.resourceService.findOne(itemDesign.getId()) == null || !this.resourceService.findOne(itemDesign.getId()).getFinalMode());
 		try {
 			itemDesign = this.resourceService.reconstruct(itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(itemDesign, "refuge.params.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.params.error");
 		else
 			try {
 				configuration = this.configurationService.findConfiguration();
@@ -84,7 +85,7 @@ public class ResourceDesignerController extends AbstractController {
 			result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + false + "&finalMode=" + itemDesign.getFinalMode());
 
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(itemDesign, "refuge.commit.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.commit.error");
 		}
 
 		return result;

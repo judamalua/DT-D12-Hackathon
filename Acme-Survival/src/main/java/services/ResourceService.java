@@ -85,7 +85,7 @@ public class ResourceService {
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
 		this.actorService.checkActorLogin();
-		Assert.isTrue(!resource.getFinalMode());
+		//Assert.isTrue(!resource.getFinalMode());
 
 		result = this.resourceRepository.save(resource);
 

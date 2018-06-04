@@ -24,9 +24,9 @@ import domain.Actor;
 import domain.Character;
 import domain.Inventory;
 import domain.Player;
-import domain.Refuge;
 import domain.RestorationRoom;
 import domain.Room;
+import domain.Shelter;
 
 @Service
 @Transactional
@@ -46,7 +46,7 @@ public class CharacterService {
 	private InventoryService	inventoryService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private ShelterService		shelterService;
 
 	@Autowired
 	private ItemService			itemService;
@@ -93,8 +93,9 @@ public class CharacterService {
 
 		result = this.characterRepository.findOne(characterId);
 
-		if (result != null && result.getRoom() != null && result.getRoom().getRoomDesign() instanceof RestorationRoom)
+		if (result != null && result.getRoom() != null && result.getRoom().getRoomDesign() instanceof RestorationRoom) {
 			result = this.updateStats(result);
+		}
 
 		return result;
 
@@ -146,8 +147,9 @@ public class CharacterService {
 		Assert.isTrue(this.characterRepository.exists(character.getId()));
 		Assert.isTrue(character.getCurrentHealth() == 0);
 
-		if (character.getItem() != null)
+		if (character.getItem() != null) {
 			this.itemService.delete(character.getItem());
+		}
 
 		this.characterRepository.delete(character);
 
@@ -198,7 +200,7 @@ public class CharacterService {
 	//			result.setLevel(character.getLevel());
 	//			result.setLuck(character.getLuck());
 	//			result.setName(character.getName());
-	//			result.setRefuge(character.getRefuge());
+	//			result.setShelter(character.getShelter());
 	//			result.setRoom(character.getRoom());
 	//			result.setStrength(character.getStrength());
 	//			result.setSurname(result.getSurname());
@@ -208,15 +210,15 @@ public class CharacterService {
 	//	}
 
 	/**
-	 * That method generate a random character,set it to a refuge and locate it in a room
+	 * That method generate a random character,set it to a shelter and locate it in a room
 	 * 
-	 * @param refugeId
+	 * @param shelterId
 	 * @return Character
 	 * @author Luis
 	 **/
-	public Character generateCharacter(final int refugeId) {
+	public Character generateCharacter(final int shelterId) {
 		Character character;
-		Refuge refuge;
+		Shelter shelter;
 		Faker faker;
 		final Random random = new Random();
 		int sexo;
@@ -224,13 +226,14 @@ public class CharacterService {
 		sexo = random.nextInt(2);
 		faker = new Faker();
 		character = this.create();
-		refuge = this.refugeService.findOne(refugeId);
+		shelter = this.shelterService.findOne(shelterId);
 		final String name = faker.gameOfThrones().character();
 
-		if (sexo == 0)
+		if (sexo == 0) {
 			character.setMale(true);
-		else
+		} else {
 			character.setMale(false);
+		}
 
 		character.setFullName(name);
 		character.setCurrentFood(100);
@@ -239,7 +242,7 @@ public class CharacterService {
 		character.setExperience(0);
 		character.setItem(null);
 		character.setLevel(1);
-		character.setRefuge(refuge);
+		character.setShelter(shelter);
 		character.setRoom(null);
 		character.setCurrentlyInGatheringMission(false);
 		character.setGatherNotificated(true);
@@ -260,7 +263,7 @@ public class CharacterService {
 		final List<Integer> properties = new ArrayList<Integer>();
 		final Random r = new Random();
 
-		for (int i = 1; i <= 3; i++)
+		for (int i = 1; i <= 3; i++) {
 			if ((i == 1)) {
 				final Integer property = r.nextInt(11) + 1;
 				properties.add(property);
@@ -276,6 +279,7 @@ public class CharacterService {
 				properties.add(last);
 				sum += last;
 			}
+		}
 		Assert.isTrue(sum == 30);
 
 		character.setCapacity(properties.get(0));
@@ -319,15 +323,17 @@ public class CharacterService {
 
 		//La experiencia para cada nivel se calcula (nivel^2*100) 
 		//ejemplo para alcanzar nivel 2(2*2*100 = 400 experiencia)
-		if (experience < (currentLevel + 1) * (currentLevel + 1) * 100)
+		if (experience < (currentLevel + 1) * (currentLevel + 1) * 100) {
 			finalLevel = currentLevel;
-		else
+		} else {
 			for (int i = currentLevel + 1; i <= 100; i++) {
 				finalLevel = i;
 				this.LevelUP(character);
-				if (i == 100 || experience < (i + 1) * (i + 1) * 100)
+				if (i == 100 || experience < (i + 1) * (i + 1) * 100) {
 					break;
+				}
 			}
+		}
 		character.setLevel(finalLevel);
 
 		Assert.isTrue(character.getLevel() == 100 || ((character.getLevel() + 1) * (character.getLevel() + 1) * 100) > character.getExperience());
@@ -344,7 +350,7 @@ public class CharacterService {
 		final List<Integer> properties = new ArrayList<Integer>();
 		final Random r = new Random();
 
-		for (int i = 1; i <= 3; i++)
+		for (int i = 1; i <= 3; i++) {
 			if ((i == 1)) {
 				final Integer property = r.nextInt(2) + 1;
 				properties.add(property);
@@ -360,6 +366,7 @@ public class CharacterService {
 				properties.add(last);
 				sum += last;
 			}
+		}
 		Assert.isTrue(sum == 5);
 
 		character.setCapacity(character.getCapacity() + properties.get(0));
@@ -368,18 +375,18 @@ public class CharacterService {
 
 	}
 
-	public Collection<Character> findCharactersByRefuge(final int refugeId) {
+	public Collection<Character> findCharactersByShelter(final int shelterId) {
 		Collection<Character> result;
 
-		result = this.characterRepository.findCharactersByRefuge(refugeId);
+		result = this.characterRepository.findCharactersByShelter(shelterId);
 
 		return result;
 	}
 
-	public Page<Character> findCharactersByRefugePageable(final int refugeId, final Pageable pageable) {
+	public Page<Character> findCharactersByShelterPageable(final int shelterId, final Pageable pageable) {
 		Page<Character> result;
 
-		result = this.characterRepository.findCharactersByRefugePageable(refugeId, pageable);
+		result = this.characterRepository.findCharactersByShelterPageable(shelterId, pageable);
 
 		return result;
 	}
@@ -435,16 +442,16 @@ public class CharacterService {
 	}
 
 	/**
-	 * This query returns the character of a refuge that are currently doing a gathering mission
+	 * This query returns the character of a shelter that are currently doing a gathering mission
 	 * 
-	 * @param refugeId
+	 * @param shelterId
 	 * @return
 	 * @author Juanmi
 	 */
-	public Collection<Character> findCharactersCurrentlyInMission(final int refugeId) {
+	public Collection<Character> findCharactersCurrentlyInMission(final int shelterId) {
 		Collection<Character> result;
 
-		result = this.characterRepository.findCharactersCurrentlyInMission(refugeId);
+		result = this.characterRepository.findCharactersCurrentlyInMission(shelterId);
 
 		return result;
 	}
@@ -460,53 +467,72 @@ public class CharacterService {
 		Double food, water, health;
 		Date entrance, currentDate;
 		long minutes;
+		Collection<Character> characters;
 
 		room = character.getRoom();
 
 		restorationRoom = (RestorationRoom) room.getRoomDesign();
 
-		inventory = this.inventoryService.findInventoryByRefuge(character.getRefuge().getId());
+		inventory = this.inventoryService.findInventoryByShelter(character.getShelter().getId());
 
 		entrance = character.getRoomEntrance();
 		currentDate = new Date();
 
 		minutes = TimeUnit.MILLISECONDS.toMinutes(currentDate.getTime() - entrance.getTime());
+		characters = this.characterRepository.findCharactersCurrentlyInMission(character.getShelter().getId());
 
-		food = restorationRoom.getFood() * minutes;
-		health = restorationRoom.getHealth() * minutes;
-		water = restorationRoom.getWater() * minutes;
+		if (character.getCurrentlyInGatheringMission() || characters.contains(character)) {
+			minutes = 0;
+		}
 
-		if (character.getCurrentFood() + food < 100) {
-			character.setCurrentFood((int) (character.getCurrentFood() + food));
-			inventory.setFood(inventory.getFood() - food);
-		} else
-			character.setCurrentFood(100);
+		if (minutes > 0) {
+			food = restorationRoom.getFood() * minutes;
+			health = restorationRoom.getHealth() * minutes;
+			water = restorationRoom.getWater() * minutes;
 
-		if (character.getCurrentHealth() + health < 100)
-			character.setCurrentHealth((int) (character.getCurrentHealth() + health));
-		else
-			character.setCurrentHealth(100);
+			if (character.getCurrentFood() + food < 100) {
+				character.setCurrentFood((int) (character.getCurrentFood() + food));
+				inventory.setFood(inventory.getFood() - food);
+			} else {
+				character.setCurrentFood(100);
+			}
 
-		if (character.getCurrentWater() + water < 100) {
-			character.setCurrentWater((int) (character.getCurrentWater() + water));
-			inventory.setWater(inventory.getWater() - water);
-		} else
-			character.setCurrentWater(100);
+			if (character.getCurrentHealth() + health < 100) {
+				character.setCurrentHealth((int) (character.getCurrentHealth() + health));
+			} else {
+				character.setCurrentHealth(100);
+			}
 
-		if (minutes > 0)
-			character.setRoomEntrance(currentDate);
+			if (character.getCurrentWater() + water < 100) {
+				character.setCurrentWater((int) (character.getCurrentWater() + water));
+				inventory.setWater(inventory.getWater() - water);
+			} else {
+				character.setCurrentWater(100);
+			}
 
-		this.inventoryService.save(inventory);
+			if (minutes > 0) {
+				character.setRoomEntrance(currentDate);
+			}
 
+			this.inventoryService.save(inventory);
+		}
 		result = this.save(character);
 
 		return result;
 	}
 
-	public Collection<Character> findCharactersNotNotificatedOfGather(final int refugeId) {
+	public Collection<Character> findCharactersNotNotificatedOfGather(final int shelterId) {
 		Collection<Character> result;
 
-		result = this.characterRepository.findCharactersNotNotificatedOfGather(refugeId);
+		result = this.characterRepository.findCharactersNotNotificatedOfGather(shelterId);
+
+		return result;
+	}
+
+	public String findNumCharacters() {
+		String result;
+
+		result = this.characterRepository.findNumCharacters();
 
 		return result;
 	}

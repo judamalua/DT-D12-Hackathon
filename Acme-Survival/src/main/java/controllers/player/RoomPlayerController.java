@@ -30,20 +30,20 @@ import services.ActorService;
 import services.CharacterService;
 import services.ConfigurationService;
 import services.InventoryService;
-import services.RefugeService;
 import services.RoomDesignService;
 import services.RoomService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Barrack;
 import domain.Configuration;
 import domain.Inventory;
 import domain.Player;
-import domain.Refuge;
 import domain.ResourceRoom;
 import domain.RestorationRoom;
 import domain.Room;
 import domain.RoomDesign;
+import domain.Shelter;
 import domain.Warehouse;
 
 @Controller
@@ -63,7 +63,7 @@ public class RoomPlayerController extends AbstractController {
 	private ConfigurationService	configurationService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private InventoryService		inventoryService;
@@ -112,17 +112,17 @@ public class RoomPlayerController extends AbstractController {
 
 			this.roomService.delete(room);
 
-			result = new ModelAndView("redirect:/refuge/player/display.do");
+			result = new ModelAndView("redirect:/shelter/player/display.do");
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("You not have space")) {
-				result = new ModelAndView("redirect:refuge/player/display.do");
-				result.addObject("message", "refuge.capacity.error");
+				result = new ModelAndView("redirect:shelter/player/display.do");
+				result.addObject("message", "shelter.capacity.error");
 			} else if (oops.getMessage().contains("You have a lot of objects")) {
-				result = new ModelAndView("redirect:refuge/player/display.do");
-				result.addObject("message", "refuge.objects.error");
+				result = new ModelAndView("redirect:shelter/player/display.do");
+				result.addObject("message", "shelter.objects.error");
 			} else {
-				result = new ModelAndView("redirect:misc/403");
+				result = new ModelAndView("redirect:/misc/403");
 			}
 		}
 		return result;
@@ -133,13 +133,13 @@ public class RoomPlayerController extends AbstractController {
 	String getResources(@RequestParam final String roomDesignId) {
 		String result;
 		RoomDesign roomDesign;
-		final Refuge refuge;
+		final Shelter shelter;
 		final Inventory inventory;
 		final Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+		shelter = this.shelterService.findShelterByPlayer(actor.getId());
+		inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
 
 		if (roomDesignId != null && roomDesignId != "" && !roomDesignId.equals("0")) {
 
@@ -167,7 +167,7 @@ public class RoomPlayerController extends AbstractController {
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the rooms of a player refuge
+	 * That method returns a model and view with the rooms of a player shelter
 	 * 
 	 * @param page
 	 * 
@@ -178,7 +178,7 @@ public class RoomPlayerController extends AbstractController {
 	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final int characterId) {
 		ModelAndView result;
 		final Page<Room> rooms;
-		Refuge refuge;
+		Shelter shelter;
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
@@ -188,8 +188,8 @@ public class RoomPlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			rooms = this.roomService.findRoomsByRefuge(refuge.getId(), pageable);
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			rooms = this.roomService.findRoomsByShelter(shelter.getId(), pageable);
 
 			for (final Room r : rooms.getContent()) {
 				if (this.characterService.findCharactersByRoom(r.getId()).size() > r.getRoomDesign().getMaxCapacityCharacters()) {
@@ -224,7 +224,7 @@ public class RoomPlayerController extends AbstractController {
 			try {
 				Assert.notNull(room.getRoomDesign());
 				this.roomService.save(room);
-				result = new ModelAndView("redirect:/refuge/player/display.do");
+				result = new ModelAndView("redirect:/shelter/player/display.do");
 
 			} catch (final Throwable oops) {
 				if (oops.getMessage().contains("Not enough resources")) {

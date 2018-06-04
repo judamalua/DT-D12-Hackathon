@@ -28,7 +28,7 @@ import services.InventoryService;
 import services.ItemService;
 import services.MoveService;
 import services.NotificationService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Character;
 import domain.Configuration;
@@ -39,8 +39,8 @@ import domain.ItemDesign;
 import domain.Move;
 import domain.Notification;
 import domain.Player;
-import domain.Refuge;
 import domain.Resource;
+import domain.Shelter;
 import domain.Tool;
 
 @Controller
@@ -57,7 +57,7 @@ public class GatherPlayerController extends AbstractController {
 	private ConfigurationService	configurationService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private MoveService				moveService;
@@ -91,17 +91,18 @@ public class GatherPlayerController extends AbstractController {
 		Gather gather;
 		Move move;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			move = this.moveService.findCurrentMoveByShelter(shelter.getId());
 
 			gather = this.gatherService.create(locationId);
 			result = this.createEditModelAndView(gather);
 			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
-			if (move != null)
+			if (move != null) {
 				result = result.addObject("isMoving", true);
+			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -114,26 +115,30 @@ public class GatherPlayerController extends AbstractController {
 		ModelAndView result;
 		Move move;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
+		Character character;
 
 		try {
 			gather = this.gatherService.reconstruct(gather, binding);
 		} catch (final Throwable oops) {
 		}
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(gather, "gather.params.error");
-		else
+		} else {
 			try {
 				player = (Player) this.actorService.findActorByPrincipal();
-				refuge = this.refugeService.findRefugeByPlayer(player.getId());
-				move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
+				shelter = this.shelterService.findShelterByPlayer(player.getId());
+				move = this.moveService.findCurrentMoveByShelter(shelter.getId());
 				Assert.isTrue(move == null);
+				character = this.characterService.updateStats(gather.getCharacter());
+				gather.setCharacter(character);
 
 				gather = this.gatherService.save(gather);
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
 				result = new ModelAndView("redirect:/misc/403");
 			}
+		}
 		return result;
 	}
 
@@ -178,37 +183,39 @@ public class GatherPlayerController extends AbstractController {
 	public ModelAndView arsenal(@RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(required = true) final Integer notificationId, @RequestParam(defaultValue = "false", required = false) final Boolean failedSelection) {
 		ModelAndView result;
 		Collection<ItemDesign> items;
-		Refuge refuge;
+		Shelter shelter;
 		Character character;
 		final Collection<Item> tools = new ArrayList<Item>();
 		final Collection<Resource> resources = new ArrayList<Resource>();
 		Item item;
 		Player player;
 		Inventory inventory;
-		int currentCapacityRefuge;
+		int currentCapacityShelter;
 		int totalTools;
 		final Notification notification;
 
 		try {
+			player = (Player) this.actorService.findActorByPrincipal();
 
 			notification = this.notificationService.findOne(notificationId);
+			Assert.isTrue(notification.getPlayer().equals(player));
 			character = this.characterService.findOne(notification.getCharacterId());
 			if (character.getCurrentHealth() == 0) {
 				this.notificationService.delete(notification);
 				this.gatherService.delete(notification.getGather());
 				this.characterService.characterRIP(character);
-				result = new ModelAndView("redirect:/refuge/player/display.do");
+				result = new ModelAndView("redirect:/shelter/player/display.do");
 
 			} else {
 				result = new ModelAndView("gather/foundItems");
-				player = (Player) this.actorService.findActorByPrincipal();
-				refuge = this.refugeService.findRefugeByPlayer(player.getId());
-				inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+
+				shelter = this.shelterService.findShelterByPlayer(player.getId());
+				inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
 				items = notification.getItemDesigns();
 
 				Assert.isTrue(items.size() <= character.getCapacity());
 
-				for (final ItemDesign itemDesign : items)
+				for (final ItemDesign itemDesign : items) {
 					if (itemDesign instanceof Tool) {
 						item = this.itemService.create();
 						item.setEquipped(false);
@@ -223,13 +230,14 @@ public class GatherPlayerController extends AbstractController {
 						this.inventoryService.save(inventory);
 
 					}
-				currentCapacityRefuge = this.refugeService.getCurrentCapacity(refuge);
+				}
+				currentCapacityShelter = this.shelterService.getCurrentCapacity(shelter);
 				totalTools = tools.size();
 
 				result.addObject("failedSelection", failedSelection);
 				result.addObject("items", tools);
 				result.addObject("resources", resources);
-				result.addObject("currentCapacityRefuge", currentCapacityRefuge);
+				result.addObject("currentCapacityShelter", currentCapacityShelter);
 				result.addObject("totalTools", totalTools);
 				result.addObject("notificationId", notificationId);
 			}
@@ -246,16 +254,17 @@ public class GatherPlayerController extends AbstractController {
 		final Notification notification;
 		final Player player;
 		Gather gather;
-		final Refuge refuge;
+		final Shelter shelter;
 		final int currentCapacity;
 		final List<Integer> itemsToSave = new ArrayList<Integer>();
 		final List<Integer> itemsToRemove = new ArrayList<Integer>();
 		String[] itemsIds;
 		String[] notItemsIds;
+		Collection<ItemDesign> resources;
+		final Inventory inventory;
 
 		itemsSelected = itemsSelected.substring(1, itemsSelected.length() - 1);
 		itemsNotSelected = itemsNotSelected.substring(1, itemsNotSelected.length() - 1);
-		Collection<ItemDesign> resources;
 
 		itemsIds = itemsSelected.split(",");
 		notItemsIds = itemsNotSelected.split(",");
@@ -263,26 +272,29 @@ public class GatherPlayerController extends AbstractController {
 		try {
 
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			currentCapacity = this.refugeService.getCurrentCapacity(refuge);
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			currentCapacity = this.shelterService.getCurrentCapacity(shelter);
 			notification = this.notificationService.findOne(notificationId);
+			Assert.isTrue(notification.getPlayer().equals(player));
 			resources = notification.getItemDesigns();
-			final Inventory inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+			inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
 			gather = notification.getGather();
 			result = "notification/player/list.do";
 
-			for (final String al : itemsIds)
+			for (final String al : itemsIds) {
 				if (!al.equals("") && !(al.equals("\"\""))) {
 					final String s = al.substring(1, al.length() - 1);
 					final Integer i = new Integer(s);
 					itemsToSave.add(i);
 				}
-			for (final String al : notItemsIds)
+			}
+			for (final String al : notItemsIds) {
 				if (!al.equals("") && !(al.equals("\"\""))) {
 					final String s = al.substring(1, al.length() - 1);
 					final Integer i = new Integer(s);
 					itemsToRemove.add(i);
 				}
+			}
 
 			if (itemsToSave.size() <= currentCapacity) {
 
@@ -293,28 +305,36 @@ public class GatherPlayerController extends AbstractController {
 					final Double currentMetalCapacity = inventory.getMetalCapacity() - inventory.getMetal();
 					if (i instanceof Resource) {
 						final Resource resource = (Resource) i;
-						if (currentWaterCapacity - resource.getWater() > 0)
+						if (currentWaterCapacity - resource.getWater() > 0) {
 							inventory.setWater(inventory.getWater() + resource.getWater());
-						if (currentWaterCapacity - resource.getWater() < 0)
+						}
+						if (currentWaterCapacity - resource.getWater() < 0) {
 							inventory.setWater(inventory.getWaterCapacity());
-						if (currentWoodCapacity - resource.getWood() > 0)
+						}
+						if (currentWoodCapacity - resource.getWood() > 0) {
 							inventory.setWood(inventory.getWood() + resource.getWood());
-						if (currentWoodCapacity - resource.getWood() < 0)
+						}
+						if (currentWoodCapacity - resource.getWood() < 0) {
 							inventory.setWood(inventory.getWoodCapacity());
-						if (currentFoodCapacity - resource.getFood() > 0)
+						}
+						if (currentFoodCapacity - resource.getFood() > 0) {
 							inventory.setFood(inventory.getFood() + resource.getFood());
-						if (currentFoodCapacity - resource.getFood() < 0)
+						}
+						if (currentFoodCapacity - resource.getFood() < 0) {
 							inventory.setFood(inventory.getFoodCapacity());
-						if (currentMetalCapacity - resource.getMetal() > 0)
+						}
+						if (currentMetalCapacity - resource.getMetal() > 0) {
 							inventory.setMetal(inventory.getMetal() + resource.getMetal());
-						if (currentMetalCapacity - resource.getMetal() < 0)
+						}
+						if (currentMetalCapacity - resource.getMetal() < 0) {
 							inventory.setMetal(inventory.getMetalCapacity());
+						}
 					}
 
 				}
 				for (int i = 0; i < itemsToSave.size(); i++) {
 					final Item item = this.itemService.findOne(new Integer(itemsToSave.get(i)));
-					item.setRefuge(refuge);
+					item.setShelter(shelter);
 					this.itemService.save(item);
 				}
 				for (int i = 0; i < itemsToRemove.size(); i++) {
@@ -327,8 +347,9 @@ public class GatherPlayerController extends AbstractController {
 				this.notificationService.delete(notification);
 				this.gatherService.delete(gather);
 
-			} else
+			} else {
 				result = "gather/player/foundItems.do?notificationId=" + notification.getId() + "&failedSelection=true";
+			}
 
 		} catch (final Throwable oops) {
 			result = "misc/403";
@@ -349,15 +370,15 @@ public class GatherPlayerController extends AbstractController {
 		ModelAndView result;
 		final Collection<Character> elegibleCharacters;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
 		// Here we update gathering missions
 		this.gatherService.updateGatheringMissions();
 
-		elegibleCharacters = this.gatherService.findCharactersWithoutGatheringMission(refuge.getId());
+		elegibleCharacters = this.gatherService.findCharactersWithoutGatheringMission(shelter.getId());
 		result = new ModelAndView("gather/edit");
 
 		result.addObject("gather", gather);

@@ -1,7 +1,7 @@
+
 package services;
 
 import java.util.Collection;
-import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -16,9 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.EventRepository;
 import domain.Actor;
 import domain.Designer;
-import domain.Admin;
 import domain.Event;
-import domain.Manager;
 
 @Service
 @Transactional
@@ -29,7 +27,7 @@ public class EventService {
 	@Autowired
 	private EventRepository	eventRepository;
 	@Autowired
-	private Validator				validator;
+	private Validator		validator;
 	@Autowired
 	private ActorService	actorService;
 
@@ -53,7 +51,7 @@ public class EventService {
 		Assert.notNull(result);
 		return result;
 	}
-	
+
 	public Collection<Event> findFinal() {
 		Collection<Event> result;
 		Assert.notNull(this.eventRepository);
@@ -61,8 +59,8 @@ public class EventService {
 		Assert.notNull(result);
 		return result;
 	}
-	
-	public Page<Event> findNotFinal(Pageable pageable) {
+
+	public Page<Event> findNotFinal(final Pageable pageable) {
 		Page<Event> result;
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
@@ -73,19 +71,19 @@ public class EventService {
 		Assert.notNull(result);
 		return result;
 	}
-	
-	public Page<Event> findFinal(Pageable pageable) {
+
+	public Page<Event> findFinal(final Pageable pageable) {
 		Page<Event> result;
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
 		// Checking that the user trying to modify/create a product is a designer.
 		Assert.isTrue(actor instanceof Designer);
 		Assert.notNull(this.eventRepository);
-		result = this.eventRepository.findFinal(pageable);	
+		result = this.eventRepository.findFinal(pageable);
 		Assert.notNull(result);
 		return result;
 	}
-	
+
 	public Collection<Event> findNotFinal() {
 		Collection<Event> result;
 		Assert.notNull(this.eventRepository);
@@ -141,7 +139,6 @@ public class EventService {
 		this.eventRepository.delete(event);
 
 	}
-	
 
 	/**
 	 * Reconstruct the Event passed as parameter
@@ -172,10 +169,17 @@ public class EventService {
 		this.validator.validate(result, binding);
 		return result;
 	}
-	
+
+	public String findNumEvents() {
+		String result;
+
+		result = this.eventRepository.findNumEvents();
+
+		return result;
+	}
+
 	public void flush() {
 		this.eventRepository.flush();
 
 	}
 }
-

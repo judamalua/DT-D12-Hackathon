@@ -89,9 +89,8 @@ public class ToolService {
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
 		this.actorService.checkActorLogin();
-
 		result = this.toolRepository.save(tool);
-		Assert.isTrue(!tool.getFinalMode());
+		//Assert.isTrue(!tool.getFinalMode());
 
 		events = this.itemDesignService.findEventsByItemDesign(tool.getId());
 		propabilityItems = this.itemDesignService.findProbabilityItemsByItemDesign(tool.getId());

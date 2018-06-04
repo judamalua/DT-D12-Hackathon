@@ -28,22 +28,22 @@ import services.AttackService;
 import services.CharacterService;
 import services.ConfigurationService;
 import services.ItemService;
-import services.RefugeService;
 import services.RoomService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Character;
 import domain.Configuration;
 import domain.Player;
-import domain.Refuge;
 import domain.Room;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/character/player")
 public class CharacterPlayerController extends AbstractController {
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private CharacterService		characterService;
@@ -84,7 +84,7 @@ public class CharacterPlayerController extends AbstractController {
 	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
 		ModelAndView result;
 		Page<Character> characters;
-		Refuge refuge;
+		Shelter shelter;
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
@@ -94,8 +94,8 @@ public class CharacterPlayerController extends AbstractController {
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			characters = this.characterService.findCharactersByRefugePageable(refuge.getId(), pageable);
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			characters = this.characterService.findCharactersByShelterPageable(shelter.getId(), pageable);
 
 			result.addObject("characters", characters.getContent());
 			result.addObject("page", page);
@@ -121,19 +121,19 @@ public class CharacterPlayerController extends AbstractController {
 		ModelAndView result;
 		Actor player;
 		Character character;
-		Refuge refuge;
+		Shelter shelter;
 
 		try {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
 			Assert.isTrue((player instanceof Player));
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
 
 			if (discard) {
 				this.itemService.UpdateDiscard(character);
 			}
-			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+			Assert.isTrue(character.getShelter().getId() == shelter.getId());
 
 			character = this.characterService.findOne(characterId);
 			result.addObject("character", character);
@@ -158,7 +158,7 @@ public class CharacterPlayerController extends AbstractController {
 		ModelAndView result;
 		Actor player;
 		Character character;
-		Refuge refuge;
+		Shelter shelter;
 		Room room;
 		Integer numCharacter;
 		Collection<Character> charactersInMission;
@@ -167,11 +167,11 @@ public class CharacterPlayerController extends AbstractController {
 			result = new ModelAndView("character/display");
 			player = this.actorService.findActorByPrincipal();
 			Assert.isTrue((player instanceof Player));
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
-			charactersInMission = this.characterService.findCharactersCurrentlyInMission(refuge.getId());
+			charactersInMission = this.characterService.findCharactersCurrentlyInMission(shelter.getId());
 
-			Assert.isTrue(character.getRefuge().getId() == refuge.getId());
+			Assert.isTrue(character.getShelter().getId() == shelter.getId());
 			Assert.isTrue(!charactersInMission.contains(character));
 			Assert.isTrue(character.getCurrentHealth() > 0);
 
@@ -180,6 +180,7 @@ public class CharacterPlayerController extends AbstractController {
 				numCharacter = this.characterService.findCharactersByRoom(room.getId()).size();
 				Assert.isTrue(numCharacter < room.getRoomDesign().getMaxCapacityCharacters());
 				character.setRoomEntrance(new Date(System.currentTimeMillis() - 1));
+				Assert.isTrue(room.getShelter().equals(shelter));
 			} else {
 				room = null;
 				character.setRoomEntrance(null);

@@ -27,11 +27,16 @@ public interface ItemDesignRepository extends JpaRepository<ItemDesign, Integer>
 
 	@Query("select i from ItemDesign i where i.finalMode=true")
 	Page<ItemDesign> findFinal(Pageable pageable);
-	
+
 	@Query("select i from ItemDesign i where i.finalMode=false")
 	Collection<ItemDesign> findNotFinal();
 
 	@Query("select i from ItemDesign i where i.finalMode=true")
 	Collection<ItemDesign> findFinal();
+
+	//Dashboard queries
+
+	@Query("select count(i) from ItemDesign i where i.finalMode=true")
+	String findNumItemDesigns();
 
 }

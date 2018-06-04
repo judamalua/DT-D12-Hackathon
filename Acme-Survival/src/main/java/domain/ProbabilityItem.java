@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 @Access(AccessType.PROPERTY)
 public class ProbabilityItem extends DomainEntity {
@@ -18,6 +20,7 @@ public class ProbabilityItem extends DomainEntity {
 	private double	value;
 
 
+	@Range(min = 0, max = 1)
 	public double getValue() {
 		return this.value;
 	}

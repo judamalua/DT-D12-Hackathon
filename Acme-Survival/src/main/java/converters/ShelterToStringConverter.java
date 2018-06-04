@@ -5,23 +5,22 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import domain.Refuge;
+import domain.Shelter;
 
 @Component
 @Transactional
-public class RefugeToStringConverter implements Converter<Refuge, String> {
+public class ShelterToStringConverter implements Converter<Shelter, String> {
 
 	@Override
-	public String convert(final Refuge refuge) {
+	public String convert(final Shelter shelter) {
 		String result;
 
-		if (refuge == null)
+		if (shelter == null)
 			result = null;
 		else
-			result = String.valueOf(refuge.getId());
+			result = String.valueOf(shelter.getId());
 
 		return result;
 	}
 
 }
-

@@ -25,7 +25,19 @@
 			<form:hidden path="id" />
 			<form:hidden path="version" />
 			<form:hidden path="location" />
-
+			
+			<br/>
+			<jstl:if test="${isAttacking}">
+				<div class="message">
+					<spring:message code="gather.isAttacking" />
+				</div>
+			</jstl:if>
+			<jstl:if test="${isMoving}">
+				<div class="message">
+					<spring:message code="gather.isAttacking" />
+				</div>
+			</jstl:if>
+			<br/>
 			<acme:select id="charId" code="gather.character" path="character"
 				items="${characters}" itemLabel="fullName" />
 			<br />

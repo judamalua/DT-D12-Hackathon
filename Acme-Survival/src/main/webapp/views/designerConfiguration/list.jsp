@@ -30,17 +30,17 @@
 	<strong><spring:message code="configuration.kmPerSecond" /></strong>
 	<jstl:out value="${designerConfiguration.kmPerSecond}" /> (Km/s)
 </p>
-<p>
+<%-- <p>
 	<strong><spring:message code="configuration.foodWastedPerSecond" /></strong>
 	<jstl:out value="${designerConfiguration.foodWastedPerSecond}" />
-</p>
-<p>
+</p> --%>
+<%-- <p>
 	<strong><spring:message code="configuration.waterWastedPerSecond" /></strong>
 	<jstl:out value="${designerConfiguration.waterWastedPerSecond}" />
-</p>
+</p> --%>
 <p>
-	<strong><spring:message code="configuration.refugeRecoverTime" /></strong>
-	<jstl:out value="${designerConfiguration.refugeRecoverTime}" />
+	<strong><spring:message code="configuration.shelterRecoverTime" /></strong>
+	<jstl:out value="${designerConfiguration.shelterRecoverTime}" />
 </p>
 <p>
 	<strong><spring:message code="configuration.waterFactorSteal" /></strong>
@@ -71,8 +71,8 @@
 	<jstl:out value="${designerConfiguration.experiencePerMinute}" />
 </p>
 <p>
-	<strong><spring:message code="configuration.refugeDefaultCapacity" /></strong>
-	<jstl:out value="${designerConfiguration.refugeDefaultCapacity}" />
+	<strong><spring:message code="configuration.shelterDefaultCapacity" /></strong>
+	<jstl:out value="${designerConfiguration.shelterDefaultCapacity}" />
 </p>
 <p>
 	<strong><spring:message code="configuration.initialFood" /></strong>
@@ -111,11 +111,11 @@
 	<jstl:out value="${designerConfiguration.numInitialCharacters}" />
 </p>
 <p>
-	<strong><spring:message code="configuration.refugeFindingProbability" /></strong>
-	<jstl:out value="${designerConfiguration.refugeFindingProbability}" />
+	<strong><spring:message code="configuration.shelterFindingProbability" /></strong>
+	<jstl:out value="${designerConfiguration.shelterFindingProbability}" />
 </p>
 <p>
-	<strong><spring:message code="configuration.refugeFindingMinuteAugmentProbability" /></strong>
-	<jstl:out value="${designerConfiguration.refugeFindingMinuteAugmentProbability}" />
+	<strong><spring:message code="configuration.shelterFindingMinuteAugmentProbability" /></strong>
+	<jstl:out value="${designerConfiguration.shelterFindingMinuteAugmentProbability}" />
 </p>
 <acme:button url="designerConfiguration/designer/edit.do" code="configuration.edit"/>

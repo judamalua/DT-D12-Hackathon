@@ -4,10 +4,14 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "finalMode")
+})
 public class Resource extends ItemDesign {
 
 	// Constructors -----------------------------------------------------------

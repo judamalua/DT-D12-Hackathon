@@ -15,12 +15,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RoomRepository;
+import domain.Actor;
 import domain.Barrack;
 import domain.Inventory;
 import domain.Player;
-import domain.Refuge;
 import domain.ResourceRoom;
 import domain.Room;
+import domain.Shelter;
 import domain.Warehouse;
 
 @Service
@@ -41,7 +42,7 @@ public class RoomService {
 	private ActorService		actorService;
 
 	@Autowired
-	private RefugeService		refugeService;
+	private ShelterService		shelterService;
 
 	@Autowired
 	private InventoryService	inventoryService;
@@ -88,21 +89,26 @@ public class RoomService {
 
 		Room result;
 		Collection<domain.Character> characters;
-		Refuge refuge;
-		Player actor;
+		Shelter shelter;
+		Actor actor;
 		Inventory inventory;
 
-		actor = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+		actor = this.actorService.findActorByPrincipal();
 
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
-		if (room.getId() == 0) {
-			Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
-			inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
-			inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
+		if (actor instanceof Player) {
+
+			shelter = this.shelterService.findShelterByPlayer(actor.getId());
+			Assert.notNull(shelter);
+			Assert.isTrue(room.getShelter().equals(shelter));
+
+			inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
+			if (room.getId() == 0) {
+				Assert.isTrue(inventory.getMetal() >= room.getRoomDesign().getCostMetal() && inventory.getWood() >= room.getRoomDesign().getCostWood(), "Not enough resources");
+				inventory.setMetal(inventory.getMetal() - room.getRoomDesign().getCostMetal());
+				inventory.setWood(inventory.getWood() - room.getRoomDesign().getCostWood());
+			}
+			this.inventoryService.save(inventory);
 		}
-		this.inventoryService.save(inventory);
-
 		result = this.roomRepository.save(room);
 
 		if (room.getId() != 0) {
@@ -132,17 +138,23 @@ public class RoomService {
 
 		Assert.isTrue(this.roomRepository.exists(room.getId()));
 		Collection<domain.Character> characters;
-		//		Collection<domain.Character> charactersInRefuge;
 		Integer currentCapacity;
-		//		final domain.Character deleteCharacter;
+		Actor actor;
+		Shelter shelter;
 
 		characters = this.characterService.findCharactersByRoom(room.getId());
-		//		charactersInRefuge = this.characterService.findCharactersByRefuge(room.getRefuge().getId());
-		currentCapacity = this.refugeService.getCurrentCharacterCapacity(room.getRefuge());
+		currentCapacity = this.shelterService.getCurrentCharacterCapacity(room.getShelter());
+		actor = this.actorService.findActorByPrincipal();
+
+		if (actor instanceof Player) {
+			shelter = this.shelterService.findShelterByPlayer(actor.getId());
+			Assert.notNull(shelter);
+			Assert.isTrue(room.getShelter().equals(shelter));
+		}
 
 		if (!(room.getRoomDesign() instanceof Barrack)) {
 			if (room.getRoomDesign() instanceof Warehouse) {
-				Assert.isTrue(this.refugeService.getCurrentCapacity(room.getRefuge()) > 0, "You have a lot of objects");
+				Assert.isTrue(this.shelterService.getCurrentCapacity(room.getShelter()) > 0, "You have a lot of objects");
 			}
 			for (final domain.Character character : characters) {
 				character.setRoom(null);
@@ -156,22 +168,22 @@ public class RoomService {
 		this.roomRepository.delete(room);
 	}
 
-	public Collection<Room> findRoomsByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Collection<Room> findRoomsByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Collection<Room> result;
 
-		result = this.roomRepository.findRoomsByRefuge(refugeId);
+		result = this.roomRepository.findRoomsByShelter(shelterId);
 
 		return result;
 	}
 
-	public Collection<Room> findResourceRoomsByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Collection<Room> findResourceRoomsByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Collection<Room> rooms, result;
 
-		rooms = this.roomRepository.findRoomsByRefuge(refugeId);
+		rooms = this.roomRepository.findRoomsByShelter(shelterId);
 		result = new HashSet<>();
 
 		for (final Room room : rooms) {
@@ -183,12 +195,12 @@ public class RoomService {
 		return result;
 	}
 
-	public Page<Room> findRoomsByRefuge(final int refugeId, final Pageable pageable) {
-		Assert.isTrue(refugeId != 0);
+	public Page<Room> findRoomsByShelter(final int shelterId, final Pageable pageable) {
+		Assert.isTrue(shelterId != 0);
 
 		Page<Room> result;
 
-		result = this.roomRepository.findRoomsByRefuge(refugeId, pageable);
+		result = this.roomRepository.findRoomsByShelter(shelterId, pageable);
 
 		return result;
 	}
@@ -196,22 +208,29 @@ public class RoomService {
 	public Room reconstruct(final Room room, final BindingResult binding) {
 		Room result = null;
 		Player actor;
-		Refuge refuge;
+		Shelter shelter;
 
 		if (room.getId() == 0) {
 
 			actor = (Player) this.actorService.findActorByPrincipal();
 			result = room;
-			refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+			shelter = this.shelterService.findShelterByPlayer(actor.getId());
 
-			result.setResistance(result.getRoomDesign().getMaxResistance());
-			result.setRefuge(refuge);
+			result.setShelter(shelter);
 		}
 
 		Assert.notNull(result);
 
 		this.validator.validate(result, binding);
 		this.roomRepository.flush();
+
+		return result;
+	}
+
+	public Collection<Collection<String>> findNumRoomsByShelter() {
+		Collection<Collection<String>> result;
+
+		result = this.roomRepository.findNumRoomsByShelter();
 
 		return result;
 	}

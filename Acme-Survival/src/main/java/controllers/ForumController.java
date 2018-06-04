@@ -69,8 +69,8 @@ public class ForumController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/list")
-	public ModelAndView list(@RequestParam(required = false, defaultValue = "false") final Boolean staff, @RequestParam(required = false) final Integer forumId, @RequestParam(required = false, defaultValue = "0") final int page, @RequestParam(
-		required = false, defaultValue = "0") final int pageThread) {
+	public ModelAndView list(@RequestParam(required = false, defaultValue = "false") final Boolean staff, @RequestParam(required = false, defaultValue = "false") final Boolean support, @RequestParam(required = false) final Integer forumId, @RequestParam(
+		required = false, defaultValue = "0") final int page, @RequestParam(required = false, defaultValue = "0") final int pageThread) {
 		ModelAndView result;
 		Page<Forum> forums;
 		Forum forum;
@@ -94,24 +94,32 @@ public class ForumController extends AbstractController {
 				actor = this.actorService.findActorByPrincipal();
 				Assert.isTrue(!(actor instanceof Player));
 			}
+			if (support) {
+				this.actorService.checkActorLogin();
+			}
 
-			if (forumId == null)
-				forums = this.forumService.findRootForums(staff, pageable);
-			else {
-				forums = this.forumService.findSubForums(forumId, staff, pageable);
+			if (forumId == null) {
+				forums = this.forumService.findRootForums(staff, support, pageable);
+			} else {
+				forums = this.forumService.findSubForums(forumId, staff, support, pageable);
 				threads = this.threadsService.findThreadsByForum(forumId, threadPageable);
 				forum = this.forumService.findOne(forumId);
-
+				if (forum.getStaff() || forum.getSupport()) {
+					this.actorService.checkActorLogin();
+				}
 				result.addObject("fatherForum", forum);
 			}
 
 			if (this.actorService.getLogged()) {
 				actor = this.actorService.findActorByPrincipal();
-				for (int i = 0; i < forums.getContent().size(); i++)
+				for (int i = 0; i < forums.getContent().size(); i++) {
 					ownForums.add(actor.equals(forums.getContent().get(i).getOwner()));
-				if (forumId != null)
-					for (int i = 0; i < threads.getContent().size(); i++)
+				}
+				if (forumId != null) {
+					for (int i = 0; i < threads.getContent().size(); i++) {
 						ownThreads.add(actor.equals(threads.getContent().get(i).getActor()));
+					}
+				}
 
 				result.addObject("ownForums", ownForums);
 				result.addObject("ownThreads", ownThreads);
@@ -121,13 +129,14 @@ public class ForumController extends AbstractController {
 				result.addObject("threads", threads.getContent());
 				result.addObject("pageThread", pageThread);
 				result.addObject("pageNumThread", threads.getTotalPages());
-				result.addObject("requestURI", "forum/list.do?forumId=" + forumId + "&");
+				result.addObject("requestURI", "forum/list.do?staff=" + staff + "&forumId=" + forumId + "&");
 			} else {
 				result.addObject("threads", new HashSet<>());
 				result.addObject("pageThread", 0);
 				result.addObject("pageNumThread", 0);
-				result.addObject("requestURI", "forum/list.do?");
+				result.addObject("requestURI", "forum/list.do?staff=" + staff + "&");
 			}
+
 			result.addObject("forums", forums.getContent());
 			result.addObject("page", page);
 			result.addObject("pageNum", forums.getTotalPages());

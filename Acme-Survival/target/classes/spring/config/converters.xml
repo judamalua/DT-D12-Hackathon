@@ -102,8 +102,8 @@
 		<bean class="converters.GatherToStringConverter" />
 		<bean class="converters.StringToGatherConverter" />
 
-		<bean class="converters.RefugeToStringConverter" />
-		<bean class="converters.StringToRefugeConverter" />
+		<bean class="converters.ShelterToStringConverter" />
+		<bean class="converters.StringToShelterConverter" />
 
 		<bean class="converters.ResourceRoomToStringConverter" />
 		<bean class="converters.StringToResourceRoomConverter" />
@@ -122,9 +122,6 @@
 
 		<bean class="converters.SliderToStringConverter" />
 		<bean class="converters.StringToSliderConverter" />
-
-		<bean class="converters.SystemConfigurationToStringConverter" />
-		<bean class="converters.StringToSystemConfigurationConverter" />
 
 		<bean class="converters.ThreadToStringConverter" />
 		<bean class="converters.StringToThreadConverter" />

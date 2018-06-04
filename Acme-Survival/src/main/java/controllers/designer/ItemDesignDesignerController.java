@@ -162,7 +162,7 @@ public class ItemDesignDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@ModelAttribute("itemDesign") ItemDesign itemDesign, final BindingResult binding, @RequestParam final Boolean tool) {
 		ModelAndView result;
-		final ItemDesign sendedRefuge = null;
+		final ItemDesign sendedShelter = null;
 		try {
 			if (tool)
 				itemDesign = this.toolService.reconstruct((Tool) itemDesign, binding);
@@ -171,7 +171,7 @@ public class ItemDesignDesignerController extends AbstractController {
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(sendedRefuge, "refuge.params.error");
+			result = this.createEditModelAndView(sendedShelter, "shelter.params.error");
 		else
 			try {
 				Assert.isTrue(!itemDesign.getFinalMode());
@@ -210,7 +210,7 @@ public class ItemDesignDesignerController extends AbstractController {
 			result = new ModelAndView("redirect:/itemDesign/designer/list.do");
 
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(itemDesign, "refuge.commit.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.commit.error");
 		}
 
 		return result;

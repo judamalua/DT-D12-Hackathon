@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import services.ActorService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Inventory;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/inventory/player")
 public class InventoryPlayerController extends AbstractController {
 
 	@Autowired
-	private RefugeService	refugeService;
+	private ShelterService	shelterService;
 
 	@Autowired
 	private ActorService	actorService;
@@ -47,14 +47,14 @@ public class InventoryPlayerController extends AbstractController {
 	String update() {
 		String result;
 		Inventory inventory;
-		Refuge refuge;
+		Shelter shelter;
 		Player player;
 
 		result = "";
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			inventory = this.refugeService.updateInventory(refuge);
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			inventory = this.shelterService.updateInventory(shelter);
 
 			result += inventory.getFood() + "," + inventory.getWater() + "," + inventory.getMetal() + "," + inventory.getWood();
 		} catch (final Throwable oops) {

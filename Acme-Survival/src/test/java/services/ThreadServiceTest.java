@@ -33,7 +33,7 @@ public class ThreadServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test checks that the Player can Attack a Shelter that he already knows.
 	 */
 	@Test
 	public void testSaveThreadPositive() {
@@ -42,7 +42,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -112,7 +112,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -138,7 +138,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -164,7 +164,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);

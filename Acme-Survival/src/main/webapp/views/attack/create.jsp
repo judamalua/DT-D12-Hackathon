@@ -32,7 +32,7 @@
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="defendant" />
-	
+		
 	<dl>
   		<dt><spring:message code="attack.attacker"/>:</dt>
   		<dd><jstl:out value="${attack.attacker.name}"/></dd>
@@ -52,14 +52,19 @@
 	<jstl:choose >
 		<jstl:when test="${!isAttackable}">
 		<div class="error">
-			<spring:message code="attack.refuge.no.attackable"/>
+			<spring:message code="attack.shelter.no.attackable"/>
 		</div>
 		</jstl:when>
 		
 		<jstl:when test="${attackerHasNoCharacters}">
 		<div class="error">
-			<spring:message code="attack.refuge.attacker.no.characters"/>
+			<spring:message code="attack.shelter.attacker.no.characters"/>
 		</div>
+		</jstl:when>
+		<jstl:when test="${isMoving}">
+		<div class="error">
+				<spring:message code="attack.shelter.isMoving" />
+			</div>
 		</jstl:when>
 	</jstl:choose>
 	

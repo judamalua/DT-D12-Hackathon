@@ -32,7 +32,7 @@
 	<display:column>
 		${row.text}
 		<br />
-		<fmt:formatDate value="${row.moment}" pattern="${format}" />
+		<a href="actor/display.do?actorId=${row.actor.id}">${row.actor.name}</a> <fmt:formatDate value="${row.moment}" pattern="${format}" />
 	</display:column>
 
 	<spring:message code="message.thread" var="thread"/>
@@ -43,6 +43,13 @@
 			<acme:button url="message/actor/edit.do?messageId=${row.id}"
 				code="message.edit" />
 		</jstl:if>
+	</display:column>
+	
+	<display:column>
+		<security:authorize access="hasRole('DESIGNER')">
+			<acme:button url="message/actor/delete.do?forumId=${forum.id}"
+				code="message.delete" />
+		</security:authorize>
 	</display:column>
 
 </display:table>
@@ -75,5 +82,5 @@
 
 </security:authorize>
 <security:authorize access="isAnonymous()">
-	<spring:message code="message.login" />
+	<div class="message"><spring:message code="message.login" /></div>
 </security:authorize>

@@ -43,13 +43,10 @@
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/security/loginFailure.do"
 			access="permitAll" requires-channel="https" />
-
 		<security:intercept-url pattern="/welcome/index.do"
 			access="permitAll" requires-channel="https" />
-
 		<security:intercept-url pattern="/actor/display.do"
-			access="isAuthenticated()" requires-channel="https" />
-
+			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/edit.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/**"
@@ -60,7 +57,6 @@
 			access="hasRole('ADMIN')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/admin/list-actors.do"
 			access="hasRole('ADMIN')" requires-channel="https" />
-
 		<security:intercept-url pattern="/actor/registerAsPlayer.do"
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/player/list.do"
@@ -68,6 +64,12 @@
 		<security:intercept-url pattern="/actor/player/edit.do"
 			access="hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/moderator/edit.do"
+			access="hasRole('MODERATOR')" requires-channel="https" />
+			<security:intercept-url pattern="/forum/moderator/**"
+			access="hasRole('MODERATOR')" requires-channel="https" />
+			<security:intercept-url pattern="/thread/moderator/**"
+			access="hasRole('MODERATOR')" requires-channel="https" />
+			<security:intercept-url pattern="/message/moderator/**"
 			access="hasRole('MODERATOR')" requires-channel="https" />
 		<security:intercept-url pattern="/actor/manager/edit.do"
 			access="hasRole('MANAGER')" requires-channel="https" />
@@ -117,7 +119,7 @@
 		<security:intercept-url pattern="/message/list.do"
 			access="permitAll" requires-channel="https" />
 		<security:intercept-url pattern="/forum/actor/**"
-			access="isAuthenticated()" requires-channel="https" />
+			access="isAuthenticated() and !hasRole('PLAYER')" requires-channel="https" />
 		<security:intercept-url pattern="/thread/actor/**"
 			access="isAuthenticated()" requires-channel="https" />
 		<security:intercept-url pattern="/message/actor/**"
@@ -129,13 +131,13 @@
 		<security:intercept-url pattern="/move/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
-		<security:intercept-url pattern="/refuge/list.do"
+		<security:intercept-url pattern="/shelter/list.do"
 			access="permitAll" requires-channel="https" />
 
-		<security:intercept-url pattern="/refuge/display.do"
+		<security:intercept-url pattern="/shelter/display.do"
 			access="permitAll" requires-channel="https" />
 
-		<security:intercept-url pattern="/refuge/player/**"
+		<security:intercept-url pattern="/shelter/player/**"
 			access="hasRole('PLAYER')" requires-channel="https" />
 
 		<security:intercept-url pattern="/room/player/**"

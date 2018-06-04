@@ -20,7 +20,7 @@
 <display:table name="rooms" id="room"
 	requestURI="room/player/list.do?characterId=${characterId}" class="displaytag">
 
-	<spring:message code="refuge.room.name" var="nameRoomTitle" />
+	<spring:message code="shelter.room.name" var="nameRoomTitle" />
 			<display:column title="${nameRoomTitle}">
 				<jstl:out value="${room.roomDesign.name[lang]}" />
 				<br />

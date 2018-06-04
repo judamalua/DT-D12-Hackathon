@@ -11,88 +11,114 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jstl:if test="${fatherForum!=null}">
 	<jstl:if test="${fatherForum.forum!=null}">
 		<h3>
-			<a href="forum/list.do?forumId=${fatherForum.forum.id}"><jstl:out
+			<a
+				href="forum/list.do?forumId=${fatherForum.forum.id}&staff=${fatherForum.forum.staff}"><jstl:out
 					value="${fatherForum.name}" /></a>
 		</h3>
 	</jstl:if>
 	<jstl:if test="${fatherForum.forum==null}">
 		<h3>
-			<a href="forum/list.do"><jstl:out value="${fatherForum.name}" /></a>
+			<a href="forum/list.do?staff=${fatherForum.forum.staff}"><jstl:out
+					value="${fatherForum.name}" /></a>
 		</h3>
 	</jstl:if>
 </jstl:if>
+<jstl:if test="${fn:length(forums)>0}">
+	<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
+		page="${page}" />
 
-<acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
-	page="${page}" />
+	<display:table name="forums" id="forum" requestURI="${requestURI}"
+		class="displaytag">
 
-<display:table name="forums" id="forum" requestURI="${requestURI}"
-	class="displaytag">
+		<%-- 	<spring:message code="forum.image" var="image" /> --%>
+		<%-- 	<display:column property="image" title="${image}" /> --%>
 
-	<%-- 	<spring:message code="forum.image" var="image" /> --%>
-	<%-- 	<display:column property="image" title="${image}" /> --%>
-
-	<display:column title="">
-		<img class="forumImg" src="${forum.image}" />
-		<div class="forumNameDescription">
-			<div class="forumName">
-				<a href="forum/list.do?forumId=${forum.id}"><jstl:out
-						value="${forum.name}" /></a>
+		<display:column title="">
+			<img class="forumImg" src="${forum.image}" />
+			<div class="forumNameDescription">
+				<div class="forumName">
+					<a href="forum/list.do?forumId=${forum.id}&staff=${forum.staff}"><jstl:out
+							value="${forum.name}" /></a>
+				</div>
+				<br />
+				<div class="forumDescrition">
+					<jstl:out value="${forum.description}" />
+				</div>
 			</div>
+		</display:column>
+
+		<display:column>
+			<security:authorize access="isAuthenticated()">
+				<acme:button url="thread/actor/create.do?forumId=${forum.id}"
+					code="thread.create" />
+			</security:authorize>
+		</display:column>
+
+		<display:column>
+			<jstl:if test="${ownForums!=null and ownForums[forum_rowNum-1]}">
+				<acme:button url="forum/actor/edit.do?forumId=${forum.id}"
+					code="forum.edit" />
+			</jstl:if>
+		</display:column>
+
+		<display:column>
+			<security:authorize access="hasRole('MODERATOR')">
+				<acme:button url="forum/moderator/delete.do?forumId=${forum.id}"
+					code="forum.delete" />
+			</security:authorize>
+		</display:column>
+
+	</display:table>
+</jstl:if>
+<jstl:if test="${fn:length(threads)>0}">
+	<acme:pagination requestURI="${requestURI}page="
+		pageNum="${pageNumThread}" page="${pageThread}" />
+
+	<display:table name="threads" id="thread" requestURI="${requestURI}"
+		class="displaytag">
+
+		<display:column>
+			<a href="message/list.do?threadId=${thread.id}"><jstl:out
+					value="${thread.name}" /></a>
 			<br />
-			<div class="forumDescrition"><jstl:out value="${forum.description}" /></div>
-		</div>
-	</display:column>
+			<jstl:forEach items="${thread.tags}" var="tag" varStatus="loop">
+				<div class="chip">
+					<jstl:out value="${tag}" />
+				</div>
+			</jstl:forEach>
+		</display:column>
+		<display:column>
+			<jstl:if test="${ownThreads != null and ownThreads[thread_rowNum-1]}">
+				<acme:button url="thread/actor/edit.do?threadId=${thread.id}"
+					code="thread.edit" />
+			</jstl:if>
+		</display:column>
 
-	<display:column>
-		<security:authorize access="isAuthenticated()">
-			<acme:button url="thread/actor/create.do?forumId=${forum.id}"
-				code="thread.create" />
-		</security:authorize>
-	</display:column>
+		<display:column>
+			<security:authorize access="hasRole('MODERATOR')">
+				<acme:button url="thread/moderator/delete.do?forumId=${forum.id}"
+					code="forum.delete" />
+			</security:authorize>
+		</display:column>
 
-	<display:column>
-		<jstl:if test="${ownForums!=null and ownForums[forum_rowNum-1]}">
-			<acme:button url="forum/actor/edit.do?forumId=${forum.id}"
-				code="forum.edit" />
-		</jstl:if>
-	</display:column>
-
-</display:table>
-
-<acme:pagination requestURI="${requestURI}page="
-	pageNum="${pageNumThread}" page="${pageThread}" />
-
-<display:table name="threads" id="thread" requestURI="${requestURI}"
-	class="displaytag">
-
-	<display:column>
-		<a href="message/list.do?threadId=${thread.id}"><jstl:out
-				value="${thread.name}" /></a>
-		<br />
-		<jstl:forEach items="${thread.tags}" var="tag" varStatus="loop">
-			<div class="chip">
-				<jstl:out value="${tag}" />
-			</div>
-		</jstl:forEach>
-	</display:column>
-	<display:column>
-		<jstl:if test="${ownThreads != null and ownThreads[thread_rowNum-1]}">
-			<acme:button url="thread/actor/edit.do?threadId=${thread.id}"
-				code="thread.edit" />
-		</jstl:if>
-	</display:column>
-
-</display:table>
-
+	</display:table>
+</jstl:if>
 <security:authorize access="isAuthenticated() and !hasRole('PLAYER')">
 	<acme:button url="forum/actor/create.do" code="forum.create" />
-	<br/>
+	<br />
 	<jstl:if test="${fatherForum!=null}">
-		<acme:button url="thread/actor/create.do?forumId=${fatherForum.id}"
-			code="thread.create" />
+		<acme:button url="forum/actor/create.do?forumId=${fatherForum.id}"
+			code="forum.create" />
 	</jstl:if>
+	<br />
+	<acme:button url="forum/list.do?staff=true" code="forum.staff" />
+	<br />
+</security:authorize>
+<security:authorize access="isAuthenticated()">
+	<acme:button url="forum/list.do?support=true" code="forum.support" />
 </security:authorize>

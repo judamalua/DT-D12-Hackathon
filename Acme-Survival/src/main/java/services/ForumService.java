@@ -92,7 +92,14 @@ public class ForumService {
 		if (forum.getStaff()) {
 			Assert.isTrue(!(actor instanceof Player));
 			if (forum.getForum() != null) {
-				Assert.isTrue(forum.getForum().getStaff());
+				Assert.isTrue(forum.getForum().getStaff(), "The father must be staff");
+			}
+		}
+
+		if (forum.getSupport()) {
+			Assert.isTrue(!(actor instanceof Player));
+			if (forum.getForum() != null) {
+				Assert.isTrue(forum.getForum().getSupport(), "The father must be support");
 			}
 		}
 
@@ -155,37 +162,41 @@ public class ForumService {
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
-		Assert.isTrue(actor.equals(forum.getOwner()));
 
 		subForums = this.findSubForums(forum.getId());
 
 		//Iterate in every subForum to delete it
-		for (final Forum subForum : subForums) {
+		for (final Forum subForum : new HashSet<Forum>(subForums)) {
 			subsubForums = this.findSubForums(subForum.getId());
 
 			if (subsubForums.size() == 0) {
 				if (subForum.getStaff() || subForum.getStaff()) {
 					Assert.isTrue(!(actor instanceof Player));
 				}
-				this.forumRepository.delete(subForum);
 				threads = this.threadService.findThreadsByForum(subForum.getId());
 				for (final Thread thread : threads) {
 					this.threadService.delete(thread);
 				}
+				this.forumRepository.delete(subForum);
 			} else {
 				//In other case then call again the method
 				this.deleteRecursive(subForum);
 			}
 		}
+
+		threads = this.threadService.findThreadsByForum(forum.getId());
+		for (final Thread thread : threads) {
+			this.threadService.delete(thread);
+		}
 		//Finally delete the forum
 		this.forumRepository.delete(forum);
 	}
 
-	public Page<Forum> findRootForums(final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findRootForums(final Boolean staff, final Boolean support, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.notNull(pageable);
 
-		result = this.forumRepository.findForums(staff, pageable);
+		result = this.forumRepository.findForums(staff, support, pageable);
 
 		return result;
 	}
@@ -230,11 +241,11 @@ public class ForumService {
 		return result;
 	}
 
-	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Boolean support, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.isTrue(forumId != 0);
 
-		result = this.forumRepository.findSubForums(forumId, staff, pageable);
+		result = this.forumRepository.findSubForums(forumId, staff, support, pageable);
 
 		return result;
 	}

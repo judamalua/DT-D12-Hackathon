@@ -36,14 +36,14 @@
 		<acme:textarea code="configuration.movingMetal" path="movingMetal" />
 		<acme:textbox code="configuration.movingFood" path="movingFood" />
 		<acme:textbox code="configuration.kmPerSecond" path="kmPerSecond" />
-		<acme:textbox code="configuration.foodWastedPerSecond"
-			path="foodWastedPerSecond" />
-		<acme:textbox code="configuration.waterWastedPerSecond"
-			path="waterWastedPerSecond" />
-		<acme:textbox code="configuration.refugeDefaultCapacity"
-			path="refugeDefaultCapacity" />
-		<acme:textbox code="configuration.refugeRecoverTime"
-			path="refugeRecoverTime" />
+<%-- 		<acme:textbox code="configuration.foodWastedPerSecond"
+			path="foodWastedPerSecond" /> --%>
+<%-- 		<acme:textbox code="configuration.waterWastedPerSecond"
+			path="waterWastedPerSecond" /> --%>
+		<acme:textbox code="configuration.shelterDefaultCapacity"
+			path="shelterDefaultCapacity" />
+		<acme:textbox code="configuration.shelterRecoverTime"
+			path="shelterRecoverTime" />
 		<acme:textbox code="configuration.waterFactorSteal"
 			path="waterFactorSteal" />
 		<acme:textbox code="configuration.foodFactorSteal"
@@ -74,11 +74,11 @@
 			path="maxInventoryMetal" />
 		<acme:textbox code="configuration.numInitialCharacters"
 			path="numInitialCharacters" />
-		<acme:textbox code="configuration.refugeFindingProbability"
-			path="refugeFindingProbability" />
+		<acme:textbox code="configuration.shelterFindingProbability"
+			path="shelterFindingProbability" />
 		<acme:textbox
-			code="configuration.refugeFindingMinuteAugmentProbability"
-			path="refugeFindingMinuteAugmentProbability" />
+			code="configuration.shelterFindingMinuteAugmentProbability"
+			path="shelterFindingMinuteAugmentProbability" />
 	</div>
 
 	<acme:submit name="save" code="configuration.save" />

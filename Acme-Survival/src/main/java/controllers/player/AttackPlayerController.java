@@ -13,12 +13,12 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActorService;
 import services.AttackService;
 import services.MoveService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Attack;
 import domain.Move;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/attack/player")
@@ -37,7 +37,7 @@ public class AttackPlayerController extends AbstractController {
 	private MoveService		moveService;
 
 	@Autowired
-	private RefugeService	refugeService;
+	private ShelterService	shelterService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -47,24 +47,24 @@ public class AttackPlayerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView createAttackToRefuge(final int refugeId) {
+	public ModelAndView createAttackToShelter(final int shelterId) {
 		ModelAndView result;
 		Attack attack;
 		Move move;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 
 		try {
 
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
-			move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
+			move = this.moveService.findCurrentMoveByShelter(shelter.getId());
 
-			attack = this.attackService.create(refugeId);
+			attack = this.attackService.create(shelterId);
 			result = new ModelAndView("attack/create");
 			result.addObject("attack", attack);
 			result.addObject("isAttacking", this.attackService.playerAlreadyAttacking(player.getId()));
-			result.addObject("isAttackable", this.attackService.refugeIsAttackable(refugeId));
+			result.addObject("isAttackable", this.attackService.shelterIsAttackable(shelterId));
 			result.addObject("attackerHasNoCharacters", this.attackService.attackerHasNoCharactersToAttack(attack.getAttacker().getId()));
 
 			if (move == null)
@@ -78,11 +78,11 @@ public class AttackPlayerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "save")
-	public ModelAndView saveAttackToRefuge(@ModelAttribute("attack") Attack attack, final BindingResult binding) {
+	public ModelAndView saveAttackToShelter(@ModelAttribute("attack") Attack attack, final BindingResult binding) {
 		ModelAndView result;
 		Move move;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 
 		try {
 			attack = this.attackService.reconstruct(attack, binding);
@@ -94,18 +94,18 @@ public class AttackPlayerController extends AbstractController {
 			try {
 
 				player = (Player) this.actorService.findActorByPrincipal();
-				refuge = this.refugeService.findRefugeByPlayer(player.getId());
-				move = this.moveService.findCurrentMoveByRefuge(refuge.getId());
+				shelter = this.shelterService.findShelterByPlayer(player.getId());
+				move = this.moveService.findCurrentMoveByShelter(shelter.getId());
 				Assert.isTrue(move == null);
 
 				this.attackService.saveToAttack(attack);
 
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
-				if (oops.getMessage() == "Refuge can't be attacked")
-					result = this.createAttackToRefuge(attack.getDefendant().getId());
+				if (oops.getMessage() == "Shelter can't be attacked")
+					result = this.createAttackToShelter(attack.getDefendant().getId());
 				else if (oops.getMessage() == "Attacker doesn't have characters to attack")
-					result = this.createAttackToRefuge(attack.getDefendant().getId());
+					result = this.createAttackToShelter(attack.getDefendant().getId());
 				else
 					result = new ModelAndView("redirect:/misc/403");
 
@@ -135,7 +135,7 @@ public class AttackPlayerController extends AbstractController {
 	 * Page<Attack> attacks;
 	 * Configuration configuration;
 	 * Pageable pageable;
-	 * Refuge refuge;
+	 * Shelter shelter;
 	 * Player player;
 	 * 
 	 * try {
@@ -145,15 +145,15 @@ public class AttackPlayerController extends AbstractController {
 	 * result = new ModelAndView("attack/list");
 	 * 
 	 * player = (Player) this.actorService.findActorByPrincipal();
-	 * refuge = this.refugeService.findRefugeByPlayer(player.getId());
+	 * shelter = this.shelterService.findShelterByPlayer(player.getId());
 	 * 
-	 * attacks = this.attackService.findAllAttacksByPlayer(refuge.getId(), pageable);
+	 * attacks = this.attackService.findAllAttacksByPlayer(shelter.getId(), pageable);
 	 * 
 	 * result.addObject("attacks", attacks.getContent());
 	 * result.addObject("page", page);
 	 * result.addObject("pageNum", attacks.getTotalPages());
 	 * result.addObject("requestUri", "attack/player/list.do?");
-	 * result.addObject("myRefugeId", refuge.getId());
+	 * result.addObject("myShelterId", shelter.getId());
 	 * } catch (final Throwable oops) {
 	 * result = new ModelAndView("redirect:/misc/403");
 	 * }
@@ -175,8 +175,8 @@ public class AttackPlayerController extends AbstractController {
 	 * 
 	 * Assert.isTrue(this.attackService.hasFinished(attack));
 	 * 
-	 * attackerStrength = this.attackService.getStrengthSumByRefuge(attack.getAttacker().getId());
-	 * defendantStrength = this.attackService.getStrengthSumByRefuge(attack.getDefendant().getId());
+	 * attackerStrength = this.attackService.getStrengthSumByShelter(attack.getAttacker().getId());
+	 * defendantStrength = this.attackService.getStrengthSumByShelter(attack.getDefendant().getId());
 	 * 
 	 * if (attackerStrength > defendantStrength)
 	 * attackerIsWinner = true;

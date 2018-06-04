@@ -14,9 +14,14 @@ import domain.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
 
-	@Query("select r from Room r where r.refuge.id=?1")
-	Collection<Room> findRoomsByRefuge(int refugeId);
+	@Query("select r from Room r where r.shelter.id=?1")
+	Collection<Room> findRoomsByShelter(int shelterId);
 
-	@Query("select r from Room r where r.refuge.id=?1")
-	Page<Room> findRoomsByRefuge(int refugeId, Pageable pageable);
+	@Query("select r from Room r where r.shelter.id=?1")
+	Page<Room> findRoomsByShelter(int shelterId, Pageable pageable);
+
+	// Dashboard queries
+
+	@Query("select r.shelter.name, count(r) from Room r group by r.shelter")
+	Collection<Collection<String>> findNumRoomsByShelter();
 }

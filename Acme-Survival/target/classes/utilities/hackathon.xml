@@ -365,7 +365,7 @@
             </UML:AssociationEnd>
           </UML:Association.connection>
         </UML:Association>
-        <UML:Class xmi.id="UMLClass.93" name="Refuge" visibility="public" isSpecification="false" namespace="UMLModel.2" isRoot="false" isLeaf="false" isAbstract="false" participant="UMLAssociationEnd.103 UMLAssociationEnd.106 UMLAssociationEnd.111 UMLAssociationEnd.168 UMLAssociationEnd.177 UMLAssociationEnd.244 UMLAssociationEnd.254 UMLAssociationEnd.263 UMLAssociationEnd.267" isActive="false">
+        <UML:Class xmi.id="UMLClass.93" name="Shelter" visibility="public" isSpecification="false" namespace="UMLModel.2" isRoot="false" isLeaf="false" isAbstract="false" participant="UMLAssociationEnd.103 UMLAssociationEnd.106 UMLAssociationEnd.111 UMLAssociationEnd.168 UMLAssociationEnd.177 UMLAssociationEnd.244 UMLAssociationEnd.254 UMLAssociationEnd.263 UMLAssociationEnd.267" isActive="false">
           <UML:Classifier.feature>
             <UML:Attribute xmi.id="UMLAttribute.94" name="code" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.384" owner="UMLClass.93"/>
             <UML:Attribute xmi.id="UMLAttribute.95" name="name" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.291" owner="UMLClass.93"/>
@@ -520,7 +520,7 @@
             <UML:Attribute xmi.id="UMLAttribute.147" name="kmPerSecond" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
             <UML:Attribute xmi.id="UMLAttribute.148" name="foodWastedPerSecond" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
             <UML:Attribute xmi.id="UMLAttribute.149" name="waterWastedPerSecond" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
-            <UML:Attribute xmi.id="UMLAttribute.150" name="refugeRecoverTime" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
+            <UML:Attribute xmi.id="UMLAttribute.150" name="shelterRecoverTime" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
             <UML:Attribute xmi.id="UMLAttribute.151" name="waterFactorSteal" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
             <UML:Attribute xmi.id="UMLAttribute.152" name="foodFactorSteal" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>
             <UML:Attribute xmi.id="UMLAttribute.153" name="metalFactorSteal" visibility="public" isSpecification="false" ownerScope="instance" changeability="changeable" targetScope="instance" type="X.388" owner="UMLClass.142"/>

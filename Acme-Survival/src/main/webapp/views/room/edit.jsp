@@ -31,35 +31,35 @@
 					$('#resourceError').show();
 					$('#resources').hide();
 				} else if (result.length > 0) {
-					$('#wood').html(result.split(',')[0]);
-					$('#metal').html(result.split(',')[1]);
+					$('#wood').html(' - '+result.split(',')[0]);
+					$('#metal').html(' - '+result.split(',')[1]);
 					if (result.split(',')[2] > 0) {
 						$('#resourceHealth').show();
-						$('#plusHealth').html(result.split(',')[2]);
+						$('#plusHealth').html(result.split(',')[2]+'/min');
 					} else {
 						$('#resourceHealth').hide();
 					}
 					if (result.split(',')[3] > 0) {
 						$('#resourceFood').show();
-						$('#plusFood').html(result.split(',')[3]);
+						$('#plusFood').html(result.split(',')[3]+'/min');
 					} else {
 						$('#resourceFood').hide();
 					}
 					if (result.split(',')[4] > 0) {
 						$('#resourceWater').show();
-						$('#plusWater').html(result.split(',')[4]);
+						$('#plusWater').html(result.split(',')[4]+'/min');
 					} else {
 						$('#resourceWater').hide();
 					}
 					if (result.split(',')[5] > 0) {
 						$('#resourceMetal').show();
-						$('#plusMetal').html(result.split(',')[5]);
+						$('#plusMetal').html(result.split(',')[5]+'/min');
 					} else {
 						$('#resourceMetal').hide();
 					}
 					if (result.split(',')[6] > 0) {
 						$('#resourceWood').show();
-						$('#plusWood').html(result.split(',')[6]);
+						$('#plusWood').html(result.split(',')[6]+'/min');
 					} else {
 						$('#resourceWood').hide();
 					}
@@ -100,7 +100,7 @@
 			<div id="resources">
 				<div class="plusLabel">
 					<spring:message code="room.wood" />
-					:
+					:&nbsp;
 				</div>
 				<div class="plusElm">
 					<div id="wood"></div>
@@ -108,7 +108,7 @@
 				<br />
 				<div class="plusLabel">
 					<spring:message code="room.metal" />
-					:
+					:&nbsp; 
 				</div>
 				<div class="plusElm">
 					<div id="metal"></div>
@@ -120,9 +120,8 @@
 						<spring:message code="room.health" />
 						+
 					</div>
-					<div class="plusElm">
+					<div class="plusElm" style="display:inline;">
 						<div id="plusHealth"></div>
-						/min
 					</div>
 					<br />
 				</div>
@@ -144,7 +143,7 @@
 						+
 					</div>
 					<div class="plusElm">
-						<div id="plusWater"></div>/min
+						<div id="plusWater"></div>
 					</div>
 					<br />
 				</div>
@@ -155,7 +154,6 @@
 					</div>
 					<div class="plusElm">
 						<div id="plusMetal"></div>
-						/min
 					</div>
 					<br />
 				</div>
@@ -166,7 +164,6 @@
 					</div>
 					<div class="plusElm">
 						<div id="plusWood"></div>
-						/min
 					</div>
 					<br />
 				</div>
@@ -196,6 +193,7 @@
 			<acme:select id="roomDesign" items="${roomDesigns}"
 				itemLabel="name[${lang}]" code="room.roomDesign" path="roomDesign" />
 			<br />
+			<br />
 			<div class="cleared-div">
 				<acme:submit name="save" code="room.save" />
 
@@ -203,7 +201,7 @@
 					<acme:delete clickCode="room.delete.message" name="delete"
 						code="room.delete" />
 				</jstl:if>
-				<acme:cancel url="refuge/player/display.do" code="room.cancel" />
+				<acme:cancel url="shelter/player/display.do" code="room.cancel" />
 			</div>
 		</form:form>
 	</div>

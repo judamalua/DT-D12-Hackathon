@@ -60,16 +60,24 @@ public class DesignerConfigurationDesignerController extends AbstractController 
 	public ModelAndView save(@Valid final DesignerConfiguration configuration, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(configuration, "configuration.params.error");
-		else
+		} else {
 			try {
+
 				this.designerConfigurationService.save(configuration);
 				result = new ModelAndView("redirect:/designerConfiguration/designer/list.do");
 
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(configuration, "configuration.commit.error");
+				if (oops.getMessage().contains("CharacterCapacityError")) {
+					result = this.createEditModelAndView(configuration, "configuration.capacity.error");
+				} else if (oops.getMessage().contains("FoodWaterGatherError")) {
+					result = this.createEditModelAndView(configuration, "configuration.foodLostGatherWaterGather.error");
+				} else {
+					result = this.createEditModelAndView(configuration, "configuration.commit.error");
+				}
 			}
+		}
 
 		return result;
 	}
