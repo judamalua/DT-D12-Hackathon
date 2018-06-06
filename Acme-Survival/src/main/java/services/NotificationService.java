@@ -165,6 +165,14 @@ public class NotificationService {
 		return result;
 	}
 
+	public String findNumberNotifications(final int playerId) {
+		String result;
+
+		result = this.notificationRepository.findNumberNotifications(playerId);
+
+		return result;
+	}
+
 	public void flush() {
 		this.notificationRepository.flush();
 	}
@@ -180,7 +188,7 @@ public class NotificationService {
 		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null)
+		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByAttack(attack.getId());
 				if (notification == null) {
@@ -196,6 +204,7 @@ public class NotificationService {
 				}
 
 			}
+		}
 
 	}
 

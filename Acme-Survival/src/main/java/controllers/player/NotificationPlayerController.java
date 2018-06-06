@@ -12,6 +12,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
@@ -195,6 +196,28 @@ public class NotificationPlayerController extends AbstractController {
 
 	}
 
+	//Display ------------------------------------
+	@RequestMapping(value = "/numberNotifications", method = RequestMethod.GET)
+	public @ResponseBody
+	String getNumberNotifications() {
+		String result;
+		Player player;
+
+		result = "";
+
+		try {
+
+			if (this.actorService.getLogged()) {
+				player = (Player) this.actorService.findActorByPrincipal();
+
+				result = this.notificationService.findNumberNotifications(player.getId());
+			}
+
+		} catch (final Throwable oops) {
+		}
+
+		return result;
+	}
 	//Ancilliary methods ------------------------------------------------
 
 	public ArrayList<String> splitBodyNotification(final String body) {

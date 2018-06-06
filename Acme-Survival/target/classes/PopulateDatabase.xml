@@ -1489,7 +1489,7 @@
 			</map>
 		</property>
 		<property name="imageUrl"
-			value="http://www.ipmglobal.net/img/ipm-guys-gears-resource-mgmt.jpg" />
+			value="https://blog.iic.org/wp-content/uploads/2018/03/Efectividad-en-el-Desarrollo-864x520.jpg" />
 		<property name="finalMode" value="false" />
 		<property name="strength" value="0" />
 		<property name="luck" value="0" />
@@ -2116,7 +2116,7 @@
 			</map>
 		</property>
 		<property name="imageUrl"
-			value="http://www.ipmglobal.net/img/ipm-guys-gears-resource-mgmt.jpg" />
+			value="https://blog.iic.org/wp-content/uploads/2018/03/Efectividad-en-el-Desarrollo-864x520.jpg" />
 		<property name="finalMode" value="false" />
 		<property name="water" value="0" />
 		<property name="food" value="0" />

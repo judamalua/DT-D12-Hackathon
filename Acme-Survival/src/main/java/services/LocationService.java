@@ -147,6 +147,8 @@ public class LocationService {
 			result.setLootTable(location.getLootTable());
 		}
 		this.validator.validate(result, binding);
+		this.locationRepository.flush();
+
 		return result;
 	}
 

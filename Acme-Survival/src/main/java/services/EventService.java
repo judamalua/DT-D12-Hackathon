@@ -104,7 +104,7 @@ public class EventService {
 
 	public Event save(final Event event) {
 
-		assert event != null;
+		Assert.isTrue(event != null);
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
 		Assert.isTrue(actor instanceof Designer);
@@ -117,7 +117,7 @@ public class EventService {
 	}
 	public Collection<Event> saveAll(final Collection<Event> event) {
 
-		assert event != null;
+		Assert.isTrue(event != null);
 
 		Collection<Event> result;
 		result = this.eventRepository.save(event);
@@ -127,10 +127,8 @@ public class EventService {
 	}
 	public void delete(final Event event) {
 
-		assert event != null;
-		assert event.getId() != 0;
-		assert event != null;
-		Assert.isTrue(!event.getFinalMode());
+		Assert.isTrue(event.getId() != 0);
+		Assert.isTrue(event != null);
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
 		Assert.isTrue(actor instanceof Designer);
@@ -167,6 +165,8 @@ public class EventService {
 		}
 
 		this.validator.validate(result, binding);
+		this.eventRepository.flush();
+
 		return result;
 	}
 

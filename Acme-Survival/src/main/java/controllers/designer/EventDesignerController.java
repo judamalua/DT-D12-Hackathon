@@ -181,20 +181,26 @@ public class EventDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView updateEvent(@ModelAttribute("event") Event event, final BindingResult binding) {
 		ModelAndView result;
-		event = this.eventService.reconstruct(event, binding);
 
-		if (binding.hasErrors())
+		try {
+			event = this.eventService.reconstruct(event, binding);
+		} catch (final Throwable oops) {
+		}
+
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(event, "event.params.error");
-		else
+		} else {
 			try {
 				this.eventService.save(event);
-				if (event.getFinalMode())
+				if (event.getFinalMode()) {
 					result = new ModelAndView("redirect:/event/designer/list-final.do");
-				else
+				} else {
 					result = new ModelAndView("redirect:/event/designer/list.do");
+				}
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(event, "event.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -213,7 +219,7 @@ public class EventDesignerController extends AbstractController {
 		ModelAndView result;
 
 		try {
-			Assert.isTrue(!event.getFinalMode());
+			Assert.isTrue(!this.eventService.findOne(event.getId()).getFinalMode());
 			this.eventService.delete(event);
 			result = new ModelAndView("redirect:list.do");
 

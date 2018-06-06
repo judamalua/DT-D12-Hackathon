@@ -39,7 +39,9 @@
 		<%-- 	<display:column property="image" title="${image}" /> --%>
 
 		<display:column title="">
-			<img class="forumImg" src="${forum.image}" />
+			<jstl:if test="${forum.image!=null && forum.image!=\"\" }">
+				<img class="forumImg" src="${forum.image}" />
+			</jstl:if>
 			<div class="forumNameDescription">
 				<div class="forumName">
 					<a href="forum/list.do?forumId=${forum.id}&staff=${forum.staff}"><jstl:out
@@ -109,13 +111,15 @@
 	</display:table>
 </jstl:if>
 <security:authorize access="isAuthenticated() and !hasRole('PLAYER')">
-	<acme:button url="forum/actor/create.do" code="forum.create" />
-	<br />
+	<jstl:if test="${fatherForum==null}">
+		<acme:button url="forum/actor/create.do" code="forum.create" />
+		<br />
+	</jstl:if>
 	<jstl:if test="${fatherForum!=null}">
 		<acme:button url="forum/actor/create.do?forumId=${fatherForum.id}"
 			code="forum.create" />
+		<br />
 	</jstl:if>
-	<br />
 	<acme:button url="forum/list.do?staff=true" code="forum.staff" />
 	<br />
 </security:authorize>

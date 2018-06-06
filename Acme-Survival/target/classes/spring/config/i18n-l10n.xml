@@ -37,7 +37,6 @@
 		<value>/views/message/messages</value>
 		<value>/views/shelter/messages</value>
 		<value>/views/room/messages</value>
-		<value>/views/inventory/messages</value>
 		<value>/views/event/messages</value>
 		<value>/views/itemDesign/messages</value>
 		<value>/views/attack/messages</value>
