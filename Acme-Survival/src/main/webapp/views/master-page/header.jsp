@@ -17,6 +17,15 @@
 
 <link rel="stylesheet" type="text/css" href="./styles/newStyle.css">
 
+<security:authorize access="hasRole('PLAYER')">
+	<script>
+// 		$(document).ready(function() {
+// 			$.get("notification/player/numberNotifications.do", function(data, status) {
+// 				$('#numNotifications').htm(data);
+// 			});
+// 		});
+	</script>
+</security:authorize>
 <!-- <div class = "crop">
 	<a href="welcome/index.do"> <img class="banner img-responsive" src="https://i.ytimg.com/vi/BzX6jMalUck/maxresdefault.jpg"
 		alt="Acme Co., Inc." />

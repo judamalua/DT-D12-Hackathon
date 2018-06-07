@@ -67,8 +67,9 @@ public class AttackPlayerController extends AbstractController {
 			result.addObject("isAttackable", this.attackService.shelterIsAttackable(shelterId));
 			result.addObject("attackerHasNoCharacters", this.attackService.attackerHasNoCharactersToAttack(attack.getAttacker().getId()));
 
-			if (move == null)
-				result.addObject("isMoving", true);
+			if (move == null) {
+				result.addObject("isMoving", false);
+			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -88,9 +89,9 @@ public class AttackPlayerController extends AbstractController {
 			attack = this.attackService.reconstruct(attack, binding);
 		} catch (final Throwable oops) {
 		}
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = new ModelAndView("redirect:/misc/403");
-		else
+		} else {
 			try {
 
 				player = (Player) this.actorService.findActorByPrincipal();
@@ -102,14 +103,16 @@ public class AttackPlayerController extends AbstractController {
 
 				result = new ModelAndView("redirect:/map/player/display.do");
 			} catch (final Throwable oops) {
-				if (oops.getMessage() == "Shelter can't be attacked")
+				if (oops.getMessage() == "Shelter can't be attacked") {
 					result = this.createAttackToShelter(attack.getDefendant().getId());
-				else if (oops.getMessage() == "Attacker doesn't have characters to attack")
+				} else if (oops.getMessage() == "Attacker doesn't have characters to attack") {
 					result = this.createAttackToShelter(attack.getDefendant().getId());
-				else
+				} else {
 					result = new ModelAndView("redirect:/misc/403");
+				}
 
 			}
+		}
 		return result;
 	}
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)

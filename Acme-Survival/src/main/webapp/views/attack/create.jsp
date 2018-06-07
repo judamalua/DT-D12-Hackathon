@@ -22,57 +22,78 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <spring:message var="format" code="master.page.moment.format.out" />
-<fmt:formatDate var="formatAttackStartDate"
-	value="${attack.startDate}" pattern="${format}" />
-<fmt:formatDate var="formatAttackEndMoment"
-	value="${attack.endMoment}" pattern="${format}" />
+<fmt:formatDate var="formatAttackStartDate" value="${attack.startDate}"
+	pattern="${format}" />
+<fmt:formatDate var="formatAttackEndMoment" value="${attack.endMoment}"
+	pattern="${format}" />
 
 <form:form action="attack/player/create.do" modelAttribute="attack">
 
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="defendant" />
-		
+
 	<dl>
-  		<dt><spring:message code="attack.attacker"/>:</dt>
-  		<dd><jstl:out value="${attack.attacker.name}"/></dd>
-		
-		
-		<dt><spring:message code="attack.defendant"/>:</dt>
-		<dd><jstl:out value="${attack.defendant.name}"/></dd>
-		
-		<dt><spring:message code="attack.startDate.estimated"/>:</dt>
-		<dd><jstl:out value="${formatAttackStartDate}"/></dd>
-	
-		<dt><spring:message code="attack.endMoment.estimated"/>:</dt>
-		<dd><jstl:out value="${formatAttackEndMoment}"/></dd>
-	
+		<dt>
+			<spring:message code="attack.attacker" />
+			:
+		</dt>
+		<dd>
+			<jstl:out value="${attack.attacker.name}" />
+		</dd>
+
+
+		<dt>
+			<spring:message code="attack.defendant" />
+			:
+		</dt>
+		<dd>
+			<jstl:out value="${attack.defendant.name}" />
+		</dd>
+
+		<dt>
+			<spring:message code="attack.startDate.estimated" />
+			:
+		</dt>
+		<dd>
+			<jstl:out value="${formatAttackStartDate}" />
+		</dd>
+
+		<dt>
+			<spring:message code="attack.endMoment.estimated" />
+			:
+		</dt>
+		<dd>
+			<jstl:out value="${formatAttackEndMoment}" />
+		</dd>
+
 	</dl>
-	
-	<jstl:choose >
+
+	<jstl:choose>
 		<jstl:when test="${!isAttackable}">
-		<div class="error">
-			<spring:message code="attack.shelter.no.attackable"/>
-		</div>
+			<div class="error">
+				<spring:message code="attack.shelter.no.attackable" />
+			</div>
 		</jstl:when>
-		
+
 		<jstl:when test="${attackerHasNoCharacters}">
-		<div class="error">
-			<spring:message code="attack.shelter.attacker.no.characters"/>
-		</div>
+			<div class="error">
+				<spring:message code="attack.shelter.attacker.no.characters" />
+			</div>
 		</jstl:when>
 		<jstl:when test="${isMoving}">
-		<div class="error">
+			<div class="error">
 				<spring:message code="attack.shelter.isMoving" />
 			</div>
 		</jstl:when>
 	</jstl:choose>
-	
-	<jstl:if test="${isMoving and !isAttacking and isAttackable and !attackerHasNoCharacters}">
+
+	<jstl:if
+		test="${!isMoving and !isAttacking and isAttackable and !attackerHasNoCharacters}">
 		<acme:submit name="save" code="attack.start" />
 	</jstl:if>
-	
+
 	<acme:cancel url="map/player/display.do" code="attack.cancel" />
-	
+
 
 </form:form>

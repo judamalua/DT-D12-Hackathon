@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ActorService;
 import services.ConfigurationService;
 import services.LocationService;
 import services.LootTableService;
@@ -34,9 +33,6 @@ public class LocationDesignerController extends AbstractController {
 
 	@Autowired
 	private ConfigurationService	configurationService;
-
-	@Autowired
-	private ActorService			actorService;
 
 	@Autowired
 	private LootTableService		lootTableService;
@@ -93,17 +89,22 @@ public class LocationDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@ModelAttribute("location") Location location, final BindingResult binding) {
 		ModelAndView result;
-		location = this.locationService.reconstruct(location, binding);
 
-		if (binding.hasErrors())
+		try {
+			location = this.locationService.reconstruct(location, binding);
+		} catch (final Throwable oops) {
+		}
+
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(location, "location.params.error");
-		else
+		} else {
 			try {
 				this.locationService.save(location);
 				result = new ModelAndView("redirect:/location/designer/display.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(location, "location.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -112,18 +113,22 @@ public class LocationDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
 	public ModelAndView saveFinal(@ModelAttribute("location") Location location, final BindingResult binding) {
 		ModelAndView result;
-		location.setFinalMode(true);
-		location = this.locationService.reconstruct(location, binding);
 
-		if (binding.hasErrors())
+		try {
+			location.setFinalMode(true);
+			location = this.locationService.reconstruct(location, binding);
+		} catch (final Throwable oops) {
+		}
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(location, "location.params.error");
-		else
+		} else {
 			try {
 				this.locationService.save(location);
 				result = new ModelAndView("redirect:/location/designer/display.do");
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(location, "location.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -276,8 +281,9 @@ public class LocationDesignerController extends AbstractController {
 		jsonLocation.put("point_c", location.getPoint_c());
 		jsonLocation.put("point_d", location.getPoint_d());
 		final JSONObject name = new JSONObject();
-		for (final String language : location.getName().keySet())
+		for (final String language : location.getName().keySet()) {
 			name.put(language, location.getName().get(language));
+		}
 		jsonLocation.put("name", name);
 		return jsonLocation;
 	}

@@ -25,6 +25,7 @@
 	border: 1px solid #aaaaaa;
 	float: left;
 }
+
 .divd {
 	width: 650px;
 	height: 800px;
@@ -33,7 +34,6 @@
 	float: left;
 }
 
-
 #div3 {
 	width: 800px;
 	height: 300px;
@@ -41,7 +41,7 @@
 	border: 1px solid #aaaaaa;
 }
 
-.div{
+.div {
 	width: 800px;
 	height: 300px;
 	padding: 10px;
@@ -77,7 +77,6 @@
 		var notSelected2 = document.getElementById('div3');
 		var itemsSelected = new Array();
 		var itemsNotSelected = new Array();
-		
 
 		if (parent != undefined) {
 			var images = parent.getElementsByClassName('img');
@@ -85,21 +84,21 @@
 				itemsSelected[i] = images[i].getAttribute('name');
 			}
 		}
-			
+
 		if (notSelected != undefined) {
 			var imagesNotSelected = notSelected.getElementsByClassName('img');
 			for ( var i = 0; i < imagesNotSelected.length; i++) {
 				itemsNotSelected[i] = imagesNotSelected[i].getAttribute('name');
 			}
-		} else if (notSelected2 != undefined){
+		} else if (notSelected2 != undefined) {
 			var imagesNotSelected2 = notSelected2.getElementsByClassName('img');
 			for ( var i = 0; i < imagesNotSelected2.length; i++) {
 				itemsNotSelected[i] = imagesNotSelected2[i].getAttribute('name');
 			}
 		}
-		
+
 		var id = document.getElementById('notificationId').innerHTML;
-		
+
 		$.post("gather/player/finishMission.do", {
 			selected : JSON.stringify(itemsSelected),
 			notSelected : JSON.stringify(itemsNotSelected),
@@ -109,7 +108,9 @@
 		});
 	}
 </script>
-<div id="notificationId" hidden="true"><jstl:out value="${notificationId}" /></div>
+<div id="notificationId" hidden="true">
+	<jstl:out value="${notificationId}" />
+</div>
 <h4>
 	<spring:message code="foundresources"></spring:message>
 </h4>
@@ -126,7 +127,7 @@
 	<h4>
 		<spring:message code="founditems"></spring:message>
 	</h4>
-	<div id="div2" class ="div" >
+	<div id="div2" class="div">
 		<jstl:forEach items="${items}" var="item">
 			<img name="${item.id}" class="img" id="${item.id}"
 				style="float: left;" src="${item.tool.imageUrl}" width="75"
@@ -136,7 +137,8 @@
 </jstl:if>
 
 
-<jstl:if test="${currentCapacityShelter<totalTools && currentCapacityShelter == 0}">
+<jstl:if
+	test="${currentCapacityShelter<totalTools && currentCapacityShelter == 0}">
 
 
 	<h4>
@@ -152,18 +154,28 @@
 	</div>
 </jstl:if>
 
-
-
-
-<jstl:if test="${currentCapacityShelter<totalTools && currentCapacityShelter>0}">
-	<p><spring:message code="item.message1"></spring:message><br></p>
-	<p><spring:message code="item.message2"></spring:message><b>  <jstl:out value="${currentCapacityShelter}"></jstl:out></b></p><br>
-	<p><spring:message code="item.message3"></spring:message></p>
-<jstl:if test="${failedSelection}">	
-	<p style="color=#F00;"><spring:message code="error.message"></spring:message>!!!</p>
-</jstl:if>	
-	<div id="div2" class="divd" ondrop="drop(event)" ondragover="allowDrop(event)">
-	</div>
+<jstl:if
+	test="${currentCapacityShelter<totalTools && currentCapacityShelter>0}">
+	<p>
+		<spring:message code="item.message1"></spring:message>
+		<br>
+	</p>
+	<p>
+		<spring:message code="item.message2"></spring:message>
+		<b> <jstl:out value="${currentCapacityShelter}"></jstl:out></b>
+	</p>
+	<br>
+	<p>
+		<spring:message code="item.message3"></spring:message>
+	</p>
+	<jstl:if test="${failedSelection}">
+		<p style="">
+			<spring:message code="error.message"></spring:message>
+			!!!
+		</p>
+	</jstl:if>
+	<div id="div2" class="divd" ondrop="drop(event)"
+		ondragover="allowDrop(event)"></div>
 	<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
 		<jstl:forEach items="${items}" var="item">
 			<img name="${item.id}" class="img" id="${item.id}"
@@ -173,12 +185,10 @@
 		</jstl:forEach>
 	</div>
 
-	
-
-
-
 </jstl:if>
-<br><br><br>
+<br>
+<br>
+<br>
 <button class="btn" onclick="save();">
-	<spring:message code="mission.finish"></spring:message>
+	<spring:message code="mission.finish" />
 </button>

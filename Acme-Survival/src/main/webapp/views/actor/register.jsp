@@ -26,13 +26,12 @@
 	
 	<acme:textbox code="actor.birthDate" path="birthDate" placeholder="dd/MM/yyyy" required="true"/>
 	
-	<acme:textbox code="actor.avatar" path="avatar"/>
+	<acme:imageUpload code="actor.avatar" path="avatar"/>
 		
 	<acme:textbox code="actor.email" path="email" required="true"/>
 	
 	<acme:textbox code="actor.phoneNumber" path="phoneNumber"/>
 	
-
 	<acme:textbox code="actor.username" path="userAccount.username" required="true"/>
 
 	<acme:password code="actor.password" path="userAccount.password" required="true"/>
