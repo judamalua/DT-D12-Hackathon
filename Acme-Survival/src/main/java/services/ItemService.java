@@ -120,7 +120,7 @@ public class ItemService {
 	 * @Luis
 	 */
 	public Item UpdateEquipped(final Item item, final int characterId) {
-		Item result;
+		Item result, oldItem;
 		domain.Character character;
 
 		character = this.characterService.findOne(characterId);
@@ -129,7 +129,7 @@ public class ItemService {
 
 		//Actualización de objeto equipado y el que desequipa
 		if (character.getItem() != null) {
-			final Item oldItem = character.getItem();
+			oldItem = character.getItem();
 			oldItem.setEquipped(false);
 			//update propertis
 			character.setCapacity(character.getCapacity() - oldItem.getTool().getCapacity());
@@ -144,7 +144,7 @@ public class ItemService {
 			item.setEquipped(true);
 
 			this.itemRepository.save(item);
-			this.characterService.save(character);
+			//			this.characterService.save(character);
 
 		} else {
 			character.setItem(item);
@@ -154,7 +154,7 @@ public class ItemService {
 			item.setEquipped(true);
 
 			this.itemRepository.save(item);
-			this.characterService.save(character);
+			//			this.characterService.save(character);
 
 		}
 

@@ -86,15 +86,14 @@ public class ItemDesignService {
 
 	public void delete(final ItemDesign itemDesign) {
 
-		assert itemDesign != null;
-		assert itemDesign.getId() != 0;
+		Assert.isTrue(itemDesign != null);
+		Assert.isTrue(itemDesign.getId() != 0);
 
 		Assert.isTrue(this.itemDesignRepository.exists(itemDesign.getId()));
 
 		this.itemDesignRepository.delete(itemDesign);
 
 	}
-
 	public Collection<Event> findEventsByItemDesign(final int itemDesignId) {
 		Collection<Event> result;
 

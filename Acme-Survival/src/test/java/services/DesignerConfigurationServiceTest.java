@@ -24,7 +24,10 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Shelter that he already knows.
+	 * This driver checks several tests regarding functional requirement number 17.7: An actor who is authenticated as a designer must be able to
+	 * manager designer configuration.
+	 * 
+	 * @author Juanmi
 	 */
 	@Test
 	public void testEditDesignerConfigurationPositive() {
@@ -40,6 +43,12 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 17.7: An actor who is authenticated as a designer must be able to
+	 * manager designer configuration.
+	 * 
+	 * @author Juanmi
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveDesignerConfigurationNotLoggedNegative() {
 		DesignerConfiguration designerConfiguration;
@@ -51,6 +60,12 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 17.7: An actor who is authenticated as a designer must be able to
+	 * manager designer configuration.
+	 * 
+	 * @author Juanmi
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveDesignerConfigurationFoodLostGatherGreaterThanWaterLostGatherNegative() {
 		DesignerConfiguration designerConfiguration;
@@ -66,6 +81,12 @@ public class DesignerConfigurationServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 17.7: An actor who is authenticated as a designer must be able to
+	 * manager designer configuration.
+	 * 
+	 * @author Juanmi
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveDesignerConfigurationNumCharactersGreaterThanShelterCapacityNegative() {
 		DesignerConfiguration designerConfiguration;

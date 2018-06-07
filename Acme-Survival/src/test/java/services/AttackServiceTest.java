@@ -37,7 +37,10 @@ public class AttackServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Shelter that he already knows.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test
 	public void testAttackPositive() {
@@ -61,7 +64,10 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can't Attack a Shelter that he doesn't know.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttackPlayerDoesntKnowShelter() {
@@ -88,7 +94,10 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can't Attack his own Shelter.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttackOwnPlayerShelter() {
@@ -113,7 +122,10 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can't Attack a Shelter when he is already in an Attack Mission.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttackPlayerIsAlreadyAttacking() {
@@ -139,7 +151,10 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can not Attack a Shelter that has been Attacked recently.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttackShelterNotAttackable() {

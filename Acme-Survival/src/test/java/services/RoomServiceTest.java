@@ -36,7 +36,8 @@ public class RoomServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Shelter that he already knows.
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
 	 */
 	@Test
 	public void testSaveRoomPositive() {
@@ -64,6 +65,10 @@ public class RoomServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveRoomNotLoggedNegative() {
 		Room room;
@@ -89,6 +94,10 @@ public class RoomServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveRoomNotShelterNegative() {
 		Room room;
@@ -115,6 +124,10 @@ public class RoomServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveRoomNotOwnShelterNegative() {
 		Room room;
@@ -143,6 +156,10 @@ public class RoomServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
+	 */
 	@Test
 	public void testDeleteRoomPositive() {
 		Room room;
@@ -158,6 +175,10 @@ public class RoomServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteRoomNotLoggedNegative() {
 		Room room;
@@ -170,6 +191,10 @@ public class RoomServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.5: An actor who is authenticated as player must be able to
+	 * manage his rooms which include create and delete them from the shelter.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteRoomNotOwnerNegative() {
 		Room room;

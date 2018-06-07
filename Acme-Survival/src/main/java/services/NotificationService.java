@@ -270,4 +270,19 @@ public class NotificationService {
 		return result;
 	}
 
+	public Collection<Notification> findNotificationByEvent(final int eventId) {
+		Collection<Notification> result;
+
+		result = this.notificationRepository.findNotificationByEvent(eventId);
+
+		return result;
+	}
+
+	public Collection<Notification> findNotificationByItemDesign(final int itemDesignId) {
+		Collection<Notification> result;
+
+		result = this.notificationRepository.findNotificationByItemDesign(itemDesignId);
+
+		return result;
+	}
 }

@@ -17,6 +17,8 @@ import repositories.EventRepository;
 import domain.Actor;
 import domain.Designer;
 import domain.Event;
+import domain.Notification;
+import domain.ProbabilityEvent;
 
 @Service
 @Transactional
@@ -25,11 +27,18 @@ public class EventService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private EventRepository	eventRepository;
+	private EventRepository			eventRepository;
+
 	@Autowired
-	private Validator		validator;
+	private Validator				validator;
+
 	@Autowired
-	private ActorService	actorService;
+	private ActorService			actorService;
+
+	@Autowired
+	private ProbabilityEventService	probabilityEventService;
+	@Autowired
+	private NotificationService		notificationSevice;
 
 
 	// Supporting services --------------------------------------------------
@@ -134,10 +143,23 @@ public class EventService {
 		Assert.isTrue(actor instanceof Designer);
 		Assert.isTrue(this.eventRepository.exists(event.getId()));
 
+		Collection<ProbabilityEvent> probabilityEvents;
+		Collection<Notification> notifications;
+
+		probabilityEvents = this.probabilityEventService.findProbabilityEventByEvent(event.getId());
+		notifications = this.notificationSevice.findNotificationByEvent(event.getId());
+
+		for (final ProbabilityEvent probabilityEvent : probabilityEvents) {
+			this.probabilityEventService.delete(probabilityEvent);
+		}
+
+		for (final Notification notification : notifications) {
+			this.notificationSevice.delete(notification);
+		}
+
 		this.eventRepository.delete(event);
 
 	}
-
 	/**
 	 * Reconstruct the Event passed as parameter
 	 * 

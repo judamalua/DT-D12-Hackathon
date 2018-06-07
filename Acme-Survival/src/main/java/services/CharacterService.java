@@ -476,7 +476,7 @@ public class CharacterService {
 		inventory = this.inventoryService.findInventoryByShelter(character.getShelter().getId());
 
 		entrance = character.getRoomEntrance();
-		currentDate = new Date();
+		currentDate = new Date(System.currentTimeMillis() - 1);
 
 		minutes = TimeUnit.MILLISECONDS.toMinutes(currentDate.getTime() - entrance.getTime());
 		characters = this.characterRepository.findCharactersCurrentlyInMission(character.getShelter().getId());

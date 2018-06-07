@@ -33,7 +33,8 @@ public class ShelterServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Shelter that he already knows.
+	 * This test checks save a new room regarding functional requirement number 18.2: An actor who is authenticated as player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
 	 */
 	@Test
 	public void testSaveShelterPositive() {
@@ -58,6 +59,11 @@ public class ShelterServiceTest extends AbstractTest {
 
 		super.unauthenticate();
 	}
+
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.2: An actor who is authenticated as player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveForumNotLoggedNegative() {
 		Shelter shelter;
@@ -80,6 +86,10 @@ public class ShelterServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.2: An actor who is authenticated as player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
+	 */
 	@Test(expected = ConstraintViolationException.class)
 	public void testSaveForumBlankNameNegative() {
 		Shelter shelter;
@@ -103,6 +113,10 @@ public class ShelterServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks save a new room regarding functional requirement number 18.2: An actor who is authenticated as player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEditShelterNotOwnNegative() {
 		Shelter shelter;

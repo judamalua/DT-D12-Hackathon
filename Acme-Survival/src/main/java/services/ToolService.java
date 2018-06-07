@@ -16,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.ToolRepository;
 import domain.Event;
 import domain.Item;
+import domain.Notification;
 import domain.ProbabilityItem;
 import domain.Tool;
 
@@ -41,6 +42,8 @@ public class ToolService {
 
 	@Autowired
 	private ItemService				itemService;
+	@Autowired
+	private NotificationService		notificationService;
 
 	@Autowired
 	private ProbabilityItemService	probabilityItemService;
@@ -117,11 +120,13 @@ public class ToolService {
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
 		final Collection<Item> items;
+		Collection<Notification> notifications;
 
 		Assert.isTrue(!tool.getFinalMode());
 		events = this.itemDesignService.findEventsByItemDesign(tool.getId());
 		propabilityItems = this.itemDesignService.findProbabilityItemsByItemDesign(tool.getId());
 		items = this.findItemsByTool(tool.getId());
+		notifications = this.notificationService.findNotificationByItemDesign(tool.getId());
 
 		for (final Event event : events) {
 			event.setItemDesign(null);
@@ -134,6 +139,10 @@ public class ToolService {
 
 		for (final Item item : items) {
 			this.itemService.delete(item);
+		}
+
+		for (final Notification notification : notifications) {
+			this.notificationService.delete(notification);
 		}
 
 		this.toolRepository.delete(tool);

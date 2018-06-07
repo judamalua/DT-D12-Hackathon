@@ -31,6 +31,12 @@ public class MoveServiceTest extends AbstractTest {
 	private ShelterService	shelterService;
 
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 18.2: An actor who is authenticated as a player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
+	 * 
+	 * @author Manuel
+	 */
 	@Test
 	public void testSaveMovePositive() {
 		Move move;
@@ -51,6 +57,12 @@ public class MoveServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 18.2: An actor who is authenticated as a player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveMoveNotAuthenticatedNegative() {
 		domain.Move move;
@@ -68,6 +80,12 @@ public class MoveServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 18.2: An actor who is authenticated as a player must be able to
+	 * create a shelter if he or she did not create one previously and move it.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveMoveNotOwnShelterNegative() {
 		domain.Move move;

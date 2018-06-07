@@ -43,7 +43,7 @@ public class LootTableServiceTest extends AbstractTest {
 
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 19.4: An actor who is authenticated as a manager must be able to
 	 * create lootTables in the marketplace, every test is explained inside.
 	 * 
 	 * @author Ale
@@ -81,7 +81,7 @@ public class LootTableServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as Designer must
+	 * This driver checks several tests regarding functional requirement number 19.4: A user who is authenticated as Designer must
 	 * be able to list the lootTables in final Mode
 	 * 
 	 * @author Ale
@@ -117,7 +117,7 @@ public class LootTableServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 19.4: An actor who is authenticated as a manager must be able to
 	 * edit draft mode lootTables, every test is explained inside.
 	 * 
 	 * @author Ale
@@ -155,7 +155,7 @@ public class LootTableServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 19.4: An actor who is authenticated as a manager must be able to
 	 * delete draft mode lootTables, every test is explained inside.
 	 * 
 	 * @author Ale

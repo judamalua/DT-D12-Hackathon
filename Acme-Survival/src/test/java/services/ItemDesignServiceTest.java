@@ -49,10 +49,10 @@ public class ItemDesignServiceTest extends AbstractTest {
 
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.5: An actor who is authenticated as a designer must be able to
 	 * create itemDesigns designs (Tool and Resource), every test is explained inside.
 	 * 
-	 * @author Juanmi
+	 * @author Manuel
 	 */
 	@Test
 	public void driverCreateItemDesigns() {
@@ -183,7 +183,7 @@ public class ItemDesignServiceTest extends AbstractTest {
 		}
 	}
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as designer must
+	 * This driver checks several tests regarding functional requirement number 19.5: A user who is authenticated as designer must
 	 * be able to list the tools and resources set to final mode
 	 * 
 	 * @author Juanmi
@@ -218,7 +218,7 @@ public class ItemDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An authenticated designer must be able to list draft mode tools and resources
+	 * This driver checks several tests regarding functional requirement number 19.5: An authenticated designer must be able to list draft mode tools and resources
 	 * 
 	 * @author MJ
 	 */
@@ -252,7 +252,7 @@ public class ItemDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.5: An actor who is authenticated as a designer must be able to
 	 * edit draft mode item designs, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -369,7 +369,7 @@ public class ItemDesignServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.5: An actor who is authenticated as a designer must be able to
 	 * delete draft mode room designs, every test is explained inside.
 	 * 
 	 * @author Juanmi

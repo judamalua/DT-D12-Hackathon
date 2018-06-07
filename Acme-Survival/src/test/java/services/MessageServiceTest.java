@@ -35,6 +35,12 @@ public class MessageServiceTest extends AbstractTest {
 	private ActorService	actorService;
 
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test
 	public void testSaveMessagePositive() {
 		domain.Message message;
@@ -59,6 +65,12 @@ public class MessageServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveMessageNotOwnerNegative() {
 		domain.Message message;
@@ -84,6 +96,12 @@ public class MessageServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveThreadNotAuthenticatedNegative() {
 		domain.Message message;
@@ -106,6 +124,12 @@ public class MessageServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = ConstraintViolationException.class)
 	public void testSaveBlankMessageNegative() {
 		domain.Message message;

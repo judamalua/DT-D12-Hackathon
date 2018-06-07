@@ -33,6 +33,13 @@ public class LocationServiceTest extends AbstractTest {
 
 	// Tests ------------------------------------------------------------------
 
+	/**
+	 * This driver checks several tests regarding functional requirement number 19.3 An actor who is authenticated as a designer must be able to
+	 * manage locations, which includes create, delete and edit them and save them in final mode which indicates that the location can be used in the system
+	 * but its name and loot table can still be edited.
+	 * 
+	 * @author Daniel
+	 */
 	@Test
 	public void driver() {
 		//name_en, name_es, coordinates, finalMode, lootTable, error

@@ -15,6 +15,7 @@ import org.springframework.validation.Validator;
 
 import repositories.ResourceRepository;
 import domain.Event;
+import domain.Notification;
 import domain.ProbabilityItem;
 import domain.Resource;
 
@@ -40,6 +41,8 @@ public class ResourceService {
 
 	@Autowired
 	private ActorService			actorService;
+	@Autowired
+	private NotificationService		notificationService;
 
 	@Autowired
 	private Validator				validator;
@@ -115,14 +118,14 @@ public class ResourceService {
 
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
+		Collection<Notification> notifications;
 
 		this.actorService.checkActorLogin();
 		Assert.isTrue(!resource.getFinalMode());
 
-		this.resourceRepository.delete(resource);
-
 		events = this.itemDesignService.findEventsByItemDesign(resource.getId());
 		propabilityItems = this.itemDesignService.findProbabilityItemsByItemDesign(resource.getId());
+		notifications = this.notificationService.findNotificationByItemDesign(resource.getId());
 
 		for (final Event event : events) {
 			event.setItemDesign(null);
@@ -132,6 +135,12 @@ public class ResourceService {
 		for (final ProbabilityItem probabilityItem : propabilityItems) {
 			this.probabilityItemService.delete(probabilityItem);
 		}
+
+		for (final Notification notification : notifications) {
+			this.notificationService.delete(notification);
+		}
+
+		this.resourceRepository.delete(resource);
 
 	}
 

@@ -32,7 +32,7 @@ public class LootTableService {
 	@Autowired
 	private Validator			validator;
 	@Autowired
-	private ActorService	actorService;
+	private ActorService		actorService;
 
 
 	// Supporting services --------------------------------------------------
@@ -108,9 +108,9 @@ public class LootTableService {
 	public LootTable reconstruct(final LootTable lootTable, final BindingResult binding) {
 		LootTable result;
 
-		if (lootTable.getId() == 0)
+		if (lootTable.getId() == 0) {
 			result = lootTable;
-		else {
+		} else {
 			result = this.lootTableRepository.findOne(lootTable.getId());
 			result.setName(lootTable.getName());
 			result.setFinalMode(lootTable.getFinalMode());
@@ -129,8 +129,8 @@ public class LootTableService {
 		result = this.lootTableRepository.findAllFinal();
 		return result;
 	}
-	
-	public Page<LootTable> findAll(Pageable pageable) {
+
+	public Page<LootTable> findAll(final Pageable pageable) {
 		Actor actor;
 		actor = this.actorService.findActorByPrincipal();
 		Assert.isTrue(actor instanceof Designer);
@@ -138,7 +138,21 @@ public class LootTableService {
 		result = this.lootTableRepository.findAll(pageable);
 		return result;
 	}
-	
+	public LootTable findLootTableByProbabilityEvent(final int probabilityEventId) {
+		LootTable result;
+
+		result = this.lootTableRepository.findLootTableByProbabilityEvent(probabilityEventId);
+
+		return result;
+	}
+
+	public LootTable findLootTableByProbabilityItem(final int probabilityItemId) {
+		LootTable result;
+
+		result = this.lootTableRepository.findLootTableByProbabilityItem(probabilityItemId);
+
+		return result;
+	}
 	public void flush() {
 		this.lootTableRepository.flush();
 

@@ -33,7 +33,10 @@ public class ThreadServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Shelter that he already knows.
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
 	 */
 	@Test
 	public void testSaveThreadPositive() {
@@ -59,6 +62,12 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveThreadNotOwnerNegative() {
 		domain.Thread thread;
@@ -84,6 +93,12 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveThreadNotAuthenticatedNegative() {
 		domain.Thread thread;
@@ -105,6 +120,12 @@ public class ThreadServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test
 	public void testDeleteThreadPositive() {
 		domain.Thread thread, savedThread;
@@ -131,6 +152,12 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteThreadNotLoggedNegative() {
 		domain.Thread thread, savedThread;
@@ -154,9 +181,14 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 
 		this.threadService.delete(savedThread);
-
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteThreadNotOwnerNegative() {
 		domain.Thread thread, savedThread;
@@ -184,7 +216,6 @@ public class ThreadServiceTest extends AbstractTest {
 		this.threadService.delete(savedThread);
 
 		super.unauthenticate();
-
 	}
 
 }
