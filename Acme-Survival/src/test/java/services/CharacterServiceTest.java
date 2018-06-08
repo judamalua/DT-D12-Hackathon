@@ -23,7 +23,7 @@ import org.springframework.util.Assert;
 
 import utilities.AbstractTest;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
@@ -39,7 +39,7 @@ public class CharacterServiceTest extends AbstractTest {
 	public ActorService		actorService;
 
 	@Autowired
-	public RefugeService	refugeService;
+	public ShelterService	shelterService;
 
 
 	//*****************************Positive Methods*************************************
@@ -262,8 +262,8 @@ public class CharacterServiceTest extends AbstractTest {
 	private domain.Character createCharacter() {
 		super.authenticate("Player1");
 		final Player player = (Player) this.actorService.findActorByPrincipal();
-		final Refuge refuge = this.refugeService.findRefugeByPlayer(player.getId());
-		final domain.Character result = this.characterService.generateCharacter(refuge.getId());
+		final Shelter shelter = this.shelterService.findShelterByPlayer(player.getId());
+		final domain.Character result = this.characterService.generateCharacter(shelter.getId());
 		return result;
 
 	}

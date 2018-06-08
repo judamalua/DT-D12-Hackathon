@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import utilities.AbstractTest;
 import domain.Forum;
+import domain.Moderator;
 import domain.Player;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,22 +29,25 @@ public class ForumServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
 	 */
 	@Test
 	public void testSaveForumPositive() {
 		Forum forum;
-		Player player;
+		Moderator moderator;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("moderator1");
 
 		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		moderator = (Moderator) this.actorService.findActorByPrincipal();
 
 		forum.setName("Test");
 		forum.setDescription("Test");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
-		forum.setOwner(player);
+		forum.setOwner(moderator);
 		forum.setSupport(false);
 		forum.setStaff(false);
 
@@ -52,13 +56,20 @@ public class ForumServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveForumNotLoggedPositive() {
 		Forum forum;
-		Player player;
+		Moderator player;
 
+		super.unauthenticate();
 		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		player = (Moderator) this.actorService.findActorByPrincipal();
 
 		forum.setName("Test");
 		forum.setDescription("Test");
@@ -71,36 +82,48 @@ public class ForumServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveForumFatherOwnNegative() {
 		Forum forum, savedForum;
-		Player player;
+		Moderator moderator;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("moderator1");
 
 		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		moderator = (Moderator) this.actorService.findActorByPrincipal();
 
 		forum.setName("Test");
 		forum.setDescription("Test");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
-		forum.setOwner(player);
+		forum.setOwner(moderator);
 		forum.setSupport(false);
 		forum.setStaff(false);
 
 		savedForum = this.forumService.save(forum);
 		savedForum.setForum(savedForum);
-		this.forumService.save(forum);
+		this.forumService.save(savedForum);
 
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEditForumNotOwnerNegative() {
 		Forum forum;
 		int forumId;
 
-		super.authenticate("player2"); //The player knows the Refuge
+		super.authenticate("player2"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -110,12 +133,18 @@ public class ForumServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveForumStaffNegative() {
 		Forum forum;
 		Player player;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1");
 
 		forum = this.forumService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
@@ -132,25 +161,31 @@ public class ForumServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveForumNoFatherStaffNegative() {
 		Forum forum;
-		Player player;
+		Moderator moderator;
 		Forum father;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("moderator1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
 
 		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		moderator = (Moderator) this.actorService.findActorByPrincipal();
 
 		forum.setName("Test");
 		forum.setDescription("Test");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
-		forum.setOwner(player);
+		forum.setOwner(moderator);
 		forum.setSupport(false);
 		forum.setStaff(true);
 		forum.setForum(father);
@@ -160,23 +195,29 @@ public class ForumServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test
 	public void testDeleteForumPositive() {
 		Forum forum;
-		Player player;
+		Moderator player;
 		Forum father, savedForum;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("moderator1");
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
 
 		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		player = (Moderator) this.actorService.findActorByPrincipal();
 
-		forum.setName("Test");
-		forum.setDescription("Test");
+		forum.setName("Test name");
+		forum.setDescription("Test description");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
 		forum.setOwner(player);
 		forum.setSupport(false);
@@ -189,6 +230,12 @@ public class ForumServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteForumStaffNegative() {
 		Forum forum;
@@ -196,7 +243,7 @@ public class ForumServiceTest extends AbstractTest {
 		Forum father, savedForum;
 		int forumId;
 
-		super.authenticate("moderator1"); //The player knows the Refuge
+		super.authenticate("Player1");
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
@@ -215,65 +262,38 @@ public class ForumServiceTest extends AbstractTest {
 		savedForum = this.forumService.save(forum);
 		super.unauthenticate();
 
-		super.authenticate("player1");
+		super.authenticate("Moderator1");
 
 		this.forumService.delete(savedForum);
 
 		super.unauthenticate();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testDeleteForumNotOwnerNegative() {
-		Forum forum;
-		Player player;
-		Forum father, savedForum;
-		int forumId;
-
-		super.authenticate("player2"); //The player knows the Refuge
-
-		forumId = super.getEntityId("Forum1");
-		father = this.forumService.findOne(forumId);
-
-		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
-
-		forum.setName("Test");
-		forum.setDescription("Test");
-		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
-		forum.setOwner(player);
-		forum.setSupport(false);
-		forum.setStaff(false);
-		forum.setForum(father);
-
-		savedForum = this.forumService.save(forum);
-		super.unauthenticate();
-
-		super.authenticate("player1");
-
-		this.forumService.delete(savedForum);
-
-		super.unauthenticate();
-	}
-
+	/**
+	 * This test checks create a new forum regarding functional requirement number 20.2: An actor who is authenticated as a moderator must be able to
+	 * open and delete threads, write messages in the forum and delete them if they are not appropriate.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteForumNotLoggedNegative() {
 		Forum forum;
-		Player player;
+		Moderator moderator;
 		Forum father, savedForum;
 		int forumId;
 
-		super.authenticate("player2");
+		super.authenticate("moderator1");
 
 		forumId = super.getEntityId("Forum1");
 		father = this.forumService.findOne(forumId);
 
 		forum = this.forumService.create();
-		player = (Player) this.actorService.findActorByPrincipal();
+		moderator = (Moderator) this.actorService.findActorByPrincipal();
 
 		forum.setName("Test");
 		forum.setDescription("Test");
 		forum.setImage("https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg");
-		forum.setOwner(player);
+		forum.setOwner(moderator);
 		forum.setSupport(false);
 		forum.setStaff(false);
 		forum.setForum(father);

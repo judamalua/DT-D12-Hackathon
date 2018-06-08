@@ -23,8 +23,8 @@ public class AttackServiceTest extends AbstractTest {
 	//All of the Tests in this class check functional requirement 14: Players can start missions, 
 	//for each mission the system must store a start moment and an end moment, the end moment is calculated 
 	//by a ratio that determines the time by a distance. There are two types of mission, attack missions and recollect missions. 
-	//Attack missions take place between two refuges, the attackers and the defendants, the sum of the characters 
-	//strength of a refuge determines the winner of the attack. If the attacker has more strength, 
+	//Attack missions take place between two shelters, the attackers and the defendants, the sum of the characters 
+	//strength of a shelter determines the winner of the attack. If the attacker has more strength, 
 	//the difference between both strengths is multiplied by a ratio that determines how many resources 
 	//the attackers takes from the defendant.
 
@@ -37,17 +37,20 @@ public class AttackServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test
 	public void testAttackPositive() {
-		int refugeId;
+		int shelterId;
 		Attack attack, saved;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
-		refugeId = super.getEntityId("Refuge2");
-		attack = this.attackService.create(refugeId);
+		shelterId = super.getEntityId("Shelter2");
+		attack = this.attackService.create(shelterId);
 
 		saved = this.attackService.saveToAttack(attack);
 
@@ -61,18 +64,21 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can't Attack a Refuge that he doesn't know.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAttackPlayerDoesntKnowRefuge() {
-		int refugeId;
+	public void testAttackPlayerDoesntKnowShelter() {
+		int shelterId;
 		Attack attack, saved;
 		Player player;
 
-		super.authenticate("player4"); //The player doesn't know the Refuge
+		super.authenticate("player4"); //The player doesn't know the Shelter
 
-		refugeId = super.getEntityId("Refuge2");
-		attack = this.attackService.create(refugeId);
+		shelterId = super.getEntityId("Shelter2");
+		attack = this.attackService.create(shelterId);
 
 		player = (Player) this.actorService.findActorByPrincipal();
 
@@ -88,18 +94,21 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can't Attack his own Refuge.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAttackOwnPlayerRefuge() {
-		int refugeId;
+	public void testAttackOwnPlayerShelter() {
+		int shelterId;
 		Attack attack, saved;
 		Player player;
 
-		super.authenticate("player3"); //The player doesn't know the Refuge
+		super.authenticate("player3"); //The player doesn't know the Shelter
 
-		refugeId = super.getEntityId("Refuge2");
-		attack = this.attackService.create(refugeId);
+		shelterId = super.getEntityId("Shelter2");
+		attack = this.attackService.create(shelterId);
 		player = (Player) this.actorService.findActorByPrincipal();
 
 		attack.setPlayer(player);
@@ -113,24 +122,27 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can't Attack a Refuge when he is already in an Attack Mission.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testAttackPlayerIsAlreadyAttacking() {
-		int refugeId;
+		int shelterId;
 		Attack attack, attack2, saved, saved2;
 
-		super.authenticate("player1"); //The player knows the Refuge and attacks it.
+		super.authenticate("player1"); //The player knows the Shelter and attacks it.
 
-		refugeId = super.getEntityId("Refuge2");
-		attack = this.attackService.create(refugeId);
+		shelterId = super.getEntityId("Shelter2");
+		attack = this.attackService.create(shelterId);
 		saved = this.attackService.saveToAttack(attack);
 
 		this.attackService.flush();
 
 		Assert.notNull(saved);
 
-		attack2 = this.attackService.create(refugeId);
+		attack2 = this.attackService.create(shelterId);
 		saved2 = this.attackService.saveToAttack(attack2);
 
 		Assert.notNull(saved2);
@@ -139,17 +151,20 @@ public class AttackServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This test checks that the Player can not Attack a Refuge that has been Attacked recently.
+	 * This test regarding functional requirement number 18.4: An actor who is authenticated as a player must be able to
+	 * manage his character which include sending them to missions, allocating them on different rooms and equip tools.
+	 * 
+	 * @author Antonio
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testAttackRefugeNotAttackable() {
-		int refugeId;
+	public void testAttackShelterNotAttackable() {
+		int shelterId;
 		Attack attack, saved;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
-		refugeId = super.getEntityId("Refuge2");
-		attack = this.attackService.create(refugeId);
+		shelterId = super.getEntityId("Shelter2");
+		attack = this.attackService.create(shelterId);
 
 		saved = this.attackService.saveToAttack(attack);
 
@@ -159,7 +174,7 @@ public class AttackServiceTest extends AbstractTest {
 
 		this.attackService.delete(saved);
 
-		attack = this.attackService.create(refugeId);
+		attack = this.attackService.create(shelterId);
 
 		saved = this.attackService.saveToAttack(attack);
 

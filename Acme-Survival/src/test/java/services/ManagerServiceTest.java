@@ -28,11 +28,10 @@ public class ManagerServiceTest extends AbstractTest {
 	public ManagerService	ManagerService;
 
 
-	//TODO
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * An actor who is not authenticated must be able to: Register to the system as a Manager.
-	 * 
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Manager can register himself in the system,without errors
 	 * 
@@ -57,8 +56,8 @@ public class ManagerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Manager.
-	 * 
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Manager can register himself in the system,without errors
 	 * and without optional attributes(address,phone number)
@@ -83,7 +82,8 @@ public class ManagerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a Manager can edit his profile correctly
 	 * 
@@ -106,7 +106,8 @@ public class ManagerServiceTest extends AbstractTest {
 
 	//******************************************Negative Methods*******************************************************************
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Manager.
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * 
 	 * This test checks that a not registered Manager cannot register himself in the system,without a valid name
@@ -134,7 +135,8 @@ public class ManagerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Manager.
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Manager cannot register himself in the system,without a valid surname
 	 * 
@@ -161,7 +163,8 @@ public class ManagerServiceTest extends AbstractTest {
 
 	}
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Manager.
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Manager cannot register himself in the system,without a valid email
 	 * 
@@ -187,6 +190,9 @@ public class ManagerServiceTest extends AbstractTest {
 	}
 
 	/**
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
+	 * 
 	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Manager.
 	 * 
 	 * 
@@ -217,7 +223,8 @@ public class ManagerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a Manager cannot edit the profile of other Manager
 	 * 
@@ -244,7 +251,8 @@ public class ManagerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new manager regarding functional requirement number 21.1: An actor who is authenticated as a admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that unauthenticated Managers cannot edit the profile of other Manager
 	 * 

@@ -261,16 +261,20 @@ public class RoomDesignDesignerController {
 	public ModelAndView saveBarrack(@ModelAttribute("roomDesign") @Valid final Barrack barrack, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(barrack, "roomDesign.params.error");
-		else
+		} else {
 			try {
+
+				this.configurationService.checkSystemLanguages(barrack.getName());
+
 				this.roomDesignService.save(barrack);
 				result = new ModelAndView("redirect:list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(barrack, "roomDesign.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -288,16 +292,20 @@ public class RoomDesignDesignerController {
 	public ModelAndView saveWarehouse(@ModelAttribute("roomDesign") @Valid final Warehouse warehouse, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(warehouse, "roomDesign.params.error");
-		else
+		} else {
 			try {
+
+				this.configurationService.checkSystemLanguages(warehouse.getName());
+
 				this.roomDesignService.save(warehouse);
 				result = new ModelAndView("redirect:list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(warehouse, "roomDesign.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -315,16 +323,20 @@ public class RoomDesignDesignerController {
 	public ModelAndView saveRestorationRoom(@ModelAttribute("roomDesign") @Valid final RestorationRoom restorationRoom, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(restorationRoom, "roomDesign.params.error");
-		else
+		} else {
 			try {
+
+				this.configurationService.checkSystemLanguages(restorationRoom.getName());
+
 				this.roomDesignService.save(restorationRoom);
 				result = new ModelAndView("redirect:list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(restorationRoom, "roomDesign.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -342,16 +354,20 @@ public class RoomDesignDesignerController {
 	public ModelAndView saveResourceRoom(@ModelAttribute("roomDesign") @Valid final ResourceRoom resourceRoom, final BindingResult binding) {
 		ModelAndView result;
 
-		if (binding.hasErrors())
+		if (binding.hasErrors()) {
 			result = this.createEditModelAndView(resourceRoom, "roomDesign.params.error");
-		else
+		} else {
 			try {
+
+				this.configurationService.checkSystemLanguages(resourceRoom.getName());
+
 				this.roomDesignService.save(resourceRoom);
 				result = new ModelAndView("redirect:list.do");
 
 			} catch (final Throwable oops) {
 				result = this.createEditModelAndView(resourceRoom, "roomDesign.commit.error");
 			}
+		}
 
 		return result;
 	}
@@ -440,7 +456,7 @@ public class RoomDesignDesignerController {
 	 * @author Juanmi
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "deleteResourceRoom")
-	public ModelAndView deleteResourceRoom(@Valid final RestorationRoom resourceRoom, final BindingResult binding) {
+	public ModelAndView deleteResourceRoom(@Valid final ResourceRoom resourceRoom, final BindingResult binding) {
 		ModelAndView result;
 
 		try {
@@ -474,14 +490,15 @@ public class RoomDesignDesignerController {
 		result = new ModelAndView("roomDesign/edit");
 
 		// Sending a boolean to true to check what attributes fill in the form
-		if (roomDesign instanceof Warehouse)
+		if (roomDesign instanceof Warehouse) {
 			isWarehouse = true;
-		else if (roomDesign instanceof RestorationRoom)
+		} else if (roomDesign instanceof RestorationRoom) {
 			isRestorationRoom = true;
-		else if (roomDesign instanceof Barrack)
+		} else if (roomDesign instanceof Barrack) {
 			isBarrack = true;
-		else if (roomDesign instanceof ResourceRoom)
+		} else if (roomDesign instanceof ResourceRoom) {
 			isResourceRoom = true;
+		}
 		result.addObject("roomDesign", roomDesign);
 
 		result.addObject("isWarehouse", isWarehouse);

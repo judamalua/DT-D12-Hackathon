@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ProbabilityEventRepository;
+import domain.LootTable;
 import domain.ProbabilityEvent;
-import domain.ProbabilityItem;
 
 @Service
 @Transactional
@@ -20,6 +21,9 @@ public class ProbabilityEventService {
 
 	@Autowired
 	private ProbabilityEventRepository	probabilityEventRepository;
+
+	@Autowired
+	private LootTableService			lootTableService;
 
 
 	// Supporting services --------------------------------------------------
@@ -67,9 +71,9 @@ public class ProbabilityEventService {
 		return result;
 
 	}
-	
+
 	public Collection<ProbabilityEvent> saveAll(final Collection<ProbabilityEvent> probabilityEvents) {
-		
+
 		assert probabilityEvents != null;
 
 		Collection<ProbabilityEvent> result;
@@ -81,26 +85,41 @@ public class ProbabilityEventService {
 
 	public void delete(final ProbabilityEvent probabilityEvent) {
 
-		assert probabilityEvent != null;
-		assert probabilityEvent.getId() != 0;
+		Assert.isTrue(probabilityEvent != null);
+		Assert.isTrue(probabilityEvent.getId() != 0);
 
 		Assert.isTrue(this.probabilityEventRepository.exists(probabilityEvent.getId()));
+		LootTable lootTable;
+
+		lootTable = this.lootTableService.findLootTableByProbabilityEvent(probabilityEvent.getId());
+
+		if (lootTable != null) {
+			lootTable.getProbabilityEvents().remove(probabilityEvent);
+			this.lootTableService.save(lootTable);
+		}
 
 		this.probabilityEventRepository.delete(probabilityEvent);
 
 	}
-	
+
 	public void deleteAll(final Collection<ProbabilityEvent> probabilityEvents) {
 
 		assert probabilityEvents != null;
-		
+
 		this.probabilityEventRepository.delete(probabilityEvents);
 
 	}
-	
+
+	public Collection<ProbabilityEvent> findProbabilityEventByEvent(final int eventId) {
+		Collection<ProbabilityEvent> result;
+
+		result = this.probabilityEventRepository.findProbabilityEventByEvent(eventId);
+
+		return result;
+	}
+
 	public void flush() {
 		this.probabilityEventRepository.flush();
 
 	}
 }
-

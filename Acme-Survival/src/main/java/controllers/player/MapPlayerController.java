@@ -19,14 +19,14 @@ import services.ConfigurationService;
 import services.GatherService;
 import services.LocationService;
 import services.MoveService;
-import services.RefugeService;
+import services.ShelterService;
 import domain.Actor;
 import domain.Attack;
 import domain.Gather;
 import domain.Location;
 import domain.Move;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/map/player")
@@ -40,7 +40,7 @@ public class MapPlayerController {
 	private ConfigurationService	configurationService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -73,13 +73,13 @@ public class MapPlayerController {
 	//JSON example:
 
 	//	{
-	//		  "refuge": {
+	//		  "shelter": {
 	//		    "gpsCoordinates": "37.3891,-5.9845",
 	//		    "name": "Refugio 1",
 	//		    "playerName": "pepito",
 	//		    "id": "12345"
 	//		  },
-	//		  "knownRefuges": [
+	//		  "knownShelters": [
 	//		    {
 	//		      "gpsCoordinates": "37.3891,-5.9845",
 	//		      "name": "Refugio 1",
@@ -139,7 +139,7 @@ public class MapPlayerController {
 	//		    }
 	//		  ],
 	//		  "onGoingAttack": {
-	//		    "refuge": {
+	//		    "shelter": {
 	//		      "gpsCoordinates": "37.3891,-5.9845",
 	//		      "name": "Refugio 1",
 	//		      "playerName": "pepito",
@@ -155,10 +155,10 @@ public class MapPlayerController {
 		String result = "";
 		try {
 			final JSONObject json = new JSONObject();
-			final JSONObject refuge = this.getRefuge();
-			json.put("refuge", refuge);
-			final JSONArray knownRefuges = this.getKnownRefuges();
-			json.put("knownRefuges", knownRefuges);
+			final JSONObject shelter = this.getShelter();
+			json.put("shelter", shelter);
+			final JSONArray knownShelters = this.getKnownShelters();
+			json.put("knownShelters", knownShelters);
 			final JSONArray locations = this.getLocations();
 			json.put("locations", locations);
 			final JSONArray onGoingGathers = this.getOnGoingGathers();
@@ -177,7 +177,7 @@ public class MapPlayerController {
 
 	private JSONObject getOnGoingMove() {
 		final JSONObject result = new JSONObject();
-		final Move move = this.moveService.findCurrentMoveByRefuge(this.refugeService.findRefugeByPlayer(this.actorService.findActorByPrincipal().getId()).getId());
+		final Move move = this.moveService.findCurrentMoveByShelter(this.shelterService.findShelterByPlayer(this.actorService.findActorByPrincipal().getId()).getId());
 		if (move != null) {
 			result.put("endMoment", move.getEndDate().getTime() - new Date().getTime());
 			result.put("location", this.makeLocation(move.getLocation()));
@@ -189,7 +189,7 @@ public class MapPlayerController {
 		final Attack attack = this.attackService.findAttackByPlayer(this.actorService.findActorByPrincipal().getId());
 		if (attack != null) {
 			result.put("endMoment", attack.getEndMoment().getTime() - new Date().getTime());
-			result.put("refuge", this.makeRefuge(attack.getDefendant()));
+			result.put("shelter", this.makeShelter(attack.getDefendant()));
 		}
 		return result;
 	}
@@ -218,20 +218,20 @@ public class MapPlayerController {
 		}
 		return result;
 	}
-	private JSONArray getKnownRefuges() {
+	private JSONArray getKnownShelters() {
 		final Player player = (Player) this.actorService.findActorByPrincipal();
 		final JSONArray result = new JSONArray();
-		for (final Refuge refuge : player.getRefuges()) {
-			final JSONObject jsonRefuge = this.makeRefuge(refuge);
-			result.put(jsonRefuge);
+		for (final Shelter shelter : player.getShelters()) {
+			final JSONObject jsonShelter = this.makeShelter(shelter);
+			result.put(jsonShelter);
 		}
 		return result;
 	}
 
-	private JSONObject getRefuge() {
+	private JSONObject getShelter() {
 		final Actor actor = this.actorService.findActorByPrincipal();
-		final Refuge refuge = this.refugeService.findRefugeByPlayer(actor.getId());
-		final JSONObject result = this.makeRefuge(refuge);
+		final Shelter shelter = this.shelterService.findShelterByPlayer(actor.getId());
+		final JSONObject result = this.makeShelter(shelter);
 		return result;
 	}
 	// Make functions -------------------------------
@@ -243,17 +243,18 @@ public class MapPlayerController {
 		jsonLocation.put("point_c", location.getPoint_c());
 		jsonLocation.put("point_d", location.getPoint_d());
 		final JSONObject name = new JSONObject();
-		for (final String language : location.getName().keySet())
+		for (final String language : location.getName().keySet()) {
 			name.put(language, location.getName().get(language));
+		}
 		jsonLocation.put("name", name);
 		return jsonLocation;
 	}
-	private JSONObject makeRefuge(final Refuge refuge) {
+	private JSONObject makeShelter(final Shelter shelter) {
 		final JSONObject result = new JSONObject();
-		result.put("id", refuge.getId());
-		result.put("name", refuge.getName());
-		result.put("gpsCoordinates", refuge.getGpsCoordinates());
-		result.put("playerName", refuge.getPlayer().getName() + " " + refuge.getPlayer().getSurname());
+		result.put("id", shelter.getId());
+		result.put("name", shelter.getName());
+		result.put("gpsCoordinates", shelter.getGpsCoordinates());
+		result.put("playerName", shelter.getPlayer().getName() + " " + shelter.getPlayer().getSurname());
 
 		return result;
 	}

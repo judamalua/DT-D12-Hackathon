@@ -32,8 +32,8 @@
 					required="true" />
 			</jstl:forEach>
 
-			<acme:textbox code="roomDesign.maxResistance" path="maxResistance"
-				required="true" />
+	<%-- 		<acme:textbox code="roomDesign.maxResistance" path="maxResistance"
+				required="true" /> --%>
 
 			<acme:textbox code="roomDesign.costWood" path="costWood"
 				required="true" />

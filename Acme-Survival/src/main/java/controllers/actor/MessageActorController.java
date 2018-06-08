@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import services.ActorService;
 import services.MessageService;
 import controllers.AbstractController;
 import domain.Actor;
 import domain.Message;
+import domain.Player;
 
 @Controller
 @RequestMapping("/message/actor")
@@ -82,27 +84,39 @@ public class MessageActorController extends AbstractController {
 	//Updating forum ---------------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView updateUser(@ModelAttribute("messageForm") Message messageForm, final BindingResult binding) {
+	public ModelAndView updateUser(@ModelAttribute("messageForm") Message messageForm, final BindingResult binding, final RedirectAttributes redirect) {
 		ModelAndView result;
 		Message savedMessage, sendedMessage = null;
+		Actor actor;
 		try {
 			sendedMessage = messageForm;
 			messageForm = this.messageService.reconstruct(messageForm, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors()) {
-			result = this.createEditModelAndView(sendedMessage, "message.params.error");
-			result.addObject("thread", messageForm.getThread());
-		} else
+			//result = this.createEditModelAndView(sendedMessage, "message.params.error");
+			result = new ModelAndView("redirect:/message/list.do?threadId=" + sendedMessage.getThread().getId());
+			redirect.addFlashAttribute("errorMessage", binding.getFieldError().getDefaultMessage());
+			redirect.addFlashAttribute("messageForm", sendedMessage);
+			redirect.addFlashAttribute("message", "message.params.error");
+		} else {
 			try {
-				Assert.notNull(messageForm);
+				actor = this.actorService.findActorByPrincipal();
 
+				if (actor instanceof Player) {
+					Assert.isTrue(!messageForm.getThread().getForum().getStaff());
+				}
+
+				Assert.notNull(messageForm);
 				savedMessage = this.messageService.save(messageForm);
 				result = new ModelAndView("redirect:/message/list.do?threadId=" + savedMessage.getThread().getId());
 
 			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(messageForm, "message.commit.error");
+				result = new ModelAndView("redirect:/message/list.do?threadId=" + sendedMessage.getThread().getId());
+				redirect.addFlashAttribute("messageForm", sendedMessage);
+				redirect.addFlashAttribute("message", "message.commit.error");
 			}
+		}
 
 		return result;
 	}

@@ -15,23 +15,23 @@
 <acme:pagination requestURI="${requestURI}page=" pageNum="${pageNum}"
 	page="${page}" />
 
-<display:table name="refuges" id="refuge" requestURI="${requestURI}"
+<display:table name="shelters" id="shelter" requestURI="${requestURI}"
 	class="displaytag">
 
-	<spring:message code="refuge.name" var="nameTitle" />
-	<spring:message code="refuge.momentOfCreation" var="momentTitle" />
+	<spring:message code="shelter.name" var="nameTitle" />
+	<spring:message code="shelter.momentOfCreation" var="momentTitle" />
 	<spring:message code="master.page.moment.format" var="momentFormat" />
 
 	<display:column title="${nameTitle}">
 	
 		<security:authorize access="hasRole('PLAYER')">
-			<a href="refuge/player/display.do?refugeId=${refuge.id}"><jstl:out
-					value="${refuge.name}" /></a>
+			<a href="shelter/player/display.do?shelterId=${shelter.id}"><jstl:out
+					value="${shelter.name}" /></a>
 			<br />
 		</security:authorize>
 		<security:authorize access="!hasRole('PLAYER')">
-			<a href="refuge/display.do?refugeId=${refuge.id}"><jstl:out
-					value="${refuge.name}" /></a>
+			<a href="shelter/display.do?shelterId=${shelter.id}"><jstl:out
+					value="${shelter.name}" /></a>
 			<br />
 		</security:authorize>
 
@@ -43,8 +43,8 @@
 </display:table>
 
 <security:authorize access="hasRole('PLAYER')">
-	<jstl:if test="${!hasRefuge}">
-		<acme:button url="refuge/player/create.do" code="refuge.create" />
+	<jstl:if test="${!hasShelter}">
+		<acme:button url="shelter/player/create.do" code="shelter.create" />
 	</jstl:if>
 </security:authorize>
 

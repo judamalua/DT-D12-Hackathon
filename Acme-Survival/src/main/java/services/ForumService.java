@@ -78,8 +78,9 @@ public class ForumService {
 	public Forum save(final Forum forum) {
 
 		Assert.notNull(forum);
-		if (forum.getForum() != null)
-			Assert.isTrue(forum != forum.getForum());
+		if (forum.getForum() != null) {
+			Assert.isTrue(!forum.equals(forum.getForum()));
+		}
 
 		Forum result;
 		Collection<Thread> threads;
@@ -90,24 +91,35 @@ public class ForumService {
 
 		if (forum.getStaff()) {
 			Assert.isTrue(!(actor instanceof Player));
-			if (forum.getForum() != null)
-				Assert.isTrue(forum.getForum().getStaff());
+			if (forum.getForum() != null) {
+				Assert.isTrue(forum.getForum().getStaff(), "The father must be staff");
+			}
+		}
+
+		if (forum.getSupport()) {
+			Assert.isTrue(!(actor instanceof Player));
+			if (forum.getForum() != null) {
+				Assert.isTrue(forum.getForum().getSupport(), "The father must be support");
+			}
 		}
 
 		if (forum.getId() != 0) {
 			allSubForums = this.findAllSubForums(forum.getId());
-			if (forum.getForum() != null)
+			if (forum.getForum() != null) {
 				Assert.isTrue(!allSubForums.contains(forum.getForum()));
+			}
 		}
-		if (!(actor instanceof Moderator))
+		if (!(actor instanceof Moderator)) {
 			Assert.isTrue(actor.equals(forum.getOwner()));
+		}
 
 		threads = new HashSet<>();
 
 		result = this.forumRepository.save(forum);
 
-		if (forum.getId() != 0)
+		if (forum.getId() != 0) {
 			threads = this.threadService.findThreadsByForum(result.getId());
+		}
 
 		for (final domain.Thread thread : threads) {
 			thread.setForum(result);
@@ -125,12 +137,14 @@ public class ForumService {
 
 		actor = this.actorService.findActorByPrincipal();
 
-		if (forum.getStaff())
+		if (forum.getStaff()) {
 			Assert.isTrue(!(actor instanceof Player));
+		}
 
 		Assert.isTrue(this.forumRepository.exists(forum.getId()));
-		if (!(actor instanceof Moderator))
+		if (!(actor instanceof Moderator)) {
 			Assert.isTrue(forum.getOwner().equals(actor));
+		}
 		this.deleteRecursive(forum);
 	}
 
@@ -148,34 +162,41 @@ public class ForumService {
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
-		Assert.isTrue(actor.equals(forum.getOwner()));
 
 		subForums = this.findSubForums(forum.getId());
 
 		//Iterate in every subForum to delete it
-		for (final Forum subForum : subForums) {
+		for (final Forum subForum : new HashSet<Forum>(subForums)) {
 			subsubForums = this.findSubForums(subForum.getId());
 
 			if (subsubForums.size() == 0) {
-				if (subForum.getStaff() || subForum.getStaff())
+				if (subForum.getStaff() || subForum.getStaff()) {
 					Assert.isTrue(!(actor instanceof Player));
-				this.forumRepository.delete(subForum);
+				}
 				threads = this.threadService.findThreadsByForum(subForum.getId());
-				for (final Thread thread : threads)
+				for (final Thread thread : threads) {
 					this.threadService.delete(thread);
-			} else
+				}
+				this.forumRepository.delete(subForum);
+			} else {
 				//In other case then call again the method
 				this.deleteRecursive(subForum);
+			}
+		}
+
+		threads = this.threadService.findThreadsByForum(forum.getId());
+		for (final Thread thread : threads) {
+			this.threadService.delete(thread);
 		}
 		//Finally delete the forum
 		this.forumRepository.delete(forum);
 	}
 
-	public Page<Forum> findRootForums(final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findRootForums(final Boolean staff, final Boolean support, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.notNull(pageable);
 
-		result = this.forumRepository.findForums(staff, pageable);
+		result = this.forumRepository.findForums(staff, support, pageable);
 
 		return result;
 	}
@@ -220,11 +241,11 @@ public class ForumService {
 		return result;
 	}
 
-	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Pageable pageable) {
+	public Page<Forum> findSubForums(final int forumId, final Boolean staff, final Boolean support, final Pageable pageable) {
 		Page<Forum> result;
 		Assert.isTrue(forumId != 0);
 
-		result = this.forumRepository.findSubForums(forumId, staff, pageable);
+		result = this.forumRepository.findSubForums(forumId, staff, support, pageable);
 
 		return result;
 	}
@@ -237,8 +258,9 @@ public class ForumService {
 
 		for (final Forum subForum : new HashSet<Forum>(subForums)) {
 			subsubForums = this.findSubForums(subForum.getId());
-			if (subsubForums.size() > 0)
+			if (subsubForums.size() > 0) {
 				result.addAll(this.findAllSubForums(subForum.getId()));
+			}
 		}
 
 		return result;

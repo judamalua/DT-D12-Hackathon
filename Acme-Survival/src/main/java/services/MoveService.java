@@ -23,7 +23,7 @@ import domain.Inventory;
 import domain.Location;
 import domain.Move;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Service
 @Transactional
@@ -43,7 +43,7 @@ public class MoveService {
 	private ActorService					actorService;
 
 	@Autowired
-	private RefugeService					refugeService;
+	private ShelterService					shelterService;
 
 	@Autowired
 	private PlayerService					playerService;
@@ -94,31 +94,38 @@ public class MoveService {
 		final Move result;
 		long time;
 		this.actorService.checkActorLogin();
-		Refuge refuge;
-		final Collection<Player> playersKnowsRefuge;
+		Shelter shelter, ownShelter;
+		final Collection<Player> playersKnowsShelter;
 		Inventory inventory;
 		DesignerConfiguration designerConfiguration;
+		Actor actor;
 
 		move.setStartDate(new Date(System.currentTimeMillis() - 1));
-		time = this.timeBetweenLocations(move.getRefuge().getLocation(), move.getLocation());
+		time = this.timeBetweenLocations(move.getShelter().getLocation(), move.getLocation());
 		move.setEndDate(new Date(System.currentTimeMillis() + time));
-		refuge = move.getRefuge();
+		shelter = move.getShelter();
 
-		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
+		if (move.getId() == 0) {
+			actor = this.actorService.findActorByPrincipal();
+			ownShelter = this.shelterService.findShelterByPlayer(actor.getId());
+			Assert.isTrue(shelter.equals(ownShelter));
 
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+			designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
-		inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
-		inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
-		inventory.setWood(inventory.getMetal() - designerConfiguration.getMovingMetal());
-		inventory.setWood(inventory.getFood() - designerConfiguration.getMovingFood());
+			inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
 
-		this.inventoryService.save(inventory);
+			inventory.setWood(inventory.getWood() - designerConfiguration.getMovingWood());
+			inventory.setWater(inventory.getWater() - designerConfiguration.getMovingWater());
+			inventory.setWood(inventory.getMetal() - designerConfiguration.getMovingMetal());
+			inventory.setWood(inventory.getFood() - designerConfiguration.getMovingFood());
 
-		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
+			this.inventoryService.save(inventory);
+		}
 
-		for (final Player player : playersKnowsRefuge) {
-			player.getRefuges().remove(refuge);
+		playersKnowsShelter = this.playerService.findPlayersKnowsShelter(shelter.getId());
+
+		for (final Player player : playersKnowsShelter) {
+			player.getShelters().remove(shelter);
 			this.actorService.save(player);
 		}
 		result = this.moveRepository.save(move);
@@ -138,18 +145,18 @@ public class MoveService {
 		this.moveRepository.delete(move);
 	}
 
-	public Collection<Move> findMovesByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Collection<Move> findMovesByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Collection<Move> result;
 
-		result = this.moveRepository.findMovesByRefuge(refugeId);
+		result = this.moveRepository.findMovesByShelter(shelterId);
 
 		return result;
 	}
 
-	public Move findMostRecentMoveByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Move findMostRecentMoveByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		List<Move> resultList;
 		Move result;
@@ -157,7 +164,7 @@ public class MoveService {
 
 		pageable = new PageRequest(0, 1);
 
-		resultList = this.moveRepository.findMostRecentMoveByRefuge(refugeId, pageable).getContent();
+		resultList = this.moveRepository.findMostRecentMoveByShelter(shelterId, pageable).getContent();
 
 		if (resultList.size() > 0)
 			result = resultList.get(0);
@@ -167,22 +174,22 @@ public class MoveService {
 		return result;
 	}
 
-	public Move findCurrentMoveByRefuge(final int refugeId) {
-		Assert.isTrue(refugeId != 0);
+	public Move findCurrentMoveByShelter(final int shelterId) {
+		Assert.isTrue(shelterId != 0);
 
 		Move result;
 
-		result = this.moveRepository.findCurrentMoveByRefuge(refugeId);
+		result = this.moveRepository.findCurrentMoveByShelter(shelterId);
 
 		return result;
 	}
 
-	public Page<Move> findMovesByRefuge(final int refugeId, final Pageable pageable) {
-		Assert.isTrue(refugeId != 0);
+	public Page<Move> findMovesByShelter(final int shelterId, final Pageable pageable) {
+		Assert.isTrue(shelterId != 0);
 
 		Page<Move> result;
 
-		result = this.moveRepository.findMovesByRefuge(refugeId, pageable);
+		result = this.moveRepository.findMovesByShelter(shelterId, pageable);
 
 		return result;
 	}
@@ -224,14 +231,14 @@ public class MoveService {
 	public Move reconstruct(final Move move, final BindingResult binding) {
 		Move result;
 		Actor actor;
-		Refuge refuge;
+		Shelter shelter;
 
 		actor = this.actorService.findActorByPrincipal();
 
-		refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+		shelter = this.shelterService.findShelterByPlayer(actor.getId());
 		result = move;
 
-		result.setRefuge(refuge);
+		result.setShelter(shelter);
 
 		this.validator.validate(result, binding);
 		this.moveRepository.flush();

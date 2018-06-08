@@ -181,9 +181,11 @@
 	</div>
  
  
-    <input class="filled-in" id="finalMode" type="checkbox" >
+  <jstl:if test="${!lootTable.finalMode}">
+  <input class="filled-in" id="finalMode" type="checkbox"  >
     <label for="finalMode"><spring:message code="lootTable.finalMode" /></label>
-
+ </jstl:if>
+   
 
 </div>
 	

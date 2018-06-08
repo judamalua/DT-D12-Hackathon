@@ -16,6 +16,7 @@ import org.springframework.validation.Validator;
 import repositories.ToolRepository;
 import domain.Event;
 import domain.Item;
+import domain.Notification;
 import domain.ProbabilityItem;
 import domain.Tool;
 
@@ -34,10 +35,15 @@ public class ToolService {
 	private ItemDesignService		itemDesignService;
 
 	@Autowired
+	private ActorService			actorService;
+
+	@Autowired
 	private EventService			eventService;
 
 	@Autowired
 	private ItemService				itemService;
+	@Autowired
+	private NotificationService		notificationService;
 
 	@Autowired
 	private ProbabilityItemService	probabilityItemService;
@@ -82,11 +88,12 @@ public class ToolService {
 
 		Assert.notNull(tool);
 
-		Tool result;
+		final Tool result;
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
-
+		this.actorService.checkActorLogin();
 		result = this.toolRepository.save(tool);
+		//Assert.isTrue(!tool.getFinalMode());
 
 		events = this.itemDesignService.findEventsByItemDesign(tool.getId());
 		propabilityItems = this.itemDesignService.findProbabilityItemsByItemDesign(tool.getId());
@@ -104,31 +111,39 @@ public class ToolService {
 		return result;
 
 	}
-
 	public void delete(final Tool tool) {
 
 		Assert.notNull(tool);
 		Assert.isTrue(tool.getId() != 0);
-
+		this.actorService.checkActorLogin();
 		Assert.isTrue(this.toolRepository.exists(tool.getId()));
 		final Collection<Event> events;
 		final Collection<ProbabilityItem> propabilityItems;
 		final Collection<Item> items;
+		Collection<Notification> notifications;
 
+		Assert.isTrue(!tool.getFinalMode());
 		events = this.itemDesignService.findEventsByItemDesign(tool.getId());
 		propabilityItems = this.itemDesignService.findProbabilityItemsByItemDesign(tool.getId());
 		items = this.findItemsByTool(tool.getId());
+		notifications = this.notificationService.findNotificationByItemDesign(tool.getId());
 
 		for (final Event event : events) {
 			event.setItemDesign(null);
 			this.eventService.save(event);
 		}
 
-		for (final ProbabilityItem probabilityItem : propabilityItems)
+		for (final ProbabilityItem probabilityItem : propabilityItems) {
 			this.probabilityItemService.delete(probabilityItem);
+		}
 
-		for (final Item item : items)
+		for (final Item item : items) {
 			this.itemService.delete(item);
+		}
+
+		for (final Notification notification : notifications) {
+			this.notificationService.delete(notification);
+		}
 
 		this.toolRepository.delete(tool);
 
@@ -160,9 +175,9 @@ public class ToolService {
 	public Tool reconstruct(final Tool tool, final BindingResult binding) {
 		Tool result;
 
-		if (tool.getId() == 0)
+		if (tool.getId() == 0) {
 			result = tool;
-		else {
+		} else {
 			result = this.toolRepository.findOne(tool.getId());
 
 			result.setCapacity(tool.getCapacity());
@@ -178,5 +193,9 @@ public class ToolService {
 		this.toolRepository.flush();
 
 		return result;
+	}
+
+	public void flush() {
+		this.toolRepository.flush();
 	}
 }

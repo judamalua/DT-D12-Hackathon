@@ -105,7 +105,7 @@ public class ThreadService {
 		Assert.notNull(thread);
 		Assert.isTrue(thread.getId() != 0);
 		this.actorService.checkActorLogin();
-		Assert.isTrue(this.threadRepository.exists(thread.getId()));
+		Assert.isTrue(this.findOne(thread.getId()) != null)/* this.threadRepository.exists(thread.getId()) */;
 
 		final Collection<Message> messages;
 		Actor actor;
@@ -122,7 +122,6 @@ public class ThreadService {
 
 		this.threadRepository.delete(thread);
 	}
-
 	public Collection<Thread> findThreadsByForum(final int forumId) {
 		Collection<Thread> result;
 
@@ -137,6 +136,14 @@ public class ThreadService {
 		Assert.notNull(pageable);
 
 		result = this.threadRepository.findThreadsByForum(forumId, pageable);
+
+		return result;
+	}
+
+	public Collection<Collection<String>> findNumThreadsByActor() {
+		Collection<Collection<String>> result;
+
+		result = this.threadRepository.findNumThreadsByActor();
 
 		return result;
 	}

@@ -41,9 +41,6 @@ public class NotificationService {
 	private AttackService			attackService;
 
 	@Autowired
-	private GatherService			gatherService;
-
-	@Autowired
 	private Validator				validator;
 
 
@@ -61,7 +58,7 @@ public class NotificationService {
 		result.setGather(null);
 		result.setAttack(null);
 		result.setCharacterId(null);
-		result.setFoundRefuge(false);
+		result.setFoundShelter(false);
 		result.setPlayer(player);
 		result.setEvents(new ArrayList<Event>());
 		result.setItemDesigns(new ArrayList<ItemDesign>());
@@ -168,6 +165,14 @@ public class NotificationService {
 		return result;
 	}
 
+	public String findNumberNotifications(final int playerId) {
+		String result;
+
+		result = this.notificationRepository.findNumberNotifications(playerId);
+
+		return result;
+	}
+
 	public void flush() {
 		this.notificationRepository.flush();
 	}
@@ -183,7 +188,7 @@ public class NotificationService {
 		attack = this.attackService.findAttackByPlayer(player.getId());
 		now = new Date();
 
-		if (attack != null)
+		if (attack != null) {
 			if (attack.getEndMoment().before(now)) {
 				notification = this.findNotificationByAttack(attack.getId());
 				if (notification == null) {
@@ -199,6 +204,7 @@ public class NotificationService {
 				}
 
 			}
+		}
 
 	}
 
@@ -264,4 +270,19 @@ public class NotificationService {
 		return result;
 	}
 
+	public Collection<Notification> findNotificationByEvent(final int eventId) {
+		Collection<Notification> result;
+
+		result = this.notificationRepository.findNotificationByEvent(eventId);
+
+		return result;
+	}
+
+	public Collection<Notification> findNotificationByItemDesign(final int itemDesignId) {
+		Collection<Notification> result;
+
+		result = this.notificationRepository.findNotificationByItemDesign(itemDesignId);
+
+		return result;
+	}
 }

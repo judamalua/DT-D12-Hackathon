@@ -27,7 +27,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +34,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.DesignerService;
 import services.EventService;
 import services.ItemDesignService;
 import services.LootTableService;
@@ -48,31 +46,28 @@ import domain.Designer;
 import domain.Event;
 import domain.ItemDesign;
 import domain.LootTable;
-import domain.Manager;
 import domain.ProbabilityEvent;
 import domain.ProbabilityItem;
-import domain.Product;
-import forms.ActorForm;
 
 @Controller
 @RequestMapping("/lootTable/designer")
 public class LootTableDesignerController extends AbstractController {
 
 	@Autowired
-	private ActorService	actorService;
+	private ActorService			actorService;
 	@Autowired
-	private LootTableService	lootTableService;
+	private LootTableService		lootTableService;
 	@Autowired
-	private ConfigurationService configurationService;
+	private ConfigurationService	configurationService;
 	@Autowired
-	private EventService eventService;
+	private EventService			eventService;
 	@Autowired
-	private ItemDesignService itemDesignService;
-	
+	private ItemDesignService		itemDesignService;
+
 	@Autowired
-	private ProbabilityEventService probabilityEventService;
+	private ProbabilityEventService	probabilityEventService;
 	@Autowired
-	private ProbabilityItemService probabilityItemService;
+	private ProbabilityItemService	probabilityItemService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -81,7 +76,6 @@ public class LootTableDesignerController extends AbstractController {
 		super();
 	}
 
-	
 	@RequestMapping(value = "/list")
 	public ModelAndView list(@RequestParam(defaultValue = "0") final int page) {
 		ModelAndView result;
@@ -108,7 +102,7 @@ public class LootTableDesignerController extends AbstractController {
 
 		return result;
 	}
-	
+
 	// Creating ---------------------------------------------------------
 	/**
 	 * 
@@ -128,15 +122,13 @@ public class LootTableDesignerController extends AbstractController {
 			lootTable = this.lootTableService.create();
 			result = this.createEditModelAndView(lootTable);
 
-
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
 
 		return result;
 	}
-	
-	
+
 	//Edit an LootTable
 	/**
 	 * That method edits a lootTable
@@ -146,16 +138,15 @@ public class LootTableDesignerController extends AbstractController {
 	 * @author Alejandro
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView editLootTable(@RequestParam Integer lootTableId) {
+	public ModelAndView editLootTable(@RequestParam final Integer lootTableId) {
 		ModelAndView result;
 		Designer designer;
 		LootTable lootTable;
 
 		designer = (Designer) this.actorService.findActorByPrincipal();
 		Assert.notNull(designer);
-		
-		
-		lootTable = lootTableService.findOne(lootTableId);
+
+		lootTable = this.lootTableService.findOne(lootTableId);
 		Assert.notNull(lootTable);
 
 		result = this.createEditModelAndView(lootTable);
@@ -172,73 +163,73 @@ public class LootTableDesignerController extends AbstractController {
 	 * @author Alejandro
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView updateLootTable(@RequestParam Integer tableId, @RequestParam Map<String,String> allRequestParams, ModelMap model) {
+	public ModelAndView updateLootTable(@RequestParam final Integer tableId, @RequestParam final Map<String, String> allRequestParams, final ModelMap model) {
 		LootTable lootTable;
-		if (tableId != 0){
-		 lootTable = lootTableService.findOne(tableId);
-		}else{
-			lootTable = lootTableService.create();
+		if (tableId != 0) {
+			lootTable = this.lootTableService.findOne(tableId);
+		} else {
+			lootTable = this.lootTableService.create();
 		}
-		
-		
-		BindingResult binding = null;
+
+		final BindingResult binding = null;
 		ModelAndView result;
+
 		try {
-		if (lootTable != null){
-		lootTable = this.lootTableService.reconstruct(lootTable, binding);
-		allRequestParams.remove("save");
-		List<ProbabilityItem> probItems = new ArrayList<ProbabilityItem>();
-		List<ProbabilityEvent> probEvents = new ArrayList<ProbabilityEvent>();
-		lootTable.setName(allRequestParams.get("name"));
-		lootTable.setFinalMode(Boolean.valueOf(allRequestParams.get("finalMode")));
-		for (Entry<String, String> entry : allRequestParams.entrySet()){
-			if (entry.getKey().contains("item")){
-				ItemDesign item = itemDesignService.findOne(Integer.parseInt(entry.getKey().replaceFirst("item", "")));
-				ProbabilityItem pItem = new ProbabilityItem();
-				pItem.setItemDesign(item);
-				pItem.setValue(Double.parseDouble(entry.getValue()));
-				probItems.add(pItem);
+			if (lootTable != null) {
+				lootTable = this.lootTableService.reconstruct(lootTable, binding);
 			}
-			else if (entry.getKey().contains("event"))
-			{
-				Event event = eventService.findOne(Integer.parseInt(entry.getKey().replaceFirst("event", "")));
-				ProbabilityEvent pEvent = new ProbabilityEvent();
-				pEvent.setEvent(event);
-				pEvent.setValue(Double.parseDouble(entry.getValue()));
-				probEvents.add(pEvent);
-			}
+		} catch (final Throwable oops) {
 		}
-		Collection<ProbabilityItem> delItems = new HashSet<ProbabilityItem>(lootTable.getProbabilityItems());
-		Collection<ProbabilityEvent> delEvents = new HashSet<ProbabilityEvent>(lootTable.getProbabilityEvents());
-		lootTable.getProbabilityEvents().clear();
-		lootTable.getProbabilityItems().clear();
-		lootTable.setProbabilityEvents(probEvents);
-		lootTable.setProbabilityItems(probItems);
-		probabilityEventService.saveAll(probEvents);
-		probabilityItemService.saveAll(probItems);
-		probabilityItemService.deleteAll(delItems);
-		probabilityEventService.deleteAll(delEvents);
-		this.lootTableService.save(lootTable);
-//		probabilityEventService.saveAll(delEvents);
-//		probabilityItemService.saveAll(delItems);
-		
-		
 
+		try {
+			if (lootTable != null) {
+				allRequestParams.remove("save");
+				final List<ProbabilityItem> probItems = new ArrayList<ProbabilityItem>();
+				final List<ProbabilityEvent> probEvents = new ArrayList<ProbabilityEvent>();
+				lootTable.setName(allRequestParams.get("name"));
+				lootTable.setFinalMode(Boolean.valueOf(allRequestParams.get("finalMode")));
+				for (final Entry<String, String> entry : allRequestParams.entrySet()) {
+					if (entry.getKey().contains("item")) {
+						final ItemDesign item = this.itemDesignService.findOne(Integer.parseInt(entry.getKey().replaceFirst("item", "")));
+						final ProbabilityItem pItem = new ProbabilityItem();
+						pItem.setItemDesign(item);
+						pItem.setValue(Double.parseDouble(entry.getValue()));
+						probItems.add(pItem);
+					} else if (entry.getKey().contains("event")) {
+						final Event event = this.eventService.findOne(Integer.parseInt(entry.getKey().replaceFirst("event", "")));
+						final ProbabilityEvent pEvent = new ProbabilityEvent();
+						pEvent.setEvent(event);
+						pEvent.setValue(Double.parseDouble(entry.getValue()));
+						probEvents.add(pEvent);
+					}
+				}
+				final Collection<ProbabilityItem> delItems = new HashSet<ProbabilityItem>(lootTable.getProbabilityItems());
+				final Collection<ProbabilityEvent> delEvents = new HashSet<ProbabilityEvent>(lootTable.getProbabilityEvents());
+				lootTable.getProbabilityEvents().clear();
+				lootTable.getProbabilityItems().clear();
+				lootTable.setProbabilityEvents(probEvents);
+				lootTable.setProbabilityItems(probItems);
+				this.probabilityEventService.saveAll(probEvents);
+				this.probabilityItemService.saveAll(probItems);
+				this.probabilityItemService.deleteAll(delItems);
+				this.probabilityEventService.deleteAll(delEvents);
+				this.lootTableService.save(lootTable);
+				//		probabilityEventService.saveAll(delEvents);
+				//		probabilityItemService.saveAll(delItems);
 
-		result = new ModelAndView("redirect:/lootTable/designer/list.do");
-		
-		}
-		else{
-			result = this.createEditModelAndView(lootTable, "lootTable.params.error");
-		}
-				
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(lootTable, "lootTable.commit.error");
+				result = new ModelAndView("redirect:/lootTable/designer/list.do");
+
+			} else {
+				result = this.createEditModelAndView(lootTable, "lootTable.params.error");
 			}
+
+		} catch (final Throwable oops) {
+			result = this.createEditModelAndView(lootTable, "lootTable.commit.error");
+		}
 
 		return result;
 	}
-	
+
 	/**
 	 * This method deletes a LootTable
 	 * 
@@ -249,10 +240,11 @@ public class LootTableDesignerController extends AbstractController {
 	 * @author Alejandro
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(@Valid final LootTable lootTable, final BindingResult binding) {
+	public ModelAndView delete(@RequestParam Integer lootTableId) {
 		ModelAndView result;
-
+		LootTable lootTable = lootTableService.findOne(lootTableId);
 		try {
+			Assert.notNull(lootTable);
 			Assert.isTrue(!lootTable.getFinalMode());
 			this.lootTableService.delete(lootTable);
 			result = new ModelAndView("redirect:list.do");
@@ -280,8 +272,8 @@ public class LootTableDesignerController extends AbstractController {
 		result = new ModelAndView("lootTable/edit");
 		result.addObject("message", messageCode);
 		result.addObject("lootTable", lootTable);
-		result.addObject("events", eventService.findFinal());
-		result.addObject("items", itemDesignService.findFinal());
+		result.addObject("events", this.eventService.findFinal());
+		result.addObject("items", this.itemDesignService.findFinal());
 
 		return result;
 

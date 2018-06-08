@@ -7,6 +7,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -17,6 +18,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "startDate,endDate")
+})
 public class Move extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
@@ -52,7 +56,7 @@ public class Move extends DomainEntity {
 
 	// Relationships ----------------------------------------------------------
 	private Location	location;
-	private Refuge		refuge;
+	private Shelter		shelter;
 
 
 	@Valid
@@ -69,12 +73,12 @@ public class Move extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = false)
-	public Refuge getRefuge() {
-		return this.refuge;
+	public Shelter getShelter() {
+		return this.shelter;
 	}
 
-	public void setRefuge(final Refuge refuge) {
-		this.refuge = refuge;
+	public void setShelter(final Shelter shelter) {
+		this.shelter = shelter;
 
 	}
 }

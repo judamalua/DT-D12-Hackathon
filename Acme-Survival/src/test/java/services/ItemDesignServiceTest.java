@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.ConstraintViolationException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +49,10 @@ public class ItemDesignServiceTest extends AbstractTest {
 
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.5: An actor who is authenticated as a designer must be able to
 	 * create itemDesigns designs (Tool and Resource), every test is explained inside.
 	 * 
-	 * @author Juanmi
+	 * @author Manuel
 	 */
 	@Test
 	public void driverCreateItemDesigns() {
@@ -67,71 +69,17 @@ public class ItemDesignServiceTest extends AbstractTest {
 				/* food */null, /* metal */null, /* wood */null,
 				/* Class<?> expected */null
 			}, {
+				// This test checks that authenticated designers can create a resource with minimum values
+				ItemType.RESOURCE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
+				/* food */0., /* metal */0., /* wood */0.,
+				/* Class<?> expected */null
+			}, {
 				// This test checks that authenticated designers can create a tool with attributes set to the minimum
 				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */0,/* luck */0, /* capacity */0, /* water */null,
 				/* food */null, /* metal */null, /* wood */null,
 				/* Class<?> expected */null
-			}, {
-				// This test checks that authenticated designers can create a tool with strength set to less than the minimum
-				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */-1,/* luck */0, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers can create a tool with luck set to less than the minimum
-				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */-1, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers can create a tool with capacity set to less than the minimum
-				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */-1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty name (en)
-				ItemType.TOOL, "Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty name (es)
-				ItemType.TOOL, "Designer1", "Test name", "", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty description (en)
-				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty description (es)
-				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty imageUrl
-				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción de prueba", /* imageUrl */"", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that unauthenticated designers cannot create a tool
-				ItemType.TOOL, null, "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated player cannot create a tool
-				ItemType.TOOL, "Player1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
 			}, {
 				// This test checks that authenticated designers can create a resource
 				ItemType.RESOURCE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
@@ -139,29 +87,77 @@ public class ItemDesignServiceTest extends AbstractTest {
 				/* food */2., /* metal */3., /* wood */4.,
 				/* Class<?> expected */null
 			}, {
-				// This test checks that authenticated designers can create a resource with minimum values
-				ItemType.RESOURCE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
-				/* food */0., /* metal */0., /* wood */0.,
-				/* Class<?> expected */null
+				// This test checks that authenticated designers can create a tool with strength set to less than the minimum
+				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */-1,/* luck */0, /* capacity */0, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers can create a tool with luck set to less than the minimum
+				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */-1, /* capacity */0, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers can create a tool with capacity set to less than the minimum
+				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */-1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty name (en)
+				ItemType.TOOL, "Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty name (es)
+				ItemType.TOOL, "Designer1", "Test name", "", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty description (en)
+				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty description (es)
+				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty imageUrl
+				ItemType.TOOL, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción de prueba", /* imageUrl */"", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that unauthenticated users cannot create a tool
+				ItemType.TOOL, null, "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated designers can create a resource with water less than minimum values
 				ItemType.RESOURCE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */-1.,
 				/* food */0., /* metal */0., /* wood */0.,
-				/* Class<?> expected */null
+				/* Class<?> expected */ConstraintViolationException.class
 			}, {
 				// This test checks that authenticated designers can create a resource with food less than minimum values
 				ItemType.RESOURCE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
 				/* food */-1., /* metal */0., /* wood */0.,
-				/* Class<?> expected */null
+				/* Class<?> expected */ConstraintViolationException.class
 			}, {
 				// This test checks that authenticated designers can create a resource with metal less minimum values
 				ItemType.RESOURCE, "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
 				/* food */0., /* metal */-1., /* wood */0.,
-				/* Class<?> expected */null
+				/* Class<?> expected */ConstraintViolationException.class
 			}
 
 		/*
@@ -180,13 +176,14 @@ public class ItemDesignServiceTest extends AbstractTest {
 		 * 12 -> Class<?>
 		 */
 		};
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.templateCreateRoomDesigns((ItemType) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6],
 				(Boolean) testingData[i][7], (Integer) testingData[i][8], (Integer) testingData[i][9], (Integer) testingData[i][10], (Double) testingData[i][11], (Double) testingData[i][12], (Double) testingData[i][13], (Double) testingData[i][14],
 				(Class<?>) testingData[i][15]);
+		}
 	}
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as designer must
+	 * This driver checks several tests regarding functional requirement number 19.5: A user who is authenticated as designer must
 	 * be able to list the tools and resources set to final mode
 	 * 
 	 * @author Juanmi
@@ -215,12 +212,13 @@ public class ItemDesignServiceTest extends AbstractTest {
 			}
 		};
 
-		for (int i = 0; i < testingData.length; i++)
-			this.templateListFinalModeRoomDesigns((String) testingData[i][0], (ItemType) testingData[i][1], (Class<?>) testingData[i][1]);
+		for (int i = 0; i < testingData.length; i++) {
+			this.templateListFinalModeRoomDesigns((String) testingData[i][0], (ItemType) testingData[i][1], (Class<?>) testingData[i][2]);
+		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An authenticated designer must be able to list draft mode tools and resources
+	 * This driver checks several tests regarding functional requirement number 19.5: An authenticated designer must be able to list draft mode tools and resources
 	 * 
 	 * @author MJ
 	 */
@@ -248,12 +246,13 @@ public class ItemDesignServiceTest extends AbstractTest {
 			}
 		};
 
-		for (int i = 0; i < testingData.length; i++)
-			this.templateListDraftModeRoomDesigns((String) testingData[i][0], (ItemType) testingData[i][1], (Class<?>) testingData[i][1]);
+		for (int i = 0; i < testingData.length; i++) {
+			this.templateListDraftModeRoomDesigns((String) testingData[i][0], (ItemType) testingData[i][1], (Class<?>) testingData[i][2]);
+		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.5: An actor who is authenticated as a designer must be able to
 	 * edit draft mode item designs, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -275,66 +274,6 @@ public class ItemDesignServiceTest extends AbstractTest {
 				/* food */null, /* metal */null, /* wood */null,
 				/* Class<?> expected */null
 			}, {
-				// This test checks that authenticated designers can edit a tool with strength set to less than the minimum
-				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */-1,/* luck */0, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers can edit a tool with luck set to less than the minimum
-				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */-1, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers can edit a tool with capacity set to less than the minimum
-				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */-1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a tool with an empty name (en)
-				"Tool7", "Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a tool with an empty name (es)
-				"Tool7", "Designer1", "Test name", "", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a tool with an empty description (en)
-				"Tool7", "Designer1", "Test name", "Nombre prueba", "", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty description (es)
-				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated designers cannot create a tool with an empty imageUrl
-				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción de prueba", /* imageUrl */"", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that unauthenticated designers cannot edit a tool
-				"Tool7", null, "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
-				// This test checks that authenticated player cannot edit a tool
-				"Tool7", "Player1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */0,/* luck */0, /* capacity */0, /* water */null,
-				/* food */null, /* metal */null, /* wood */null,
-				/* Class<?> expected */IllegalAccessException.class
-			}, {
 				// This test checks that authenticated designers can edit a resource
 				"Resource3", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */1.,
@@ -347,47 +286,90 @@ public class ItemDesignServiceTest extends AbstractTest {
 				/* food */0., /* metal */0., /* wood */0.,
 				/* Class<?> expected */null
 			}, {
+				// This test checks that authenticated designers can edit a tool with strength set to less than the minimum
+				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */-1,/* luck */0, /* capacity */0, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers can edit a tool with luck set to less than the minimum
+				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */-1, /* capacity */0, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers can edit a tool with capacity set to less than the minimum
+				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */-1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot edit a tool with an empty name (en)
+				"Tool7", "Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot edit a tool with an empty name (es)
+				"Tool7", "Designer1", "Test name", "", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot edit a tool with an empty description (en)
+				"Tool7", "Designer1", "Test name", "Nombre prueba", "", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty description (es)
+				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that authenticated designers cannot create a tool with an empty imageUrl
+				"Tool7", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción de prueba", /* imageUrl */"", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */ConstraintViolationException.class
+			}, {
+				// This test checks that unauthenticated designers cannot edit a tool
+				"Tool7", null, "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
+				/* strength */0,/* luck */0, /* capacity */1, /* water */null,
+				/* food */null, /* metal */null, /* wood */null,
+				/* Class<?> expected */IllegalArgumentException.class
+			}, {
 				// This test checks that authenticated designers can edit a resource with water less than minimum values
 				"Resource3", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */-1.,
 				/* food */0., /* metal */0., /* wood */0.,
-				/* Class<?> expected */null
+				/* Class<?> expected */ConstraintViolationException.class
 			}, {
-				// This test checks that authenticated designers can edit a resource with food less than minimum values
+				// This test checks that authenticated designers cannot edit a resource with food less than minimum values
 				"Resource3", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
 				/* food */-1., /* metal */0., /* wood */0.,
-				/* Class<?> expected */null
+				/* Class<?> expected */ConstraintViolationException.class
 			}, {
-				// This test checks that authenticated designers can edit a resource with metal less minimum values
+				// This test checks that authenticated designers cannot edit a resource with metal less minimum values
 				"Resource3", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
 				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
 				/* food */0., /* metal */-1., /* wood */0.,
-				/* Class<?> expected */null
-			}, {
-				// This test checks that authenticated designers cannot edit a resource in finalMode
-				"Resource1", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
-				/* food */0., /* metal */-1., /* wood */0.,
-				/* Class<?> expected */null
-			}, {
-				// This test checks that authenticated designers cannot edit a tool in finalMode
-				"Tool1", "Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", /* imageUrl */"https://www.myimage.com", /* finalMode */false,
-				/* strength */null,/* luck */null, /* capacity */null, /* water */0.,
-				/* food */0., /* metal */-1., /* wood */0.,
-				/* Class<?> expected */null
+				/* Class<?> expected */ConstraintViolationException.class
 			}
 
 		};
 
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.templateEditRoomDesigns((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (String) testingData[i][6],
 				(Boolean) testingData[i][7], (Integer) testingData[i][8], (Integer) testingData[i][9], (Integer) testingData[i][10], (Double) testingData[i][11], (Double) testingData[i][12], (Double) testingData[i][13], (Double) testingData[i][14],
 				(Class<?>) testingData[i][15]);
+		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a designer must be able to
+	 * This driver checks several tests regarding functional requirement number 19.5: An actor who is authenticated as a designer must be able to
 	 * delete draft mode room designs, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -396,35 +378,30 @@ public class ItemDesignServiceTest extends AbstractTest {
 	public void driverDeleteRoomDesigns() {
 		final Object testingData[][] = {
 			{
-				// This test checks that designers can delete a draft mode tool
-				"Designer1", "Tool7", null
-			}, {
-				// This test checks that managers cannot delete a final mode tool
-				"Designer1", "Tool1", IllegalArgumentException.class
-			}, {
 				// This test checks that unauthenticated users cannot delete a draft mode tool
 				null, "Tool7", IllegalArgumentException.class
 			}, {
-				// This test checks that authenticated players cannot delete a draft mode tool
-				"Player1", "RoomDesign7", IllegalArgumentException.class
+				// This test checks that designers can delete a draft mode tool
+				"Designer1", "Tool7", null
+			}, {
+				// This test checks that unauthenticated users cannot delete a draft mode resource
+				null, "Resource3", IllegalArgumentException.class
 			}, {
 				// This test checks that designers can delete a draft mode tool
 				"Designer1", "Resource3", null
 			}, {
 				// This test checks that managers cannot delete a final mode tool
+				"Designer1", "Tool3", IllegalArgumentException.class
+			}, {
+				// This test checks that designers cannot delete a final mode resource
 				"Designer1", "Resource1", IllegalArgumentException.class
-			}, {
-				// This test checks that unauthenticated users cannot delete a draft mode tool
-				null, "Resource3", IllegalArgumentException.class
-			}, {
-				// This test checks that authenticated players cannot delete a draft mode tool
-				"Player1", "RoomDesign3", IllegalArgumentException.class
 			}
 
 		};
 
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.templateDeleteRoomDesigns((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+		}
 	}
 
 	// Ancillary methods ---------------------------------------------------------------------------------------
@@ -460,7 +437,7 @@ public class ItemDesignServiceTest extends AbstractTest {
 				((Tool) resultTool).setStrength(strength);
 
 				this.toolService.save((Tool) resultTool);
-
+				this.toolService.flush();
 			} else if (itemType.equals(ItemType.RESOURCE)) {
 
 				resultResource = this.resourceService.create();
@@ -475,10 +452,8 @@ public class ItemDesignServiceTest extends AbstractTest {
 				resultResource.setWood(wood);
 
 				this.resourceService.save(resultResource);
+				this.resourceService.flush();
 			}
-
-			this.itemDesignService.flush();
-
 			super.unauthenticate();
 
 		} catch (final Throwable oops) {
@@ -574,8 +549,6 @@ public class ItemDesignServiceTest extends AbstractTest {
 
 			itemDesign = this.itemDesignService.findOne(itemDesignId);
 
-			super.authenticate(username);
-
 			nameMap.put("en", nameEn);
 			nameMap.put("es", nameEs);
 
@@ -593,6 +566,7 @@ public class ItemDesignServiceTest extends AbstractTest {
 				((Tool) itemDesign).setStrength(strength);
 
 				this.toolService.save((Tool) itemDesign);
+				this.toolService.flush();
 
 			} else if (itemDesign instanceof Resource) {
 
@@ -608,9 +582,8 @@ public class ItemDesignServiceTest extends AbstractTest {
 				((Resource) itemDesign).setWood(wood);
 
 				this.resourceService.save((Resource) itemDesign);
+				this.resourceService.flush();
 			}
-
-			this.itemDesignService.flush();
 
 			super.unauthenticate();
 
@@ -634,12 +607,13 @@ public class ItemDesignServiceTest extends AbstractTest {
 			itemDesignId = super.getEntityId(itemDesignPopulate);
 
 			itemDesign = this.itemDesignService.findOne(itemDesignId);
-			if (itemDesign instanceof Tool)
+			if (itemDesign instanceof Tool) {
 				this.toolService.delete((Tool) itemDesign);
-			else if (itemDesign instanceof Resource)
+				this.toolService.flush();
+			} else if (itemDesign instanceof Resource) {
 				this.resourceService.delete((Resource) itemDesign);
-
-			this.itemDesignService.flush();
+				this.resourceService.flush();
+			}
 
 			super.unauthenticate();
 

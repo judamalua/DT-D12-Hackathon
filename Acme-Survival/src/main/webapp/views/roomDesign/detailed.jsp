@@ -69,9 +69,9 @@
 	</p>
 </jstl:if>
 
-<p>
+<%-- <p>
 	<b><spring:message code="roomDesign.maxResistance" />:</b> <jstl:out value="${roomDesign.maxResistance}" />
-</p>
+</p> --%>
 
 <p>
 	<b><spring:message code="roomDesign.costWood" />:</b> <jstl:out value="${roomDesign.costWood}" />

@@ -22,18 +22,18 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
-import services.RefugeService;
+import services.ShelterService;
 import domain.Actor;
 import domain.Configuration;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
-@RequestMapping("/refuge")
-public class RefugeController extends AbstractController {
+@RequestMapping("/shelter")
+public class ShelterController extends AbstractController {
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 	@Autowired
 	private ActorService			actorService;
@@ -44,14 +44,14 @@ public class RefugeController extends AbstractController {
 
 	// Constructors -----------------------------------------------------------
 
-	public RefugeController() {
+	public ShelterController() {
 		super();
 	}
 
 	// Listing  ---------------------------------------------------------------		
 
 	/**
-	 * That method returns a model and view with the system refuge list
+	 * That method returns a model and view with the system shelter list
 	 * 
 	 * @param page
 	 * @param anonymous
@@ -62,30 +62,30 @@ public class RefugeController extends AbstractController {
 	@RequestMapping("/list")
 	public ModelAndView list(@RequestParam(required = false, defaultValue = "0") final int page) {
 		ModelAndView result;
-		Page<Refuge> refuges;
+		Page<Shelter> shelters;
 		Pageable pageable;
 		Configuration configuration;
 		Actor actor;
-		Refuge refuge = null;
+		Shelter shelter = null;
 
 		try {
-			result = new ModelAndView("refuge/list");
+			result = new ModelAndView("shelter/list");
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
 
-			refuges = this.refugeService.findAll(pageable);
+			shelters = this.shelterService.findAll(pageable);
 
 			if (this.actorService.getLogged()) {
 				actor = this.actorService.findActorByPrincipal();
 				if (actor instanceof Player)
-					refuge = this.refugeService.findRefugeByPlayer(actor.getId());
+					shelter = this.shelterService.findShelterByPlayer(actor.getId());
 			}
 
-			result.addObject("refuges", refuges.getContent());
+			result.addObject("shelters", shelters.getContent());
 			result.addObject("page", page);
-			result.addObject("hasRefuge", refuge != null);
-			result.addObject("pageNum", refuges.getTotalPages());
-			result.addObject("requestURI", "refuge/list.do?");
+			result.addObject("hasShelter", shelter != null);
+			result.addObject("pageNum", shelters.getTotalPages());
+			result.addObject("requestURI", "shelter/list.do?");
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -94,7 +94,7 @@ public class RefugeController extends AbstractController {
 	}
 
 	/**
-	 * That method returns a model and view with the refuge display
+	 * That method returns a model and view with the shelter display
 	 * 
 	 * @param page
 	 * @param anonymous
@@ -103,23 +103,23 @@ public class RefugeController extends AbstractController {
 	 * @author MJ
 	 */
 	@RequestMapping("/display")
-	public ModelAndView display(@RequestParam final int refugeId) {
+	public ModelAndView display(@RequestParam final int shelterId) {
 		ModelAndView result;
-		final Refuge refuge;
+		final Shelter shelter;
 		Actor actor;
 
 		try {
-			result = new ModelAndView("refuge/display");
+			result = new ModelAndView("shelter/display");
 
-			refuge = this.refugeService.findOne(refugeId);
-			Assert.notNull(refuge);
+			shelter = this.shelterService.findOne(shelterId);
+			Assert.notNull(shelter);
 
 			if (this.actorService.getLogged()) {
 				actor = this.actorService.findActorByPrincipal();
 				Assert.isTrue(!(actor instanceof Player));
 			}
 
-			result.addObject("refuge", refuge);
+			result.addObject("shelter", shelter);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");

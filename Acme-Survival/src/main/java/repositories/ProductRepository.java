@@ -12,13 +12,13 @@ import domain.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-	@Query("select p from Product p where p.finalMode = true")
+	@Query("select p from Product p where p.finalMode=true order by p.price")
 	Page<Product> getFinalModeProducts(Pageable page);
 
-	@Query("select p from Product p where p.finalMode = false")
+	@Query("select p from Product p where p.finalMode = false order by p.price")
 	Page<Product> getDraftModeProducts(Pageable page);
 
-	@Query("select p from Product p where p.discontinued = false")
+	@Query("select p from Product p where p.discontinued = false order by p.price")
 	Page<Product> getCataloguedProducts(Pageable page);
 
 }

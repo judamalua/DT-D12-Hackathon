@@ -48,20 +48,17 @@ public class ToolDesignerController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(@ModelAttribute("itemDesign") Tool itemDesign, final BindingResult binding) {
 		ModelAndView result;
-		Configuration configuration;
-
+		Assert.isTrue(this.toolService.findOne(itemDesign.getId()) == null || !this.toolService.findOne(itemDesign.getId()).getFinalMode());
 		try {
 			itemDesign = this.toolService.reconstruct(itemDesign, binding);
 		} catch (final Throwable oops) {//Not delete
 		}
 		if (binding.hasErrors())
-			result = this.createEditModelAndView(itemDesign, "refuge.params.error");
+			result = this.createEditModelAndView(itemDesign, "shelter.params.error");
 		else
 			try {
 
-				configuration = this.configurationService.findConfiguration();
-
-				Assert.isTrue(configuration.getLanguages().containsAll(itemDesign.getName().keySet()));
+				this.configurationService.checkSystemLanguages(itemDesign.getName());
 				this.toolService.save(itemDesign);
 
 				result = new ModelAndView("redirect:/itemDesign/designer/list.do?tool=" + true + "&finalMode=" + itemDesign.getFinalMode());

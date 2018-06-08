@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.hibernate.validator.constraints.SafeHtml.WhiteListType;
@@ -28,9 +29,9 @@ public class Message extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private String	text;
 	private Date	moment;
-	private String	image;
 
 
+	@Length(min = 5, max = 1000)
 	@Column(columnDefinition = "longtext")
 	@SafeHtml(whitelistType = WhiteListType.RELAXED)
 	@NotBlank

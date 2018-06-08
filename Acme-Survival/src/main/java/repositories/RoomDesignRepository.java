@@ -22,4 +22,9 @@ public interface RoomDesignRepository extends JpaRepository<RoomDesign, Integer>
 
 	@Query("select rd from RoomDesign rd where rd.finalMode=true")
 	Page<RoomDesign> findFinalRoomDesigns(Pageable pageable);
+
+	//Dashboard queries
+
+	@Query("select count(r) from RoomDesign r where r.finalMode=true")
+	String findNumRoomDesigns();
 }

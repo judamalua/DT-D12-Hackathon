@@ -28,11 +28,10 @@ public class PlayerServiceTest extends AbstractTest {
 	public PlayerService	PlayerService;
 
 
-	//TODO
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * An actor who is not authenticated must be able to: Register to the system as a Player.
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered Player can register himself in the system,without errors
 	 * 
@@ -57,8 +56,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.2 An actor who is not authenticated must be able to:List the Players of the system and navigate to their profiles, which include personal data and the list of rendezvouses that they've attended or are going to attend.
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered actor can list the Players in the system and navigate to their profiles
 	 * 
@@ -77,7 +76,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 5.1 An actor who is authenticated as a Player must be able to:Do the same as an actor who is not authenticated, but register to the system.
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a registered actor can list the Players in the system and navigate to their profiles
 	 * 
@@ -96,8 +96,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Player.
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered Player can register himself in the system,without errors
 	 * and without optional attributes(address,phone number)
@@ -122,7 +122,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a Player can edit his profile correctly
 	 * 
@@ -145,8 +146,8 @@ public class PlayerServiceTest extends AbstractTest {
 
 	//******************************************Negative Methods*******************************************************************
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Player.
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered Player cannot register himself in the system,without a valid name
 	 * 
@@ -173,7 +174,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Player.
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered Player cannot register himself in the system,without a valid surname
 	 * 
@@ -199,7 +201,8 @@ public class PlayerServiceTest extends AbstractTest {
 
 	}
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Player.
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered Player cannot register himself in the system,without a valid email
 	 * 
@@ -225,8 +228,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Player.
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a not registered Player cannot register himself in the system,without a valid birth date
 	 * 
@@ -255,7 +258,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that a Player cannot edit the profile of other Player
 	 * 
@@ -282,7 +286,8 @@ public class PlayerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new player regarding functional requirement number 17.1: An actor who is unauthenticated must be able to
+	 * register to the system as player.
 	 * 
 	 * This test checks that unauthenticated Players cannot edit the profile of other Player
 	 * 

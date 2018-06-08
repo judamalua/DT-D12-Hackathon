@@ -268,7 +268,7 @@ function initMap() {
 function generateMap() {
 	var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
 	// IMAGE HANDLING ------------------------------------
-	var imageRefuge = {
+	var imageShelter = {
 		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAPBQTFRFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////ZvvSvwAAAE50Uk5TAAEJDGF6BAI2qvqnGX/kDwsGCghSx/zovsCKDlGwkS6g8/ZlFnljFHPev7qWyeNCDaP9HMtBFcpKV4gH/sgTmF6XLyAD+1nwu/hYR1off06j1gAAAAFiS0dET25mQUkAAADjSURBVDjL3ZPHEoIwFEUBOzYsYC8g9t6wgF1QUd//f446iXUUNo4Lzyrv3jOTl0UI4peQFGnYW6w2u0HtcLpot4Hg8foAXH4mgG8Lhp7qUJjlACASjcWZy5xIptLMw3KZLA8YIUdRDjHPA1+49cVSGe5EKtVanT4fGk3ct9odeEu9iwSx974HoY8EafBBoIcmAjcyEWAsmwhCnnwVFAweJ9MXoTObW8/MZ/jhwmK5Wj8KqobW0tRrsNkWDQWAgWgmSP8isIqK4HY6EvQdhyOFlQh5f9Aw+hEJR/2aHPbyN7/mB05qA5w56QRThQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wNS0xM1QyMDozMzo1NSswMjowMHC0eyMAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDUtMTNUMjA6MzM6NTUrMDI6MDAB6cOfAAAAAElFTkSuQmCC',
 		size : new google.maps.Size(32, 32),
 		origin : new google.maps.Point(0, 0),
@@ -280,26 +280,26 @@ function generateMap() {
 		origin : new google.maps.Point(0, 0),
 		anchor : new google.maps.Point(16, 16)
 	};
-	var imageEnemyRefuge = {
+	var imageEnemyShelter = {
 		url : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAPNQTFRFAAAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA/wAA////Thsz2AAAAE90Uk5TAAABCQxhegQCNqr6pxl/5A8LBgoIUsf86L7Aig5RsJEuoPP2ZRZ5YxRz3r+6lsnjQg2j/RzLQRXKSleIB/7IE5hely8gA/tZ8Lv4WEdaH4OcN4cAAAABYktHRFDjbky8AAAA+ElEQVQ4y93TXVeCQBAGYAY0P9AUNTDLUhC1TEutsAQ/UkFFnf//b0R2KS4E7rzovdqdfc7OmbNnGeaCAZZjIeQYYvGrRDCAZCrNZwIBQPY6h5jOCwUAt1uxBD4MpRtRQsTybeVOcOpwX314FH4BsLW6jDRKg+OSalNGueVdAe2nZ/xLufPS7fHO4vWNiv5giGfTeydA/Th/jsonAdooAPBfEUD6jgA41iEcKE33bfzAoKHbyfQ0qQ8MZ/O4k/mMDq78LJYrPzAttylYpldYb9qhAHGkRgHtvwDRMEmkrU2AvZVoyRA1Rt/tLRr7QMDB9ir7nX6BL3sEQRyeyWFn/PIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMTgtMDUtMTNUMjA6MzQ6NDArMDI6MDAM+k9jAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDE4LTA1LTEzVDIwOjM0OjQwKzAyOjAwfaf33wAAAABJRU5ErkJggg==',
 		size : new google.maps.Size(32, 32),
 		origin : new google.maps.Point(0, 0),
 		anchor : new google.maps.Point(16, 16)
 	};
-	// REFUGE HANDLING -------------------------------------
-	refuge = new google.maps.Marker({
+	// SHELTER HANDLING -------------------------------------
+	shelter = new google.maps.Marker({
 		position : {
-			lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
-			lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+			lat : Number(mapElements.shelter.gpsCoordinates.split(",")[0]),
+			lng : Number(mapElements.shelter.gpsCoordinates.split(",")[1])
 		},
 		map : map,
-		icon : imageRefuge
+		icon : imageShelter
 	});
-	refuge.addListener('click', function(event) {
+	shelter.addListener('click', function(event) {
 		var language = getLanguageToUse();
-		var contentString = '<b>' + mapTranslations.refuge.refugeMine[language] + '</b><br/><b>' + mapTranslations.refuge.name[language] + ": </b>" + mapElements.refuge.name
-				+ '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>" + mapElements.refuge.playerName + '<br/><br/><a href="' + getMainDomain()
-				+ 'refuge/player/display.do">' + mapTranslations.refuge.enterInRefuge[language] + '</a>';
+		var contentString = '<b>' + mapTranslations.shelter.shelterMine[language] + '</b><br/><b>' + mapTranslations.shelter.name[language] + ": </b>" + mapElements.shelter.name
+				+ '<br/><b>' + mapTranslations.shelter.playerName[language] + ": </b>" + mapElements.shelter.playerName + '<br/><br/><a href="' + getMainDomain()
+				+ 'shelter/player/display.do">' + mapTranslations.shelter.enterInShelter[language] + '</a>';
 		infoWindow.setContent(contentString);
 		infoWindow.setPosition(event.latLng);
 		infoWindow.open(map);
@@ -374,28 +374,28 @@ function generateMap() {
 			}
 		});
 	}
-	// KNOWN REFUGE HANDLING -------------------------------------
-	var refugeEnemy = [];
-	for ( var int5 = 0; int5 < mapElements.knownRefuges.length; int5++) {
-		refugeEnemy[int5] = new google.maps.Marker({
+	// KNOWN SHELTERS HANDLING -------------------------------------
+	var shelterEnemy = [];
+	for ( var int5 = 0; int5 < mapElements.knownShelters.length; int5++) {
+		shelterEnemy[int5] = new google.maps.Marker({
 			position : {
-				lat : Number(mapElements.knownRefuges[int5].gpsCoordinates.split(",")[0]),
-				lng : Number(mapElements.knownRefuges[int5].gpsCoordinates.split(",")[1])
+				lat : Number(mapElements.knownShelters[int5].gpsCoordinates.split(",")[0]),
+				lng : Number(mapElements.knownShelters[int5].gpsCoordinates.split(",")[1])
 			},
 			map : map,
-			icon : imageEnemyRefuge
+			icon : imageEnemyShelter
 		});
-		refugeEnemy[int5].addListener('click', function(event) {
+		shelterEnemy[int5].addListener('click', function(event) {
 			var currentInt = -1;
 			var currentLow = null;
-			for ( var int2 = 0; int2 < mapElements.knownRefuges.length; int2++) {
+			for ( var int2 = 0; int2 < mapElements.knownShelters.length; int2++) {
 				var m = {
 					x : event.latLng.lat(),
 					y : event.latLng.lng()
 				};
 				var r = {
-					x : Number(mapElements.knownRefuges[int2].gpsCoordinates.split(",")[0]),
-					y : Number(mapElements.knownRefuges[int2].gpsCoordinates.split(",")[1])
+					x : Number(mapElements.knownShelters[int2].gpsCoordinates.split(",")[0]),
+					y : Number(mapElements.knownShelters[int2].gpsCoordinates.split(",")[1])
 				};
 				if (currentLow == null) {
 					currentLow = distanceBetweenPoints(m, r);
@@ -409,10 +409,10 @@ function generateMap() {
 			}
 			if (currentInt !== -1) {
 				var language = getLanguageToUse();
-				var contentString = '<b>' + mapTranslations.refuge.refugeEnemy[language] + '</b><br/><b>' + mapTranslations.refuge.name[language] + ": </b>"
-						+ mapElements.knownRefuges[currentInt].name + '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>"
-						+ mapElements.knownRefuges[currentInt].playerName + '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?refugeId='
-						+ mapElements.knownRefuges[currentInt].id + '">' + mapTranslations.refuge.attackRefuge[language] + '</a>';
+				var contentString = '<b>' + mapTranslations.shelter.shelterEnemy[language] + '</b><br/><b>' + mapTranslations.shelter.name[language] + ": </b>"
+						+ mapElements.knownShelters[currentInt].name + '<br/><b>' + mapTranslations.shelter.playerName[language] + ": </b>"
+						+ mapElements.knownShelters[currentInt].playerName + '<br/><br/><a href="' + getMainDomain() + 'attack/player/create.do?shelterId='
+						+ mapElements.knownShelters[currentInt].id + '">' + mapTranslations.shelter.attackShelter[language] + '</a>';
 				infoWindow.setContent(contentString);
 				infoWindow.setPosition(event.latLng);
 
@@ -422,14 +422,14 @@ function generateMap() {
 
 	}
 	// ATTACK HANDLING -------------------------------------
-	if (mapElements.onGoingAttack.refuge !== undefined) {
+	if (mapElements.onGoingAttack.shelter !== undefined) {
 		var attackCoordinates = [
 				{
-					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
-					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+					lat : Number(mapElements.shelter.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.shelter.gpsCoordinates.split(",")[1])
 				}, {
-					lat : Number(mapElements.onGoingAttack.refuge.gpsCoordinates.split(",")[0]),
-					lng : Number(mapElements.onGoingAttack.refuge.gpsCoordinates.split(",")[1])
+					lat : Number(mapElements.onGoingAttack.shelter.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.onGoingAttack.shelter.gpsCoordinates.split(",")[1])
 				}
 		];
 		var attack = new google.maps.Polyline({
@@ -443,8 +443,8 @@ function generateMap() {
 		attack.addListener('click', function(event) {
 			var mapElements = JSON.parse(document.getElementById("mapElements").innerHTML);
 			var language = getLanguageToUse();
-			var contentString = '<b>' + mapTranslations.attack.attack[language] + '</b><br/><b>' + mapTranslations.attack.refuge[language] + ": </b>"
-					+ mapElements.onGoingAttack.refuge.name + '<br/><b>' + mapTranslations.refuge.playerName[language] + ": </b>" + mapElements.onGoingAttack.refuge.playerName
+			var contentString = '<b>' + mapTranslations.attack.attack[language] + '</b><br/><b>' + mapTranslations.attack.shelter[language] + ": </b>"
+					+ mapElements.onGoingAttack.shelter.name + '<br/><b>' + mapTranslations.shelter.playerName[language] + ": </b>" + mapElements.onGoingAttack.shelter.playerName
 					+ '<br/>' + '<b>' + mapTranslations.attack.time[language] + ': </b>' + getRemainingTime(mapElements.onGoingAttack.endMoment);
 			infoWindow.setContent(contentString);
 			infoWindow.setPosition(event.latLng);
@@ -476,8 +476,8 @@ function generateMap() {
 		var locationCenter = getZoneCenter(locationToMove);
 		var moveCoordinates = [
 				{
-					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
-					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+					lat : Number(mapElements.shelter.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.shelter.gpsCoordinates.split(",")[1])
 				}, {
 					lat : Number(locationCenter.x),
 					lng : Number(locationCenter.y)
@@ -540,8 +540,8 @@ function generateMap() {
 		});
 		gatherLineCoordinates[int20] = [
 				{
-					lat : Number(mapElements.refuge.gpsCoordinates.split(",")[0]),
-					lng : Number(mapElements.refuge.gpsCoordinates.split(",")[1])
+					lat : Number(mapElements.shelter.gpsCoordinates.split(",")[0]),
+					lng : Number(mapElements.shelter.gpsCoordinates.split(",")[1])
 				}, {
 					lat : randomCoordinates[int20].x,
 					lng : randomCoordinates[int20].y

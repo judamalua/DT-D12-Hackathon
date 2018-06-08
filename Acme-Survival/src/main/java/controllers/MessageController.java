@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +30,7 @@ import services.ThreadService;
 import domain.Actor;
 import domain.Configuration;
 import domain.Message;
+import domain.Player;
 import domain.Thread;
 
 @Controller
@@ -89,11 +91,17 @@ public class MessageController extends AbstractController {
 
 			if (this.actorService.getLogged()) {
 				actor = this.actorService.findActorByPrincipal();
-				for (int i = 0; i < messages.getContent().size(); i++)
+				if (actor instanceof Player) {
+					Assert.isTrue(!thread.getForum().getStaff());
+				}
+				for (int i = 0; i < messages.getContent().size(); i++) {
 					ownMessages.add(actor.equals(messages.getContent().get(i).getActor()));
+				}
 
 				result.addObject("ownMessages", ownMessages);
 				result.addObject("messageForm", this.messageService.create());
+			} else {
+				Assert.isTrue(!thread.getForum().getStaff() && !thread.getForum().getSupport());
 			}
 
 			result.addObject("fatherThread", thread);

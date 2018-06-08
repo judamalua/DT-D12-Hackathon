@@ -37,7 +37,7 @@ public class ItemDesignService {
 		Assert.notNull(result);
 		return result;
 	}
-	
+
 	public Collection<ItemDesign> findFinal() {
 		Collection<ItemDesign> result;
 		Assert.notNull(this.itemDesignRepository);
@@ -45,7 +45,7 @@ public class ItemDesignService {
 		Assert.notNull(result);
 		return result;
 	}
-	
+
 	public Collection<ItemDesign> findNotFinal() {
 		Collection<ItemDesign> result;
 		Assert.notNull(this.itemDesignRepository);
@@ -86,15 +86,14 @@ public class ItemDesignService {
 
 	public void delete(final ItemDesign itemDesign) {
 
-		assert itemDesign != null;
-		assert itemDesign.getId() != 0;
+		Assert.isTrue(itemDesign != null);
+		Assert.isTrue(itemDesign.getId() != 0);
 
 		Assert.isTrue(this.itemDesignRepository.exists(itemDesign.getId()));
 
 		this.itemDesignRepository.delete(itemDesign);
 
 	}
-
 	public Collection<Event> findEventsByItemDesign(final int itemDesignId) {
 		Collection<Event> result;
 
@@ -125,6 +124,16 @@ public class ItemDesignService {
 		result = this.itemDesignRepository.findFinal(pageable);
 
 		return result;
+	}
+
+	public String findNumItemDesigns() {
+
+		String result;
+
+		result = this.itemDesignRepository.findNumItemDesigns();
+
+		return result;
+
 	}
 
 	public void flush() {

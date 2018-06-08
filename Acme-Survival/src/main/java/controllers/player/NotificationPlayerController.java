@@ -12,19 +12,20 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.ConfigurationService;
 import services.GatherService;
 import services.NotificationService;
-import services.RefugeService;
+import services.ShelterService;
 import controllers.AbstractController;
 import domain.Attack;
 import domain.Configuration;
 import domain.Notification;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Controller
 @RequestMapping("/notification/player")
@@ -43,7 +44,7 @@ public class NotificationPlayerController extends AbstractController {
 	private GatherService			gatherService;
 
 	@Autowired
-	private RefugeService			refugeService;
+	private ShelterService			shelterService;
 
 
 	// Constructors -----------------------------------------------------------
@@ -60,14 +61,14 @@ public class NotificationPlayerController extends AbstractController {
 		final Configuration configuration;
 		Pageable pageable;
 		Page<Notification> notifications;
-		Refuge refuge;
+		Shelter shelter;
 
 		try {
 			player = (Player) this.actorService.findActorByPrincipal();
 
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-			Assert.notNull(refuge, "You don't have refuge");
+			Assert.notNull(shelter, "You don't have shelter");
 
 			configuration = this.configurationService.findConfiguration();
 			pageable = new PageRequest(page, configuration.getPageSize());
@@ -85,10 +86,11 @@ public class NotificationPlayerController extends AbstractController {
 			result.addObject("requestUri", "notification/player/list.do?");
 
 		} catch (final Throwable oops) {
-			if (oops.getMessage().contains("You don't have refuge"))
-				result = new ModelAndView("redirect:/refuge/player/create.do");
-			else
+			if (oops.getMessage().contains("You don't have shelter")) {
+				result = new ModelAndView("redirect:/shelter/player/create.do");
+			} else {
 				result = new ModelAndView("redirect:/misc/403");
+			}
 		}
 
 		return result;
@@ -100,15 +102,21 @@ public class NotificationPlayerController extends AbstractController {
 	public ModelAndView displayGatherNotification(final int notificationId) {
 		ModelAndView result;
 		Notification notification;
+		Player player;
 
 		try {
+
+			player = (Player) this.actorService.findActorByPrincipal();
+
 			notification = this.notificationService.findOne(notificationId);
 			result = new ModelAndView("notification/displayGatherNotification");
+			Assert.isTrue(notification.getPlayer().equals(player));
 
 			result.addObject("notification", notification);
 
-			if (notification.getGather() != null)
+			if (notification.getGather() != null) {
 				result.addObject("gatherId", notification.getGather().getId());
+			}
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
@@ -123,9 +131,13 @@ public class NotificationPlayerController extends AbstractController {
 		Notification notification;
 		String bodyEn, titleEn;
 		ArrayList<String> resources;
+		Player player;
 
 		try {
+			player = (Player) this.actorService.findActorByPrincipal();
 			notification = this.notificationService.findOne(notificationId);
+
+			Assert.isTrue(notification.getPlayer().equals(player));
 			result = new ModelAndView("notification/display");
 			bodyEn = notification.getBody().get("en");
 			titleEn = notification.getTitle().get("en");
@@ -140,22 +152,73 @@ public class NotificationPlayerController extends AbstractController {
 				result.addObject("notificationWood", resources.get(4));
 
 				result.addObject("attackWon", true);
-			} else
+			} else {
 				result.addObject("attackWon", false);
+			}
 
 			result.addObject("notification", notification);
 
-			if (notification.getAttack() != null)
-				if (notification.getAttack() instanceof Attack)
+			if (notification.getAttack() != null) {
+				if (notification.getAttack() instanceof Attack) {
 					result.addObject("attackId", notification.getAttack().getId());
-				else
+				} else {
 					result.addObject("gatherId", notification.getGather().getId());
+				}
+			}
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");
 		}
 
 		return result;
 	}
+
+	//Delete -----------------------------------------------------------
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(final int notificationId) {
+		ModelAndView result;
+		Notification notification;
+		Player player;
+
+		try {
+			player = (Player) this.actorService.findActorByPrincipal();
+			notification = this.notificationService.findOne(notificationId);
+			Assert.isTrue(notification.getPlayer().equals(player));
+
+			this.notificationService.delete(notification);
+
+			result = new ModelAndView("redirect:/notification/player/list.do");
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+
+	}
+
+	//Display ------------------------------------
+	@RequestMapping(value = "/numberNotifications", method = RequestMethod.GET)
+	public @ResponseBody
+	String getNumberNotifications() {
+		String result;
+		Player player;
+
+		result = "";
+
+		try {
+
+			if (this.actorService.getLogged()) {
+				player = (Player) this.actorService.findActorByPrincipal();
+
+				result = this.notificationService.findNumberNotifications(player.getId());
+			}
+
+		} catch (final Throwable oops) {
+		}
+
+		return result;
+	}
+	//Ancilliary methods ------------------------------------------------
 
 	public ArrayList<String> splitBodyNotification(final String body) {
 		ArrayList<String> result;

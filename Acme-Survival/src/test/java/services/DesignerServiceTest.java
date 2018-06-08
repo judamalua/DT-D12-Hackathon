@@ -28,11 +28,10 @@ public class DesignerServiceTest extends AbstractTest {
 	public DesignerService	DesignerService;
 
 
-	//TODO
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * An actor who is not authenticated must be able to: Register to the system as a Designer.
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Designer can register himself in the system,without errors
 	 * 
@@ -57,8 +56,8 @@ public class DesignerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Designer.
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Designer can register himself in the system,without errors
 	 * and without optional attributes(address,phone number)
@@ -83,7 +82,8 @@ public class DesignerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a Designer can edit his profile correctly
 	 * 
@@ -106,8 +106,8 @@ public class DesignerServiceTest extends AbstractTest {
 
 	//******************************************Negative Methods*******************************************************************
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Designer.
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Designer cannot register himself in the system,without a valid name
 	 * 
@@ -134,7 +134,8 @@ public class DesignerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Designer.
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Designer cannot register himself in the system,without a valid surname
 	 * 
@@ -161,7 +162,8 @@ public class DesignerServiceTest extends AbstractTest {
 
 	}
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Designer.
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Designer cannot register himself in the system,without a valid email
 	 * 
@@ -187,8 +189,8 @@ public class DesignerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 4.1 An actor who is not authenticated must be able to: Register to the system as a Designer.
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a not registered Designer cannot register himself in the system,without a valid birth date
 	 * 
@@ -217,7 +219,8 @@ public class DesignerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that a Designer cannot edit the profile of other Designer
 	 * 
@@ -244,7 +247,8 @@ public class DesignerServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * 
+	 * This test checks register a new designer regarding functional requirement number 21.1: An actor who is authenticated as admin must be able to
+	 * register new managers, admins, designers and moderators.
 	 * 
 	 * This test checks that unauthenticated Designers cannot edit the profile of other Designer
 	 * 

@@ -50,28 +50,52 @@ function redirectPost(url, data) {
 }
 
 $(document).ready(function() {
-console.log(events);
- $('#save-loottable').click(()=>{
 
+ $('#save-loottable').click(()=>{
+	 var tableName = document.getElementById("lootTableName").innerText;
+	 if (tableName != ""){
 	var data = {};
+	var error = false;
 	$("#table-item tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+			if (parseFloat($(this).find("td:eq(3)").text()) > 1  || parseFloat($(this).find("td:eq(3)").text()) < 0  ){
+				//Probabilidad fuera de rango
+				 var emptyName=$(this).find("td:eq(2)").text() + ": <spring:message code="lootTable.errorProb"/>";
+			 	Materialize.toast(emptyName, 3000);
+				error = true;
+				return;
+			}else{	
 	    data["item" +$(this).find("td:first").text()] = $(this).find("td:eq(3)").text();
 		}
-	    // compare id to what you want
+		};
 	});
 	
 		$("#table-event tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
-	    data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
-		}
-	    // compare id to what you want
+			if (parseFloat($(this).find("td:eq(2)").text()) > 1  || parseFloat($(this).find("td:eq(2)").text()) < 0  ){
+		
+						
+				//Probabilidad fuera de rango
+				 var emptyName=$(this).find("td:eq(1)").text() + ": <spring:message code="lootTable.errorProb"/>";
+		 		Materialize.toast(emptyName, 3000);
+		 		error = true;
+				return;
+			} else{
+	   		 data["event" + $(this).find("td:first").text()] = $(this).find("td:eq(2)").text();
+			}
+		};
 	});
-	data["name"] = document.getElementById("lootTableName").innerText;
+		if (!error){
+	data["name"] = tableName;
 	data["finalMode"] = document.getElementById("finalMode").checked;
 	data["save"] = ""; //Needed for spring save
 	redirectPost("lootTable/designer/edit.do?tableId=${requestScope.lootTable.id}", data);
-
+		}
+	
+	 }else{
+		 var emptyName="<spring:message code="lootTable.emptyName"/>";
+		 Materialize.toast(emptyName, 3000);
+	 }
 
   });
 var $TABLEEVENT = $('#table-event');
@@ -79,18 +103,11 @@ var eventsCount = probabilitiesEvent.length;
  
   
 $('#table-add-event').click(function () {
-	
-  var $clone = $TABLEEVENT.find('tr.hide').clone(true).removeClass('hide table-line');
-  $clone.children('#clone1').attr("id","eventTable" + eventsCount).attr("onclick","eventSelector(" + eventsCount+ ")");
-  $clone.children('#clone3').attr("id","IdEventTable" + eventsCount);
-  $TABLEEVENT.find('table').append($clone);
-  eventSelector(eventsCount);
-  eventsCount++;
+  eventSelector();
 });
 
 $('.table-remove-event').click(function () {
   $(this).parents('tr').detach();
-  eventsCount--;
 });
 
 $('.table-up-event').click(function () {
@@ -106,23 +123,15 @@ $('.table-down-event').click(function () {
   
   
   var $TABLEITEM = $('#table-item');
-var itemsCount = probabilitiesItem.length;
+/* var itemsCount = probabilitiesItem.length; */
  
   
 $('#table-add-item').click(function () {
-	
-  var $clone = $TABLEITEM.find('tr.hide').clone(true).removeClass('hide table-line');
-  $clone.children('#clone1').attr("id","itemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
-  $clone.children('#clone2').attr("id","imgItemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
-  $clone.children('#clone3').attr("id","IdItemTable" + itemsCount);
-  $TABLEITEM.find('table').append($clone);
-  itemSelector(itemsCount);
-  itemsCount++;
+	  itemSelector();
 });
 
 $('.table-remove-item').click(function () {
   $(this).parents('tr').detach();
-  itemsCount--;
 });
 
 $('.table-up-item').click(function () {
@@ -135,37 +144,78 @@ $('.table-down-item').click(function () {
   var $row = $(this).parents('tr');
   $row.next().after($row.get(0));
 });
-  
- 
-  
-  
+
 });
 
-var currentEvent=0;
-function eventSelector(id){
+
+function eventSelector(){
 	   $('#modalEventSelector').modal();
 	   $('#modalEventSelector').modal('open'); 
-	   currentEvent = id;
+};
+
+function itemSelector(){
+	   $('#modalItemSelector').modal();
+	   $('#modalItemSelector').modal('open'); 
 };
 
 function selectEvent(name, id){
-	$('#modalEventSelector').modal('close');
-	$('#IdEventTable' + currentEvent)[0].innerHTML = id;
-	$('#eventTable' + currentEvent)[0].innerHTML = name;
-};
-
-var currentItem=0;
-function itemSelector(id){
-	   $('#modalItemSelector').modal();
-	   $('#modalItemSelector').modal('open'); 
-	   currentItem = id;
+	var $TABLEEVENT = $('#table-event');
+	var duplicated = false;
+	var eventsCount = $("#table-event tr").length;
+	$("#table-event tr").each(function(index, element) {
+		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+	    if ($(this).find("td:first").text() == id){
+	    	var duplicatedMsg="<spring:message code="lootTable.duplicated"/>";
+	    	duplicated = true;
+	    	Materialize.toast(duplicatedMsg,3000);
+	    	Materialize.toast("<spring:message code="lootTable.save" var="save" />",2);
+	    }
+		}
+	});
+	
+	if (!duplicated){
+		var $clone = $TABLEEVENT.find('tr.hide').clone(true).removeClass('hide table-line');
+		$clone.children('#clone1').attr("id","eventTable" + eventsCount).attr("onclick","eventSelector(" + eventsCount+ ")");
+		$clone.children('#clone3').attr("id","IdEventTable" + eventsCount);
+		$TABLEEVENT.find('table').append($clone);
+		$('#modalEventSelector').modal('close');
+		$('#IdEventTable' + eventsCount)[0].innerHTML = id;
+		$('#eventTable' + eventsCount)[0].innerHTML = name;
+		
+	};
+	
+	
+	
 };
 
 function selectItem(name,image, id){
-	$('#modalItemSelector').modal('close');
-	$('#IdItemTable' + currentItem)[0].innerHTML = id;
-	$('#itemTable' + currentItem)[0].innerHTML = name;
-	$('#imgItemTable' + currentItem)[0].innerHTML = "<img src='"+ image + "' style='width: 32px'>"
+	var $TABLEITEM = $('#table-item');
+	var duplicated = false;
+	var itemsCount = $("#table-item tr").length;
+	$("#table-item tr").each(function(index, element) {
+		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
+	    if ($(this).find("td:first").text() == id){	
+	    	duplicated = true;
+	    	var duplicatedMsg="<spring:message code="lootTable.duplicated"/>";
+	    	Materialize.toast(duplicatedMsg,3000);
+	    	Materialize.toast("<spring:message code="lootTable.save" var="save" />",2);
+	    }
+		}
+	});
 	
+	if (!duplicated){
+		
+		 var $clone = $TABLEITEM.find('tr.hide').clone(true).removeClass('hide table-line');
+		  $clone.children('#clone1').attr("id","itemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
+		  $clone.children('#clone2').attr("id","imgItemTable" + itemsCount).attr("onclick","itemSelector(" + itemsCount+ ")");
+		  $clone.children('#clone3').attr("id","IdItemTable" + itemsCount);
+		  $TABLEITEM.find('table').append($clone);
+		  
+		$('#modalItemSelector').modal('close');
+		$('#IdItemTable' + itemsCount)[0].innerHTML = id;
+		$('#itemTable' + itemsCount)[0].innerHTML = name;
+		$('#imgItemTable' + itemsCount)[0].innerHTML = "<img src='"+ image + "' style='width: 32px'>";
+		
+	}
 }
 </script>

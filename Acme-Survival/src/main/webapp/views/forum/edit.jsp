@@ -34,7 +34,7 @@
 			<acme:textbox code="forum.name" path="name" required="true" />
 
 			<acme:textarea code="forum.description" path="description"
-				required="true" customClass="widgEditor"/>
+				required="true" />
 
 			<acme:textbox code="forum.image" path="image" />
 

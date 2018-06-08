@@ -36,14 +36,14 @@
 		<acme:textarea code="configuration.movingMetal" path="movingMetal" />
 		<acme:textbox code="configuration.movingFood" path="movingFood" />
 		<acme:textbox code="configuration.kmPerSecond" path="kmPerSecond" />
-		<acme:textbox code="configuration.foodWastedPerSecond"
-			path="foodWastedPerSecond" />
-		<acme:textbox code="configuration.waterWastedPerSecond"
-			path="waterWastedPerSecond" />
-		<acme:textbox code="configuration.refugeDefaultCapacity"
-			path="refugeDefaultCapacity" />
-		<acme:textbox code="configuration.refugeRecoverTime"
-			path="refugeRecoverTime" />
+<%-- 		<acme:textbox code="configuration.foodWastedPerSecond"
+			path="foodWastedPerSecond" /> --%>
+<%-- 		<acme:textbox code="configuration.waterWastedPerSecond"
+			path="waterWastedPerSecond" /> --%>
+		<acme:textbox code="configuration.shelterDefaultCapacity"
+			path="shelterDefaultCapacity" />
+		<acme:textbox code="configuration.shelterRecoverTime"
+			path="shelterRecoverTime" />
 		<acme:textbox code="configuration.waterFactorSteal"
 			path="waterFactorSteal" />
 		<acme:textbox code="configuration.foodFactorSteal"
@@ -52,23 +52,18 @@
 			path="metalFactorSteal" />
 		<acme:textbox code="configuration.woodFactorSteal"
 			path="woodFactorSteal" />
-
-	</div>
-	<div class="config2">
 		<acme:textbox code="configuration.foodLostGatherFactor"
 			path="foodLostGatherFactor" />
+	</div>
+	<div class="config2">
 		<acme:textbox code="configuration.waterLostGatherFactor"
 			path="waterLostGatherFactor" />
 		<acme:textbox code="configuration.experiencePerMinute"
 			path="experiencePerMinute" />
-		<acme:textbox code="configuration.initialFood"
-			path="initialFood" />
-		<acme:textbox code="configuration.initialWater"
-			path="initialWater" />
-		<acme:textbox code="configuration.initialWood"
-			path="initialWood" />
-		<acme:textbox code="configuration.initialMetal"
-			path="initialMetal" />
+		<acme:textbox code="configuration.initialFood" path="initialFood" />
+		<acme:textbox code="configuration.initialWater" path="initialWater" />
+		<acme:textbox code="configuration.initialWood" path="initialWood" />
+		<acme:textbox code="configuration.initialMetal" path="initialMetal" />
 		<acme:textbox code="configuration.maxInventoryFood"
 			path="maxInventoryFood" />
 		<acme:textbox code="configuration.maxInventoryWater"
@@ -79,6 +74,11 @@
 			path="maxInventoryMetal" />
 		<acme:textbox code="configuration.numInitialCharacters"
 			path="numInitialCharacters" />
+		<acme:textbox code="configuration.shelterFindingProbability"
+			path="shelterFindingProbability" />
+		<acme:textbox
+			code="configuration.shelterFindingMinuteAugmentProbability"
+			path="shelterFindingMinuteAugmentProbability" />
 	</div>
 
 	<acme:submit name="save" code="configuration.save" />

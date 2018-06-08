@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.LootTableRepository;
+import domain.Actor;
+import domain.Designer;
 import domain.LootTable;
 import domain.ProbabilityEvent;
 import domain.ProbabilityItem;
@@ -26,9 +28,15 @@ public class LootTableService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private LootTableRepository	lootTableRepository;
+	private LootTableRepository		lootTableRepository;
 	@Autowired
-	private Validator			validator;
+	private Validator				validator;
+	@Autowired
+	private ActorService			actorService;
+	@Autowired
+	private ProbabilityEventService	probabilityEventService;
+	@Autowired
+	private ProbabilityItemService	probabilityItemService;
 
 
 	// Supporting services --------------------------------------------------
@@ -37,7 +45,9 @@ public class LootTableService {
 
 	public LootTable create() {
 		LootTable result;
-		
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		result = new LootTable();
 		result.setProbabilityEvents(new HashSet<ProbabilityEvent>());
 		result.setProbabilityItems(new HashSet<ProbabilityItem>());
@@ -48,7 +58,9 @@ public class LootTableService {
 	public Collection<LootTable> findAll() {
 
 		Collection<LootTable> result;
-
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		Assert.notNull(this.lootTableRepository);
 		result = this.lootTableRepository.findAll();
 		Assert.notNull(result);
@@ -60,7 +72,9 @@ public class LootTableService {
 	public LootTable findOne(final int lootTableId) {
 
 		LootTable result;
-
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		result = this.lootTableRepository.findOne(lootTableId);
 
 		return result;
@@ -72,7 +86,9 @@ public class LootTableService {
 		assert lootTable != null;
 
 		LootTable result;
-
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		result = this.lootTableRepository.save(lootTable);
 
 		return result;
@@ -83,9 +99,17 @@ public class LootTableService {
 
 		assert lootTable != null;
 		assert lootTable.getId() != 0;
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 
 		Assert.isTrue(this.lootTableRepository.exists(lootTable.getId()));
-
+		final Collection<ProbabilityItem> delItems = new HashSet<ProbabilityItem>(lootTable.getProbabilityItems());
+		final Collection<ProbabilityEvent> delEvents = new HashSet<ProbabilityEvent>(lootTable.getProbabilityEvents());
+		lootTable.getProbabilityEvents().clear();
+		lootTable.getProbabilityItems().clear();
+		this.probabilityItemService.deleteAll(delItems);
+		this.probabilityEventService.deleteAll(delEvents);
 		this.lootTableRepository.delete(lootTable);
 
 	}
@@ -93,9 +117,9 @@ public class LootTableService {
 	public LootTable reconstruct(final LootTable lootTable, final BindingResult binding) {
 		LootTable result;
 
-		if (lootTable.getId() == 0)
+		if (lootTable.getId() == 0) {
 			result = lootTable;
-		else {
+		} else {
 			result = this.lootTableRepository.findOne(lootTable.getId());
 			result.setName(lootTable.getName());
 			result.setFinalMode(lootTable.getFinalMode());
@@ -103,19 +127,46 @@ public class LootTableService {
 			result.setProbabilityItems(lootTable.getProbabilityItems());
 		}
 		this.validator.validate(result, binding);
+		this.lootTableRepository.flush();
+
 		return result;
 	}
 
 	public Collection<LootTable> findAllFinal() {
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		Collection<LootTable> result;
 		result = this.lootTableRepository.findAllFinal();
 		return result;
 	}
-	
-	public Page<LootTable> findAll(Pageable pageable) {
+
+	public Page<LootTable> findAll(final Pageable pageable) {
+		Actor actor;
+		actor = this.actorService.findActorByPrincipal();
+		Assert.isTrue(actor instanceof Designer);
 		Page<LootTable> result;
 		result = this.lootTableRepository.findAll(pageable);
 		return result;
+	}
+	public LootTable findLootTableByProbabilityEvent(final int probabilityEventId) {
+		LootTable result;
+
+		result = this.lootTableRepository.findLootTableByProbabilityEvent(probabilityEventId);
+
+		return result;
+	}
+
+	public LootTable findLootTableByProbabilityItem(final int probabilityItemId) {
+		LootTable result;
+
+		result = this.lootTableRepository.findLootTableByProbabilityItem(probabilityItemId);
+
+		return result;
+	}
+	public void flush() {
+		this.lootTableRepository.flush();
+
 	}
 
 }

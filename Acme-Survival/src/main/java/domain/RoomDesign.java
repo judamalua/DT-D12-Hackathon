@@ -7,14 +7,19 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import annotations.MapLength;
 import annotations.MapNotBlank;
 import annotations.MapSafeHtml;
 
 @Entity
 @Access(AccessType.PROPERTY)
+@Table(indexes = {
+	@javax.persistence.Index(columnList = "finalMode")
+})
 public abstract class RoomDesign extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
@@ -22,13 +27,13 @@ public abstract class RoomDesign extends DomainEntity {
 	// Attributes -------------------------------------------------------------
 	private Map<String, String>	name;
 	private Map<String, String>	description;
-	private Integer				maxResistance;
 	private Double				costWood;
 	private Double				costMetal;
 	private boolean				finalMode;
 	private Integer				maxCapacityCharacters;
 
 
+	@MapLength(min = 5, max = 50)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -41,6 +46,7 @@ public abstract class RoomDesign extends DomainEntity {
 		this.name = name;
 	}
 
+	@MapLength(min = 5, max = 1000)
 	@NotNull
 	@MapNotBlank
 	@MapSafeHtml
@@ -51,16 +57,6 @@ public abstract class RoomDesign extends DomainEntity {
 
 	public void setDescription(final Map<String, String> description) {
 		this.description = description;
-	}
-
-	@Min(0)
-	@NotNull
-	public Integer getMaxResistance() {
-		return this.maxResistance;
-	}
-
-	public void setMaxResistance(final Integer maxResistance) {
-		this.maxResistance = maxResistance;
 	}
 
 	@Min(0)

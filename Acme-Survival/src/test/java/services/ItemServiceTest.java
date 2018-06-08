@@ -35,7 +35,7 @@ public class ItemServiceTest extends AbstractTest {
 	public ActorService		actorService;
 
 	@Autowired
-	public RefugeService	refugeService;
+	public ShelterService	shelterService;
 
 	@Autowired
 	public ItemService		itemService;
@@ -44,7 +44,8 @@ public class ItemServiceTest extends AbstractTest {
 	//*****************************Positive Methods*************************************
 
 	/**
-	 * This method test the correct equip of a item
+	 * This test checks equip a item regarding functional requirement number 18.6: An actor who is authenticated as a player must be able to
+	 * manage the items of the shelter that includes moves them, equip them to a character and drop them.
 	 * 
 	 * @author Luis
 	 */
@@ -62,11 +63,11 @@ public class ItemServiceTest extends AbstractTest {
 		character = this.characterService.findOne(characterId);
 
 		this.itemService.UpdateEquipped(item, character.getId());
-
 	}
 
 	/**
-	 * This method test the correct discard of a item
+	 * This test checks equip a item regarding functional requirement number 18.6: An actor who is authenticated as a player must be able to
+	 * manage the items of the shelter that includes moves them, equip them to a character and drop them.
 	 * 
 	 * @author Luis
 	 */
@@ -90,7 +91,8 @@ public class ItemServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This method test the correct discard of a item
+	 * This test checks equip a item regarding functional requirement number 18.6: An actor who is authenticated as a player must be able to
+	 * manage the items of the shelter that includes moves them, equip them to a character and drop them.
 	 * 
 	 * @author Luis
 	 */
@@ -111,7 +113,8 @@ public class ItemServiceTest extends AbstractTest {
 	//*****************************Negative Methods*************************************
 
 	/**
-	 * This method test that you can´t delete a equipped item
+	 * This test checks equip a item regarding functional requirement number 18.6: An actor who is authenticated as a player must be able to
+	 * manage the items of the shelter that includes moves them, equip them to a character and drop them.
 	 * 
 	 * @author Luis
 	 */
@@ -134,7 +137,8 @@ public class ItemServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This method test that you can´t equip a item equipped
+	 * This test checks equip a item regarding functional requirement number 18.6: An actor who is authenticated as a player must be able to
+	 * manage the items of the shelter that includes moves them, equip them to a character and drop them.
 	 * 
 	 * @author Luis
 	 */
@@ -157,7 +161,8 @@ public class ItemServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This method test that you can´t discard a not equipped item
+	 * This test checks equip a item regarding functional requirement number 18.6: An actor who is authenticated as a player must be able to
+	 * manage the items of the shelter that includes moves them, equip them to a character and drop them.
 	 * 
 	 * @author Luis
 	 */

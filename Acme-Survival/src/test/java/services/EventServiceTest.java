@@ -29,14 +29,14 @@ public class EventServiceTest extends AbstractTest {
 	@Autowired
 	public ActorService			actorService;
 	@Autowired
-	public EventService		eventService;
+	public EventService			eventService;
 	@Autowired
 	public ConfigurationService	configurationService;
 
 
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 19.10: An actor who is authenticated as a manager must be able to
 	 * create events in the marketplace, every test is explained inside.
 	 * 
 	 * @author Ale
@@ -60,7 +60,7 @@ public class EventServiceTest extends AbstractTest {
 				"Designer1", "", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
 			}, {
 				// This test checks that authenticated designers cannot create a event with a blank name in Spanish
-				"Designer1", "Test name", "", "Test description", "Descripción prueba", 5, 10, 8, true,  javax.validation.ConstraintViolationException.class
+				"Designer1", "Test name", "", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
 			}, {
 				// This test checks that authenticated designers cannot create a event with a blank description in English
 				"Designer1", "Test name", "Nombre prueba", "", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
@@ -68,20 +68,14 @@ public class EventServiceTest extends AbstractTest {
 				// This test checks that authenticated designers cannot create a event with a blank description in Spanish
 				"Designer1", "Test name", "Nombre prueba", "Test description", "", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
 			}, {
-				// This test checks that authenticated designers cannot create a event with a blank picture URL
+				// This test checks that authenticated designers cannot create a event
 				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot create a event with a negative price
-				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot create a discontinued event
-				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated players cannot create a event
 				"Player1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated designers cannot create a event
-				"Designer1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
+				"Manager1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated moderator cannot create a event
 				"Moderator1", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
@@ -92,14 +86,16 @@ public class EventServiceTest extends AbstractTest {
 
 		};
 
-		for (int i = 0; i < testingData.length; i++)
-			this.templateEditEvents((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Integer) testingData[i][6],
-					(Integer) testingData[i][7], (Integer) testingData[i][8], (Boolean) testingData[i][9], (Class<?>) testingData[i][10]);
+		for (int i = 0; i < testingData.length; i++) {
+			this.templateCreateEvents((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Integer) testingData[i][5], (Integer) testingData[i][6],
+				(Integer) testingData[i][7], (Boolean) testingData[i][8], (Class<?>) testingData[i][9]);
+
+		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as any role must
-	 * be able to list the events of the marketplace
+	 * This driver checks several tests regarding functional requirement number 19.10: A user who is authenticated as Designer must
+	 * be able to list the events in final Mode
 	 * 
 	 * @author Ale
 	 */
@@ -120,22 +116,22 @@ public class EventServiceTest extends AbstractTest {
 				"Moderator1", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated admins can list events
-				"Admin1", null
+				"Admin1", IllegalArgumentException.class
 			}, {
 				// This test checks that a user that does not exist cannot list events
 				"Player500", IllegalArgumentException.class
 			}
 		};
 
-		for (int i = 0; i < testingData.length; i++){
-			System.out.println("test-" + (String) testingData[i][0]);
+		for (int i = 0; i < testingData.length; i++) {
+
 			this.templateListFinalModeEvents((String) testingData[i][0], (Class<?>) testingData[i][1]);
-		
+
 		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An authenticated manager must be able to list draft mode events
+	 * This driver checks several tests regarding functional requirement number 19.10: An authenticated manager must be able to list draft mode events
 	 * 
 	 * @author Ale
 	 */
@@ -159,16 +155,18 @@ public class EventServiceTest extends AbstractTest {
 				"Moderator1", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated admins can list draft mode events
-				"Admin1", null
+				"Admin1", IllegalArgumentException.class
 			}
 		};
 
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.templateListDraftModeEvents((String) testingData[i][0], (Class<?>) testingData[i][1]);
+
+		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 19.10: An actor who is authenticated as a manager must be able to
 	 * edit draft mode events, every test is explained inside.
 	 * 
 	 * @author Ale
@@ -180,10 +178,10 @@ public class EventServiceTest extends AbstractTest {
 
 			{
 				// This test checks that authenticated designers can edit a draft mode event
-				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, null
+				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 2, 8, true, null
 			}, {
 				// This test checks that authenticated designers cannot edit a draft mode event inserting a blank English name
-				"Designer1", "Event3", "", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
+				"Designer1", "Event3", "", "Nombre prueba", "Test description", "Descripción prueba", 1, 10, 8, true, javax.validation.ConstraintViolationException.class
 			}, {
 				// This test checks that authenticated designers cannot edit a draft mode event inserting a blank Spanish name
 				"Designer1", "Event3", "Test name", "", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
@@ -192,39 +190,32 @@ public class EventServiceTest extends AbstractTest {
 				"Designer1", "Event3", "Test name", "Nombre prueba", "", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
 			}, {
 				// This test checks that authenticated designers cannot edit a draft mode event inserting a blank Spanish description
-				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a draft mode event inserting a blank picture URL
-				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
-			}, {
-				// This test checks that authenticated designers cannot edit a draft mode event inserting a negative price
-				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, javax.validation.ConstraintViolationException.class
+				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "", 5, -10, 8, true, javax.validation.ConstraintViolationException.class
 			}, {
 				// This test checks that unauthenticated users cannot edit a draft mode event
-				null, "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
+				null, "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 3, 10, 8, true, IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated players cannot edit a draft mode event
 				"Player1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
 			}, {
-				// This test checks that authenticated designers cannot edit a draft mode event
-				"Designer1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
-			}, {
 				// This test checks that authenticated moderators cannot edit a draft mode event
-				"Moderator1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
+				"Moderator1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 0, 10, 8, true, IllegalArgumentException.class
 			}, {
-				// This test checks that authenticated admins cannot edit a draft mode event
-				"Admin1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 10, 8, true, IllegalArgumentException.class
+				// This test checks that authenticated admins can edit a draft mode event
+				"Admin1", "Event3", "Test name", "Nombre prueba", "Test description", "Descripción prueba", 5, 2, 8, true, IllegalArgumentException.class
 			}
 
 		};
 
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.templateEditEvents((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (String) testingData[i][5], (Integer) testingData[i][6],
 				(Integer) testingData[i][7], (Integer) testingData[i][8], (Boolean) testingData[i][9], (Class<?>) testingData[i][10]);
+
+		}
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 19.10: An actor who is authenticated as a manager must be able to
 	 * delete draft mode events, every test is explained inside.
 	 * 
 	 * @author Ale
@@ -232,27 +223,25 @@ public class EventServiceTest extends AbstractTest {
 	@Test
 	public void driverDeleteEvent() {
 		final Object testingData[][] = {
+
 			{
-				// This test checks that designers can delete a draft mode event
-				"Designer1", "Event3", null
-			}, {
 				// This test checks that designers cannot delete a final mode event
 				"Designer1", "Event1", IllegalArgumentException.class
 			}, {
 				// This test checks that unauthenticated users cannot delete a draft mode event
-				null, "Event3", IllegalArgumentException.class
+				null, "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated players cannot delete a draft mode event
-				"Player1", "Event3", IllegalArgumentException.class
+				"Player1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated designers cannot delete a draft mode event
-				"Designer1", "Event3", IllegalArgumentException.class
+				"Manager1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated moderators cannot delete a draft mode event
-				"Moderator1", "Event3", IllegalArgumentException.class
+				"Moderator1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated admins cannot delete a draft mode event
-				"Admin1", "Event3", IllegalArgumentException.class
+				"Admin1", "Event6", IllegalArgumentException.class
 			}, {
 				// This test checks that unauthenticated users cannot delete a final mode event
 				null, "Event1", IllegalArgumentException.class
@@ -261,20 +250,24 @@ public class EventServiceTest extends AbstractTest {
 				"Player1", "Event1", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated designers cannot delete a final mode event
-				"Designer1", "Event1", IllegalArgumentException.class
+				"Manager1", "Event1", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated moderators cannot delete a final mode event
 				"Moderator1", "Event1", IllegalArgumentException.class
 			}, {
 				// This test checks that authenticated admins cannot delete a final mode event
 				"Admin1", "Event1", IllegalArgumentException.class
+			}, {
+				// This test checks that designers can delete a draft mode event
+				"Designer1", "Event6", null
 			}
 		};
 
-		for (int i = 0; i < testingData.length; i++)
+		for (int i = 0; i < testingData.length; i++) {
 			this.templateDeleteEvents((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
-	}
 
+		}
+	}
 
 	// Ancillary methods ---------------------------------------------------------------------------------------
 
@@ -369,8 +362,8 @@ public class EventServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 
-	protected void templateEditEvents(final String username, final String eventPopulateName, final String nameEn, final String nameEs, final String descriptionEn, final String descriptionEs, final Integer health, final Integer water, final Integer food, final Boolean findCharacter,
-		final Class<?> expected) {
+	protected void templateEditEvents(final String username, final String eventPopulateName, final String nameEn, final String nameEs, final String descriptionEn, final String descriptionEs, final Integer health, final Integer water, final Integer food,
+		final Boolean findCharacter, final Class<?> expected) {
 		Class<?> caught;
 		int eventId;
 		Event event;
@@ -424,6 +417,7 @@ public class EventServiceTest extends AbstractTest {
 			eventId = super.getEntityId(eventPopulateName);
 
 			event = this.eventService.findOne(eventId);
+			Assert.isTrue(!event.getFinalMode());
 
 			this.eventService.delete(event);
 			this.eventService.flush();
@@ -437,5 +431,4 @@ public class EventServiceTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 
-	 
 }

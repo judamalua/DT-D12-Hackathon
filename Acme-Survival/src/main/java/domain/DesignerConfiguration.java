@@ -21,9 +21,7 @@ public class DesignerConfiguration extends DomainEntity {
 	private double	movingFood;
 	private double	movingWater;
 	private double	kmPerSecond;
-	private double	foodWastedPerSecond;
-	private double	waterWastedPerSecond;
-	private double	refugeRecoverTime;
+	private double	shelterRecoverTime;
 	private double	waterFactorSteal;
 	private double	foodFactorSteal;
 	private double	metalFactorSteal;
@@ -31,7 +29,7 @@ public class DesignerConfiguration extends DomainEntity {
 	private Integer	foodLostGatherFactor;
 	private Integer	waterLostGatherFactor;
 	private Integer	experiencePerMinute;
-	private Integer	refugeDefaultCapacity;
+	private Integer	shelterDefaultCapacity;
 	private Double	initialFood;
 	private Double	initialWater;
 	private Double	initialWood;
@@ -41,10 +39,11 @@ public class DesignerConfiguration extends DomainEntity {
 	private Double	maxInventoryWood;
 	private Double	maxInventoryMetal;
 	private Integer	numInitialCharacters;
-	private Double	refugeFindingProbability;
-	private Integer	refugeFindingMinuteAugmentProbability;
+	private Double	shelterFindingProbability;
+	private Integer	shelterFindingMinuteAugmentProbability;
 
 
+	@Min(0)
 	public double getMovingWood() {
 		return this.movingWood;
 	}
@@ -53,6 +52,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingWood = movingWood;
 	}
 
+	@Min(0)
 	public double getMovingMetal() {
 		return this.movingMetal;
 	}
@@ -61,6 +61,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingMetal = movingMetal;
 	}
 
+	@Min(0)
 	public double getMovingFood() {
 		return this.movingFood;
 	}
@@ -69,6 +70,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingFood = movingFood;
 	}
 
+	@Min(0)
 	public double getMovingWater() {
 		return this.movingWater;
 	}
@@ -77,6 +79,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.movingWater = movingWater;
 	}
 
+	@Min(0)
 	public double getKmPerSecond() {
 		return this.kmPerSecond;
 	}
@@ -85,30 +88,16 @@ public class DesignerConfiguration extends DomainEntity {
 		this.kmPerSecond = kmPerSecond;
 	}
 
-	public double getFoodWastedPerSecond() {
-		return this.foodWastedPerSecond;
+	@Min(0)
+	public double getShelterRecoverTime() {
+		return this.shelterRecoverTime;
 	}
 
-	public void setFoodWastedPerSecond(final double foodWastedPerSecond) {
-		this.foodWastedPerSecond = foodWastedPerSecond;
+	public void setShelterRecoverTime(final double shelterRecoverTime) {
+		this.shelterRecoverTime = shelterRecoverTime;
 	}
 
-	public double getWaterWastedPerSecond() {
-		return this.waterWastedPerSecond;
-	}
-
-	public void setWaterWastedPerSecond(final double waterWastedPerSecond) {
-		this.waterWastedPerSecond = waterWastedPerSecond;
-	}
-
-	public double getRefugeRecoverTime() {
-		return this.refugeRecoverTime;
-	}
-
-	public void setRefugeRecoverTime(final double refugeRecoverTime) {
-		this.refugeRecoverTime = refugeRecoverTime;
-	}
-
+	@Min(0)
 	public double getWaterFactorSteal() {
 		return this.waterFactorSteal;
 	}
@@ -117,6 +106,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.waterFactorSteal = waterFactorSteal;
 	}
 
+	@Min(0)
 	public double getFoodFactorSteal() {
 		return this.foodFactorSteal;
 	}
@@ -125,6 +115,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.foodFactorSteal = foodFactorSteal;
 	}
 
+	@Min(0)
 	public double getMetalFactorSteal() {
 		return this.metalFactorSteal;
 	}
@@ -133,6 +124,7 @@ public class DesignerConfiguration extends DomainEntity {
 		this.metalFactorSteal = metalFactorSteal;
 	}
 
+	@Min(0)
 	public double getWoodFactorSteal() {
 		return this.woodFactorSteal;
 	}
@@ -173,12 +165,12 @@ public class DesignerConfiguration extends DomainEntity {
 
 	@NotNull
 	@Min(1)
-	public Integer getRefugeDefaultCapacity() {
-		return this.refugeDefaultCapacity;
+	public Integer getShelterDefaultCapacity() {
+		return this.shelterDefaultCapacity;
 	}
 
-	public void setRefugeDefaultCapacity(final Integer refugeDefaultCapacity) {
-		this.refugeDefaultCapacity = refugeDefaultCapacity;
+	public void setShelterDefaultCapacity(final Integer shelterDefaultCapacity) {
+		this.shelterDefaultCapacity = shelterDefaultCapacity;
 	}
 
 	@NotNull
@@ -273,22 +265,22 @@ public class DesignerConfiguration extends DomainEntity {
 
 	@Range(min = 0L, max = 1L)
 	@NotNull
-	public Double getRefugeFindingProbability() {
-		return this.refugeFindingProbability;
+	public Double getShelterFindingProbability() {
+		return this.shelterFindingProbability;
 	}
 
-	public void setRefugeFindingProbability(final Double refugeFindingProbability) {
-		this.refugeFindingProbability = refugeFindingProbability;
+	public void setShelterFindingProbability(final Double shelterFindingProbability) {
+		this.shelterFindingProbability = shelterFindingProbability;
 	}
 
 	@Min(1)
 	@NotNull
-	public Integer getRefugeFindingMinuteAugmentProbability() {
-		return this.refugeFindingMinuteAugmentProbability;
+	public Integer getShelterFindingMinuteAugmentProbability() {
+		return this.shelterFindingMinuteAugmentProbability;
 	}
 
-	public void setRefugeFindingMinuteAugmentProbability(final Integer refugeFindingMinuteAugmentProbability) {
-		this.refugeFindingMinuteAugmentProbability = refugeFindingMinuteAugmentProbability;
+	public void setShelterFindingMinuteAugmentProbability(final Integer shelterFindingMinuteAugmentProbability) {
+		this.shelterFindingMinuteAugmentProbability = shelterFindingMinuteAugmentProbability;
 	}
 
 	// Relationships ----------------------------------------------------------

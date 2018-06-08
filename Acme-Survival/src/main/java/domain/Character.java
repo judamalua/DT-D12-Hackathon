@@ -22,7 +22,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
-@Table(name = "`character`")
+@Table(name = "`character`", indexes = {
+	@javax.persistence.Index(columnList = "currentlyInGatheringMission,gatherNotificated,roomEntrance")
+})
 public class Character extends DomainEntity {
 
 	// Constructors -----------------------------------------------------------
@@ -42,8 +44,6 @@ public class Character extends DomainEntity {
 	private boolean	gatherNotificated;
 	private Date	roomEntrance;
 
-
-	//private boolean	male;
 
 	public boolean getMale() {
 		return this.male;
@@ -172,7 +172,7 @@ public class Character extends DomainEntity {
 
 
 	// Relationships ----------------------------------------------------------
-	private Refuge	refuge;
+	private Shelter	shelter;
 	private Item	item;
 	private Room	room;
 
@@ -180,12 +180,12 @@ public class Character extends DomainEntity {
 	@Valid
 	@NotNull
 	@ManyToOne(optional = true)
-	public Refuge getRefuge() {
-		return this.refuge;
+	public Shelter getShelter() {
+		return this.shelter;
 	}
 
-	public void setRefuge(final Refuge refuge) {
-		this.refuge = refuge;
+	public void setShelter(final Shelter shelter) {
+		this.shelter = shelter;
 
 	}
 	@Valid
@@ -200,7 +200,7 @@ public class Character extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne
+	@ManyToOne(optional = true)
 	public Room getRoom() {
 		return this.room;
 	}

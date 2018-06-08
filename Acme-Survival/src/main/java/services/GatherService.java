@@ -29,7 +29,7 @@ import domain.ItemDesign;
 import domain.Location;
 import domain.Notification;
 import domain.Player;
-import domain.Refuge;
+import domain.Shelter;
 
 @Service
 @Transactional
@@ -43,7 +43,7 @@ public class GatherService {
 	// Supporting services --------------------------------------------------
 
 	@Autowired
-	private RefugeService					refugeService;
+	private ShelterService					shelterService;
 
 	@Autowired
 	private CharacterService				characterService;
@@ -80,16 +80,16 @@ public class GatherService {
 		Date startMoment, endMoment;
 		Long time;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 		Location location, locationCenter;
 
 		result = new Gather();
 		location = this.locationService.findOne(locationId);
 		locationCenter = this.locationService.getLocationCenter(location);
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 		startMoment = new Date(System.currentTimeMillis() - 10);
-		time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
+		time = this.moveService.timeBetweenLocations(shelter.getLocation(), locationCenter);
 		endMoment = new Date(System.currentTimeMillis() + time);
 
 		result.setStartDate(startMoment);
@@ -137,8 +137,8 @@ public class GatherService {
 
 		// We check that the character that is trying to be sent into a mission is not already doing one
 		Assert.isTrue(!character.getCurrentlyInGatheringMission());
-		// We check that the player trying to make the mission is the same as the owner of the refuge of the character
-		Assert.isTrue(gather.getPlayer().equals(character.getRefuge().getPlayer()));
+		// We check that the player trying to make the mission is the same as the owner of the shelter of the character
+		Assert.isTrue(gather.getPlayer().equals(character.getShelter().getPlayer()));
 
 		// We set to true this property, indicating that the character is now on a gathering mission
 		character.setCurrentlyInGatheringMission(true);
@@ -176,11 +176,11 @@ public class GatherService {
 	public Collection<Character> findCharactersElegible() {
 		Collection<Character> result, charactersInMission;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
-		result = this.characterService.findCharactersByRefuge(refuge.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
+		result = this.characterService.findCharactersByShelter(shelter.getId());
 		charactersInMission = this.findCharacterInGatheringMission();
 
 		result.removeAll(charactersInMission);
@@ -188,10 +188,10 @@ public class GatherService {
 		return result;
 	}
 
-	public Collection<Character> findCharactersWithoutGatheringMission(final int refugeId) {
+	public Collection<Character> findCharactersWithoutGatheringMission(final int shelterId) {
 		Collection<Character> result;
 
-		result = this.gatherRepository.findCharactersWithoutGatheringMission(refugeId);
+		result = this.gatherRepository.findCharactersWithoutGatheringMission(shelterId);
 
 		return result;
 	}
@@ -204,13 +204,13 @@ public class GatherService {
 	 */
 	public Collection<Character> findCharacterInGatheringMission() {
 		Collection<Character> result;
-		Refuge refuge;
+		Shelter shelter;
 		Player player;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
-		result = this.gatherRepository.findCharactersInGatheringMission(refuge.getId());
+		result = this.gatherRepository.findCharactersInGatheringMission(shelter.getId());
 
 		return result;
 
@@ -267,7 +267,7 @@ public class GatherService {
 		Date startMoment, endMoment;
 		Long time;
 		Player player;
-		Refuge refuge;
+		Shelter shelter;
 		Location locationCenter;
 
 		if (gather.getId() == 0) {
@@ -275,9 +275,9 @@ public class GatherService {
 			locationCenter = this.locationService.getLocationCenter(gather.getLocation());
 
 			player = (Player) this.actorService.findActorByPrincipal();
-			refuge = this.refugeService.findRefugeByPlayer(player.getId());
+			shelter = this.shelterService.findShelterByPlayer(player.getId());
 			startMoment = new Date(System.currentTimeMillis() - 10);
-			time = this.moveService.timeBetweenLocations(refuge.getLocation(), locationCenter);
+			time = this.moveService.timeBetweenLocations(shelter.getLocation(), locationCenter);
 			endMoment = new Date(System.currentTimeMillis() + time);
 
 			result.setStartDate(startMoment);
@@ -312,11 +312,13 @@ public class GatherService {
 		Player player;
 		Gather gatherMission;
 		Collection<Character> currentlyInGatheringMissionCharacters;
-		Refuge refuge, foundRefuge;
+		Shelter shelter, foundShelter;
 		List<Event> eventsDuringMission;
 		List<ItemDesign> itemsDuringMission = new ArrayList<ItemDesign>();
 		Long missionMillis;
 		Integer experience;
+		Random randomItemIndex;
+		Integer itemIndex;
 		Integer missionMinutes;
 		Notification notification;
 		DesignerConfiguration designerConfiguration;
@@ -332,11 +334,11 @@ public class GatherService {
 		Character newCharacter;
 
 		player = (Player) this.actorService.findActorByPrincipal();
-		refuge = this.refugeService.findRefugeByPlayer(player.getId());
+		shelter = this.shelterService.findShelterByPlayer(player.getId());
 
 		Assert.notNull(player);
 
-		currentlyInGatheringMissionCharacters = this.characterService.findCharactersNotNotificatedOfGather(refuge.getId());
+		currentlyInGatheringMissionCharacters = this.characterService.findCharactersNotNotificatedOfGather(shelter.getId());
 
 		for (final Character character : currentlyInGatheringMissionCharacters) {
 			// We check if the current character has a gathering mission that has already finished
@@ -346,7 +348,7 @@ public class GatherService {
 				eventsDuringMission = gatherMission.getLocation().getLootTable().getResultEvents(character.getLuck());
 				itemsDuringMission = gatherMission.getLocation().getLootTable().getResultItems(character.getLuck(), character.getCapacity());
 
-				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your refuge!");
+				bodyNotification.put("en", "Your character \"" + character.getFullName() + "\" has returned from a gathering mission in \"" + gatherMission.getLocation().getName().get("en") + "\", you may have new objects in your shelter!");
 				bodyNotification.put("es", "Tu personaje \"" + character.getFullName() + "\" ha vuelto de una misión de recolección en \"" + gatherMission.getLocation().getName().get("es") + "\", ¡puede que tengas nuevos objetos en tu refugio!");
 
 				character.setGatherNotificated(true);
@@ -383,13 +385,20 @@ public class GatherService {
 						if (character.getCurrentFood() > 100)
 							character.setCurrentFood(100);
 
-						if (event.getFindCharacter() && this.refugeService.getCurrentCharacterCapacity(refuge) > 0) {
-							newCharacter = this.characterService.generateCharacter(refuge.getId());
+						if (event.getFindCharacter() && this.shelterService.getCurrentCharacterCapacity(shelter) > 0) {
+							newCharacter = this.characterService.generateCharacter(shelter.getId());
 							this.characterService.save(newCharacter);
 						}
 
-						if (event.getItemDesign() != null)
+						if (event.getItemDesign() != null) {
+							if (itemsDuringMission.size() == character.getCapacity()) {
+								randomItemIndex = new Random();
+								itemIndex = randomItemIndex.nextInt(itemsDuringMission.size());
+
+								itemsDuringMission.remove(itemsDuringMission.get(itemIndex));
+							}
 							itemsDuringMission.add(event.getItemDesign());
+						}
 
 					}
 
@@ -420,11 +429,11 @@ public class GatherService {
 					this.characterService.save(character);
 					notification = this.notificationService.create();
 
-					foundRefuge = this.findRefugeInGatheringMission(gatherMission.getLocation(), refuge, missionMinutes);
-					if (foundRefuge != null) {
-						player.getRefuges().add(foundRefuge);
+					foundShelter = this.findShelterInGatheringMission(gatherMission.getLocation(), shelter, missionMinutes);
+					if (foundShelter != null) {
+						player.getShelters().add(foundShelter);
 						this.playerService.save(player);
-						notification.setFoundRefuge(true);
+						notification.setFoundShelter(true);
 					}
 
 					notification.setTitle(titleNotification);
@@ -442,32 +451,35 @@ public class GatherService {
 			}
 		}
 	}
-	public Refuge findRefugeInGatheringMission(final Location location, final Refuge refuge, final Integer missionMinutes) {
-		Refuge result = null;
-		List<Refuge> refugesInLocation;
+	public Shelter findShelterInGatheringMission(final Location location, final Shelter shelter, final Integer missionMinutes) {
+		Shelter result = null;
+		List<Shelter> sheltersInLocation;
 		Double probability;
 		Random random;
 		Double randomDouble;
-		Integer randomRefugeIndex, augmentProbability, augmentProbabilityDesigner;
+		Integer randomShelterIndex, augmentProbability, augmentProbabilityDesigner;
 
-		augmentProbabilityDesigner = this.designerConfigurationService.findDesignerConfiguration().getRefugeFindingMinuteAugmentProbability();
+		augmentProbabilityDesigner = this.designerConfigurationService.findDesignerConfiguration().getShelterFindingMinuteAugmentProbability();
 
 		augmentProbability = missionMinutes / augmentProbabilityDesigner;
+
+		if (augmentProbability == 0 && missionMinutes != 0)
+			augmentProbability = 1;
 
 		random = new Random();
 
 		randomDouble = random.nextDouble() / 0.9;
 
-		refugesInLocation = (List<Refuge>) this.refugeService.findAllRefugesInLocationExceptPlayerRefuge(location.getId(), refuge.getId());
+		sheltersInLocation = (List<Shelter>) this.shelterService.findAllSheltersInLocationExceptPlayerShelter(location.getId(), shelter.getId());
 
-		probability = this.designerConfigurationService.findDesignerConfiguration().getRefugeFindingProbability();
+		probability = this.designerConfigurationService.findDesignerConfiguration().getShelterFindingProbability();
 
-		if (((probability * augmentProbability) > randomDouble) && refugesInLocation.size() != 0) {
-			if (refugesInLocation.size() == 1)
-				randomRefugeIndex = 0;
+		if (((probability * augmentProbability) > randomDouble) && sheltersInLocation.size() != 0) {
+			if (sheltersInLocation.size() == 1)
+				randomShelterIndex = 0;
 			else
-				randomRefugeIndex = (random.nextInt(refugesInLocation.size())) / (refugesInLocation.size() - 1);
-			result = refugesInLocation.get(randomRefugeIndex);
+				randomShelterIndex = (random.nextInt(sheltersInLocation.size())) / (sheltersInLocation.size() - 1);
+			result = sheltersInLocation.get(randomShelterIndex);
 		}
 
 		return result;

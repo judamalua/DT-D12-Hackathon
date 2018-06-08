@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import repositories.RefugeRepository;
+import repositories.ShelterRepository;
 import domain.Actor;
 import domain.Attack;
 import domain.Barrack;
@@ -27,19 +27,19 @@ import domain.Item;
 import domain.Location;
 import domain.Move;
 import domain.Player;
-import domain.Refuge;
 import domain.ResourceRoom;
 import domain.Room;
+import domain.Shelter;
 import domain.Warehouse;
 
 @Service
 @Transactional
-public class RefugeService {
+public class ShelterService {
 
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private RefugeRepository				refugeRepository;
+	private ShelterRepository				shelterRepository;
 
 	// Supporting services --------------------------------------------------
 
@@ -79,44 +79,44 @@ public class RefugeService {
 
 	// Simple CRUD methods --------------------------------------------------
 
-	public Refuge create() {
-		Refuge result;
+	public Shelter create() {
+		Shelter result;
 
-		result = new Refuge();
+		result = new Shelter();
 
 		return result;
 	}
 
-	public Collection<Refuge> findAll() {
+	public Collection<Shelter> findAll() {
 
-		Collection<Refuge> result;
+		Collection<Shelter> result;
 
-		Assert.notNull(this.refugeRepository);
-		result = this.refugeRepository.findAll();
+		Assert.notNull(this.shelterRepository);
+		result = this.shelterRepository.findAll();
 		Assert.notNull(result);
 
 		return result;
 
 	}
 
-	public Page<Refuge> findAll(final Pageable pageable) {
+	public Page<Shelter> findAll(final Pageable pageable) {
 
-		Page<Refuge> result;
+		Page<Shelter> result;
 
-		Assert.notNull(this.refugeRepository);
-		result = this.refugeRepository.findAll(pageable);
+		Assert.notNull(this.shelterRepository);
+		result = this.shelterRepository.findAll(pageable);
 		Assert.notNull(result);
 
 		return result;
 
 	}
 
-	public Refuge findOne(final int refugeId) {
+	public Shelter findOne(final int shelterId) {
 
-		Refuge result;
-		Assert.isTrue(refugeId != 0);
+		Shelter result;
+		Assert.isTrue(shelterId != 0);
 
-		result = this.refugeRepository.findOne(refugeId);
+		result = this.shelterRepository.findOne(shelterId);
 
 		if (result != null) {
 			this.updateInventory(result);
@@ -127,22 +127,22 @@ public class RefugeService {
 
 	}
 
-	public Refuge saveToUpdateLastTimeAttacked(final Refuge refuge) {
-		Assert.notNull(refuge.getLastAttackReceived());
+	public Shelter saveToUpdateLastTimeAttacked(final Shelter shelter) {
+		Assert.notNull(shelter.getLastAttackReceived());
 
-		Refuge result;
+		Shelter result;
 
-		result = this.refugeRepository.save(refuge);
+		result = this.shelterRepository.save(shelter);
 
 		return result;
 	}
 
-	public Refuge save(final Refuge refuge) {
+	public Shelter save(final Shelter shelter) {
 
-		Assert.isTrue(refuge != null);
+		Assert.isTrue(shelter != null);
 
-		Refuge result;
-		Collection<Player> playersKnowsRefuge;
+		Shelter result;
+		Collection<Player> playersKnowsShelter;
 		Attack attackWhereAttacked;
 		Collection<Attack> attacksWhereDefend;
 		Collection<Item> items;
@@ -153,22 +153,22 @@ public class RefugeService {
 		final DesignerConfiguration designerConfiguration;
 
 		actor = this.actorService.findActorByPrincipal();
-		Assert.isTrue(actor.equals(refuge.getPlayer()));
+		Assert.isTrue(actor.equals(shelter.getPlayer()));
 
-		result = this.refugeRepository.save(refuge);
+		result = this.shelterRepository.save(shelter);
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
-		if (refuge.getId() != 0) {
-			playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
-			attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
-			attacksWhereDefend = this.attackService.findAttacksByDefendant(refuge.getId());
-			characters = this.characterService.findCharactersByRefuge(refuge.getId());
-			items = this.itemService.findItemsByRefuge(refuge.getId());
-			rooms = this.roomService.findRoomsByRefuge(refuge.getId());
-			inventory = this.inventoryService.findInventoryByRefuge(result.getId());
+		if (shelter.getId() != 0) {
+			playersKnowsShelter = this.playerService.findPlayersKnowsShelter(shelter.getId());
+			attackWhereAttacked = this.attackService.findAttacksByAttacker(shelter.getId());
+			attacksWhereDefend = this.attackService.findAttacksByDefendant(shelter.getId());
+			characters = this.characterService.findCharactersByShelter(shelter.getId());
+			items = this.itemService.findItemsByShelter(shelter.getId());
+			rooms = this.roomService.findRoomsByShelter(shelter.getId());
+			inventory = this.inventoryService.findInventoryByShelter(result.getId());
 
-			for (final Player player : playersKnowsRefuge) {
-				player.getRefuges().remove(refuge);
-				player.getRefuges().add(result);
+			for (final Player player : playersKnowsShelter) {
+				player.getShelters().remove(shelter);
+				player.getShelters().add(result);
 				this.playerService.save(player);
 			}
 
@@ -190,25 +190,25 @@ public class RefugeService {
 			}
 
 			for (final domain.Character character : characters) {
-				character.setRefuge(result);
+				character.setShelter(result);
 				this.characterService.save(character);
 			}
 			for (final Item item : items) {
-				item.setRefuge(result);
+				item.setShelter(result);
 				this.itemService.save(item);
 			}
 
 			//			for (final Move move : moves) {
-			//				move.setRefuge(result);
+			//				move.setShelter(result);
 			//				this.moveService.save(move);
 			//			}
 
 			for (final Room room : rooms) {
-				room.setRefuge(result);
+				room.setShelter(result);
 				this.roomService.save(room);
 			}
 
-			inventory.setRefuge(result);
+			inventory.setShelter(result);
 			this.inventoryService.save(inventory);
 
 		} else {
@@ -226,7 +226,7 @@ public class RefugeService {
 			inventory.setWood(designerConfiguration.getInitialWood());
 			inventory.setMetal(designerConfiguration.getInitialMetal());
 
-			inventory.setRefuge(result);
+			inventory.setShelter(result);
 			this.inventoryService.save(inventory);
 
 			characters = this.generateCharacters(result, designerConfiguration.getNumInitialCharacters());
@@ -235,13 +235,13 @@ public class RefugeService {
 		return result;
 
 	}
-	public void delete(final Refuge refuge) {
+	public void delete(final Shelter shelter) {
 
-		Assert.isTrue(refuge != null);
-		Assert.isTrue(refuge.getId() != 0);
-		Assert.isTrue(this.refugeRepository.exists(refuge.getId()));
+		Assert.isTrue(shelter != null);
+		Assert.isTrue(shelter.getId() != 0);
+		Assert.isTrue(this.shelterRepository.exists(shelter.getId()));
 
-		Collection<Player> playersKnowsRefuge;
+		Collection<Player> playersKnowsShelter;
 		Attack attackWhereAttacked;
 		Collection<Attack> attacks;
 		Collection<Item> items;
@@ -252,20 +252,20 @@ public class RefugeService {
 		final Inventory inventory;
 
 		actor = this.actorService.findActorByPrincipal();
-		Assert.isTrue(actor.equals(refuge.getPlayer()));
+		Assert.isTrue(actor.equals(shelter.getPlayer()));
 
-		playersKnowsRefuge = this.playerService.findPlayersKnowsRefuge(refuge.getId());
-		attackWhereAttacked = this.attackService.findAttacksByAttacker(refuge.getId());
-		attacks = this.attackService.findAttacksByDefendant(refuge.getId());
+		playersKnowsShelter = this.playerService.findPlayersKnowsShelter(shelter.getId());
+		attackWhereAttacked = this.attackService.findAttacksByAttacker(shelter.getId());
+		attacks = this.attackService.findAttacksByDefendant(shelter.getId());
 		attacks.add(attackWhereAttacked);
-		characters = this.characterService.findCharactersByRefuge(refuge.getId());
-		items = this.itemService.findItemsByRefuge(refuge.getId());
-		moves = this.moveService.findMovesByRefuge(refuge.getId());
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
-		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
+		characters = this.characterService.findCharactersByShelter(shelter.getId());
+		items = this.itemService.findItemsByShelter(shelter.getId());
+		moves = this.moveService.findMovesByShelter(shelter.getId());
+		inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
+		rooms = this.roomService.findRoomsByShelter(shelter.getId());
 
-		for (final Player player : playersKnowsRefuge) {
-			player.getRefuges().remove(refuge);
+		for (final Player player : playersKnowsShelter) {
+			player.getShelters().remove(shelter);
 			this.playerService.save(player);
 		}
 
@@ -286,21 +286,21 @@ public class RefugeService {
 
 		this.inventoryService.delete(inventory);
 
-		this.refugeRepository.delete(refuge);
+		this.shelterRepository.delete(shelter);
 
 	}
-	public Refuge reconstruct(final Refuge refuge, final BindingResult binding) {
-		Refuge result;
+	public Shelter reconstruct(final Shelter shelter, final BindingResult binding) {
+		Shelter result;
 		Actor actor;
 		Location location;
 		String gpsCoordinates;
 
-		if (refuge.getId() == 0) {
+		if (shelter.getId() == 0) {
 
 			actor = this.actorService.findActorByPrincipal();
 			location = this.getRandomLocation();
 			gpsCoordinates = this.generateRandomCoordinates(location);
-			result = refuge;
+			result = shelter;
 
 			result.setCode(this.generateCode());
 			result.setPlayer((Player) actor);
@@ -309,13 +309,13 @@ public class RefugeService {
 			result.setGpsCoordinates(gpsCoordinates);
 
 		} else {
-			result = this.findOne(refuge.getId());
+			result = this.findOne(shelter.getId());
 
-			result.setName(refuge.getName());
+			result.setName(shelter.getName());
 
 		}
 		this.validator.validate(result, binding);
-		this.refugeRepository.flush();
+		this.shelterRepository.flush();
 
 		return result;
 	}
@@ -333,10 +333,10 @@ public class RefugeService {
 			result += alphabet.charAt(random.nextInt(alphabet.length()));
 		return result;
 	}
-	public Refuge findRefugeByPlayer(final int playerId) {
-		Refuge result;
+	public Shelter findShelterByPlayer(final int playerId) {
+		Shelter result;
 
-		result = this.refugeRepository.findRefugeByPlayer(playerId);
+		result = this.shelterRepository.findShelterByPlayer(playerId);
 		if (result != null)
 			this.updateLocation(result);
 
@@ -379,7 +379,7 @@ public class RefugeService {
 		return result;
 	}
 
-	private Location getRandomLocation() {
+	public Location getRandomLocation() {
 		Location result;
 		Integer size;
 		Integer randomNum;
@@ -395,7 +395,7 @@ public class RefugeService {
 		return result;
 	}
 
-	private Collection<domain.Character> generateCharacters(final Refuge refuge, final Integer numCharacters) {
+	private Collection<domain.Character> generateCharacters(final Shelter shelter, final Integer numCharacters) {
 		Collection<domain.Character> result;
 		domain.Character character;
 
@@ -403,7 +403,7 @@ public class RefugeService {
 
 		for (int i = 0; i < numCharacters; i++) {//Poner número en configuración
 
-			character = this.characterService.save(this.characterService.generateCharacter(refuge.getId()));
+			character = this.characterService.save(this.characterService.generateCharacter(shelter.getId()));
 			result.add(character);
 		}
 
@@ -411,17 +411,17 @@ public class RefugeService {
 	}
 
 	/**
-	 * That methods get total capacity of items of a refuge
+	 * That methods get total capacity of items of a shelter
 	 * 
 	 * @author Luis
 	 */
-	public int getCurrentCapacity(final Refuge refuge) {
+	public int getCurrentCapacity(final Shelter shelter) {
 		Collection<Room> rooms;
 		Collection<Item> items;
 		int capacity = 0;
 
-		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
-		items = this.itemService.findItemsByRefuge(refuge.getId());
+		rooms = this.roomService.findRoomsByShelter(shelter.getId());
+		items = this.itemService.findItemsByShelter(shelter.getId());
 
 		for (final Room r : rooms)
 			if (r.getRoomDesign() instanceof Warehouse) {
@@ -434,14 +434,14 @@ public class RefugeService {
 
 	}
 
-	public Integer getCurrentCharacterCapacity(final Refuge refuge) {
+	public Integer getCurrentCharacterCapacity(final Shelter shelter) {
 		Collection<Room> rooms;
 		Collection<domain.Character> characters;
 		int capacity = 0;
 		DesignerConfiguration designerConfiguration;
 
-		rooms = this.roomService.findRoomsByRefuge(refuge.getId());
-		characters = this.characterService.findCharactersByRefuge(refuge.getId());
+		rooms = this.roomService.findRoomsByShelter(shelter.getId());
+		characters = this.characterService.findCharactersByShelter(shelter.getId());
 		designerConfiguration = this.designerConfigurationService.findDesignerConfiguration();
 
 		for (final Room r : rooms)
@@ -449,7 +449,7 @@ public class RefugeService {
 				final Barrack barrack = (Barrack) r.getRoomDesign();
 				capacity += barrack.getCharacterCapacity();
 			}
-		capacity += designerConfiguration.getRefugeDefaultCapacity();
+		capacity += designerConfiguration.getShelterDefaultCapacity();
 		capacity -= characters.size();
 
 		return capacity;
@@ -467,7 +467,7 @@ public class RefugeService {
 		return result;
 	}
 
-	public Inventory updateInventory(final Refuge refuge) {
+	public Inventory updateInventory(final Shelter shelter) {
 
 		Inventory inventory, result;
 		Collection<Room> resourceRooms;
@@ -475,73 +475,79 @@ public class RefugeService {
 		long difference;
 		Date currentDate;
 
-		inventory = this.inventoryService.findInventoryByRefuge(refuge.getId());
+		inventory = this.inventoryService.findInventoryByShelter(shelter.getId());
 
-		resourceRooms = this.roomService.findResourceRoomsByRefuge(refuge.getId());
+		resourceRooms = this.roomService.findResourceRoomsByShelter(shelter.getId());
 
 		result = inventory;
 
-		if (resourceRooms.size() > 0 && refuge.getLastView() != null) {
+		if (resourceRooms.size() > 0 && shelter.getLastView() != null) {
 
 			currentDate = new Date();
 
-			difference = currentDate.getTime() - refuge.getLastView().getTime();
+			difference = currentDate.getTime() - shelter.getLastView().getTime();
 
 			minutes = (int) TimeUnit.MILLISECONDS.toMinutes(difference);
+			if (minutes > 0) {
+				for (final Room room : resourceRooms) {
+					if ((((ResourceRoom) room.getRoomDesign()).getFood() + inventory.getFood()) < inventory.getFoodCapacity())
+						inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * minutes);
+					else
+						inventory.setFood(inventory.getFoodCapacity());
 
-			for (final Room room : resourceRooms) {
-				if ((((ResourceRoom) room.getRoomDesign()).getFood() + inventory.getFood()) < inventory.getFoodCapacity())
-					inventory.setFood(inventory.getFood() + ((ResourceRoom) room.getRoomDesign()).getFood() * minutes);
-				else
-					inventory.setFood(inventory.getFoodCapacity());
+					if ((((ResourceRoom) room.getRoomDesign()).getWater() + inventory.getWater()) < inventory.getWaterCapacity())
+						inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * minutes);
+					else
+						inventory.setWater(inventory.getWaterCapacity());
+					if ((((ResourceRoom) room.getRoomDesign()).getWood() + inventory.getWood()) < inventory.getWoodCapacity())
+						inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * minutes);
+					else
+						inventory.setWood(inventory.getWoodCapacity());
 
-				if ((((ResourceRoom) room.getRoomDesign()).getWater() + inventory.getWater()) < inventory.getWaterCapacity())
-					inventory.setWater(inventory.getWater() + ((ResourceRoom) room.getRoomDesign()).getWater() * minutes);
-				else
-					inventory.setWater(inventory.getWaterCapacity());
-				if ((((ResourceRoom) room.getRoomDesign()).getWood() + inventory.getWood()) < inventory.getWoodCapacity())
-					inventory.setWood(inventory.getWood() + ((ResourceRoom) room.getRoomDesign()).getWood() * minutes);
-				else
-					inventory.setWood(inventory.getWoodCapacity());
+					if ((((ResourceRoom) room.getRoomDesign()).getMetal() + inventory.getMetal()) < inventory.getMetalCapacity())
+						inventory.setMetal(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * minutes);
+					else
+						inventory.setMetal(inventory.getMetalCapacity());
+				}
 
-				if ((((ResourceRoom) room.getRoomDesign()).getMetal() + inventory.getMetal()) < inventory.getMetalCapacity())
-					inventory.setMetal(inventory.getMetal() + ((ResourceRoom) room.getRoomDesign()).getMetal() * minutes);
-				else
-					inventory.setMetal(inventory.getMetalCapacity());
+				result = this.inventoryService.save(inventory);
+
+				shelter.setLastView(new Date(System.currentTimeMillis() - 1));
 			}
-			result = this.inventoryService.save(inventory);
-			if (minutes > 0)
-				refuge.setLastView(new Date(System.currentTimeMillis() - 1));
 		} else
-			refuge.setLastView(new Date(System.currentTimeMillis() - 1));
+			shelter.setLastView(new Date(System.currentTimeMillis() - 1));
 
 		return result;
 	}
-	private Refuge updateLocation(final Refuge refuge) {
+	private Shelter updateLocation(final Shelter shelter) {
 
 		Move move;
-		Refuge result;
-		result = refuge;
+		Shelter result;
+		result = shelter;
 		Date currentDate;
 
-		move = this.moveService.findMostRecentMoveByRefuge(refuge.getId());
+		move = this.moveService.findMostRecentMoveByShelter(shelter.getId());
 		currentDate = new Date();
 
-		if (move != null && move.getEndDate().before(currentDate) && !move.getLocation().equals(refuge.getLocation())) {
-			refuge.setLocation(move.getLocation());
-			refuge.setGpsCoordinates(this.generateRandomCoordinates(move.getLocation()));
+		if (move != null && move.getEndDate().before(currentDate) && !move.getLocation().equals(shelter.getLocation())) {
+			shelter.setLocation(move.getLocation());
+			shelter.setGpsCoordinates(this.generateRandomCoordinates(move.getLocation()));
 
-			result = this.save(refuge);
+			result = this.save(shelter);
 		}
 
 		return result;
 	}
 
-	public Collection<Refuge> findAllRefugesInLocationExceptPlayerRefuge(final int locationId, final int refugeId) {
-		Collection<Refuge> result;
+	public Collection<Shelter> findAllSheltersInLocationExceptPlayerShelter(final int locationId, final int shelterId) {
+		Collection<Shelter> result;
 
-		result = this.refugeRepository.findAllRefugesInLocationExceptPlayerRefuge(locationId, refugeId);
+		result = this.shelterRepository.findAllSheltersInLocationExceptPlayerShelter(locationId, shelterId);
 
 		return result;
+	}
+
+	public void flush() {
+		this.shelterRepository.flush();
 	}
 }

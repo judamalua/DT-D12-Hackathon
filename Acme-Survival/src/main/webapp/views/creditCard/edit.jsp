@@ -28,8 +28,6 @@
 <spring:message code="request.creditcard.info" var="creditCardInfo" />
 <spring:message code="request.select.error" var="selectError" />
 
-		<h2>Subscribe to ${newspaper.title}</h2>
-
 <p>
 	<em><spring:message code="form.required.params" /></em>
 </p>

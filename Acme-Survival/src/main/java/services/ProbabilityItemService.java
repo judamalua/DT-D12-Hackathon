@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Collection;
@@ -9,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.ProbabilityItemRepository;
-import domain.Event;
-import domain.ProbabilityEvent;
+import domain.LootTable;
 import domain.ProbabilityItem;
 
 @Service
@@ -21,6 +21,8 @@ public class ProbabilityItemService {
 
 	@Autowired
 	private ProbabilityItemRepository	probabilityItemRepository;
+	@Autowired
+	private LootTableService			lootTableService;
 
 
 	// Supporting services --------------------------------------------------
@@ -68,9 +70,9 @@ public class ProbabilityItemService {
 		return result;
 
 	}
-	
+
 	public Collection<ProbabilityItem> saveAll(final Collection<ProbabilityItem> probabilityItems) {
-		
+
 		assert probabilityItems != null;
 
 		Collection<ProbabilityItem> result;
@@ -86,11 +88,17 @@ public class ProbabilityItemService {
 		assert probabilityItem.getId() != 0;
 
 		Assert.isTrue(this.probabilityItemRepository.exists(probabilityItem.getId()));
+		LootTable lootTable;
 
+		lootTable = this.lootTableService.findLootTableByProbabilityItem(probabilityItem.getId());
+		if (lootTable != null) {
+			lootTable.getProbabilityItems().remove(probabilityItem);
+			this.lootTableService.save(lootTable);
+		}
 		this.probabilityItemRepository.delete(probabilityItem);
 
 	}
-	
+
 	public void deleteAll(final Collection<ProbabilityItem> probabilityItems) {
 
 		assert probabilityItems != null;
@@ -98,10 +106,9 @@ public class ProbabilityItemService {
 		this.probabilityItemRepository.delete(probabilityItems);
 
 	}
-	
+
 	public void flush() {
 		this.probabilityItemRepository.flush();
 
 	}
 }
-

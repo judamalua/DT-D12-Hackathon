@@ -36,7 +36,7 @@ public class ProductServiceTest extends AbstractTest {
 
 	//******************************************Positive Methods*******************************************************************
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 22.2: An actor who is authenticated as a manager must be able to
 	 * create products in the marketplace, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -99,7 +99,7 @@ public class ProductServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: A user who is authenticated as any role must
+	 * This driver checks several tests regarding functional requirement number 17.3: A user who is authenticated as any role must
 	 * be able to list the products of the marketplace
 	 * 
 	 * @author Juanmi
@@ -136,7 +136,7 @@ public class ProductServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An authenticated manager must be able to list draft mode products
+	 * This driver checks several tests regarding functional requirement number 22.3: An authenticated manager must be able to list draft mode products
 	 * 
 	 * @author Juanmi
 	 */
@@ -169,7 +169,7 @@ public class ProductServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 22.3: An actor who is authenticated as a manager must be able to
 	 * edit draft mode products, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -226,7 +226,7 @@ public class ProductServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 22.3: An actor who is authenticated as a manager must be able to
 	 * delete draft mode products, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -278,7 +278,7 @@ public class ProductServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 22.4: An actor who is authenticated as a manager must be able to
 	 * set final mode products as discontinued, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -315,7 +315,7 @@ public class ProductServiceTest extends AbstractTest {
 	}
 
 	/**
-	 * This driver checks several tests regarding functional requirement number TODO: X.X: An actor who is authenticated as a manager must be able to
+	 * This driver checks several tests regarding functional requirement number 22.2: An actor who is authenticated as a manager must be able to
 	 * set draft mode products as final mode, every test is explained inside.
 	 * 
 	 * @author Juanmi
@@ -523,7 +523,10 @@ public class ProductServiceTest extends AbstractTest {
 
 			product = this.productService.findOne(productId);
 
-			this.productService.discontinueProduct(product);
+			if (product.getDiscontinued())
+				this.productService.productInStock(product);
+			else if (!product.getDiscontinued())
+				this.productService.discontinueProduct(product);
 			this.productService.flush();
 
 			super.unauthenticate();

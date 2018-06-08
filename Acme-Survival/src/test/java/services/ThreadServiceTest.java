@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import utilities.AbstractTest;
 import domain.Forum;
 import domain.Player;
+import domain.Thread;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -33,7 +34,10 @@ public class ThreadServiceTest extends AbstractTest {
 
 
 	/**
-	 * This test checks that the Player can Attack a Refuge that he already knows.
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
 	 */
 	@Test
 	public void testSaveThreadPositive() {
@@ -42,7 +46,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -59,6 +63,12 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveThreadNotOwnerNegative() {
 		domain.Thread thread;
@@ -66,7 +76,7 @@ public class ThreadServiceTest extends AbstractTest {
 		Player player;
 		int forumId;
 
-		super.authenticate("player2"); //The player knows the Refuge
+		super.authenticate("Player2");
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -77,12 +87,19 @@ public class ThreadServiceTest extends AbstractTest {
 		thread.setTags(new HashSet<String>());
 		thread.setForum(forum);
 		thread.setActor(player);
-
+		super.unauthenticate();
+		super.authenticate("Player1");
 		this.threadService.save(thread);
 
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testSaveThreadNotAuthenticatedNegative() {
 		domain.Thread thread;
@@ -104,21 +121,27 @@ public class ThreadServiceTest extends AbstractTest {
 
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test
 	public void testDeleteThreadPositive() {
-		domain.Thread thread, savedThread;
+		Thread thread, savedThread;
 		Forum forum;
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
 		thread = this.threadService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
+		thread.setName("Test name");
 		thread.setTags(new HashSet<String>());
 		thread.setForum(forum);
 		thread.setActor(player);
@@ -130,14 +153,20 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteThreadNotLoggedNegative() {
-		domain.Thread thread, savedThread;
+		Thread thread, savedThread;
 		Forum forum;
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
@@ -153,24 +182,29 @@ public class ThreadServiceTest extends AbstractTest {
 		super.unauthenticate();
 
 		this.threadService.delete(savedThread);
-
 	}
 
+	/**
+	 * This test checks create a new forum regarding functional requirement number 18.3: An actor who is authenticated as a player must be able to
+	 * open and delete threads, write messages in the forum.
+	 * 
+	 * @author Manuel
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteThreadNotOwnerNegative() {
-		domain.Thread thread, savedThread;
+		Thread thread, savedThread;
 		Forum forum;
 		Player player;
 		int forumId;
 
-		super.authenticate("player1"); //The player knows the Refuge
+		super.authenticate("player1"); //The player knows the Shelter
 
 		forumId = super.getEntityId("Forum1");
 		forum = this.forumService.findOne(forumId);
 		thread = this.threadService.create();
 		player = (Player) this.actorService.findActorByPrincipal();
 
-		thread.setName("Test");
+		thread.setName("Test name");
 		thread.setTags(new HashSet<String>());
 		thread.setForum(forum);
 		thread.setActor(player);
@@ -183,7 +217,6 @@ public class ThreadServiceTest extends AbstractTest {
 		this.threadService.delete(savedThread);
 
 		super.unauthenticate();
-
 	}
 
 }
