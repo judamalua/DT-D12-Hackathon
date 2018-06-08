@@ -12,7 +12,7 @@ import domain.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-	@Query("select p from Product p where p.finalMode = true")
+	@Query("select distinct p from Product p where p.finalMode = true and (p.discontinued = false or p.discontinued = true)")
 	Page<Product> getFinalModeProducts(Pageable page);
 
 	@Query("select p from Product p where p.finalMode = false")

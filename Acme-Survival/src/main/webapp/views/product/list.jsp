@@ -57,7 +57,7 @@
 	<jstl:if test="${!managerDraftModeView && product.finalMode && product.discontinued}">
 		<!-- Checking if the principal is a manager, if so, he or she can mark the product as discontinued -->
 		<display:column>
-			<acme:button url="product/manager/discontinue.do?productId=${product.id}&page=${page}" code="product.continue"/>	
+			<acme:button url="product/manager/inStock.do?productId=${product.id}&page=${page}" code="product.continue"/>	
 		</display:column>
 	</jstl:if>
 	</security:authorize>
