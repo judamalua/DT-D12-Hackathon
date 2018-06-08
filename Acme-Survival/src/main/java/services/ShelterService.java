@@ -546,4 +546,8 @@ public class ShelterService {
 
 		return result;
 	}
+
+	public void flush() {
+		this.shelterRepository.flush();
+	}
 }
