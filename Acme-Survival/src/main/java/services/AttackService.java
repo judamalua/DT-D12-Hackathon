@@ -354,8 +354,16 @@ public class AttackService {
 			damage = c.getLevel() * 4;
 		}
 
-		c.setCurrentHealth(currentHealth - damage);
+		Integer newHealth = currentHealth - damage;
+		if (newHealth < 1){
+		newHealth = 0;
+		}
+		
+		c.setCurrentHealth(newHealth);
 		this.characterService.save(c);
+		if (newHealth < 1){
+			characterService.characterRIP(c);
+		}
 
 	}
 	/**
