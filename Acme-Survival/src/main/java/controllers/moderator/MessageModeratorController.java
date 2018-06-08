@@ -49,11 +49,11 @@ public class MessageModeratorController extends AbstractController {
 		try {
 
 			actor = this.actorService.findActorByPrincipal();
-			Assert.isTrue(!(actor instanceof Moderator));
+			Assert.isTrue(actor instanceof Moderator);
 			message = this.messageService.findOne(messageId);
 
 			this.messageService.delete(message);
-			result = new ModelAndView("redirect:/forum/list.do?forumId=" + message.getThread().getForum().getId());
+			result = new ModelAndView("redirect:/message/list.do?threadId=" + message.getThread().getId());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/misc/403");

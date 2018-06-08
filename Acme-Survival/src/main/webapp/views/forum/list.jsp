@@ -103,7 +103,7 @@
 
 		<display:column>
 			<security:authorize access="hasRole('MODERATOR')">
-				<acme:button url="thread/moderator/delete.do?forumId=${forum.id}"
+				<acme:button url="thread/moderator/delete.do?threadId=${thread.id}"
 					code="forum.delete" />
 			</security:authorize>
 		</display:column>

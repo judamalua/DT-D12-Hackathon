@@ -46,8 +46,8 @@
 	</display:column>
 	
 	<display:column>
-		<security:authorize access="hasRole('DESIGNER')">
-			<acme:button url="message/actor/delete.do?forumId=${forum.id}"
+		<security:authorize access="hasRole('MODERATOR')">
+			<acme:button url="message/moderator/delete.do?messageId=${row.id}"
 				code="message.delete" />
 		</security:authorize>
 	</display:column>

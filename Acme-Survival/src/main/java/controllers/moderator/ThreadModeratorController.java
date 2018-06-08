@@ -49,7 +49,7 @@ public class ThreadModeratorController extends AbstractController {
 		try {
 
 			actor = this.actorService.findActorByPrincipal();
-			Assert.isTrue(!(actor instanceof Moderator));
+			Assert.isTrue(actor instanceof Moderator);
 			thread = this.threadService.findOne(threadId);
 
 			this.threadService.delete(thread);
