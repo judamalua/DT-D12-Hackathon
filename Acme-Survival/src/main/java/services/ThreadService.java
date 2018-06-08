@@ -84,9 +84,8 @@ public class ThreadService {
 		actor = this.actorService.findActorByPrincipal();
 
 		Assert.notNull(thread);
-		if (!(actor instanceof Moderator)) {
+		if (!(actor instanceof Moderator))
 			Assert.isTrue(thread.getActor().equals(actor));
-		}
 
 		result = this.threadRepository.save(thread);
 
@@ -106,26 +105,23 @@ public class ThreadService {
 		Assert.notNull(thread);
 		Assert.isTrue(thread.getId() != 0);
 		this.actorService.checkActorLogin();
-		Assert.isTrue(this.threadRepository.exists(thread.getId()));
+		Assert.isTrue(this.findOne(thread.getId()) != null)/* this.threadRepository.exists(thread.getId()) */;
 
 		final Collection<Message> messages;
 		Actor actor;
 
 		actor = this.actorService.findActorByPrincipal();
 
-		if (!(actor instanceof Moderator)) {
+		if (!(actor instanceof Moderator))
 			Assert.isTrue(thread.getActor().equals(actor));
-		}
 
 		messages = this.messageService.findMessagesByThread(thread.getId());
 
-		for (final Message message : messages) {
+		for (final Message message : messages)
 			this.messageService.delete(message);
-		}
 
 		this.threadRepository.delete(thread);
 	}
-
 	public Collection<Thread> findThreadsByForum(final int forumId) {
 		Collection<Thread> result;
 

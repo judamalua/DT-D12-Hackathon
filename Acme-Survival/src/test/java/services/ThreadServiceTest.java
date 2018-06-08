@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import utilities.AbstractTest;
 import domain.Forum;
 import domain.Player;
+import domain.Thread;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -107,7 +108,7 @@ public class ThreadServiceTest extends AbstractTest {
 
 	@Test
 	public void testDeleteThreadPositive() {
-		domain.Thread thread, savedThread;
+		Thread thread, savedThread;
 		Forum forum;
 		Player player;
 		int forumId;
@@ -133,7 +134,7 @@ public class ThreadServiceTest extends AbstractTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteThreadNotLoggedNegative() {
-		domain.Thread thread, savedThread;
+		Thread thread, savedThread;
 		Forum forum;
 		Player player;
 		int forumId;
@@ -159,7 +160,7 @@ public class ThreadServiceTest extends AbstractTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testDeleteThreadNotOwnerNegative() {
-		domain.Thread thread, savedThread;
+		Thread thread, savedThread;
 		Forum forum;
 		Player player;
 		int forumId;
