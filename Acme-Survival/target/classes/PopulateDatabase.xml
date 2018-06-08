@@ -1989,7 +1989,7 @@
 			value="https://i.chzbgr.com/full/9108298496/h6FF768B8/" />
 		<property name="price" value="56.23" />
 		<property name="finalMode" value="true" />
-		<property name="discontinued" value="false" />
+		<property name="discontinued" value="true" />
 	</bean>
 
 	<!-- %%%% ItemDesign %%%% -->
