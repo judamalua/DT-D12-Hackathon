@@ -205,6 +205,16 @@ public class RoomService {
 		return result;
 	}
 
+	public Page<Room> findRoomsByShelterMove(final int shelterId, final int characterRoomId, final Pageable pageable) {
+		Assert.isTrue(shelterId != 0);
+
+		Page<Room> result;
+
+		result = this.roomRepository.findRoomsByShelterMove(shelterId, characterRoomId, pageable);
+
+		return result;
+	}
+
 	public Room reconstruct(final Room room, final BindingResult binding) {
 		Room result = null;
 		Player actor;
