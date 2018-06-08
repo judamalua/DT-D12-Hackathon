@@ -21,7 +21,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 	Page<Room> findRoomsByShelter(int shelterId, Pageable pageable);
 
 	@Query("select r from Room r where r.shelter.id=?1 and (?2=null or r.id!=?2) and (r.roomDesign.maxCapacityCharacters-(select count(c) from Character c where c.room.id=r.id)>0)")
-	Page<Room> findRoomsByShelterMove(int shelterId, int characterRoomId, Pageable pageable);
+	Page<Room> findRoomsByShelterMove(int shelterId, Integer characterRoomId, Pageable pageable);
 
 	// Dashboard queries
 
