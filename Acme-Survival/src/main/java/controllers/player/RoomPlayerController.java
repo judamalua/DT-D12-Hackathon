@@ -182,6 +182,7 @@ public class RoomPlayerController extends AbstractController {
 		Pageable pageable;
 		Configuration configuration;
 		Player player;
+		domain.Character character;
 
 		try {
 			result = new ModelAndView("room/list");
@@ -189,13 +190,9 @@ public class RoomPlayerController extends AbstractController {
 			pageable = new PageRequest(page, configuration.getPageSize());
 			player = (Player) this.actorService.findActorByPrincipal();
 			shelter = this.shelterService.findShelterByPlayer(player.getId());
-			rooms = this.roomService.findRoomsByShelter(shelter.getId(), pageable);
-
-			for (final Room r : rooms.getContent()) {
-				if (this.characterService.findCharactersByRoom(r.getId()).size() > r.getRoomDesign().getMaxCapacityCharacters()) {
-					rooms.getContent().remove(r);
-				}
-			}
+			character = this.characterService.findOne(characterId);
+			final int characterRoomID = character.getRoom().getId();
+			rooms = this.roomService.findRoomsByShelterMove(shelter.getId(), characterRoomID, pageable);
 
 			result.addObject("rooms", rooms.getContent());
 			result.addObject("page", page);

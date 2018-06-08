@@ -148,6 +148,7 @@ public class CharacterService {
 		Assert.isTrue(character.getCurrentHealth() == 0);
 
 		if (character.getItem() != null) {
+			character.getItem().setEquipped(false);
 			this.itemService.delete(character.getItem());
 		}
 
