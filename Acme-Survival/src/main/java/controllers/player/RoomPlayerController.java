@@ -191,7 +191,11 @@ public class RoomPlayerController extends AbstractController {
 			player = (Player) this.actorService.findActorByPrincipal();
 			shelter = this.shelterService.findShelterByPlayer(player.getId());
 			character = this.characterService.findOne(characterId);
-			final int characterRoomID = character.getRoom().getId();
+			Integer characterRoomID = 0;
+
+			if (character.getRoom() != null) {
+				characterRoomID = character.getRoom().getId();
+			}
 			rooms = this.roomService.findRoomsByShelterMove(shelter.getId(), characterRoomID, pageable);
 
 			result.addObject("rooms", rooms.getContent());
