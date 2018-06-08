@@ -33,7 +33,7 @@
 	<div id="map" style="height: 400px;"></div>
 </div>
 <script async defer
-	src="https://maps.googleapis.com/maps/api/js?language=${currentLang}&key=AIzaSyBe0wmulZvK1IM3-3jIUgbxt2Ax_QOVW6c&callback=initMap">
+	src="https://maps.googleapis.com/maps/api/js?language=${currentLang}&key=AIzaSyCnBip3JB6VRFU0v3T32JC7nAhCQdD8Nrsc&callback=initMap">
 	
 </script>
 

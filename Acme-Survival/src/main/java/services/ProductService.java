@@ -143,7 +143,7 @@ public class ProductService {
 	// Other business methods ----------------------------------------------------------------------------------
 
 	/**
-	 * This method marks a product as discontinued, or as not discontinued if it was already discontinued
+	 * This method marks a product as discontinued
 	 * 
 	 * @param product
 	 * @author Juanmi
@@ -158,8 +158,32 @@ public class ProductService {
 
 		// Checking that the product that is going to be marked as discontinued is a final mode product.
 		Assert.isTrue(product.getFinalMode());
+		Assert.isTrue(!product.getDiscontinued());
 
-		product.setDiscontinued(!product.getDiscontinued());
+		product.setDiscontinued(true);
+
+		this.save(product);
+	}
+
+	/**
+	 * This method marks a product as in stock
+	 * 
+	 * @param product
+	 * @author Juanmi
+	 */
+	public void productInStock(final Product product) {
+		Actor actor;
+
+		actor = this.actorService.findActorByPrincipal();
+
+		// Checking that the user trying to discontinue a product is a manager.
+		Assert.isTrue(actor instanceof Manager);
+
+		// Checking that the product that is going to be marked as discontinued is a final mode product.
+		Assert.isTrue(product.getFinalMode());
+		Assert.isTrue(product.getDiscontinued());
+
+		product.setDiscontinued(false);
 
 		this.save(product);
 	}

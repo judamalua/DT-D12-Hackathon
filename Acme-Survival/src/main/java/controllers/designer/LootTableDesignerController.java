@@ -240,10 +240,11 @@ public class LootTableDesignerController extends AbstractController {
 	 * @author Alejandro
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
-	public ModelAndView delete(@Valid final LootTable lootTable, final BindingResult binding) {
+	public ModelAndView delete(@RequestParam Integer lootTableId) {
 		ModelAndView result;
-
+		LootTable lootTable = lootTableService.findOne(lootTableId);
 		try {
+			Assert.notNull(lootTable);
 			Assert.isTrue(!lootTable.getFinalMode());
 			this.lootTableService.delete(lootTable);
 			result = new ModelAndView("redirect:list.do");

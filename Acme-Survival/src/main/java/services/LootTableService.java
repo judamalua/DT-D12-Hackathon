@@ -28,11 +28,15 @@ public class LootTableService {
 	// Managed repository --------------------------------------------------
 
 	@Autowired
-	private LootTableRepository	lootTableRepository;
+	private LootTableRepository		lootTableRepository;
 	@Autowired
-	private Validator			validator;
+	private Validator				validator;
 	@Autowired
-	private ActorService		actorService;
+	private ActorService			actorService;
+	@Autowired
+	private ProbabilityEventService	probabilityEventService;
+	@Autowired
+	private ProbabilityItemService	probabilityItemService;
 
 
 	// Supporting services --------------------------------------------------
@@ -100,7 +104,12 @@ public class LootTableService {
 		Assert.isTrue(actor instanceof Designer);
 
 		Assert.isTrue(this.lootTableRepository.exists(lootTable.getId()));
-
+		final Collection<ProbabilityItem> delItems = new HashSet<ProbabilityItem>(lootTable.getProbabilityItems());
+		final Collection<ProbabilityEvent> delEvents = new HashSet<ProbabilityEvent>(lootTable.getProbabilityEvents());
+		lootTable.getProbabilityEvents().clear();
+		lootTable.getProbabilityItems().clear();
+		this.probabilityItemService.deleteAll(delItems);
+		this.probabilityEventService.deleteAll(delEvents);
 		this.lootTableRepository.delete(lootTable);
 
 	}

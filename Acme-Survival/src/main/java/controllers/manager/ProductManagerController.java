@@ -142,6 +142,24 @@ public class ProductManagerController {
 		return result;
 	}
 
+	@RequestMapping(value = "/inStock", method = RequestMethod.GET)
+	public ModelAndView inStock(@RequestParam final int productId, @RequestParam(defaultValue = "0") final int page) {
+		ModelAndView result;
+		Product product;
+
+		try {
+			product = this.productService.findOne(productId);
+
+			this.productService.productInStock(product);
+			result = new ModelAndView("redirect:/product/list.do?page=" + page);
+
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:/misc/403");
+		}
+
+		return result;
+	}
+
 	// Setting final mode ---------------------------------------------------------
 
 	@RequestMapping(value = "/final-mode", method = RequestMethod.GET)

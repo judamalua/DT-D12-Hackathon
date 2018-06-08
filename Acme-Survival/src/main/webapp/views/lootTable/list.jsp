@@ -30,6 +30,7 @@
 	<spring:message code="lootTable.items" var="items" />
 	<spring:message code="lootTable.events" var="events" />
 	<spring:message code="lootTable.edit" var="editTitle" />
+	<spring:message code="lootTable.delete" var="deleteMsg" />
 	
 	
 	<display:column property="name" title="${name}" sortable="false" />
@@ -37,10 +38,19 @@
 	<display:column value="${fn:length(lootTable.probabilityEvents)}" title="${events}" sortable="false" />
 	<security:authorize access="hasRole('DESIGNER')">
 	<display:column title="${editTitle}">
-	
 	<acme:button url="lootTable/designer/edit.do?lootTableId=${lootTable.id}" code="lootTable.edit"/>
-	
 	</display:column>
+	<display:column>
+	<jstl:if test="${!lootTable.finalMode}">
+		
+		<form method="post" action="lootTable/designer/edit.do?lootTableId=${lootTable.id}">
+		<input hidden="true" name="delete" value="">
+    	<button class="btn" type="submit">${deleteMsg}</button>
+		</form>
+ 		
+		
+	 </jstl:if>
+	 </display:column>
 	</security:authorize>
 
 </display:table>
