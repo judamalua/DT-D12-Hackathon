@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import services.ActorService;
 import services.CharacterService;
@@ -99,7 +100,7 @@ public class RoomPlayerController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final Integer roomId) {
+	public ModelAndView delete(@RequestParam final Integer roomId, final RedirectAttributes redirect) {
 		ModelAndView result;
 		final Room room;
 		Actor actor;
@@ -116,11 +117,11 @@ public class RoomPlayerController extends AbstractController {
 
 		} catch (final Throwable oops) {
 			if (oops.getMessage().contains("You not have space")) {
-				result = new ModelAndView("redirect:shelter/player/display.do");
-				result.addObject("message", "shelter.capacity.error");
+				result = new ModelAndView("redirect:/shelter/player/display.do");
+				redirect.addFlashAttribute("message", "shelter.capacity.error");
 			} else if (oops.getMessage().contains("You have a lot of objects")) {
-				result = new ModelAndView("redirect:shelter/player/display.do");
-				result.addObject("message", "shelter.objects.error");
+				result = new ModelAndView("redirect:/shelter/player/display.do");
+				redirect.addFlashAttribute("message", "shelter.objects.error");
 			} else {
 				result = new ModelAndView("redirect:/misc/403");
 			}

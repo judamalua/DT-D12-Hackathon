@@ -166,10 +166,10 @@
 	</p>
 	<br>
 	<p>
-		<spring:message code="item.message3"></spring:message>
+		<b><spring:message code="item.message3"></spring:message></b>
 	</p>
 	<jstl:if test="${failedSelection}">
-		<p style="">
+		<p class="message">
 			<spring:message code="error.message"></spring:message>
 			!!!
 		</p>

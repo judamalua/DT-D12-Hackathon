@@ -118,6 +118,8 @@ public class LootTableService {
 			result.setProbabilityItems(lootTable.getProbabilityItems());
 		}
 		this.validator.validate(result, binding);
+		this.lootTableRepository.flush();
+
 		return result;
 	}
 
