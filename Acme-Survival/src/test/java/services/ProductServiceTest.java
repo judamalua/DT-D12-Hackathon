@@ -523,7 +523,10 @@ public class ProductServiceTest extends AbstractTest {
 
 			product = this.productService.findOne(productId);
 
-			this.productService.discontinueProduct(product);
+			if (product.getDiscontinued())
+				this.productService.productInStock(product);
+			else if (!product.getDiscontinued())
+				this.productService.discontinueProduct(product);
 			this.productService.flush();
 
 			super.unauthenticate();
