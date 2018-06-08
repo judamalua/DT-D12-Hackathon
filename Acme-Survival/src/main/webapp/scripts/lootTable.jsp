@@ -58,9 +58,9 @@ $(document).ready(function() {
 	var error = false;
 	$("#table-item tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
-			if (parseFloat($(this).find("td:eq(3)").text()) > 1  || parseFloat($(this).find("td:eq(3)").text() < 0  )){
+			if (parseFloat($(this).find("td:eq(3)").text()) > 1  || parseFloat($(this).find("td:eq(3)").text()) < 0  ){
 				//Probabilidad fuera de rango
-				 var emptyName="<spring:message code="lootTable.errorProb"/>";
+				 var emptyName=$(this).find("td:eq(2)").text() + ": <spring:message code="lootTable.errorProb"/>";
 			 	Materialize.toast(emptyName, 3000);
 				error = true;
 				return;
@@ -72,9 +72,11 @@ $(document).ready(function() {
 	
 		$("#table-event tr").each(function(index, element) {
 		if (!element.className.includes("hide") && $(this).find("td:first").text() != "" ){
-			if (parseFloat($(this).find("td:eq(2)").text()) > 1  || parseFloat($(this).find("td:eq(2)").text() < 0  )){
+			if (parseFloat($(this).find("td:eq(2)").text()) > 1  || parseFloat($(this).find("td:eq(2)").text()) < 0  ){
+		
+						
 				//Probabilidad fuera de rango
-				 var emptyName="<spring:message code="lootTable.errorProb"/>";
+				 var emptyName=$(this).find("td:eq(1)").text() + ": <spring:message code="lootTable.errorProb"/>";
 		 		Materialize.toast(emptyName, 3000);
 		 		error = true;
 				return;

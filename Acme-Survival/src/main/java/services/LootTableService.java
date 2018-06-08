@@ -33,6 +33,10 @@ public class LootTableService {
 	private Validator			validator;
 	@Autowired
 	private ActorService	actorService;
+	@Autowired
+	private ProbabilityEventService probabilityEventService;
+	@Autowired
+	private ProbabilityItemService probabilityItemService;
 
 
 	// Supporting services --------------------------------------------------
@@ -100,7 +104,12 @@ public class LootTableService {
 		Assert.isTrue(actor instanceof Designer);
 
 		Assert.isTrue(this.lootTableRepository.exists(lootTable.getId()));
-
+		Collection<ProbabilityItem> delItems = new HashSet<ProbabilityItem>(lootTable.getProbabilityItems());
+		Collection<ProbabilityEvent> delEvents = new HashSet<ProbabilityEvent>(lootTable.getProbabilityEvents());
+		lootTable.getProbabilityEvents().clear();
+		lootTable.getProbabilityItems().clear();
+		probabilityItemService.deleteAll(delItems);
+		probabilityEventService.deleteAll(delEvents);
 		this.lootTableRepository.delete(lootTable);
 
 	}
